@@ -160,7 +160,7 @@ private:
     }
 };
 
-// Method to print the tree - O(N) & O(H)
+// Method to print the tree - O(N) & O(LogN)
 void printTree(TreeNode* rootNode) {
     if(rootNode) {
         printTree(rootNode->left);
