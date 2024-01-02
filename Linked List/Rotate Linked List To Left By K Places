@@ -26,8 +26,8 @@ ListNode* rotateList_V1(ListNode* headNode, int k) {
     if(!headNode || !headNode->next)
         return headNode;
           
-    std::vector<ListNode*> nodes; // Require to store the k nodes
-    ListNode* currNode = headNode;    // Require to track the nodes 
+    std::vector<ListNode*> nodes;  // Require to store the k nodes
+    ListNode* currNode = headNode; // Require to track the nodes 
     
     // Iterate and store k nodes to the vector
     while(currNode && k--) {
