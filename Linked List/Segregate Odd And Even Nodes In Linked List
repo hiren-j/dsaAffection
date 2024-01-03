@@ -119,7 +119,7 @@ public:
         // Tracks the last node of the odd-grouped list.
         ListNode* oddLast = nullptr; 
         
-        // Recursively compute and store the head node of both the groups.
+        // Recursively search and store the head node of both the groups.
         std::vector<ListNode*> oddEvenHead = segregateUsingRecursion(headNode, oddLast);
 
         // Return the head node of the even-grouped list, if the odd-grouped list doesn't exist.
