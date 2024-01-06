@@ -23,13 +23,13 @@ struct ListNode {
 
 // #1 Solution class:
 class Solution_V1 {
-    // #1 Method helper
+    // Method helper
     static bool comparator(ListNode* node1, ListNode* node2) {
         return node1->val < node2->val;
     }
 
 public:
-    // #1 Method to insert the node into the list, using sorting with buffer - O(NLogN) & O(N) : Where N is the size of the list.
+    // Method to insert the node into the list, using sorting with buffer - O(NLogN) & O(N) : Where N is the size of the list.
     ListNode* sortedInsertToList(ListNode* headNode, int key) {
         // Edge case: When the list is empty.
         if(!headNode) {
@@ -71,7 +71,7 @@ public:
 // #2 Solution class:
 class Solution_V2 {
 public:
-    // #2 Method to insert the node into the list, using buffer only - O(N) & O(N) : Where N is the size of the list.
+    // Method to insert the node into the list, using buffer only - O(N) & O(N) : Where N is the size of the list.
     ListNode* sortedInsertToList(ListNode* headNode, int key) {
         // Edge case: When the list is empty.
         if(!headNode) {
@@ -134,7 +134,7 @@ public:
 // #3 Solution class:
 class Solution_V3 {
 public:
-    // #3 Method to insert the node into the list, using constant space - O(N) & O(1) : Where N is the size of the list.
+    // Method to insert the node into the list, using constant space - O(N) & O(1) : Where N is the size of the list.
     ListNode* sortedInsertToList(ListNode* headNode, int key) {
         // Edge case: When the list is empty.
         if(!headNode) {
