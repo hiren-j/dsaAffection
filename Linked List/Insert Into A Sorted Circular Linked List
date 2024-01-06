@@ -134,7 +134,7 @@ public:
 // #3 Solution class:
 class Solution_V3 {
 public:
-    // Method to insert the node into the list, using constant space - O(N) & O(1) : Where N is the size of the list.
+    // Method to insert the node into the list, using constant auxiliary space - O(N) & O(1) : Where N is the size of the list.
     ListNode* sortedInsertToList(ListNode* headNode, int key) {
         // Edge case: When the list is empty.
         if(!headNode) {
