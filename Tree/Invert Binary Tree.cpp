@@ -1,5 +1,6 @@
 // Program to invert a binary tree ~ coded by Hiren
 #include <iostream>
+#include <vector>
 using namespace std;
 
 // Tree template
@@ -14,6 +15,29 @@ public:
     :
     val(val), left(left), right(right) {}
 };
+
+// Method to create the binary tree using constant auxiliary space - O(N) & O(H)
+TreeNode* createTree(TreeNode* rootNode, int num) {
+    if(!rootNode)
+        return new TreeNode(num);
+
+    TreeNode* parentNode = nullptr;
+    TreeNode* currNode   = rootNode;
+
+    while(currNode) {
+        parentNode = currNode;
+        currNode = (currNode->val < num) ? currNode->right : currNode->left;
+    }
+
+    TreeNode* newNode = new TreeNode(num);
+
+    if(parentNode->val < num)
+        parentNode->right = newNode;
+    else
+        parentNode->left = newNode;
+
+    return rootNode;
+}
 
 // Method to invert the binary tree using dfs only - O(N) & O(H)
 TreeNode* invertTree(TreeNode* rootNode) {
@@ -55,11 +79,14 @@ void printTree(TreeNode* rootNode) {
 
 // Driver code
 int main() {
-    // Creating, connecting nodes and initializing their data
-    TreeNode* c3 = new TreeNode(8);
-    TreeNode* c2 = new TreeNode(6, nullptr, c3);
-    TreeNode* c1 = new TreeNode(5);
-    TreeNode* rootNode = new TreeNode(10, c1, c2);
+    vector<int> nums = {10,21,45,16,20,12};
+
+    // Tracks the root node of the tree
+    TreeNode* rootNode = nullptr;
+
+    // Create the tree
+    for(int num : nums)
+        rootNode = createTree(rootNode, num);
 
     // Print call
     printTree(rootNode); 
