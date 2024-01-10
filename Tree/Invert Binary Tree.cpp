@@ -16,7 +16,7 @@ public:
     val(val), left(left), right(right) {}
 };
 
-// Method to create the binary tree using constant auxiliary space - O(N) & O(H)
+// Method to create the binary tree using constant auxiliary space - O(N) & O(1)
 TreeNode* createTree(TreeNode* rootNode, int num) {
     if(!rootNode)
         return new TreeNode(num);
