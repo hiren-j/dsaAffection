@@ -16,8 +16,8 @@ public:
     val(val), left(left), right(right) {}
 };
 
-// Method to create the binary tree using constant auxiliary space - O(N) & O(1)
-TreeNode* createTree(TreeNode* rootNode, int num) {
+// Method to insert a node in the binary tree using constant auxiliary space - O(N) & O(1)
+TreeNode* insertIntoBT(TreeNode* rootNode, int num) {
     if(!rootNode)
         return new TreeNode(num);
 
@@ -84,9 +84,9 @@ int main() {
     // Tracks the root node of the tree
     TreeNode* rootNode = nullptr;
 
-    // Create the tree
+    // Construct the tree
     for(int num : nums)
-        rootNode = createTree(rootNode, num);
+        rootNode = insertIntoBT(rootNode, num);
 
     // Print call
     printTree(rootNode); 
