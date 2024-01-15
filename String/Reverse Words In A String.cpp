@@ -94,12 +94,17 @@ string reverseWords_V3(const string& s) {
 
 // Driver code
 int main() {
-    string s = "  hello world  "; 
-    cout<<s<<'\n';
+    cout<<"Enter the number of testcases: ";
+    int testCases; 
+    cin>>testCases;
+    cin.ignore(); // Ignore the newline character left in the input buffer.
 
-    // Method call
-    s = reverseWords_V3(s);
-    cout<<s;
+    while(testCases--) {
+        string s; 
+        getline(cin, s);
+        s = reverseWords_V3(s);        
+        cout<<s<<'\n';
+    }
 
     return 0;
 }
