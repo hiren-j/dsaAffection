@@ -1,18 +1,20 @@
-// Program to find the maximized product difference ~ coded by Hiren 
-#include <iostream>
-#include <vector>
+// Program to find the maximized product difference in an array ~ coded by Hiren 
 #include <algorithm>
+#include <iostream>
 #include <climits>
+#include <vector>
+#include <thread>
+#include <chrono>
 
 // #1 Method to find the maximized product difference using sorting - O(NLogN) & O(1) : Where N is the size of the array "nums"
-int maxProductDifference(std::vector<int>& nums) {
+int maxProductDifference_V1(std::vector<int>& nums) {
     int n = nums.size();
     std::sort(begin(nums), end(nums));
     return (nums[n-1] * nums[n-2]) - (nums[0] * nums[1]);
 }
 
 // #2 Method to find the maximized product difference using constant auxiliary space - O(N) & O(1) : Where N is the size of the array "nums"
-int maxProductDifference_(std::vector<int>& nums) {
+int maxProductDifference_V2(std::vector<int>& nums) {
     int n = nums.size();
 
     int maxElement1 = INT_MIN; // Stores the first largest element
@@ -54,15 +56,38 @@ int maxProductDifference_(std::vector<int>& nums) {
 
 // Driver code
 int main() {
-    std::vector<int> nums = {5, 6, 2, 7, 4};
+    int testCases; 
+    std::cout<<"Enter the number of testcases you want: ";
+    std::cin>>testCases;
 
-    // Print values
-    for(int num : nums)
-        std::cout<<num<<' ';
+    while(testCases--) {
+        // Handles console clearence for both "windows" and "linux" user
+        system("clear || cls");
+        
+        int n; 
+        std::cout<<"Enter the size of the array: ";
+        std::cin>>n;
 
-    // Method call
-    int output = maxProductDifference_(nums);
-    std::cout<<"\nThe maximized product difference is : "<<output;
+        std::vector<int> nums(n);
+
+        std::cout<<"\nEnter the array elements: ";
+
+        for(int i=0; i<n; i++) {
+            std::cin>>nums[i];
+        }
+
+        // Method call
+        int output = maxProductDifference_V2(nums);
+        std::cout<<"\nThe maximized product difference is : "<<output;
+
+        if(testCases != 0)
+            std::cout<<"\n\nApplication will restart in 10 seconds!";
+        else
+            std::cout<<"\n\nApplication will close in 10 seconds!";
+            
+        // Add a 10-second delay before the next iteration
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+    }
 
     return 0;
 }
