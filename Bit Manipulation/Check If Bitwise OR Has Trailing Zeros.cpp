@@ -3,9 +3,9 @@
 #include <vector>
 #include <chrono>
 #include <thread>
-using namespace std;
 #define loop(i,n,k) for(int i=(k?k:0); i<n; i++)
 #define even(n) (!(n % 2))
+using namespace std;
 
 // #1 Method to check if bitwise OR has trailing zeros or not, using brute force - O(N*N) & O(1)
 bool hasTrailingZeros_V1(vector<int>& nums) {
