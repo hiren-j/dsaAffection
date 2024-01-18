@@ -1,8 +1,10 @@
 // Program to return the average value of the nodes on each level in the form of an array ~ coded by Hiren
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <queue>
-using namespace std;
+#include <thread>
+#include <chrono>
 
 // Tree template
 class TreeNode {
@@ -25,24 +27,54 @@ public:
             delete right;
         }
     }
+
+    // Method to insert a node in the tree, using constant auxiliary space - O(N) & O(1) : Where N is total number of nodes of the tree
+    TreeNode* insertNodeInBT(TreeNode* rootNode, int val) {
+        if(!rootNode)
+            return new TreeNode(val); 
+
+        TreeNode* parentNode = nullptr;
+        TreeNode* currNode   = rootNode;
+
+        while(currNode) {
+            parentNode = currNode;
+            currNode   = (currNode->val > val) ? currNode->left : currNode->right;
+        }
+
+        TreeNode* newNode = new TreeNode(val);
+
+        (parentNode->val > val) ? parentNode->left = newNode : parentNode->right = newNode;
+
+        return rootNode;
+    }
+
+    // Method to print the tree, using preOrder traversal - O(N) & O(H) : Where N is total number of nodes and H is height of the tree
+    void printTree(TreeNode* rootNode) {
+        if(rootNode) {
+            std::cout<<rootNode->val<<' ';
+            printTree(rootNode->left);
+            printTree(rootNode->right);
+        }
+    }
 };
 
 // #1 Solution class:
 class Solution_V1 {
 public:
     // Method to find the average of each level, using bfs - O(N) & O(N) : Where N is total number of nodes of the tree
-    vector<double> averageOfLevels(TreeNode* currNode) {
+    std::vector<double> averageOfLevels(TreeNode* currNode) {
         // Stores the levels one by one
-        queue<TreeNode*> q;
+        std::queue<TreeNode*> q;
         // Store the node of the first level of the tree
         q.push(currNode);
         // Stores the average of each level
-        vector<double> avgLevelWise;
+        std::vector<double> avgLevelWise;
 
         while(!q.empty()) {
             int qSize = q.size();
             // Stores the sum of nodes and the count of nodes of current level
             double currLevelSum = 0, currNodesCount = 0;
+            // Explore the current level
             while(qSize--) {
                 // Extract the current node of the current level from the "queue"
                 currNode = q.front(); q.pop();
@@ -68,11 +100,11 @@ public:
 class Solution_V2 {
 public:
     // Method to find the average of each level, using buffer with dfs - O(N) & O(H) : Where N is total number of nodes and H is height of the tree
-    vector<double> averageOfLevels(TreeNode* rootNode) {
+    std::vector<double> averageOfLevels(TreeNode* rootNode) {
         // Stores the count of nodes and the sum of nodes of each level
-        vector<pair<double, double>> countAndSum; 
+        std::vector<std::pair<double, double>> countAndSum; 
         // Stores the average of each level
-        vector<double> avgLevelWise; 
+        std::vector<double> avgLevelWise; 
         // Calculate average of each level
         calcAvgOfLevels(rootNode, 0, countAndSum, avgLevelWise);
         // Return the list of averages
@@ -81,7 +113,7 @@ public:
 
 private:
     // Method helper
-    void calcAvgOfLevels(TreeNode* currNode, int currDepth, vector<pair<double, double>>& countAndSum, vector<double>& avgLevelWise) {
+    void calcAvgOfLevels(TreeNode* currNode, int currDepth, std::vector<std::pair<double, double>>& countAndSum, std::vector<double>& avgLevelWise) {
         // When the current node is present
         if(currNode) {
             // When the current level is seen for the first time
@@ -109,40 +141,48 @@ private:
     }
 };
 
-// Method to print the tree using preOrder traversal - O(N) & O(H) : Where N is total number of nodes and H is height of the tree
-void printTree(TreeNode* rootNode) {
-    if(rootNode) {
-        std::cout<<rootNode->val<<' ';
-        printTree(rootNode->left);
-        printTree(rootNode->right);
-    }
-}
-
 // Driver code
 int main() {
-    // Creating, connecting nodes and initializing their data
-    TreeNode* c6 = new TreeNode(7);
-    TreeNode* c5 = new TreeNode(6);
-    TreeNode* c4 = new TreeNode(5);
-    TreeNode* c3 = new TreeNode(4);
-    TreeNode* c2 = new TreeNode(3, c5, c6);
-    TreeNode* c1 = new TreeNode(2, c3, c4);
-    TreeNode* rootNode = new TreeNode(1, c1, c2);
+    int testCases;
+    std::cout<<"Enter the number of testcases you want: ";
+    std::cin>>testCases;
 
-    // Print call
-    printTree(rootNode); 
-    cout<<'\n';
+    while(testCases--) {
+        system("clear || cls");
+        int n;
+        std::cout<<"Enter the number of nodes for the binary tree: ";
+        std::cin>>n;
 
-    // Call to find the average of each level
-    Solution_V2 obj;
-    vector<double> avgLevelWise = obj.averageOfLevels(rootNode);
+        TreeNode* rootNode = nullptr;
 
-    // Print values
-    for(double currLevelAvg : avgLevelWise)
-        cout<<currLevelAvg<<' ';
+        for(int node = 1; node <= n; ++node) {
+            int val;
+            std::cout<<"Enter the value of the "<<node<<"th node: ";
+            std::cin>>val;
+            rootNode = rootNode->insertNodeInBT(rootNode, val);
+        }
 
-    // Deletion call
-    delete rootNode;
+        // Print call
+        std::cout<<"\nTree: ";
+        rootNode->printTree(rootNode); 
+
+        // Call to find the average of each level
+        Solution_V2 obj;
+        std::vector<double> avgLevelWise = obj.averageOfLevels(rootNode);
+
+        // Print values
+        std::cout<<"\nList of averages: ";
+        for(double currLevelAvg : avgLevelWise)
+            std::cout<<std::fixed<<std::setprecision(3)<<currLevelAvg<<"  ";
+
+        // Delete the root node (and recursively the entire tree)
+        delete rootNode;
+
+        (testCases) ? std::cout<<"\n\nThe application will restart in 10 seconds!" : std::cout<<"\n\nThe application will close in 10 seconds!";
+
+        // Add 10-seconds of delay before the next iteration   
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+    } 
 
     return 0;
 }
