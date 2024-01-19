@@ -54,7 +54,7 @@ int main() {
         // Handles console clearence for both "windows" and "linux" user
         system("cls || clear");
 
-        // Input section for std::string
+        // Input section for string
         std::string s, t;
         std::cout<<"Enter the first string: " ; std::cin>>s;
         std::cout<<"Enter the second string: "; std::cin>>t;
