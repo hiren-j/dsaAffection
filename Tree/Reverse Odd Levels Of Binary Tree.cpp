@@ -1,7 +1,9 @@
-// Program to reverse the odd levels of a perfect binary tree ~ coded by Hiren
+// Program to reverse the odd levels of a binary tree ~ coded by Hiren
 #include <iostream>
-#include <queue>
 #include <vector>
+#include <queue>
+#include <thread>
+#include <chrono>
 using namespace std;
 
 // Tree template
@@ -12,25 +14,15 @@ public:
     TreeNode* right;
 
     // Init constructor
-    TreeNode(int val, TreeNode* left, TreeNode* right) 
+    TreeNode(int val, TreeNode* left = nullptr, TreeNode* right = nullptr) 
     :
     val(val), left(left), right(right) {}
-
-    // Init destructor
-    ~TreeNode() {
-        if(left) {
-            delete left;
-        }
-        if(right) {
-            delete right;
-        }
-    }
 };
 
 // #1 Solution class:
 class Solution_V1 {
 public:
-    // Method to reverse the odd levels of the perfect binary tree, using buffer with dfs - O(N) & O(N) : Where N is the total number of nodes of the tree
+    // Method to reverse the odd levels of the binary tree, using buffer with dfs - O(N) & O(N) : Where N is the total number of nodes of the tree
     TreeNode* reverseOddLevels(TreeNode* rootNode) {
         // Stores the odd levels
         vector<vector<TreeNode*>> nodesLevelWise; 
@@ -86,7 +78,7 @@ private:
 // #2 Solution class:
 class Solution_V2 {
 public:
-    // Method to reverse the odd levels of the perfect binary tree, using buffer with bfs - O(N) & O(N) : Where N is the total number of nodes of the tree
+    // Method to reverse the odd levels of the binary tree, using buffer with bfs - O(N) & O(N) : Where N is the total number of nodes of the tree
     TreeNode* reverseOddLevels(TreeNode* rootNode) {
         // Edge case: When the tree is empty
         if(!rootNode)
@@ -137,7 +129,7 @@ public:
 // #3 Solution class:
 class Solution_V3 {
 public:
-    // Method to reverse the odd levels of the perfect binary tree, using dfs only - O(N) & O(LogN) : Where N is the total number of nodes of the tree
+    // Method to reverse the odd levels of the binary tree, using dfs only - O(N) & O(H) : Where N is the total number of nodes of the tree
     TreeNode* reverseOddLevels(TreeNode* rootNode) {
         preOrder(rootNode->left, rootNode->right, 1);
         return rootNode;
@@ -160,39 +152,121 @@ private:
     }
 };
 
-// Method to print the tree - O(N) & O(LogN)
-void printTree(TreeNode* rootNode) {
-    if(rootNode) {
-        printTree(rootNode->left);
-        cout<<rootNode->val<<' ';
-        printTree(rootNode->right);
+// Class to wrap all the basic methods of the tree
+class TreeCommonMethods {
+public:
+    // Method to insert a node in the binary tree, using constant auxiliary space - O(N) & O(1)
+    TreeNode* insertNode(TreeNode* rootNode, int key) {
+        if(!rootNode)
+            return new TreeNode(key);
+
+        TreeNode* parentNode = nullptr;
+        TreeNode* currNode   = rootNode;
+
+        while(currNode) {
+            parentNode = currNode;
+            currNode = (currNode->val < key) ? currNode->right : currNode->left;
+        }
+
+        TreeNode* newNode = new TreeNode(key);
+
+        (parentNode->val < key) ? parentNode->right = newNode : parentNode->left = newNode;
+
+        return rootNode;
     }
-}
+
+    // Method to delete the binary tree, using dfs only - O(N) & O(H)
+    TreeNode* deleteTree(TreeNode* rootNode) {
+        if(!rootNode)
+            return nullptr;
+
+        rootNode->left  = deleteTree(rootNode->left);
+        rootNode->right = deleteTree(rootNode->right);
+
+        delete rootNode;
+
+        return nullptr;
+    }
+
+    // Method to print the tree, using bfs only - O(N) & O(N)
+    void printTree(TreeNode* rootNode) {
+        if(!rootNode)
+            return;
+
+        queue<TreeNode*> q;
+        q.push(rootNode);
+
+        while(!q.empty()) {
+            int qSize = q.size();
+            cout<<"[";
+            while(qSize--) {
+                TreeNode* currNode = q.front(); q.pop();
+                (!qSize) ? cout<<currNode->val : cout<<currNode->val<<", ";
+                if(currNode->left)
+                    q.push(currNode->left);
+                if(currNode->right)
+                    q.push(currNode->right);
+            }
+            cout<<"]\n";
+        }
+    }
+};
 
 // Driver code
 int main() {
-    // Creating, connecting nodes and initializing their data
-    TreeNode* c6 = new TreeNode(7, nullptr, nullptr); 
-    TreeNode* c5 = new TreeNode(6, nullptr, nullptr); 
-    TreeNode* c4 = new TreeNode(5, nullptr, nullptr); 
-    TreeNode* c3 = new TreeNode(4, nullptr, nullptr); 
-    TreeNode* c2 = new TreeNode(3, c5, c6); 
-    TreeNode* c1 = new TreeNode(2, c3, c4); 
-    TreeNode* rootNode = new TreeNode(1, c1, c2); 
+    int testCases; 
+    cout<<"Enter the number of testcases you want: ";
+    cin>>testCases;
 
-    // Print call
-    printTree(rootNode);
-    cout<<'\n';
+    while(testCases--) {
+        // Handles console clearence for both "windows" and "linux" user
+        system("cls || clear");
+        int n; 
+        cout<<"Enter the number of nodes for the tree: ";
+        cin>>n;
 
-    // Call to reverse the odd levels
-    Solution_V3 obj;
-    rootNode = obj.reverseOddLevels(rootNode);
+        // Tracks the root node of the tree
+        TreeNode* rootNode = nullptr;
+        TreeCommonMethods tcm;
 
-    // Print call
-    printTree(rootNode);
+        // Input section for the nodes
+        for(int node = 1; node <= n; ++node) {
+            int key;
+            cout<<"Enter the value of the "<<node<<"th node: ";
+            cin>>key;
+            rootNode = tcm.insertNode(rootNode, key);
+        }
 
-    // Delete the root node (and recursively the entire tree)
-    delete rootNode;
+        // Print call
+        cout<<"\nTree before level reversal:\n";
+        tcm.printTree(rootNode);
+        
+        // Level reversal call
+        Solution_V2 s;
+        rootNode = s.reverseOddLevels(rootNode); 
+
+        // Print call
+        cout<<"\nTree after level reversal:\n";
+        tcm.printTree(rootNode);
+
+        // Deletion call
+        rootNode = tcm.deleteTree(rootNode);
+
+        // User based prompts for application flow
+        if(testCases) {
+            int userSeconds;
+            cout<<"\nEnter the number of seconds which after you want to restart the application: ";
+            cin>>userSeconds;
+            cout<<"The application will restart in "<<userSeconds<<" seconds!";
+            // Add 10-seconds of delay before the next iteration
+            this_thread::sleep_for(chrono::seconds(userSeconds));
+        }
+        else {
+            cout<<"\nThe application will close in 10 seconds!";
+            // Add 10-seconds of delay before the next iteration
+            this_thread::sleep_for(chrono::seconds(10));
+        }
+    }
 
     return 0;
 }
