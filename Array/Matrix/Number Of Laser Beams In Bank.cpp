@@ -114,9 +114,9 @@ int main() {
         vector<string> bank(m);
         cout<<"\nNote: Digit '0' means the cell is empty, while '1' means the cell has a security device! (Example: 010101)\n\n";
 
-        for(int i=0; i<m; i++) {
-            cout<<"Enter the digits for the "<<i+1<<"th row: ";
-            cin>>bank[i];
+        for(int row = 0; row < m; ++row) {
+            cout<<"Enter the digits for the "<<row+1<<"th row: ";
+            cin>>bank[row];
         }
 
         // Call to find the total number of laser beams
