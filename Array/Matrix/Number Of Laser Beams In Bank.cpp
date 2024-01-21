@@ -103,9 +103,9 @@ int numberOfBeams_V3(vector<string>& bank) {
 
 // Driver code
 int main() {
-    bool userWantOperation = true;
+    bool userWantsOperation = true;
 
-    while(userWantOperation) {
+    while(userWantsOperation) {
         system("cls || clear");
         int m; 
         cout<<"Enter the number of rows for the bank: ";
@@ -122,13 +122,11 @@ int main() {
         // Call to find the total number of laser beams
         int beamsInTotal = numberOfBeams_V3(bank);
         cout<<"\nThe total number of laser beams in the bank is "<<beamsInTotal;
-
-        userWantOperation = false;
-
+        
         char userChoise;
         cout<<"\n\nDo you want to perform the same operation on an another bank! (Write Y for \"Yes\" else application will exit automatically): ";
         cin>>userChoise;
-        userWantOperation = (userChoise == 'Y') ? true : false;
+        userWantsOperation = (userChoise == 'Y') ? true : false;
     }
 
     return 0;
