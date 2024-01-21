@@ -1,11 +1,11 @@
 // Program to find the total number of laser beams in the "bank" ~ coded by Hiren 
-#include <iostream>
-#include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-// #1 Method to find the total number of laser beams in the "bank", using buffer with (stl) map - O(M*N) & O(M) : Where M is the total number of rows and N is the length of a maximum string in it
+// #1 Method to find the total number of laser beams in the "bank", using buffer with map - O(M*N) & O(M) : Where M is the total number of rows and N is the length of a maximum string in it
 int numberOfBeams_V1(vector<string>& bank) {
     int m = bank.size();
     
@@ -103,19 +103,33 @@ int numberOfBeams_V3(vector<string>& bank) {
 
 // Driver code
 int main() {
-    vector<string> bank = {"011001","000000","010100","001000"};
+    bool userWantOperation = true;
 
-    // Print values
-    for(auto& row : bank) {
-        for(char cell : row) {
-            cout<<cell<<' ';
+    while(userWantOperation) {
+        system("cls || clear");
+        int m; 
+        cout<<"Enter the number of rows for the bank: ";
+        cin>>m;
+
+        vector<string> bank(m);
+        cout<<"\nNote: Digit '0' means the cell is empty, while '1' means the cell has a security device! (Example: 010101)\n\n";
+
+        for(int i=0; i<m; i++) {
+            cout<<"Enter the digits for the "<<i+1<<"th row: ";
+            cin>>bank[i];
         }
-        cout<<'\n';
-    }
 
-    // Call to find the total number of laser beams
-    int beamsInTotal = numberOfBeams_V3(bank);
-    cout<<"The total number of laser beams in the bank is "<<beamsInTotal;
+        // Call to find the total number of laser beams
+        int beamsInTotal = numberOfBeams_V3(bank);
+        cout<<"\nThe total number of laser beams in the bank is "<<beamsInTotal;
+
+        userWantOperation = false;
+
+        char userChoise;
+        cout<<"\n\nDo you want to perform the same operation on an another bank! (Write Y for \"Yes\" else application will exit automatically): ";
+        cin>>userChoise;
+        userWantOperation = (userChoise == 'Y') ? true : false;
+    }
 
     return 0;
 }
