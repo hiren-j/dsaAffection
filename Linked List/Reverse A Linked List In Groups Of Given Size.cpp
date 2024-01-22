@@ -122,7 +122,7 @@ public:
 // Class to wrap all the basic methods of the list
 class ListCommonMethods {
 public:
-    // Method to insert a ListNode in the list - O(1) & O(1)
+    // Method to insert a node in the list - O(1) & O(1)
     void insertNodeInList(ListNode*& headNode, ListNode*& resCurrent, int val) {
         ListNode* newNode = new ListNode(val);
         if(!headNode)
