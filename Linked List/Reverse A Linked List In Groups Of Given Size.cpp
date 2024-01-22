@@ -18,7 +18,7 @@ public:
 class Solution {
 public:
     // #1 Method to reverse each sublist of size lesser than equal to k, using 1 stack - O(N) & O(N)
-    ListNode* reverseGroupByK_V1(ListNode* headNode, int k) {
+    ListNode* reverseGroupsByK_V1(ListNode* headNode, int k) {
         // Edge case: When the list is empty or single noded or k is zero, negative
         if(!headNode || !headNode->next || k <= 0)
             return headNode;
@@ -52,7 +52,7 @@ public:
     }
 
     // #2 Method to reverse each sublist of size lesser than equal to k, using recursion only - O(N) & O(N)
-    ListNode* reverseGroupByK_V2(ListNode* headNode, int k) {
+    ListNode* reverseGroupsByK_V2(ListNode* headNode, int k) {
         // Edge case: When the list is empty or single noded or k is zero, negative
         if(!headNode || !headNode->next || k <= 0)
             return headNode;
@@ -72,14 +72,14 @@ public:
         }
 
         // Recurse to all the sublists then link the last node of the current sublist to the head node of the next sublist
-        subListTail->next = reverseGroupByK_V2(headNode, k);
+        subListTail->next = reverseGroupsByK_V2(headNode, k);
 
         // Return the head node of the current sublist
         return subListHead;
     }
 
     // #3 Method to reverse each sublist of size lesser than equal to k, using constant auxiliary space - O(N) & O(1)
-    ListNode* reverseGroupByK_V3(ListNode* headNode, int k) {
+    ListNode* reverseGroupsByK_V3(ListNode* headNode, int k) {
         // Edge case: When the list is empty or single noded or k is zero, negative
         if(!headNode || !headNode->next || k <= 0)
             return headNode;
@@ -184,7 +184,7 @@ int main() {
 
         // Reversal call
         Solution solution;
-        headNode = solution.reverseGroupByK_V3(headNode, k);
+        headNode = solution.reverseGroupsByK_V3(headNode, k);
 
         // Print call
         std::cout<<"\nList after reversal: ";
