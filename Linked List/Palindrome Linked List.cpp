@@ -155,7 +155,7 @@ int main() {
 
         if(testCases) {
             int userSeconds;
-            std::cout<<"\n\nEnter the number of seconds which after you want to start the application: ";
+            std::cout<<"\n\nEnter the number of seconds which after you want to restart the application: ";
             std::cin>>userSeconds;
             std::this_thread::sleep_for(std::chrono::seconds(userSeconds));
         }
