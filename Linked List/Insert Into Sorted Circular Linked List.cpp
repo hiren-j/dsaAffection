@@ -4,7 +4,8 @@
 #include <algorithm>
 
 // List template
-struct ListNode {
+class ListNode {
+public:
     int val;
     ListNode* next;
 
