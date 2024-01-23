@@ -259,7 +259,7 @@ int main() {
 
         // Input section to handle the flow of iterations of the application.
         char userChoise;
-        std::cout<<"\nPress \'Y\' if you want to perform the same operation on another \"circular linked list\": ";
+        std::cout<<"\nPress \'Y\' if you want to perform the same operation on an another \"circular linked list\": ";
         std::cin>>userChoise;
         userWantsOperation = (userChoise == 'Y') ? true : false ;
     }
