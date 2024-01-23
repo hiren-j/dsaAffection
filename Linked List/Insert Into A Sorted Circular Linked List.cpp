@@ -4,22 +4,14 @@
 #include <algorithm>
 
 // List template
-class ListNode {
-public:
+struct ListNode {
     int val;
     ListNode* next;
 
     // Init constructor
-    ListNode(int val, ListNode* next)
+    ListNode(int val, ListNode* next = nullptr)
     :
     val(val), next(next) {}
-
-    // Init destructor
-    ~ListNode() {
-        if(next) {
-            delete next;
-        }
-    }
 };
 
 // #1 Solution class:
@@ -180,42 +172,96 @@ public:
     }
 };
 
-// Method to print the list - O(N) & O(1) : Where N is the size of the list.
-void printList(ListNode* headNode) {
-    if(headNode) {
-        ListNode* currNode = headNode;
-        while(currNode->next != headNode) {
-            std::cout<<currNode->val<<' ';
-            currNode = currNode->next;
-        }
-        std::cout<<currNode->val;
+// Class to wrap all the common methods of the list:
+class ListBasicMethods {
+public:
+    // Method to insert a node in the list - O(1) & O(1)
+    void insertNode(ListNode*& headNode, ListNode*& tailNode, int val) {
+        ListNode* newNode = new ListNode(val);
+
+        if(!headNode)
+            headNode = newNode, tailNode = newNode;
+        else    
+            tailNode->next = newNode, tailNode = tailNode->next;
+
+        tailNode->next = headNode;
     }
-    std::cout<<'\n';
-}
+
+    // Method to delete the list - O(N) & O(1)
+    void deleteList(ListNode*& currNode) {
+        if(currNode) {
+            ListNode* headNode = currNode;
+            currNode = currNode->next;
+            while(currNode != headNode) {
+                ListNode* nextNode = currNode->next;
+                delete currNode;
+                currNode = nextNode;
+            }
+            delete currNode; currNode = nullptr;            
+        }
+    }
+
+    // Method to print the list - O(N) & O(1)
+    void printList(ListNode* headNode) {
+        if(headNode) {
+            ListNode* currNode = headNode;
+            while(currNode->next != headNode) {
+                std::cout<<currNode->val<<' ';
+                currNode = currNode->next;
+            }
+            std::cout<<currNode->val;
+        }
+        std::cout<<'\n';
+    }
+};
 
 // Driver code
 int main() {
-    // Creating, connecting nodes and initializing their data.
-    ListNode* headNode = new ListNode(10, new ListNode(20, new ListNode(40, new ListNode(50, nullptr))));
+    bool userWantsOperation = true;
 
-    // Setting the circular point.
-    headNode->next->next->next->next = headNode;
+    while(userWantsOperation) {
+        system("cls || clear");
+        int n;
+        std::cout<<"Enter the number of nodes for the list: ";
+        std::cin>>n;
 
-    // Print call
-    printList(headNode);
+        ListNode *headNode = nullptr, *tailNode = nullptr;
+        ListBasicMethods basicMethods;
 
-    // Insertion call
-    Solution_V3 obj;
-    headNode = obj.sortedInsertToList(headNode, 30);
+        // Input section for the nodes of the list.
+        for(int node=1; node<=n; ++node) {
+            int val;
+            std::cout<<"Enter the value of the "<<node<<"the node: ";
+            std::cin>>val;
+            basicMethods.insertNode(headNode, tailNode, val);
+        }
 
-    // Print call
-    printList(headNode);
+        // Input section for "key value"
+        int key;
+        std::cout<<"\nEnter the value which you want to insert in the list: ";    
+        std::cin>>key;
 
-    // Removing the circular point.
-    headNode->next->next->next->next = nullptr;
+        // Print call
+        std::cout<<"List before node insertion: ";
+        basicMethods.printList(headNode);
 
-    // Delete the head node and recursively the entire list.
-    delete headNode;
+        // Insertion call
+        Solution_V3 obj;
+        headNode = obj.sortedInsertToList(headNode, key);
+
+        // Print call
+        std::cout<<"List after node insertion: ";
+        basicMethods.printList(headNode);
+
+        // Deletion call
+        basicMethods.deleteList(headNode);
+
+        // Input section to handle the flow of iterations of the application.
+        char userChoise;
+        std::cout<<"\nPress \'Y\' if you want to perform the same operation on another \"circular linked list\": ";
+        std::cin>>userChoise;
+        userWantsOperation = (userChoise == 'Y') ? true : false ;
+    }
 
     return 0;
 }
