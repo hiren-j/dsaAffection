@@ -108,13 +108,6 @@ public:
 
 private:
     // Method helper
-    int getListLength(ListNode* headNode) {
-        int count = 0;
-        while(headNode) headNode = headNode->next, count++;
-        return count;
-    }
-
-    // Method helper
     void updateLinks(ListNode* givenNode, ListNode*& sumListHead, ListNode*& sumListCurrent) {
         // If the resultant list is empty then set the head node of it
         if(!sumListHead)
@@ -122,6 +115,13 @@ private:
         // Else then set the current node in the resultant list
         else
             sumListCurrent->next = givenNode, sumListCurrent = sumListCurrent->next;
+    }
+
+    // Method helper
+    int getListLength(ListNode* headNode) {
+        int count = 0;
+        while(headNode) headNode = headNode->next, count++;
+        return count;
     }
 };
 
