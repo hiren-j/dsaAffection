@@ -1,7 +1,7 @@
 // Program to merge two sorted lists in decreasing order ~ coded by Hiren
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 // List template
