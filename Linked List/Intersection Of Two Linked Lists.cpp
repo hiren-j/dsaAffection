@@ -4,7 +4,8 @@
 using namespace std;
 
 // List template
-struct ListNode {
+class ListNode {
+public:
     int data;
     ListNode* next;
 
