@@ -164,7 +164,7 @@ int main() {
             int userValue;
             std::cout<<"Enter the value of the "<<node<<"th node: ";
             std::cin>>userValue;
-            headNode-> insertNodeInList(headNode, currNode, userValue);
+            headNode->insertNodeInList(headNode, currNode, userValue);
         }
 
         // Print call
