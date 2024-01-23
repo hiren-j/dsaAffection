@@ -37,7 +37,7 @@ private:
     }
 };
 
-// Class to implement the "Top Down Approach":
+// Class to implement the "Bottom UP Approach":
 class BottomUpDP {
 public:
     // #1 Method to find the Nth number of the sequence, using buffer only - O(N) & O(N)
