@@ -4,13 +4,12 @@
 using namespace std;
 
 // List template
-class ListNode {
-public:
+struct ListNode {
     int data;
     ListNode* next;
 
     // Init constructor
-    ListNode(int data, ListNode* next) 
+    ListNode(int data, ListNode* next = nullptr) 
     : 
     data(data), next(next) {};
 
@@ -103,7 +102,7 @@ void printList(ListNode* headNode) {
 // Driver code
 int main() {
     // Creating "list1", connecting nodes and initializing their data
-    ListNode* headNodeA = new ListNode(20, new ListNode(10, new ListNode(8, new ListNode(7, new ListNode(5, nullptr)))));
+    ListNode* headNodeA = new ListNode(20, new ListNode(10, new ListNode(8, new ListNode(7, new ListNode(5)))));
 
     // Creating "list2", connecting nodes and initializing their data
     ListNode* headNodeB = new ListNode(2, headNodeA->next->next);
@@ -115,6 +114,9 @@ int main() {
     Solution_V2 obj;
     ListNode* intersectionNode = obj.getIntersectionNode(headNodeA, headNodeB);
     cout<<"The node value at which both the lists intersect is : "<<intersectionNode->data;
+
+    // Remove the link from the intersection node
+    headNodeB->next = nullptr;
 
     // Deletion call
     delete headNodeA; delete headNodeB;
