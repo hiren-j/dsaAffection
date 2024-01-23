@@ -128,7 +128,7 @@ int main() {
             rootNode = commonMethods.insertNodeInTree(rootNode, key);
         }
 
-        // Print call
+        // Call to find the level order traversal
         Solution_V2 solution;
         auto nodesLevelWise = solution.getLevelOrder(rootNode);
 
