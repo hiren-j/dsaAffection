@@ -44,7 +44,7 @@ public:
         return rootNode;
     }
 
-    // Method to print the tree, using bfs - O(N) & O(N) : Where N is the total number of the tree
+    // Method to print the tree, using bfs - O(N) & O(N) : Where N is the total number of nodes and H is height of the tree
     void printTree(Node* rootNode) {
         if(!rootNode)
             return;
@@ -170,7 +170,7 @@ int main() {
         std::cin>>val;
 
         // Print call
-        std::cout<<"\nLevel order traveral of the tree before adding the row:\n";
+        std::cout<<"\nLevel order traversal of the tree before adding the row:\n";
         rootNode->printTree(rootNode);
         
         // Call to add the row
@@ -178,7 +178,7 @@ int main() {
         rootNode = solution.addOneRow(rootNode, val, depth);
 
         // Print call
-        std::cout<<"\nLevel order traveral of the tree after adding the row:\n";
+        std::cout<<"\nLevel order traversal of the tree after adding the row:\n";
         rootNode->printTree(rootNode);
 
         // Delete the root node (and recursively the entire tree)
