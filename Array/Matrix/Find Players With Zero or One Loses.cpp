@@ -80,6 +80,11 @@ int main() {
     std::cout<<"Enter the number of testcases you want: ";
     std::cin>>testCases;
 
+    if(testCases <= 0) {
+        std::cout<<"Enter an valid number for the testcases, application expects a positive integer!";
+        return 0;
+    }
+
     while(testCases--) {
         system("clear || cls"); 
         int n;
