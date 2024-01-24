@@ -5,8 +5,7 @@
 #include <thread>
 
 // List template
-class ListNode {
-public:
+struct ListNode {
     int val;
     ListNode* next;
 
@@ -240,6 +239,11 @@ int main() {
     std::cout<<"Enter the number of testcases you want: ";
     std::cin>>testCases;
 
+    if(testCases <= 0) {
+        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
+        return 0;
+    }
+
     while(testCases--) {
         system("clear || cls");
         int n;
@@ -284,6 +288,6 @@ int main() {
 }
 /*
 Links:
-      https://leetcode.com/discuss/interview-question/668896/Google-or-Phone-or-Group-odd-valued-and-even-valued-nodes-in-Linked-List
+      https://leetcode.com/discuss/interview-question/668896/Google-or-Phone-or-Group-odd-valued-and-even-valued-nodes-in-Linked-List    
       https://practice.geeksforgeeks.org/problems/segregate-even-and-odd-nodes-in-a-linked-list5035/1
 */
