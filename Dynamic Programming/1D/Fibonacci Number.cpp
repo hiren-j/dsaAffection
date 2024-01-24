@@ -85,6 +85,11 @@ int main() {
     cout<<"Enter the number of testcases you want: ";
     cin>>testCases;
 
+    if(testCases <= 0) {
+        std::cout<<"Enter an valid number for the testcases, application expects a positive integer!";
+        return 0;
+    }
+
     while(testCases--) {
         int N;
         cout<<"\nEnter the value of N: ";
