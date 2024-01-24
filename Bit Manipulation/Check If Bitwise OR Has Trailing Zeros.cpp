@@ -1,28 +1,8 @@
 // Program to check if it is possible to select two or more elements whose bitwise OR has trailing zeros or not ~ coded by Hiren
 #include <bits/stdc++.h>
 using namespace std;
-
 #define loop(i,n,k) for(int i=(k?k:0); i<n; i++)
-#define itr(it,arr) for(auto it = begin(arr); it != end(arr); it++)
-#define sortThe(arr) sort(begin(arr), end(arr));
-#define ct cout
-#define cn cin
-#define pb push_back
-#define pp pop_back
-#define F first
-#define S second
-#define ll long long
 #define even(n) (!(n % 2))
-#define odd(n) (n % 2)
-typedef pair<int, int> p;
-typedef vector<int> vec;
-typedef vector<vector<int>> vec2d;
-typedef map<int, int> omap;
-typedef unordered_map<int, int> umap;
-typedef set<int> oset;
-typedef unordered_set<int> uset;
-typedef queue<int> q;
-
 
 // #1 Method to check if bitwise OR has trailing zeros or not, using brute force - O(N*N) & O(1)
 bool hasTrailingZeros_V1(vector<int>& nums) {
