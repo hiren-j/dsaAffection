@@ -44,7 +44,7 @@ public:
         return rootNode;
     }
 
-    // Method to print the tree, using bfs - O(N) & O(N) : Where N is the total number of nodes and H is height of the tree
+    // Method to print the tree, using bfs - O(N) & O(N) : Where N is the total number of the tree
     void printTree(Node* rootNode) {
         if(!rootNode)
             return;
