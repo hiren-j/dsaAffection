@@ -69,6 +69,11 @@ int main() {
     cin>>testCases;
     cin.ignore(); // Ignore the newline character left in the input buffer.
 
+    if(testCases <= 0) {
+        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
+        return 0;
+    }
+
     while(testCases--) {
         string s; 
         getline(cin, s);
