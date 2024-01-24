@@ -86,7 +86,7 @@ int main() {
     cout<<"Enter the number of testcases you want: ";
     cin>>testCases;
 
-    while(testCases--) {
+    while(testCases-- > 0) {
         int N;
         cout<<"\nEnter the value of N: ";
         cin>>N;
