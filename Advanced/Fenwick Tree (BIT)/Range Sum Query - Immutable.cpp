@@ -50,7 +50,7 @@ int main() {
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
-        system("clear || cls");
+        system("cls || clear");
         int N;
         cout<<"Enter the size of the array: ";
         cin>>N;
@@ -78,7 +78,7 @@ int main() {
         NumArray numArray = NumArray(nums);
 
         // Section to hit the range sum query
-        if(L > 0 && R < N) {
+        if(L > -1 && R < N) {
             int rangeSum = numArray.sumRange(L, R);
             cout<<"\nThe sum of range ["<<L<<", "<<R<<"] is : "<<rangeSum;
         }
