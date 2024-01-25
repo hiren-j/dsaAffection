@@ -11,14 +11,6 @@ private:
     // O(N) Space for "BIT" array: Where N is the size of the "input array" 
     vector<int> BIT;
 
-    // O(NLogN) Time for "BIT" construction : Where N is the size of the "input array"
-    void constructBIT() {
-        for(int i=1; i<=N; ++i) {
-            update(i, inputArray[i-1]);
-        }
-    }
-
-private:
     // O(LogN) Time for each operation : Where N is the size of the "input array"
     void update(int index, int val) {
         while(index <= N) {
@@ -40,10 +32,11 @@ private:
     }
 
 public:
-    NumArray(vector<int>& nums) 
-    :
-    inputArray(nums), N(nums.size()), BIT(nums.size()+1, 0) {
-        constructBIT();
+    // O(NLogN) Time for "BIT" construction : Where N is the size of the "input array"
+    NumArray(vector<int>& nums) : inputArray(nums), N(nums.size()), BIT(nums.size()+1, 0) {
+        for(int i=1; i<=N; ++i) {
+            update(i, inputArray[i-1]);
+        }
     }
     
     // O(KLogN) Time for all operations : Where K is the number of calls made to the "sumRange()" and N is the size of the "input array"
