@@ -15,7 +15,7 @@ public:
             // Create a new buffer to store the values of the current row of the "Pascal's Triangle".
             pascalTable.emplace_back(vector<int>(row+1, 1));
 
-            // Iterate and fill the values for the columns of the current row 
+            // Iterate and fill the values for the columns of the current row.
             for(int col = 1; col < row; col++) {
                 pascalTable[row][col] = pascalTable[row-1][col] + pascalTable[row-1][col-1];
             }
@@ -60,12 +60,12 @@ int main() {
 
         // Call to get the "Pascal's Triangle".
         Solution solution;
-        vector<vector<int>> pascalTable = solution.  generateTable(numRows);
+        vector<vector<int>> pascalTable = solution.generateTable(numRows);
 
         // Print table.
         printTable(pascalTable, numRows);
 
-        // Input section to handle the flow of iterations of the application. 
+        // Input section to handle the flow of iterations of the application.
         char userChoise;
         cout<<"Press \'R\' to restart the application, else application will exit automatically: ";
         cin>>userChoise;
