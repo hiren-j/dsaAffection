@@ -20,7 +20,7 @@ private:
     }
 
     // O(LogN) Time for each operation : Where N is the size of the "input array"
-    int getRangeSum(int index) {
+    int getSum(int index) {
         int sum = 0;
 
         while(index) {
@@ -41,7 +41,7 @@ public:
     
     // O(KLogN) Time for all operations : Where K is the number of calls made to the "sumRange()" and N is the size of the "input array"
     int sumRange(int L, int R) {
-        return getRangeSum(R+1) - getRangeSum(L);
+        return getSum(R+1) - getSum(L);
     }
 };
 
