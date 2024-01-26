@@ -58,6 +58,12 @@ int main() {
         cout<<"Enter the number of rows for the pascal's triangle: ";
         cin>>numRows;
 
+        // Check for the given size for the row is valid or not.
+        if(numRows <= 0) {
+            cout<<"Enter a valid size for the row, application expects a positive integer!";
+            return 0;
+        }
+
         // Call to get the "Pascal's Triangle".
         BottomUpDP bottomUp;
         vector<vector<int>> pascalTable = bottomUp.generateTable(numRows);
