@@ -29,6 +29,7 @@ private:
         if(N < 3)
             return (N == 0) ? 0 : 1;
 
+        // Memoization table: If the current state is already computed then return the computed value
         if(memo[N] != -1)
             return memo[N];
 
@@ -67,8 +68,8 @@ public:
         int prevA = 0, prevB = 1, prevC = 1;
         int currNum;
 
+        // Compute and store the sum of the three preceding values
         for(int i=3; i<=N; i++) {
-            // Compute and store the sum of the three preceding values
             currNum = prevA + prevB + prevC;
             prevA = prevB;
             prevB = prevC;
