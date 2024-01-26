@@ -176,32 +176,40 @@ public:
 
 // Driver code
 int main() {
+    // Tracks for the user wants to perform the operation or not
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
+        // Handles console clearence for both "windows" and "linux" user
         system("cls || clear");
 
+        // Input section for the number of "rows" and "columns" of the matrix
         int M, N;
         cout<<"Enter the number of rows for the matrix: "   ; cin>>M;
         cout<<"Enter the number of columns for the matrix: "; cin>>N;
 
+        // Check for the given size of "rows" and "columns" is valid or not
         if(M <= 0 || N <= 0) {
             cout<<"Enter a valid size, application expects a positive integer!";
             return 0;
         }
 
+        // Initialize the number of "rows" and "columns" of the matrix
         vector<vector<int>> grid(M, vector<int>(N));
         cout<<"\nEnter the values for the matrix (\'1\' means the cell contains obstacle | \'0\' means the cell contains no obstacle):\n";
 
+        // Input section for values of the matrix
         for(int R=0; R<M; R++) {
             for(int C=0; C<N; C++) {
                 cin>>grid[R][C];
             }
         }
         
-        BottomUpDP bottomUp;
+        // Call to find the total number of distinct ways
+        BottomUpDP bottomUp;    
         cout<<"The number of possible unique paths that the robot can take to reach the bottom-right corner is: "<<bottomUp.uniquePathsWithObstacles_V3(grid)<<'\n';
 
+        // Input section to handle the flow of iterations of the application
         char userChoise;
         cout<<"\nPress \'R\' to restart the application, else application will exit automatically: ";
         cin>>userChoise;
