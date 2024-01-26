@@ -3,10 +3,10 @@
 #include <vector>
 using namespace std;
 
-// Solution class:
-class Solution {
+// Class to implement the "Bottom Up Approach":
+class BottomUpDP {
 public:
-    // Method to find the first "numRows" of Pascal's triangle - O(numRows^2) & O(numRows^2) 
+    // Method to find the first "numRows" of Pascal's triangle, using tabulation - O(numRows^2) & O(numRows^2) 
     vector<vector<int>> generateTable(int numRows) {
         // Stores the values of the "Pascal's Triangle"
         vector<vector<int>> pascalTable;
@@ -59,13 +59,13 @@ int main() {
         cin>>numRows;
 
         // Call to get the "Pascal's Triangle".
-        Solution solution;
-        vector<vector<int>> pascalTable = solution.generateTable(numRows);
+        BottomUpDP bottomUp;
+        vector<vector<int>> pascalTable = bottomUp.generateTable(numRows);
 
         // Print table.
         printTable(pascalTable, numRows);
 
-        // Input section to handle the flow of iterations of the application.
+        // Input section to handle the flow of iterations of the application. 
         char userChoise;
         cout<<"Press \'R\' to restart the application, else application will exit automatically: ";
         cin>>userChoise;
