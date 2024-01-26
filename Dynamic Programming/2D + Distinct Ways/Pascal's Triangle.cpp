@@ -8,7 +8,7 @@ class BottomUpDP {
 public:
     // Method to find the first "numRows" of Pascal's triangle, using tabulation - O(numRows^2) & O(numRows^2) 
     vector<vector<int>> generateTable(int numRows) {
-        // Stores the values of the "Pascal's Triangle"
+        // Stores the values of the "Pascal's Triangle".
         vector<vector<int>> pascalTable;
 
         for(int row = 0; row < numRows; row++) {
