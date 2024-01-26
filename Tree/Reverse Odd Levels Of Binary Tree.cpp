@@ -95,6 +95,7 @@ public:
             int qSize = q.size();
             // Stores the nodes of the current level
             vector<TreeNode*> currLevel;  
+            // Explore the nodes of the current level
             while(qSize--) {
                 // Extract the first node of the queue
                 TreeNode* currNode = q.front(); q.pop();
@@ -121,7 +122,7 @@ public:
             isOddLevel = !isOddLevel;
         } 
 
-        // Return the head node of the tree
+        // Return the root node of the tree
         return rootNode;
     }
 };
