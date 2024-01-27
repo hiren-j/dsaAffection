@@ -3,9 +3,8 @@
 #include <unordered_set>
 #include <algorithm>
 #include <iostream>
+#include <cstdlib>
 #include <vector>
-#include <thread>
-#include <chrono>
 
 // Solution class:
 class Solution {
@@ -76,25 +75,28 @@ void printList(std::vector<int>& list) {
 
 // Driver code
 int main() {
-    int testCases; 
-    std::cout<<"Enter the number of testcases you want: ";
-    std::cin>>testCases;
+    bool userWantsOperation = true; 
 
-    if(testCases <= 0) {
-        std::cout<<"Enter an valid number for the testcases, application expects a positive integer!";
-        return 0;
-    }
+    while(userWantsOperation) {
+        // Handles console clearance for both "windows" and "linux" user.
+        system("cls || clear"); 
 
-    while(testCases--) {
-        system("clear || cls"); 
+        // Input section for the "number of matches".
         int n;
         std::cout<<"Enter the number of matches: ";
         std::cin>>n;
+
+        // Check for the given value is valid or not.
+        if(n <= 0) {
+            std::cout<<"Enter a valid value, application expects a positive integer!";
+            return 0;
+        }
 
         std::vector<std::vector<int>> matches(n, std::vector<int>(2));
 
         std::cout<<"\nEnter the lists of players in this format: [winner, loser]\n";
 
+        // Input section to get the "lists of players" for the matches.
         for(int match = 0; match < n; ++match) {
             int winner, loser;
             std::cout<<"Enter the list for "<<match+1<<"th match: ";
@@ -103,23 +105,23 @@ int main() {
             matches[match][1] = loser;
         }
 
-        // Call to find the "list of players"
-        Solution obj;
-        std::vector<std::vector<int>> answer = obj.getWinners_V2(matches);
+        // Call to find the "list of players" with "no losses" and having "exactly one losses".
+        Solution solution;
+        std::vector<std::vector<int>> answer = solution.getWinners_V2(matches);
 
+        // Print call.
         std::cout<<"\nList of winners (players that have not lost any matches): ";
         printList(answer[0]);
 
+        // Print call.
         std::cout<<"\nList of losers (players that have lost exactly one match): ";
         printList(answer[1]);
 
-        if(testCases != 0)
-            std::cout<<"\n\nApplication will restart in 10 seconds!";
-        else
-            std::cout<<"\n\nApplication will close in 10 seconds!";
-            
-        // Add a 10-second delay before the next iteration.
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        // Input section to handle the flow of iterations of the application.
+        char userChoise;
+        std::cout<<"\n\nPress \'R\' to restart the application, else application will exit automatically: ";
+        std::cin>>userChoise;
+        userWantsOperation = (userChoise == 'R') ? true : false;
     }
 
     return 0;
