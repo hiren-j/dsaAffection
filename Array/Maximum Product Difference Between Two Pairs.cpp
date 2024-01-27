@@ -89,7 +89,7 @@ int main() {
         // Call to find the maximized product difference
         Solution solution;
         int output = solution.maxProductDifference_V2(nums);
-        std::cout<<"\nThe maximized product difference is : "<<output;
+        std::cout<<"\nThe maximized product difference is: "<<output;
 
         // Input section to handle the flow of iterations of the application
         char userChoise;
