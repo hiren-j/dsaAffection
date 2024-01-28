@@ -5,7 +5,7 @@
 using namespace std;
 
 // Class to implement the "Top Down Approach":
-class TopDownDP {
+class TopDown {
 public:
     // Method to find the number of possible unique paths, using recursion with memoization - O(M*N) & O(M*N)
     int uniquePaths(int M, int N) {
@@ -56,7 +56,7 @@ private:
 };
 
 // Class to implement the "Bottom Up Approach":
-class BottomUpDP {
+class BottomUp {
 public:
     // #1 Method to find the number of possible unique paths, using 2D buffer - O(M*N) & O(M*N)
     int uniquePaths_V1(int M, int N) {
@@ -136,7 +136,7 @@ int main() {
         cout<<"Enter the number of columns: "; cin>>N;
         
         // Call to find the number of possible unique paths
-        BottomUpDP bottomUp;
+        BottomUp bottomUp;
         cout<<"The number of possible unique paths that the robot can take to reach the bottom-right corner is: "<<bottomUp.uniquePaths_V3(M, N)<<'\n';
 
         // Input section to handle the flow of iterations of the application
