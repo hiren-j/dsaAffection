@@ -1,10 +1,9 @@
 // Program to return the average value of the nodes on each level in the form of an array ~ coded by Hiren
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
 #include <vector>
 #include <queue>
-#include <thread>
-#include <chrono>
 
 // Tree template
 class TreeNode {
@@ -143,35 +142,40 @@ private:
 
 // Driver code
 int main() {
-    int testCases;
-    std::cout<<"Enter the number of testcases you want: ";
-    std::cin>>testCases;
+    // Tracks for the user wants to perform the operation or not
+    bool userWantsOperation = true;
 
-    if(testCases <= 0) {
-        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
-        return 0;
-    }
+    while(userWantsOperation) {
+        // Handles console clearance for both "windows" and "linux" user
+        system("cls || clear");
+        
+        // Input section to get the number of nodes of the tree
+        int N;
+        std::cout<<"Enter the number of nodes for the tree: ";
+        std::cin>>N;
 
-    while(testCases--) {
-        system("clear || cls");
-        int n;
-        std::cout<<"Enter the number of nodes for the binary tree: ";
-        std::cin>>n;
-
+        // Check for the given value is valid or not
+        if(N <= 0) {
+            std::cout<<"Enter a valid value, application expects a positive integer!";
+            return 0;
+        }
+        
+        // Tracks the root node of the tree
         TreeNode* rootNode = nullptr;
 
-        for(int node = 1; node <= n; ++node) {
-            int val;
+        // Input the nodes value of the tree
+        for(int node = 1; node <= N; ++node) {
+            int key;
             std::cout<<"Enter the value of the "<<node<<"th node: ";
-            std::cin>>val;
-            rootNode = rootNode->insertNodeInBT(rootNode, val);
+            std::cin>>key;
+            rootNode = rootNode->insertNodeInBT(rootNode, key);
         }
 
         // Print call
         std::cout<<"\nTree: ";
         rootNode->printTree(rootNode); 
 
-        // Call to find the average of each level
+        // Call to get the list of averages
         Solution_V2 obj;
         std::vector<double> avgLevelWise = obj.averageOfLevels(rootNode);
 
@@ -181,14 +185,19 @@ int main() {
             std::cout<<std::fixed<<std::setprecision(3)<<currLevelAvg<<"  ";
 
         // Delete the root node (and recursively the entire tree)
-        delete rootNode;
+        delete rootNode; 
+        rootNode = nullptr;
 
-        (testCases) ? std::cout<<"\n\nThe application will restart in 10 seconds!" : std::cout<<"\n\nThe application will close in 10 seconds!";
-
-        // Add 10-seconds of delay before the next iteration   
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        // Input section to handle the flow of iterations of the application
+        char userChoise;
+        std::cout<<"\n\nDo you want to perform the same operation on an another tree? (Write Y for \"Yes\" else application will exit automatically): ";
+        std::cin>>userChoise;
+        userWantsOperation = (userChoise == 'Y') ? true : false;
     } 
 
     return 0;
 }
-// Link: https://leetcode.com/problems/average-of-levels-in-binary-tree/
+/*
+    Topics: Tree | Breadth-First-Search | Depth-First-Search | Binary Tree
+    Link: https://leetcode.com/problems/average-of-levels-in-binary-tree/
+*/
