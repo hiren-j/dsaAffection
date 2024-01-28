@@ -97,4 +97,8 @@ int main() {
 
     return 0;
 }
-// Link: https://leetcode.com/problems/N-th-tribonacci-number/description/
+// Link: 
+/*
+    Topics: Maths | Dynamic Programming | Recursion | Memoization
+    Link: https://leetcode.com/problems/N-th-tribonacci-number/description/
+*/
