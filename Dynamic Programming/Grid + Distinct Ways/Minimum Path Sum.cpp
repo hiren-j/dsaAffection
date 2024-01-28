@@ -230,4 +230,7 @@ int main() {
 
     return 0;
 }
-// Link: https://leetcode.com/problems/minimum-path-sum/description/
+/*
+    Topics: Array | Dynamic Programming | Matrix
+    Link: https://leetcode.com/problems/minimum-path-sum/description/
+*/
