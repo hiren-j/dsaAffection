@@ -1,8 +1,7 @@
 // Program to find the number of possible unique paths that the robot can take to reach the bottom-right corner ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
-#include <chrono>
-#include <thread>
 using namespace std;
 
 // Class to implement the "Top Down Approach":
@@ -124,18 +123,23 @@ public:
 
 // Driver code
 int main() {
+    // Tracks for the user wants to perform the operation or not
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
+        // Handles console clearence for both "windows" and "linux" user
         system("cls || clear");
 
+        // Input section for the number of rows and columns 
         int M, N;
         cout<<"Enter the number of rows: "   ; cin>>M;
         cout<<"Enter the number of columns: "; cin>>N;
         
+        // Call to find the number of possible unique paths
         BottomUpDP bottomUp;
         cout<<"The number of possible unique paths that the robot can take to reach the bottom-right corner is: "<<bottomUp.uniquePaths_V3(M, N)<<'\n';
 
+        // Input section to handle the flow of iterations of the application
         char userChoise;
         cout<<"\nPress \'R\' to restart the application, else application will exit automatically: ";
         cin>>userChoise;
