@@ -1,10 +1,11 @@
 // Program to find the first "rowIndex" of "Pascal's triangle" ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 using namespace std;
 
 // Class to implement the "Bottom Up Approach":
-class BottomUpDP {
+class BottomUp {
 public:
     // #1 Method to find the first "rowIndex" of Pascal's triangle, using tabulation - O(rowIndex^2) & O(rowIndex^2) 
     vector<int> getRow_V1(int rowIndex) {
@@ -84,7 +85,7 @@ int main() {
         }
 
         // Call to get the "rowIndex" row of the "Pascal's Triangle".
-        BottomUpDP bottomUp;
+        BottomUp bottomUp;
         vector<int> row = bottomUp.getRow_V3(rowIndex);
 
         // Print values.
