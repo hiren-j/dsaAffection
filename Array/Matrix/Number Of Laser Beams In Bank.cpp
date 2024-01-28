@@ -152,5 +152,5 @@ int main() {
 }
 /*
     Topics: Array | Maths | String | Matrix
-    Link: https://leetcode.com/problems/maximum-product-difference-between-two-pairs/description/?envType=daily-question&envId=2023-12-18
+    Link: https://leetcode.com/problems/number-of-laser-beams-in-a-bank/description/
 */
