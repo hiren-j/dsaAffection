@@ -16,7 +16,7 @@ public:
     }
 
 private:
-    // O(2(M*N)) & O(M+N)
+    // O(2^(M*N)) & O(M+N)
     int solveWithoutMemo(vector<vector<int>>& grid, int M, int N, int R, int C) {
         // Edge case: If all the cells are exhausted then we have no values left
         if(R >= M || C >= N)
