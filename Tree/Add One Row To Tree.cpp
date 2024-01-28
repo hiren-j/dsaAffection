@@ -170,12 +170,18 @@ int main() {
     while(userWantsOperation) {
         // Handles console clearance for both "windows" and "linux" user
         system("cls || clear");
-
+        
         // Input section to get the number of nodes of the tree
         int N;
         std::cout<<"Enter the number of nodes for the tree: ";
         std::cin>>N;
 
+        // Check for the given value is valid or not
+        if(N <= 0) {
+            std::cout<<"Enter a valid value, application expects a positive integer!";
+            return 0;
+        }
+        
         // Tracks the root node of the tree
         Node* rootNode = nullptr;
 
@@ -189,7 +195,7 @@ int main() {
         
         // Input section for the (key) and the (depth)
         int val, depth;
-        std::cout<<"\nEnter the depth value: "; 
+        std::cout<<"\nEnter the depth value (1-based): "; 
         std::cin>>depth;
         std::cout<<"Enter the value to be inserted at the depth: "; 
         std::cin>>val;
