@@ -1,9 +1,8 @@
 // Program to find the minimum number of steps required to make the two strings anagram ~ coded by Hiren
 #include <unordered_map>
 #include <iostream>
+#include <cstdlib>
 #include <vector>
-#include <chrono>
-#include <thread>
 
 // Solution class:
 class Solution {
@@ -46,37 +45,27 @@ public:
 
 // Driver code
 int main() {
-    int testCases; 
-    std::cout<<"Enter the number of testcases you want: ";
-    std::cin>>testCases;
+    // Tracks for the user wants to perform the operation or not
+    bool canPerformOperation = true;
 
-    if(testCases <= 0) {
-        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
-        return 0;
-    }
-
-    while(testCases--) {
+    while(canPerformOperation) {
         // Handles console clearence for both "windows" and "linux" user
         system("cls || clear");
 
-        // Input section for string
+        // Input section for strings
         std::string s, t;
         std::cout<<"Enter the first string: " ; std::cin>>s;
         std::cout<<"Enter the second string: "; std::cin>>t;
 
         // Call to find the minimum number of steps
-        Solution obj;
-        int output = obj.minSteps_V2(s, t);
-        std::cout<<"\nThe minimum number of steps needed to make \""<<s<<"\" and \""<<t<<"\" anagram is: "<<output;
-        
-        // Prompts for application flow
-        if(testCases)
-            std::cout<<"\n\nThe application will restart in 10 seconds!";
-        else
-            std::cout<<"\n\nThe application will close in 10 seconds!";
+        Solution solution;
+        int output = solution.minSteps_V2(s, t);
+        std::cout<<"The minimum number of steps needed to make \""<<s<<"\" and \""<<t<<"\" anagram is: "<<output;
 
-        // Add 10-seconds of delay before the next iteration
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        char userChoise;
+        std::cout<<"\n\nDo you want to perform the same operation on an another string! (Write \'Y\' for \"Yes\", else application will exit automatically): ";
+        std::cin>>userChoise;
+        canPerformOperation = (userChoise == 'R' ? true : false);
     }
 
     return 0;
