@@ -218,6 +218,6 @@ int main() {
     return 0;
 }
 /*
-    Topics: Maths | Dynamic Programming | Matrix
+    Topics: Array | Dynamic Programming | Matrix
     Link: https://leetcode.com/problems/unique-paths-ii/description/
 */
