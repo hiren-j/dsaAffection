@@ -1,12 +1,11 @@
 // Program to find the number of possible unique paths that the robot can take to reach the bottom-right corner ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
-#include <chrono>
-#include <thread>
 using namespace std;
 
 // Class to implement the "Top Down Approach":
-class TopDownDP {
+class TopDown {
 public:
     // Method to find the number of possible unique paths, using recursion with memoization - O(M*N) & O(M*N)
     int uniquePathsWithObstacles(vector<vector<int>>& grid) {
@@ -58,7 +57,7 @@ private:
 };
 
 // Class to implement the "Bottom Up Approach":
-class BottomUpDP {
+class BottomUp {
 public:
     // #1 Method to find the number of possible unique paths, using 2D buffer for tabulation - O(M*N) & O(M*N)
     int uniquePathsWithObstacles_V1(vector<vector<int>>& grid) {
@@ -206,7 +205,7 @@ int main() {
         }
         
         // Call to find the total number of distinct ways
-        BottomUpDP bottomUp;    
+        BottomUp bottomUp;    
         cout<<"The number of possible unique paths that the robot can take to reach the bottom-right corner is: "<<bottomUp.uniquePathsWithObstacles_V3(grid)<<'\n';
 
         // Input section to handle the flow of iterations of the application
