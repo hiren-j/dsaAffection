@@ -105,4 +105,7 @@ int main() {
 
     return 0;
 }
-// Link: https://leetcode.com/problems/pascals-triangle-ii/
+/*
+    Topics: Array | Dynamic Programming
+    Link: https://leetcode.com/problems/pascals-triangle-ii/
+*/
