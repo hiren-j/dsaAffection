@@ -1,9 +1,8 @@
 // Program to reverse the odd levels of a binary tree ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <queue>
-#include <thread>
-#include <chrono>
 using namespace std;
 
 // Tree template
@@ -215,27 +214,29 @@ public:
 
 // Driver code
 int main() {
-    int testCases; 
-    cout<<"Enter the number of testcases you want: ";
-    cin>>testCases;
-    
-    if(testCases <= 0) {
-        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
-        return 0;
-    }
+    // Tracks to perform the operation or not
+    bool canPerformOperation = true;
 
-    while(testCases--) {
+    while(canPerformOperation) {
         // Handles console clearence for both "windows" and "linux" user
         system("cls || clear");
+
+        // Input the number of nodes for the tree
         int n; 
         cout<<"Enter the number of nodes for the tree: ";
         cin>>n;
+
+        // Check for the given value is valid or not
+        if(n <= 0) {
+            cout<<"Enter a valid value, application expects a positive integer!";
+            return 0;
+        }
 
         // Tracks the root node of the tree
         TreeNode* rootNode = nullptr;
         TreeCommonMethods tcm;
 
-        // Input section for the nodes
+        // Input section for the nodes value
         for(int node = 1; node <= n; ++node) {
             int key;
             cout<<"Enter the value of the "<<node<<"th node: ";
@@ -247,7 +248,7 @@ int main() {
         cout<<"\nTree before level reversal:\n";
         tcm.printTree(rootNode);
         
-        // Level reversal call
+        // Call to reverse the odd levels
         Solution_V2 s;
         rootNode = s.reverseOddLevels(rootNode); 
 
@@ -258,22 +259,16 @@ int main() {
         // Deletion call
         rootNode = tcm.deleteTree(rootNode);
 
-        // User based prompts for application flow
-        if(testCases) {
-            int userSeconds;
-            cout<<"\nEnter the number of seconds which after you want to restart the application: ";
-            cin>>userSeconds;
-            cout<<"The application will restart in "<<userSeconds<<" seconds!";
-            // Add 10-seconds of delay before the next iteration
-            this_thread::sleep_for(chrono::seconds(userSeconds));
-        }
-        else {
-            cout<<"\nThe application will close in 10 seconds!";
-            // Add 10-seconds of delay before the next iteration
-            this_thread::sleep_for(chrono::seconds(10));
-        }
+        // Input section to handle the flow of iterations of the application
+        char userChoise;
+        cout<<"\nDo you want to perform the same operation on an another tree? (Write Y for \"Yes\" else application will exit automatically): ";
+        cin>>userChoise;
+        canPerformOperation = (userChoise == 'Y') ? true : false;
     }
 
     return 0;
 }
-// Link: https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/
+/*
+    Topics: Tree | Breadth-First-Search | Depth-First-Search | Binary Tree
+    Link: https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/
+*/
