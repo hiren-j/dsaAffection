@@ -4,7 +4,7 @@
 #include <vector>
 #include <stack>
 
-// #Solution class:
+// Solution class:
 class Solution {
 public:
     // #1 Method to return a string of the words in reverse order, using 1 stack - O(N) & O(N)
