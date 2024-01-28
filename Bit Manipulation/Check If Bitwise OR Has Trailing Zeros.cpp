@@ -94,4 +94,7 @@ int main() {
 
     return 0;
 }
-// Link: https://leetcode.com/problems/check-if-bitwise-or-has-trailing-zeros/
+/*
+    Topics: Array | Bit Manipulation
+    Link: https://leetcode.com/problems/check-if-bitwise-or-has-trailing-zeros/
+*/
