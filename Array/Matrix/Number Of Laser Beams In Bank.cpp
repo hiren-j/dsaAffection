@@ -150,7 +150,6 @@ int main() {
 
     return 0;
 }
-// Link: 
 /*
     Topics: Array | Maths | String | Matrix
     Link: https://leetcode.com/problems/maximum-product-difference-between-two-pairs/description/?envType=daily-question&envId=2023-12-18
