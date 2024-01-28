@@ -83,4 +83,7 @@ int main() {
 
     return 0;
 }
-// Link: https://leetcode.com/problems/minimum-number-of-steps-to-make-two-strings-anagram/description/
+/*
+    Topics: Hash Table | String | Counting
+    Link: https://leetcode.com/problems/minimum-number-of-steps-to-make-two-strings-anagram/description/
+*/
