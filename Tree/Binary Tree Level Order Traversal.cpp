@@ -125,6 +125,18 @@ public:
 
         return nullptr;
     }
+
+    // Method to print the level order traversal of the tree - O(N) & O(1)
+    void printLevelOrder(std::vector<std::vector<int>>& nodesLevelWise) {
+        for(auto& currLevel : nodesLevelWise) {
+            int size = currLevel.size();
+            std::cout<<"[";
+            for(int node = 0; node < size; ++node) {
+                (node < size-1) ? std::cout<<currLevel[node]<<", " : std::cout<<currLevel[node];
+            }
+            std::cout<<"]\n";
+        }
+    }
 };
 
 // Driver code
@@ -159,14 +171,7 @@ int main() {
 
         // Print values
         std::cout<<"\nLevel order traversal of the tree is:\n";
-        for(auto& currLevel : nodesLevelWise) {
-            int size = currLevel.size();
-            std::cout<<"[";
-            for(int node = 0; node < size; ++node) {
-                (node < size-1) ? std::cout<<currLevel[node]<<", " : std::cout<<currLevel[node];
-            }
-            std::cout<<"]\n";
-        }
+        commonMethods.printLevelOrder(nodesLevelWise);
 
         // Deletion call
         rootNode = commonMethods.deleteTree(rootNode);
