@@ -48,7 +48,7 @@ public:
         return rootNode;
     }
 
-    // Method to input the nodes of the tree - O(N*N) & O(N)
+    // Method to input the nodes of the tree - O(N*N) & O(N) : Where N is the total number of nodes of the tree
     TreeNode* getTree(int number) {
         int N;
         cout<<"Enter the number of nodes for the tree"<<number<<": ";
