@@ -1,4 +1,4 @@
-// Program to add a row of nodes with value (val) at the given depth in a binary tree ~ coded by Hiren
+// Program to invert a binary tree ~ coded by Hiren
 #include <iostream>
 #include <cstdlib>
 #include <queue>
@@ -104,7 +104,7 @@ public:
 
 // Driver code
 int main() {
-    // Tracks for the user wants to perform the operation or not
+    // Tracks the user wants to perform the operation or not
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
