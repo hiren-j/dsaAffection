@@ -89,7 +89,7 @@ class Solution_V1 {
     vector<int> buffer;
 
     // Method helper 
-    bool presentInTreeB(TreeNode* rootNodeB, int target) {
+    bool checkInTreeB(TreeNode* rootNodeB, int target) {
         // Edge case: When the tree is empty, then no intersection node exist
         if(!rootNodeB)
             return false;
@@ -100,11 +100,11 @@ class Solution_V1 {
 
         // Else when the node value is greater than the "target" value, then check for the presence at the left subtree of the node
         else if(rootNodeB->data > target)
-            return presentInTreeB(rootNodeB->left, target);
+            return checkInTreeB(rootNodeB->left, target);
 
         // Else when the node value is lesser than the "target" value, then check for the presence at the right subtree of the node
         else 
-            return presentInTreeB(rootNodeB->right, target);
+            return checkInTreeB(rootNodeB->right, target);
     }
     
 public:
@@ -113,7 +113,7 @@ public:
         if(rootNodeA && rootNodeB) {
             getIntersection(rootNodeA->left, rootNodeB);
             // If the intersection node is present, then store the node value to the "buffer"
-            if(presentInTreeB(rootNodeB, rootNodeA->data)) {
+            if(checkInTreeB(rootNodeB, rootNodeA->data)) {
                 buffer.push_back(rootNodeA->data);
             }
             getIntersection(rootNodeA->right, rootNodeB);
