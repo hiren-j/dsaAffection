@@ -15,16 +15,6 @@ public:
     :
     data(data), left(left), right(right) {}
 
-    // Init destructor
-    ~TreeNode() {
-        if(left) {
-            delete left;
-        }
-        if(right) {
-            delete right;
-        }
-    }
-
     // Method to insert a node in the tree, using constant auxiliary space - O(N) & O(1) : Where N is the total number of nodes of the tree
     TreeNode* insertNodeInTree(TreeNode* rootNode, int key) {
         if(!rootNode)
