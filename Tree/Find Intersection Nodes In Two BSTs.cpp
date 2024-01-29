@@ -55,7 +55,7 @@ public:
         cin>>N;
 
         if(N <= 0) {
-            cout<<"Enter a valid value, application expects a positive integer!";
+            cout<<"Enter a valid value, application expects a positive integer!\n";
             return nullptr;
         }
 
@@ -67,9 +67,7 @@ public:
             cin>>key;
             rootNode = rootNode->insertInBST(rootNode, key);
         }
-
-        cout<<'\n';
-
+        
         return rootNode;
     }
 
@@ -234,14 +232,20 @@ int main() {
         system("cls || clear");
         
         // Input the trees and store the root node of them
-        TreeNode* rootNodeA = rootNodeA->getTree(1); 
+        TreeNode* rootNodeA = rootNodeA->getTree(1); cout<<'\n';
         TreeNode* rootNodeB = rootNodeB->getTree(2);
 
         // Print call
-        cout<<"The preOrder traversal of the tree1 is: ";
-        rootNodeA->printTree(rootNodeA);
-        cout<<"\nThe preOrder traversal of the tree2 is: ";
-        rootNodeB->printTree(rootNodeB);
+        if(rootNodeA) {
+            cout<<"\nThe preOrder traversal of the tree1 is: ";
+            rootNodeA->printTree(rootNodeA);
+        }
+
+        // Print call
+        if(rootNodeB) {
+            cout<<"\nThe preOrder traversal of the tree2 is: ";
+            rootNodeB->printTree(rootNodeB);
+        }
 
         // Call to find the intersection elements
         Solution_V3 solution;
