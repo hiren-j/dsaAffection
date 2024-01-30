@@ -1,7 +1,8 @@
 // Program to insert a node into a sorted circular linked list ~ coded by Hiren
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
+#include <cstdlib>
+#include <vector>
 
 // List template
 class ListNode {
@@ -13,6 +14,45 @@ public:
     ListNode(int val, ListNode* next = nullptr)
     :
     val(val), next(next) {}
+
+    // Method to insert a node in the list - O(1) & O(1)
+    void insertNode(ListNode*& headNode, ListNode*& tailNode, int val) {
+        ListNode* newNode = new ListNode(val);
+
+        if(!headNode)
+            headNode = newNode, tailNode = newNode;
+        else    
+            tailNode->next = newNode, tailNode = tailNode->next;
+
+        tailNode->next = headNode;
+    }
+
+    // Method to delete the list - O(N) & O(1)
+    void deleteList(ListNode*& currNode) {
+        if(currNode) {
+            ListNode* headNode = currNode;
+            currNode = currNode->next;
+            while(currNode != headNode) {
+                ListNode* nextNode = currNode->next;
+                delete currNode;
+                currNode = nextNode;
+            }
+            delete currNode; currNode = nullptr;            
+        }
+    }
+
+    // Method to print the list - O(N) & O(1)
+    void printList(ListNode* headNode) {
+        if(headNode) {
+            ListNode* currNode = headNode;
+            while(currNode->next != headNode) {
+                std::cout<<currNode->val<<' ';
+                currNode = currNode->next;
+            }
+            std::cout<<currNode->val;
+        }
+        std::cout<<'\n';
+    }
 };
 
 // #1 Solution class:
@@ -173,89 +213,56 @@ public:
     }
 };
 
-// Class to wrap all the common methods of the list:
-class ListBasicMethods {
-public:
-    // Method to insert a node in the list - O(1) & O(1)
-    void insertNode(ListNode*& headNode, ListNode*& tailNode, int val) {
-        ListNode* newNode = new ListNode(val);
-
-        if(!headNode)
-            headNode = newNode, tailNode = newNode;
-        else    
-            tailNode->next = newNode, tailNode = tailNode->next;
-
-        tailNode->next = headNode;
-    }
-
-    // Method to delete the list - O(N) & O(1)
-    void deleteList(ListNode*& currNode) {
-        if(currNode) {
-            ListNode* headNode = currNode;
-            currNode = currNode->next;
-            while(currNode != headNode) {
-                ListNode* nextNode = currNode->next;
-                delete currNode;
-                currNode = nextNode;
-            }
-            delete currNode; currNode = nullptr;            
-        }
-    }
-
-    // Method to print the list - O(N) & O(1)
-    void printList(ListNode* headNode) {
-        if(headNode) {
-            ListNode* currNode = headNode;
-            while(currNode->next != headNode) {
-                std::cout<<currNode->val<<' ';
-                currNode = currNode->next;
-            }
-            std::cout<<currNode->val;
-        }
-        std::cout<<'\n';
-    }
-};
-
 // Driver code
 int main() {
+    // Tracks the user wants to perform the operation or not
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
+        // Handles console clearance for both "windows" and "linux" user
         system("cls || clear");
+
+        // Input the number of nodes of the list
         int n;
         std::cout<<"Enter the number of nodes for the list: ";
         std::cin>>n;
 
-        ListNode *headNode = nullptr, *tailNode = nullptr;
-        ListBasicMethods basicMethods;
+        // Check the given value is valid or not
+        if(n <= 0) {
+            std::cout<<"Enter a valid value, application expects a positive integer!";
+            return 0;
+        }
 
-        // Input section for the nodes of the list.
+        ListNode* headNode = nullptr; // Tracks the head node of the list
+        ListNode* tailNode = nullptr; // Tracks the latest inserted node of the list
+
+        // Input the nodes value of the list.
         for(int node=1; node<=n; ++node) {
             int val;
             std::cout<<"Enter the value of the "<<node<<"the node: ";
             std::cin>>val;
-            basicMethods.insertNode(headNode, tailNode, val);
+            headNode->insertNode(headNode, tailNode, val);
         }
 
-        // Input section for "key value"
+        // Input section for the "key value".
         int key;
         std::cout<<"\nEnter the value which you want to insert in the list: ";    
         std::cin>>key;
 
         // Print call
-        std::cout<<"List before node insertion: ";
-        basicMethods.printList(headNode);
+        std::cout<<"\nList before node insertion: ";
+        headNode->printList(headNode);
 
         // Insertion call
-        Solution_V3 obj;
-        headNode = obj.sortedInsertToList(headNode, key);
+        Solution_V3 solution;
+        headNode = solution.sortedInsertToList(headNode, key);
 
         // Print call
         std::cout<<"List after node insertion: ";
-        basicMethods.printList(headNode);
+        headNode->printList(headNode);
 
         // Deletion call
-        basicMethods.deleteList(headNode);
+        headNode->deleteList(headNode);
 
         // Input section to handle the flow of iterations of the application.
         char userChoise;
@@ -267,8 +274,8 @@ int main() {
     return 0;
 }
 /*
-Links:
-      https://leetcode.com/discuss/interview-question/435345/Google-or-Phone-or-Insert-into-a-Sorted-Circular-Linked-List
-      https://leetcode.com/discuss/interview-question/429160/Facebook-or-Phone-Screen-or-Insert-into-a-Sorted-Circular-Linked-list
-      https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/description/
+    Topics: Linked List | Circular Linked list
+    Links: https://leetcode.com/discuss/interview-question/435345/Google-or-Phone-or-Insert-into-a-Sorted-Circular-Linked-List
+           https://leetcode.com/discuss/interview-question/429160/Facebook-or-Phone-Screen-or-Insert-into-a-Sorted-Circular-Linked-list
+           https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/description/
 */
