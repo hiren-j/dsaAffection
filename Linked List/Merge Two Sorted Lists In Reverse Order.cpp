@@ -1,6 +1,7 @@
 // Program to merge two sorted lists in decreasing order ~ coded by Hiren
 #include <algorithm>
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 using namespace std;
 
@@ -10,15 +11,64 @@ public:
     int val;
     ListNode* next;
 
-    // Init constructor
+    // Initialize constructor
     ListNode(int val, ListNode* next)
     :
     val(val), next(next) {}
 
-    // Init destructor
-    ~ListNode() {
-        if(next) {
-            delete next;
+    // Method to input the list - O(K) & O(K) : Where N is the size of the list.
+    ListNode* inputList(int number) {
+        // Input the size of the list.
+        int size;
+        cout<<"Enter the number of nodes for the list"<<number<<": ";
+        cin>>size;
+
+        // Check the given size is valid or not.
+        if(size <= 0) {
+            cout<<"Enter a valid size, application expects a positive integer!\n";
+            return nullptr;
+        }
+
+        ListNode* headNode = nullptr; // Tracks the head node of the list.
+        ListNode* tailNode = nullptr; // Tracks the last node of the list.
+
+        // Input the nodes value for the list.
+        for(int node=1; node<=size; ++node) {
+            int key;
+            cout<<"Enter the value of the "<<node<<"th node: ";
+            cin>>key;
+            headNode->insertNode(headNode, tailNode, key);
+        }
+
+        // Return the head node of the list.
+        return headNode;
+    }
+
+    // Method to insert a node in the list - O(1) & O(1)
+    void insertNode(ListNode*& headNode, ListNode*& tailNode, int key) {
+        ListNode* newNode = new ListNode(key, nullptr);
+        if(!headNode)
+            headNode = newNode, tailNode = newNode;
+        else   
+            tailNode->next = newNode, tailNode = tailNode->next;
+        tailNode->next = nullptr;
+    }
+
+    // Method to delete the list - O(K) & O(1) : Where K is the size of tht "list".
+    void deleteList(ListNode*& headNode) {
+        while(headNode) {
+            ListNode* nextNode = headNode->next;
+            headNode = nullptr;
+            delete headNode;
+            headNode = nextNode;
+        }
+    }
+
+    // Method to print the list - O(K) & O(1) : Where K is the size of the "list".
+    void printList(ListNode* headNode) {
+        while(headNode) {
+            cout<<headNode->val<<' ';
+            headNode = headNode->next; 
         }
     }
 };
@@ -26,28 +76,28 @@ public:
 // #1 Solution class:
 class Solution_V1 {
     // Method helper
-    static bool comparator(ListNode* node1, ListNode* node2) {
-        return node1->val < node2->val;
+    static bool comparator(ListNode* nodeA, ListNode* nodeB) {
+        return nodeA->val < nodeB->val;
     }
     
 public:
     // Method to merge two sorted lists in reverse order, using sorting with buffer - O(NLogN + MLogM) & O(N+M) : Where N is the size of "list1" and M of "list2".
-    ListNode* mergeTwoLists(ListNode* headNode1, ListNode* headNode2) {
+    ListNode* mergeTwoLists(ListNode* headNodeA, ListNode* headNodeB) {
         // Edge case: When both the lists are empty.
-        if(!headNode1 && !headNode2)
+        if(!headNodeA && !headNodeB)
             return nullptr;
 
         // Stores all the nodes of both the lists.
         vector<ListNode*> buffer;
         
         // Iterate the lists.
-        while(headNode1 || headNode2) {
+        while(headNodeA || headNodeB) {
             // If the node of "list1" exist then store it to the buffer.
-            if(headNode1)
-                buffer.push_back(headNode1), headNode1 = headNode1->next;
+            if(headNodeA)
+                buffer.push_back(headNodeA), headNodeA = headNodeA->next;
             // If the node of "list2" exist then store it to the buffer.
-            if(headNode2)
-                buffer.push_back(headNode2), headNode2 = headNode2->next;
+            if(headNodeB)
+                buffer.push_back(headNodeB), headNodeB = headNodeB->next;
         }
         
         // Sort all the nodes based on their values.
@@ -72,22 +122,22 @@ public:
 class Solution_V2 {
 public:
     // Method to merge two sorted lists in reverse order, using buffer only - O(N+M) & O(N+M) : Where N is the size of "list1" and M of "list2".
-    ListNode* mergeTwoLists(ListNode* headNode1, ListNode* headNode2) {
+    ListNode* mergeTwoLists(ListNode* headNodeA, ListNode* headNodeB) {
         // Edge case: When both the lists are empty.
-        if(!headNode1 && !headNode2)
+        if(!headNodeA && !headNodeB)
             return nullptr;
         
         vector<ListNode*> list1; // Stores all the nodes of "list1".
         vector<ListNode*> list2; // Stores all the nodes of "list2".
         
         // Iterate the lists.
-        while(headNode1 || headNode2) {
+        while(headNodeA || headNodeB) {
             // If the node of "list1" exist then store it to the corresponding buffer.
-            if(headNode1)
-                list1.push_back(headNode1), headNode1 = headNode1->next;
+            if(headNodeA)
+                list1.push_back(headNodeA), headNodeA = headNodeA->next;
             // If the node of "list2" exist then store it to corresponding buffer.
-            if(headNode2)
-                list2.push_back(headNode2), headNode2 = headNode2->next;
+            if(headNodeB)
+                list2.push_back(headNodeB), headNodeB = headNodeB->next;
         }
 
         // Set the "merge list" and return the head node of it.        
@@ -150,69 +200,54 @@ private:
 class Solution_V3 {
 public:
     // Method to merge two sorted lists in reverse order, using constant auxiliary space - O(N+M) & O(1) : Where N is the size of "list1" and M of "list2".
-    ListNode* mergeTwoLists(ListNode* headNode1, ListNode* headNode2) {
+    ListNode* mergeTwoLists(ListNode* headNodeA, ListNode* headNodeB) {
         // Edge case: When both the lists are empty.
-        if(!headNode1 && !headNode2)
+        if(!headNodeA && !headNodeB)
             return nullptr;
             
-        headNode1 = reverseList(headNode1); // Reverse the "list1" and store the head node of it.
-        headNode2 = reverseList(headNode2); // Reverse the "list2" and store the head node of it.
+        headNodeA = reverseList(headNodeA); // Reverse the "list1" and store the head node of it.
+        headNodeB = reverseList(headNodeB); // Reverse the "list2" and store the head node of it.
         
         // Set the "merge list" and return the head node of it.
-        return setMergeList(headNode1, headNode2);
+        return setMergeList(headNodeA, headNodeB);
     }
     
 private:
     // Method helper
-    ListNode* reverseList(ListNode* headNode) {
-        ListNode* prevNode = nullptr;
-        ListNode* currNode = headNode;
-        
-        while(currNode) {
-            ListNode* nextNode = currNode->next;
-            currNode->next = prevNode;
-            prevNode = currNode;
-            currNode = nextNode;
-        }
-        
-        return prevNode;
-    }
-
-    // Method helper
-    ListNode* setMergeList(ListNode* headNode1, ListNode* headNode2) {
-        ListNode* nodeList1 = headNode1; // Tracks the nodes of "list1".
-        ListNode* nodeList2 = headNode2; // Tracks the nodes of "list2".
+    ListNode* setMergeList(ListNode* headNodeA, ListNode* headNodeB) {
+        ListNode* nodeListA = headNodeA; // Tracks the nodes of "list1".
+        ListNode* nodeListB = headNodeB; // Tracks the nodes of "list2".
         ListNode* resHead    = nullptr;  // Tracks the head node of the "merge list".
         ListNode* resCurrent = nullptr;  // Tracks the nodes of the "merge list".
         
         // Iterate the lists.
-        while(nodeList1 && nodeList2) {
-            ListNode* nextNode1 = nodeList1->next;
-            ListNode* nextNode2 = nodeList2->next;
+        while(nodeListA && nodeListB) {
+            ListNode* nextNodeA = nodeListA->next;
+            ListNode* nextNodeB = nodeListB->next;
             // If the node value of "list1" is greater then set it to the "merge list".
-            if(nodeList1->val > nodeList2->val) {
-                updateLinks(nodeList1, resHead, resCurrent);
-                nodeList1 = nextNode1;
+            if(nodeListA->val > nodeListB->val) {
+                updateLinks(nodeListA, resHead, resCurrent);
+                nodeListA = nextNodeA;
             }
             // Else when the node value of "list2" is greater then set it to the "merge list".
             else {
-                updateLinks(nodeList2, resHead, resCurrent);
-                nodeList2 = nextNode2;
+                updateLinks(nodeListB, resHead, resCurrent);
+                nodeListB = nextNodeB;
             }
         }
         
         // If the nodes of "list1" are remaining then set them to the "merge list".
-        while(nodeList1) {
-            ListNode* nextNode1 = nodeList1->next;
-            updateLinks(nodeList1, resHead, resCurrent);
-            nodeList1 = nextNode1;
+        while(nodeListA) {
+            ListNode* nextNodeA = nodeListA->next;
+            updateLinks(nodeListA, resHead, resCurrent);
+            nodeListA = nextNodeA;
         }
         
         // If the nodes of "list2" are remaining then set them to the "merge list".
-        while(nodeList2) {
-            ListNode* nextNode2 = nodeList2->next;
-            updateLinks(nodeList2, resHead, resCurrent);
-            nodeList2 = nextNode2;
+        while(nodeListB) {
+            ListNode* nextNodeB = nodeListB->next;
+            updateLinks(nodeListB, resHead, resCurrent);
+            nodeListB = nextNodeB;
         }
         
         // Return the head node of the "merge list".
@@ -230,50 +265,65 @@ private:
         // Set the current node of the "merge list" as the last node of it.
         resCurrent->next = nullptr; 
     }
+
+    // Method helper
+    ListNode* reverseList(ListNode* headNode) {
+        ListNode* prevNode = nullptr;
+        ListNode* currNode = headNode;
+        
+        while(currNode) {
+            ListNode* nextNode = currNode->next;
+            currNode->next = prevNode;
+            prevNode = currNode;
+            currNode = nextNode;
+        }
+        
+        return prevNode;
+    }
 };
 
 // #4 Solution class:
 class Solution_V4 {
 public:
     // Method to merge two sorted lists in reverse order, using constant auxiliary space - O(N+M) & O(1) : Where N is the size of "list1" and M of "list2".
-    ListNode* mergeTwoLists(ListNode* headNode1, ListNode* headNode2) {
+    ListNode* mergeTwoLists(ListNode* headNodeA, ListNode* headNodeB) {
         // Edge case: When both the lists are empty.
-        if(!headNode1 && !headNode2)
+        if(!headNodeA && !headNodeB)
             return nullptr;
             
-        ListNode* nodeList1 = headNode1; // Tracks the nodes of "list1".
-        ListNode* nodeList2 = headNode2; // Tracks the nodes of "list2".
+        ListNode* nodeListA = headNodeA; // Tracks the nodes of "list1".
+        ListNode* nodeListB = headNodeB; // Tracks the nodes of "list2".
         ListNode* resHead    = nullptr;  // Tracks the head node of the "merge list".
         ListNode* resCurrent = nullptr;  // Tracks the nodes of the "merge list".
         
         // Iterate the lists.
-        while(nodeList1 && nodeList2) {
-            ListNode* nextNode1 = nodeList1->next;
-            ListNode* nextNode2 = nodeList2->next;
+        while(nodeListA && nodeListB) {
+            ListNode* nextNodeA = nodeListA->next;
+            ListNode* nextNodeB = nodeListB->next;
             // If the node value of "list2" is greater then set it to the "merge list".
-            if(nodeList1->val < nodeList2->val) {
-                updateLinks(nodeList1, resHead, resCurrent);
-                nodeList1 = nextNode1;
+            if(nodeListA->val < nodeListB->val) {
+                updateLinks(nodeListA, resHead, resCurrent);
+                nodeListA = nextNodeA;
             }
             // Else when the node value of "list1" is greater then set it to the "merge list".
             else {
-                updateLinks(nodeList2, resHead, resCurrent);
-                nodeList2 = nextNode2;
+                updateLinks(nodeListB, resHead, resCurrent);
+                nodeListB = nextNodeB;
             }
         }
         
         // If the nodes of "list1" are remaining then set them to the "merge list".
-        while(nodeList1) {
-            ListNode* nextNode1 = nodeList1->next;
-            updateLinks(nodeList1, resHead, resCurrent);
-            nodeList1 = nextNode1;
+        while(nodeListA) {
+            ListNode* nextNodeA = nodeListA->next;
+            updateLinks(nodeListA, resHead, resCurrent);
+            nodeListA = nextNodeA;
         }
         
         // If the nodes of "list2" are remaining then set them to the "merge list".
-        while(nodeList2) {
-            ListNode* nextNode2 = nodeList2->next;
-            updateLinks(nodeList2, resHead, resCurrent);
-            nodeList2 = nextNode2;
+        while(nodeListB) {
+            ListNode* nextNodeB = nodeListB->next;
+            updateLinks(nodeListB, resHead, resCurrent);
+            nodeListB = nextNodeB;
         }
         
         // Return the head node of the "merge list".
@@ -289,36 +339,56 @@ private:
     }
 };
 
-// Method to print the list - O(K) & O(1) : Where K is the size of the list.
-void printList(ListNode* headNode) {
-    while(headNode) {
-        cout<<headNode->val<<' ';
-        headNode = headNode->next;
-    }
-    cout<<'\n';
-}
-
 // Driver code
 int main() {
-    // Creating list1, connecting nodes and initializing their data.
-    ListNode* headNode1 = new ListNode(5, new ListNode(10, new ListNode(15, new ListNode(40, nullptr))));
+    // Tracks the user wants to perform the operation or not.
+    bool userWantsOperation = true;
 
-    // Creating list2, connecting nodes and initializing their data.
-    ListNode* headNode2 = new ListNode(2, new ListNode(3, new ListNode(20, nullptr)));
+    while(userWantsOperation) {
+        // Handles console clearance for both "windows" and "linux" user.
+        system("cls || clear");
 
-    // Print call
-    printList(headNode1); printList(headNode2);
+        // Input the lists and store the head node of them.
+        ListNode* headNodeA = headNodeA->inputList(1); cout<<'\n';
+        ListNode* headNodeB = headNodeA->inputList(2);
+        
+        // Print call
+        if(headNodeA) {
+            cout<<"\nList1: ";
+            headNodeA->printList(headNodeA);
+        }
 
-    // Merge call
-    Solution_V4 obj;
-    ListNode* headNode = obj.mergeTwoLists(headNode1, headNode2); 
+        // Print call
+        if(headNodeB) {
+            cout<<"\nList2: ";
+            headNodeB->printList(headNodeB);
+        }
 
-    // Print call
-    printList(headNode);
+        // Merge call
+        Solution_V4 solution;
+        ListNode* mergeHead = solution.mergeTwoLists(headNodeA, headNodeB);
 
-    // Deletion call
-    delete headNode;
+        // Print call
+        if(mergeHead) {
+            cout<<"\nMerge list: ";
+            mergeHead->printList(mergeHead);
+        }
+
+        // Deletion call
+        headNodeA->deleteList(headNodeA);
+        headNodeB->deleteList(headNodeB);
+        mergeHead->deleteList(mergeHead);
+
+        // Input section to handle the flow of iterations of the application.
+        char userChoise;
+        cout<<"\n\nPress \'R\' to restart the application, else it will exit automatically: ";
+        cin>>userChoise;
+        userWantsOperation = (userChoise == 'R') ? true : false ;
+    }
 
     return 0;
 }
-// Link: https://www.geeksforgeeks.org/problems/merge-2-sorted-linked-list-in-reverse-order/1
+/*
+    Topics: Linked List | Two Pointers
+    Link: https://www.geeksforgeeks.org/problems/merge-2-sorted-linked-list-in-reverse-order/1
+*/
