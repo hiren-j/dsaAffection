@@ -215,26 +215,26 @@ public:
 
 // Driver code
 int main() {
-    // Tracks the user wants to perform the operation or not
+    // Tracks the user wants to perform the operation or not.
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
-        // Handles console clearance for both "windows" and "linux" user
+        // Handles console clearance for both "windows" and "linux" user.
         system("cls || clear");
 
-        // Input the number of nodes of the list
+        // Input the number of nodes of the list.
         int n;
         std::cout<<"Enter the number of nodes for the list: ";
         std::cin>>n;
 
-        // Check the given value is valid or not
+        // Check the given value is valid or not.
         if(n <= 0) {
             std::cout<<"Enter a valid value, application expects a positive integer!";
             return 0;
         }
 
-        ListNode* headNode = nullptr; // Tracks the head node of the list
-        ListNode* tailNode = nullptr; // Tracks the latest inserted node of the list
+        ListNode* headNode = nullptr; // Tracks the head node of the list.
+        ListNode* tailNode = nullptr; // Tracks the latest inserted node of the list.
 
         // Input the nodes value of the list.
         for(int node=1; node<=n; ++node) {
