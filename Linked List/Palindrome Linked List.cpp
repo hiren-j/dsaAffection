@@ -161,6 +161,9 @@ int main() {
         else
             std::cout<<"Given list is not a palindrome!";
 
+        // Deletion call (delete the head node and recursively the entire list)
+        delete headNode; headNode = nullptr;
+
         // Input section to handle the flow of iterations.
         char userChoise;
         std::cout<<"\n\nPress \'Y\' to perform the same operation on an another list, else application will exit automatically: ";
