@@ -1,5 +1,6 @@
 // Program to perform the "range sum queries" using "fenwick tree / binary indexed tree" ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 using namespace std;
 
@@ -47,14 +48,19 @@ public:
 
 // Driver code
 int main() {
+    // Tracks the user wants to perform the operation or not
     bool userWantsOperation = true;
 
     while(userWantsOperation) {
+        // Handles console clearance for both "windows" and "linux" user
         system("cls || clear");
+
+        // Input the size of the array
         int N;
         cout<<"Enter the size of the array: ";
         cin>>N;
 
+        // Check the given size is valid or not
         if(N <= 0) {
             cout<<"Enter a valid size, application expects a positive integer!";
             return 0;
@@ -62,7 +68,7 @@ int main() {
 
         vector<int> nums(N);
         
-        // Input section for array values
+        // Input the array values
         for(int i=0; i<N; i++) {
             int num;
             cout<<"Enter the "<<i+1<<"th value for the array: ";
@@ -70,7 +76,7 @@ int main() {
             nums[i] = num;
         }
 
-        // Input section for range value
+        // Input the for range value
         int L, R;
         cout<<"\nEnter the range value (0-based indexing): ";
         cin>>L>>R;
@@ -78,16 +84,16 @@ int main() {
         NumArray numArray = NumArray(nums);
 
         // Section to hit the range sum query
-        if(L > -1 && R < N) {
+        if(L > -1 && R < N && L <= R && R >= L) {
             int rangeSum = numArray.sumRange(L, R);
-            cout<<"\nThe sum of range ["<<L<<", "<<R<<"] is : "<<rangeSum;
+            cout<<"The sum of range ["<<L<<", "<<R<<"] is : "<<rangeSum;
         }
         else {
             cout<<"Enter a valid range value, application expects a positive integer!";
             return 0;
         }
 
-        // Section to control the flow of iterations
+        // Input section to control the flow of iterations of the application
         char userChoise;
         cout<<"\n\nPress \'Y\' to perform the same operation on an another array, else application will exit automatically: ";
         cin>>userChoise;
