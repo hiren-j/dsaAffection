@@ -152,7 +152,7 @@ int main() {
     // Print call
     printList(sumListHead);
 
-    // Deletion call (delete the head node and recursively the entire tree)
+    // Deletion call (delete the head node and recursively the entire list)
     delete headNodeA; headNodeA = nullptr; 
     delete headNodeB; headNodeB = nullptr;
 
