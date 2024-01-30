@@ -136,10 +136,10 @@ void printList(ListNode* headNode) {
 
 // Driver code
 int main() {
-    // Creating list1, connecting nodes and initializing their data
+    // Creating "list1", connecting nodes and initializing their data
     ListNode* headNodeA = new ListNode(3, new ListNode(4, new ListNode(2)));
 
-    // Creating list2, connecting nodes and initializing their data
+    // Creating "list2", connecting nodes and initializing their data
     ListNode* headNodeB = new ListNode(4, new ListNode(8, new ListNode(7)));
 
     // Print call
@@ -152,9 +152,13 @@ int main() {
     // Print call
     printList(sumListHead);
 
-    // Deletion call
-    delete headNodeA; delete headNodeB;
+    // Deletion call (delete the head node and recursively the entire tree)
+    delete headNodeA; headNodeA = nullptr; 
+    delete headNodeB; headNodeB = nullptr;
 
     return 0;
 }
-// Link: https://leetcode.com/problems/add-two-numbers/description/
+/*
+    Topics: Linked List | Maths
+    Link: https://leetcode.com/problems/add-two-numbers/description/
+*/
