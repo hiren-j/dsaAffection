@@ -1,8 +1,7 @@
 // Program to check whether a singly linked list is a palindrome or not ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <stack>
-#include <chrono>
-#include <thread>
 
 // List template
 class ListNode {
@@ -14,6 +13,34 @@ public:
     ListNode(int val, ListNode* next = nullptr)
     :
     val(val), next(next) {}
+
+    // Method to insert a node in the list - O(1) & O(1)
+    void insertNode(ListNode*& headNode, ListNode*& currNode, int val) {
+        ListNode* newNode = new ListNode(val);
+        if(!headNode)
+            headNode = newNode, currNode = newNode;
+        else    
+            currNode->next = newNode, currNode = currNode->next;
+        currNode->next = nullptr;
+    }
+
+    // Method to delete the list - O(N) & O(1) : Where N is the size of the list.
+    void deleteList(ListNode*& headNode) {
+        while(headNode) {
+            ListNode* nextNode = headNode->next;
+            delete headNode;
+            headNode = nextNode;
+        }
+    }
+
+    // Method to print the list - O(N) & O(1) : Where N is the size of the list.
+    void printList(ListNode* headNode) {
+        while(headNode) {
+            std::cout<<headNode->val<<' ';
+            headNode = headNode->next;
+        }
+        std::cout<<'\n';
+    }
 };
 
 // Solution class:
@@ -92,85 +119,58 @@ public:
     }
 };
 
-// Class to wrap all the basic methods of the list:
-class ListCommonMethods {
-public:
-    // Method to insert a node in the list - O(1) & O(1)
-    void insertNode(ListNode*& headNode, ListNode*& currNode, int val) {
-        ListNode* newNode = new ListNode(val);
-        if(!headNode)
-            headNode = newNode, currNode = newNode;
-        else    
-            currNode->next = newNode, currNode = currNode->next;
-        currNode->next = nullptr;
-    }
-
-    // Method to delete the list - O(N) & O(1)
-    void deleteList(ListNode*& headNode) {
-        while(headNode) {
-            ListNode* nextNode = headNode->next;
-            delete headNode;
-            headNode = nextNode;
-        }
-    }
-
-    // Method to print the list - O(N) & O(1)
-    void printList(ListNode* headNode) {
-        while(headNode) {
-            std::cout<<headNode->val<<' ';
-            headNode = headNode->next;
-        }
-        std::cout<<'\n';
-    }
-};
-
 // Driver code
 int main() {
-    int testCases;
-    std::cout<<"Enter the number of testcases you want: ";
-    std::cin>>testCases;
+    // Tracks the user wants to perform the operation or not.
+    bool canPerformOperation = true;
 
-    if(testCases <= 0) {
-        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
-        return 0;
-    }
-
-    while(testCases--) {
+    while(canPerformOperation) {
+        // Handles console clearance for both "windows" and "linux" user.
         system("cls || clear");
-        int n;
+
+        // Input the number of nodes for the list.
+        int size;
         std::cout<<"Enter the number of nodes for the list: ";
-        std::cin>>n;
-
-        ListNode *headNode = nullptr, *currNode = nullptr;
-        ListCommonMethods cm;
-
-        for(int node=1; node<=n; ++node) {
-            int val;
-            std::cout<<"Enter the value for the "<<node<<"th node: ";
-            std::cin>>val;
-            cm.insertNode(headNode, currNode, val);
+        std::cin>>size;
+        
+        // Check the given size is valid or not.
+        if(size <= 0) {
+            std::cout<<"Enter a valid size, application expects a positive integer!";
+            return 0;
         }
 
+        ListNode* headNode = nullptr; // Tracks the head node of the list.
+        ListNode* tailNode = nullptr; // Tracks the last node of the list.
+
+        // Input the nodes value of the list.
+        for(int node=1; node<=size; ++node) {
+            int key;
+            std::cout<<"Enter the value of the "<<node<<"th node: ";
+            std::cin>>key;
+            headNode->insertNode(headNode, tailNode, key);
+        }
+
+        // Print call
         std::cout<<"\nList: ";
-        cm.printList(headNode);
+        headNode->printList(headNode);
 
+        // Verification call
         Solution solution;
-        (solution.isPalindrome_V2(headNode)) ? std::cout<<"Given list is a palindrome!" : std::cout<<"Given list is not a palindrome!";
+        if(solution.isPalindrome_V2(headNode))
+            std::cout<<"Given list is a palindrome!";
+        else
+            std::cout<<"Given list is not a palindrome!";
 
-        cm.deleteList(headNode);
-
-        if(testCases) {
-            int userSeconds;
-            std::cout<<"\n\nEnter the number of seconds which after you want to restart the application: ";
-            std::cin>>userSeconds;
-            std::this_thread::sleep_for(std::chrono::seconds(userSeconds));
-        }
-        else {
-            std::cout<<"\n\nThe application will close in 10 seconds!";
-            std::this_thread::sleep_for(std::chrono::seconds(10));
-        }
+        // Input section to handle the flow of iterations.
+        char userChoise;
+        std::cout<<"\n\nPress \'Y\' to perform the same operation on an another list, else application will exit automatically: ";
+        std::cin>>userChoise;
+        canPerformOperation = (userChoise == 'Y') ? true : false; 
     }
 
     return 0;
 }
-// Link: https://leetcode.com/problems/palindrome-linked-list/description/
+/*
+    Topics: Linked List | Stack | Two Pointers
+    Link: https://leetcode.com/problems/palindrome-linked-list/description/
+*/
