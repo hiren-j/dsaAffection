@@ -112,16 +112,20 @@ int main() {
     printList(headNodeA); printList(headNodeB);
 
     // Call to find the intersection node
-    Solution_V2 obj;
-    ListNode* intersectionNode = obj.getIntersectionNode(headNodeA, headNodeB);
+    Solution_V2 solution;
+    ListNode* intersectionNode = solution.getIntersectionNode(headNodeA, headNodeB);
     cout<<"The node value at which both the lists intersect is : "<<intersectionNode->data;
 
-    // Remove the link from the intersection node
+    // Remove the link from the intersection node 
     headNodeB->next = nullptr;
 
     // Deletion call
-    delete headNodeA; delete headNodeB;
+    delete headNodeA; headNodeA = nullptr; 
+    delete headNodeB; headNodeB = nullptr;
 
     return 0;
 }
-// Link: https://leetcode.com/problems/intersection-of-two-linked-lists/
+/*
+    Topics: Hash Table | Linked List | Two Pointers
+    Link: https://leetcode.com/problems/intersection-of-two-linked-lists/
+*/
