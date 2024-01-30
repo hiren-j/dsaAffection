@@ -1,5 +1,6 @@
 // Program to merge the nodes lying in between zeros in a linked list ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 
 // List template
@@ -148,13 +149,23 @@ public:
 
 // Driver code
 int main() {
+    // Tracks the user wants to perform the operation or not
     bool userWantsOperation = true;
     
     while(userWantsOperation) { 
+        // Handles console clearance for both "windows" and "linux" user
         system("cls || clear");
+
+        // Input the number of nodes for the list
         int size; 
         std::cout<<"Enter the number of nodes for the list: ";
         std::cin>>size;
+
+        // Check the given size is valid or not
+        if(size <= 0) { 
+            std::cout<<"Enter a valid size, application expects a positive integer!";    
+            return 0;
+        }
 
         ListNode* headNode = nullptr; // Tracks the head node of the list
         ListNode* currNode = nullptr; // Tracks the latest inserted node of the list
@@ -164,7 +175,7 @@ int main() {
             int userValue;
             std::cout<<"Enter the value of the "<<node<<"th node: ";
             std::cin>>userValue;
-            headNode->insertNodeInList(headNode, currNode, userValue);
+            headNode-> insertNodeInList(headNode, currNode, userValue);
         }
 
         // Print call
@@ -179,8 +190,8 @@ int main() {
         std::cout<<"Modified list: ";
         headNode->printList(headNode);
 
-        // Deletion call
-        delete headNode;
+        // Deletion call (delete the head node and recursively the entire list)
+        delete headNode; headNode = nullptr;
 
         // Input section to handle flow of iterations of the application
         char userChoise;
@@ -191,4 +202,7 @@ int main() {
 
     return 0;
 }
-// Link: https://leetcode.com/problems/merge-nodes-in-between-zeros/description/
+/*
+    Topics: Linked List | Simulation
+    Link: https://leetcode.com/problems/merge-nodes-in-between-zeros/description/
+*/
