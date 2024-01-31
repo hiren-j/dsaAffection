@@ -1,5 +1,6 @@
 // Program to reverse a linked list ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <stack>
 
@@ -15,12 +16,13 @@ public:
     val(val), next(next) {}
 
     // Method to insert a node in the linked list - O(1) & O(1)
-    void insertNode(ListNode*& headNode, int val) {
-        ListNode* newNode = new ListNode(val);
+    void insertNode(ListNode*& headNode, ListNode*& tailNode, int key) {
+        ListNode* newNode = new ListNode(key);
         if(!headNode)
-            headNode = newNode;
+            headNode = newNode, tailNode = newNode;
         else
-            newNode->next = headNode->next, headNode->next = newNode;
+            tailNode->next = newNode, tailNode = tailNode->next;
+        tailNode->next = nullptr;
     }
 
     // Method to delete the linked list - O(N) & O(1)
@@ -153,48 +155,60 @@ public:
 
 // Driver code
 int main() {
-    bool userWantsOp = true;
+    // Tracks the user wants to perform the operation or not
+    bool userWantsOperation = true;
 
-    while(userWantsOp) {
+    while(userWantsOperation) {
         // Handles console clearance for both "windows" and "linux" user
         system("clear || cls");
 
-        int n; 
+        // Input the size of the list
+        int size; 
         std::cout<<"Enter the number of nodes for the list: "; 
-        std::cin>>n;
+        std::cin>>size;
 
-        // Tracks the head node of the list
-        ListNode* headNode = nullptr;
+        // Check the given size is valid or not
+        if(size <= 0) {
+            std::cout<<"Enter a valid size, application expects a positive integer!";
+            return 0;
+        }
 
-        // Input the nodes value one by one
-        for(int i = 1; i <= n; ++i) {
-            int val;
-            std::cout<<"Enter the value of the "<<i<<" node: "; 
-            std::cin>>val;
-            headNode->insertNode(headNode, val);
+        ListNode* headNode = nullptr; // Tracks the head node of the list
+        ListNode* tailNode = nullptr; // Tracks the last node of the list
+
+        // Input the nodes value of the list
+        for(int node=1; node<=size; ++node) {
+            int key;
+            std::cout<<"Enter the value of the "<<node<<" node: "; 
+            std::cin>>key;
+            headNode->insertNode(headNode, tailNode, key);
         }
 
         // Print call
-        std::cout<<'\n';
+        std::cout<<"\nList before reversal: ";
         headNode->printList(headNode);
 
         // Reversal call
-        Solution obj;
-        headNode = obj.reverseList_V5(headNode);
+        Solution solution;
+        headNode = solution.reverseList_V5(headNode);
 
         // Print call
+        std::cout<<"List after reversal: ";
         headNode->printList(headNode);
 
         // Deletion call
         headNode->deleteList(headNode);
 
-        // Input section to handle flow of iterations
+        // Input section to handle the flow of iterations
+        std::cout<<"\nPress \'Y\' to perform the same operation on an another list, else application will exit automatically: ";
         char userChoice;
-        std::cout<<"\nDo you want to perform the same operation on an another list? (Write Y - \"Yes\" | Else application will exit automatically): ";
         std::cin>>userChoice;
-        userWantsOp = (userChoice == 'Y') ? true : false;
+        userWantsOperation = (userChoice == 'Y') ? true : false;
     }
     
     return 0;
 }
-// Link: https://leetcode.com/problems/reverse-linked-list/editorial/
+/*
+    Topics: Linked List | Recursion
+    Link: https://leetcode.com/problems/reverse-linked-list/editorial/  
+*/
