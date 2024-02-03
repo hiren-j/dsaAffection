@@ -1,8 +1,7 @@
 // Program to segregate odd and even nodes in a linked list ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
-#include <chrono>
-#include <thread>
 
 // List template
 class ListNode {
@@ -22,16 +21,17 @@ public:
         }
     }
 
-    // Method to insert a node in the list - O(1) & O(1)
-    void insertNode(ListNode*& headNode, int val) {
-        ListNode* newNode = new ListNode(val);
+    // Method to insert a node in the list - O(1) & O(1) : Where N is the size of the list.
+    void insertNode(ListNode*& headNode, ListNode*& tailNode, int key) {
+        ListNode* newNode = new ListNode(key);
         if(!headNode)
-            headNode = newNode;
+            headNode = newNode, tailNode = newNode;
         else    
-            newNode->next = headNode->next, headNode->next = newNode;
+            tailNode->next = newNode, tailNode = tailNode->next;
+        tailNode->next = nullptr;
     }
 
-    // Method to print the list - O(N) & O(1)
+    // Method to print the list - O(N) & O(1) : Where N is the size of the list.
     void printList(ListNode* headNode) {
         while(headNode) {
             std::cout<<headNode->val<<' ';
@@ -41,16 +41,16 @@ public:
     }
 };
 
-// #1 Solution class:
+// #1 Solution class
 class Solution_V1 {
 public:
-    // Method to segregate odd and even nodes, using dynamic node creation - O(N) & O(N) : Where N is the total number of nodes of the list.
+    // Method to segregate odd and even nodes, using dynamic node creation - O(N) & O(N) : Where N is the size of the list.
     ListNode* segregateOddEven(ListNode* headNode) {
         // Edge case: When the list is empty or single noded.
         if(!headNode || !headNode->next)
             return headNode;
     
-        ListNode* newCurrent = nullptr; // Tracks the nodes in the new list.
+        ListNode* newCurrent = nullptr; // Tracks the nodes of the new list.
         ListNode* newHead    = nullptr; // Tracks the head node node of the new list.
 
         createNewNodes(headNode, newHead, newCurrent, true);  // Create new nodes from odd-valued-nodes.
@@ -87,10 +87,10 @@ private:
 };
 // Note: This solution can lead to the "memory leak issues", as the new list is created dynamically but never freed.
 
-// #2 Solution class:
+// #2 Solution class
 class Solution_V2 {
 public:
-    // Method to segregate odd and even nodes, using buffer - O(N) & O(N) : Where N is the total number of nodes of the list.
+    // Method to segregate odd and even nodes, using buffer - O(N) & O(N) : Where N is the size of the list.
     ListNode* segregateOddEven(ListNode* headNode) {
         // Edge case: When the list is empty or single noded.
         if(!headNode || !headNode->next)
@@ -132,10 +132,10 @@ public:
     }
 };
 
-// #3 Solution class:
+// #3 Solution class
 class Solution_V3 {
 public:
-    // Method to segregate odd and even nodes, using recursion - O(N) & O(N) : Where N is the total number of nodes of the list.
+    // Method to segregate odd and even nodes, using recursion - O(N) & O(N) : Where N is the size of the list.
     ListNode* segregateOddEven(ListNode* headNode) {
         // Tracks the last node of the odd-grouped list.
         ListNode* oddLast = nullptr; 
@@ -187,10 +187,10 @@ private:
 };
 // Note: If constraints are greater than 10^4, then this solution can lead to "segmentation-fault" due to "stack-overflow".
 
-// #4 Solution class:
+// #4 Solution class
 class Solution_V4 {
 public:    
-    // Method to segregate odd and even nodes, using constant auxiliary space - O(N) & O(1) : Where N is the total number of nodes of the list.
+    // Method to segregate odd and even nodes, using constant auxiliary space - O(N) & O(1) : Where N is the size of the list.
     ListNode* segregateOddEven(ListNode* headNode) {
         // Edge case: When the list is empty or single noded.
         if(!headNode || !headNode->next)
@@ -236,29 +236,33 @@ public:
 
 // Driver code
 int main() {
-    int testCases; 
-    std::cout<<"Enter the number of testcases you want: ";
-    std::cin>>testCases;
+    // Tracks the user wants to perform the operation or not
+    bool userWantsOperation = true;
 
-    if(testCases <= 0) {
-        std::cout<<"Enter a valid number for the testcases, application expects a positive integer!";
-        return 0;
-    }
+    while(userWantsOperation) {
+        // Handles console clearance for both "windows" and "linux" user
+        system("cls || clear");
 
-    while(testCases--) {
-        system("clear || cls");
-        int n;
+        // Input the size of the list
+        int size;
         std::cout<<"Enter the number of nodes for the list: ";
-        std::cin>>n;
+        std::cin>>size;
 
-        // Tracks the head node of the list.
-        ListNode* headNode = nullptr;
+        // Check the given size is valid or not
+        if(size <= 0) {
+            std::cout<<"Enter a valid size, application expects a postive integer!";
+            return 0;
+        }
 
-        for(int i=1; i<=n; i++) {
-            int val;
-            std::cout<<"Enter the "<<i<<"th node: ";
-            std::cin>>val;
-            headNode->insertNode(headNode, val);
+        ListNode* headNode = nullptr; // Tracks the head node of the list
+        ListNode* tailNode = nullptr; // Tracks the last node of the list
+
+        // Input the nodes value of the list
+        for(int node=1; node<=size; ++node) {
+            int key;
+            std::cout<<"Enter the value of the "<<node<<"th node: ";
+            std::cin>>key;
+            headNode->insertNode(headNode, tailNode, key);
         }
 
         // Print call
@@ -266,29 +270,28 @@ int main() {
         headNode->printList(headNode);
 
         // Segregation call
-        Solution_V4 obj;
-        headNode = obj.segregateOddEven(headNode);
+        std::cout<<"List after segregation: ";
+        Solution_V4 solution;
+        headNode = solution.segregateOddEven(headNode);
 
         // Print call
-        std::cout<<"List after segregation: ";
         headNode->printList(headNode);
-    
-        // Delete the head node (and recursively the entire list)
-        delete headNode;
 
-        if(testCases != 0)
-            std::cout<<"\nThe application will restart in 10 seconds!";
-        else
-            std::cout<<"\nThe application will close in 10 seconds!";
+        // Deletion call (delete the head node and recursively the entire list)
+        delete headNode; headNode = nullptr;
 
-        // Add a 10-second delay before the next iteration
-        std::this_thread::sleep_for(std::chrono::seconds(10));
-    }
+        // Input section to handle the flow of iterations of the application
+        char userChoise;
+        std::cout<<"\nPress \'R\' to restart the application, else it will exit automatically: ";
+        std::cin>>userChoise;
+        userWantsOperation = (userChoise == 'R') ? true : false ;
+
+    }   
 
     return 0;
 }
 /*
-Links:
-      https://leetcode.com/discuss/interview-question/668896/Google-or-Phone-or-Group-odd-valued-and-even-valued-nodes-in-Linked-List    
-      https://practice.geeksforgeeks.org/problems/segregate-even-and-odd-nodes-in-a-linked-list5035/1
+    Topics: Linked List | Recursion
+    Links: https://leetcode.com/discuss/interview-question/668896/Google-or-Phone-or-Group-odd-valued-and-even-valued-nodes-in-Linked-List
+           https://practice.geeksforgeeks.org/problems/segregate-even-and-odd-nodes-in-a-linked-list5035/1
 */
