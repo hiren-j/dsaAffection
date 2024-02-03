@@ -1,5 +1,6 @@
 // Program to reverse each sublist of size equal to k. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is in the linked list ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <stack>
 
 // List template
@@ -12,11 +13,7 @@ public:
     ListNode(int val, ListNode* next = nullptr)
     :
     val(val), next(next) {}
-};
 
-// Class to wrap all the basic methods of the list:
-class ListCommonMethods {
-public:
     // Method to insert a node in the list - O(1) & O(1)
     void insertNodeInList(ListNode*& headNode, ListNode*& resCurrent, int val) {
         ListNode* newNode = new ListNode(val);
@@ -62,8 +59,7 @@ public:
             return headNode;
 
         // Calculate and store the length of the list
-        ListCommonMethods cm;
-        int length = cm.getListLength(headNode);
+        int length = headNode->getListLength(headNode);
 
         ListNode* resHead    = nullptr; // Tracks the head node of the resultant list
         ListNode* resCurrent = nullptr; // Tracks the latest node of the resultant list
@@ -71,7 +67,7 @@ public:
 
         // Iterate the list
         while(headNode) {
-            // If the sublist size is not equal to k then set the last node of the resultant list
+            // If the list length is less than k then set the last node of the resultant list
             if(length < k) {
                 resCurrent->next = headNode; 
                 return resHead;
@@ -107,8 +103,7 @@ class Solution_V2 {
 public:
     // Method to reverse each sublist of size k, using recursion only - O(N) & O(N)
     ListNode* reverseKGroup(ListNode* headNode, int k) {
-        ListCommonMethods cm;
-        int length = cm.getListLength(headNode);
+        int length = headNode->getListLength(headNode);
         return reverseGroupEqualK(headNode, k, length);
     }
 
@@ -152,15 +147,14 @@ public:
             return headNode;
         
         // Calculate and store the length of the list
-        ListCommonMethods cm;
-        int length = cm.getListLength(headNode);
+        int length = headNode->getListLength(headNode);
 
         ListNode* resHead         = nullptr; // Tracks the head node of the resultant list
         ListNode* prevSubListTail = nullptr; // Tracks the last node of the previously reversed sublist
 
         // Iterate the list
         while(headNode) {
-            // If the sublist size is not equal to k then set the last node of the resultant list
+            // If the list length is less than k then set the last node of the resultant list
             if(length < k) {
                 prevSubListTail->next = headNode; 
                 return resHead;
@@ -199,25 +193,33 @@ public:
 
 // Driver code
 int main() {
+    // Tracks the user wants to perform the operation or not
     bool userWantsOperation = true;
     
     while(userWantsOperation) { 
+        // Handles console clearance for both "windows" and "linux" user
         system("cls || clear");
+
+        // Input the size of the list
         int size; 
         std::cout<<"Enter the number of nodes for the list: ";
         std::cin>>size;
 
+        // Check the given size is valid or not
+        if(size <= 0) {
+            std::cout<<"Enter a valid size, application expects a postive integer!";
+            return 0;
+        }
+
         ListNode* headNode = nullptr; // Tracks the head node of the list
-        ListNode* currNode = nullptr; // Tracks the latest inserted node of the list
-        
-        ListCommonMethods commonMethods;
-        
+        ListNode* tailNode = nullptr; // Tracks the last node of the list
+                
         // Input the nodes value of the list
         for(int node=1; node<=size; ++node) {
             int val;
             std::cout<<"Enter the value of the "<<node<<"th node: ";
             std::cin>>val;
-            commonMethods.insertNodeInList(headNode, currNode, val);
+            headNode->insertNodeInList(headNode, tailNode, val);
         }
 
         // Input section for k value
@@ -227,7 +229,7 @@ int main() {
 
         // Print call
         std::cout<<"\nList before groups reversal: ";
-        commonMethods.printList(headNode);
+        headNode->printList(headNode);
 
         // Reversal call
         Solution_V3 solution;
@@ -235,18 +237,21 @@ int main() {
 
         // Print call
         std::cout<<"\nList after groups reversal: ";
-        commonMethods.printList(headNode);
+        headNode->printList(headNode);
 
         // Deletion call
-        commonMethods.deleteList(headNode);
+        headNode->deleteList(headNode);
 
-        // Input section to handle flow of iterations of the application
+        // Input section to handle the flow of iterations of the application
         char userChoise;
-        std::cout<<"\n\nDo you want to perform the same operation on an another list? (Write Y for \"Yes\" else application will exit automatically): ";
+        std::cout<<"\n\nPress \'Y\' to perform the same operation on an another list, else application will exit automatically: ";
         std::cin>>userChoise;
         userWantsOperation = (userChoise == 'Y') ? true : false;
     }
 
     return 0;
 }
-// Link: https://leetcode.com/problems/reverse-nodes-in-k-group/
+/*
+    Topics: Linked List | Recursion | Stack
+    Link: https://leetcode.com/problems/reverse-nodes-in-k-group/
+*/
