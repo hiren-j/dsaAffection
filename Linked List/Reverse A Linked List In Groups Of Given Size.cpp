@@ -1,5 +1,6 @@
 // Program to reverse each sublist of size "lesser than equal to k" of a linked list ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <stack>
 
 // List template
@@ -12,9 +13,36 @@ public:
     ListNode(int val, ListNode* next = nullptr)
     :
     val(val), next(next) {}
+
+    // Method to insert a node in the list - O(1) & O(1)
+    void insertNodeInList(ListNode*& headNode, ListNode*& resCurrent, int val) {
+        ListNode* newNode = new ListNode(val);
+        if(!headNode)
+            headNode = newNode, resCurrent = newNode;
+        else
+            resCurrent->next = newNode, resCurrent = resCurrent->next;
+        resCurrent->next = nullptr;
+    }
+
+    // Method to delete the list - O(N) & O(1)
+    void deleteList(ListNode*& headNode) {
+        while(headNode) {
+            ListNode* nextNode = headNode->next;
+            delete headNode;
+            headNode = nextNode;
+        }
+    }
+
+    // Method to print the list - O(N) & O(1)
+    void printList(ListNode* headNode) {
+        while(headNode) {
+            std::cout<<headNode->val<<' ';
+            headNode = headNode->next;
+        }
+    }
 };
 
-// Solution class
+// Solution class:
 class Solution {
 public:
     // #1 Method to reverse each sublist of size lesser than equal to k, using 1 stack - O(N) & O(N)
@@ -119,58 +147,35 @@ public:
     }
 };
 
-// Class to wrap all the basic methods of the list
-class ListCommonMethods {
-public:
-    // Method to insert a node in the list - O(1) & O(1)
-    void insertNodeInList(ListNode*& headNode, ListNode*& resCurrent, int val) {
-        ListNode* newNode = new ListNode(val);
-        if(!headNode)
-            headNode = newNode, resCurrent = newNode;
-        else
-            resCurrent->next = newNode, resCurrent = resCurrent->next;
-        resCurrent->next = nullptr;
-    }
-
-    // Method to delete the list - O(N) & O(1)
-    void deleteList(ListNode*& headNode) {
-        while(headNode) {
-            ListNode* nextNode = headNode->next;
-            delete headNode;
-            headNode = nextNode;
-        }
-    }
-
-    // Method to print the list - O(N) & O(1)
-    void printList(ListNode* headNode) {
-        while(headNode) {
-            std::cout<<headNode->val<<' ';
-            headNode = headNode->next;
-        }
-    }
-};
-
 // Driver code
 int main() {
+    // Tracks the user wants to perform the operation or not
     bool userWantsOperation = true;
     
     while(userWantsOperation) { 
+        // Handles console clearance for both "windows" and "linux" user
         system("cls || clear");
+        
+        // Input the size of the list
         int size; 
         std::cout<<"Enter the number of nodes for the list: ";
         std::cin>>size;
 
+        // Check the given size is valid or not
+        if(size <= 0) {
+            std::cout<<"Enter a valid size, application expects a postive integer!";
+            return 0;
+        }
+
         ListNode* headNode = nullptr; // Tracks the head node of the list
-        ListNode* currNode = nullptr; // Tracks the latest inserted node of the list
-        
-        ListCommonMethods commonMethods;
-        
+        ListNode* tailNode = nullptr; // Tracks the last node of the list
+                
         // Input the nodes value of the list
         for(int node=1; node<=size; ++node) {
             int val;
             std::cout<<"Enter the value of the "<<node<<"th node: ";
             std::cin>>val;
-            commonMethods.insertNodeInList(headNode, currNode, val);
+            headNode->insertNodeInList(headNode, tailNode, val);
         }
 
         // Input section for k value
@@ -179,27 +184,30 @@ int main() {
         std::cin>>k;
 
         // Print call
-        std::cout<<"\nList before reversal: ";
-        commonMethods.printList(headNode);
+        std::cout<<"\nList before groups reversal: ";
+        headNode->printList(headNode);
 
         // Reversal call
         Solution solution;
         headNode = solution.reverseGroupsByK_V3(headNode, k);
 
         // Print call
-        std::cout<<"\nList after reversal: ";
-        commonMethods.printList(headNode);
+        std::cout<<"\nList after groups reversal: ";
+        headNode->printList(headNode);
 
         // Deletion call
-        commonMethods.deleteList(headNode);
+        headNode->deleteList(headNode);
 
         // Input section to handle flow of iterations of the application
         char userChoise;
-        std::cout<<"\n\nDo you want to perform the same operation on an another list? (Write Y for \"Yes\" else application will exit automatically): ";
+        std::cout<<"\n\nDo you want to perform the same operation on an another list? (Write Y for \"Yes\", else application will exit automatically): ";
         std::cin>>userChoise;
         userWantsOperation = (userChoise == 'Y') ? true : false;
     }
 
     return 0;
 }
-// Link: https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=bottom_sticky_on_article
+/*
+    Topics: Linked List | Recursion | Stack
+    Link: https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=bottom_sticky_on_article
+*/
