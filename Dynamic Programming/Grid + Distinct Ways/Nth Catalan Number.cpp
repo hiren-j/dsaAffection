@@ -1,4 +1,4 @@
-// Program to Nth number of the "Catalan's Sequence" ~ coded by Hiren
+// Program to find the Nth number of the "Catalan's Sequence" ~ coded by Hiren
 #include <iostream>
 #include <vector>
 
