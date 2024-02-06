@@ -161,6 +161,7 @@ int main() {
 
         // Stores the values of the "matrix"
         vector<vector<int>> grid(N, vector<int>(N, 0));
+        cout<<"\nEnter the values of the matrix:\n";
 
         // Input the values of the "matrix"
         for(int R=0; R<N; R++) {
@@ -172,7 +173,7 @@ int main() {
         // Call to find the minimum sum of any falling path
         BottomUp bottomUp;
         int minPathSum = bottomUp.minFallingPathSum_V3(grid);
-        cout<<"\nThe minimum sum of any falling path is: "<<minPathSum;
+        cout<<"The minimum sum of any falling path is: "<<minPathSum;
 
 
         // Input section to handle the flow of iterations of the application
