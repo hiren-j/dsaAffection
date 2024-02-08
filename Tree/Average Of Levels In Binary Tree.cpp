@@ -50,7 +50,7 @@ public:
     // Method to print the tree, using preOrder traversal - O(N) & O(H) : Where N is total number of nodes and H is height of the tree
     void printTree(TreeNode* rootNode) {
         if(rootNode) {
-            std::cout<<rootNode->val<<' ';
+            std::cout<<rootNode->val<<"  ";
             printTree(rootNode->left);
             printTree(rootNode->right);
         }
@@ -172,7 +172,7 @@ int main() {
         }
 
         // Print call
-        std::cout<<"\nTree: ";
+        std::cout<<"\nTree preOrder traversal: ";
         rootNode->printTree(rootNode); 
 
         // Call to get the list of averages
