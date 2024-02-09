@@ -9,8 +9,8 @@ using namespace std;
 // Solution class
 class Solution {
 public:
-    // #1 Method to find the next largest element of each element, using nested loops - O(N*N) & O(1)
-    vector<ll> nextLargestElement_V1(vector<ll> nums, int n) {
+    // #1 Method to find the next largest element of each element, using nested loop - O(N*N) & O(1)
+    vector<ll> nextLargestElement_V1(vector<ll>& nums, int n) {
         // Iterate the array
         for(int i=0; i<n; i++) {
             // Stores the next largest element of the ith element
@@ -30,7 +30,7 @@ public:
     }
 
     // #2 Method to find the next greater element of each element, using buffer and 1 stack - O(N) & O(N)
-    vector<ll> nextLargestElement_V2(vector<ll> &nums, int n) {
+    vector<ll> nextLargestElement_V2(vector<ll>& nums, int n) {
         // Buffer to store the result values
         vector<ll> output(n, -1);
 
@@ -56,7 +56,7 @@ public:
     }
 
     // #3 Method to find the next largest element of each element, using 1 stack - O(N) & O(N)
-    vector<ll> nextLargestElement_V3(vector<ll> nums, int n) {
+    vector<ll> nextLargestElement_V3(vector<ll>& nums, int n) {
         // Stores the elements in monotonic fashion (decreasing order)
         stack<ll> st;
         
