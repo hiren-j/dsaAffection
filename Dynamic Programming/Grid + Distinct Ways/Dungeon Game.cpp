@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-// Class to implement the "Top Down Apporach"
+// Class to implement the "Top Down Approach"
 class TopDown {
 public:
     // Method to find the knight's minimum initial health, using recursion with memoization - O(M*N) & O(M*N)
