@@ -9,7 +9,7 @@ using namespace std;
 // Solution class
 class Solution {
 public:
-    // #1 Method to find the previous smallest element of each element, using nested loop - O(N*N) & O(1)
+    // #1 Method to find the previous smallest element of each element, using nested loops - O(N*N) & O(1)
     vector<ll> prevSmallestElement_V1(vector<ll>& nums, int n) {
         // Iterate the array
         for(int i=n-1; i>=0; --i) {
@@ -44,7 +44,7 @@ public:
             while(!st.empty() && nums[st.top()] >= nums[i])
                 st.pop();
 
-            // If the stack is not empty then replace the ith element by its previous greater element
+            // If the stack is not empty then replace the ith element by its previous smallest element
             if(!st.empty())
                 output[i] = nums[st.top()];
 
