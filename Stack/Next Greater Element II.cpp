@@ -1,6 +1,7 @@
 // Program to find the next largest element of each element of a circular integer array ~ coded by Hiren
 #include <iostream>
 #include <cstdlib>
+#include <climits>
 #include <vector>
 #include <stack>
 using namespace std;
