@@ -75,7 +75,7 @@ int main() {
             cin>>nums[i];
         }
 
-        // Input the for range value
+        // Input the range value
         int L, R;
         cout<<"\nEnter the range value (0-based indexing): ";
         cin>>L>>R;
