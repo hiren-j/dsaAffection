@@ -66,14 +66,13 @@ int main() {
             return 0;
         }
 
+        // Stores the array values
         vector<int> nums(N);
         
         // Input the array values
+        cout<<"Enter the values of the array: ";
         for(int i=0; i<N; i++) {
-            int num;
-            cout<<"Enter the "<<i+1<<"th value for the array: ";
-            cin>>num;
-            nums[i] = num;
+            cin>>nums[i];
         }
 
         // Input the for range value
@@ -89,7 +88,7 @@ int main() {
             cout<<"The sum of range ["<<L<<", "<<R<<"] is : "<<rangeSum;
         }
         else {
-            cout<<"Enter a valid range value, application expects a positive integer!";
+            cout<<"Enter a valid range, application expects a range within the size of the array!\n";
             return 0;
         }
 
@@ -97,7 +96,7 @@ int main() {
         char userChoise;
         cout<<"\n\nPress \'Y\' to perform the same operation on an another array, else application will exit automatically: ";
         cin>>userChoise;
-        userWantsOperation = (userChoise == 'Y') ? true : false ;
+        userWantsOperation = (userChoise == 'Y' ? true : false);
     }
 
     return 0;
