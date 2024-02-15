@@ -185,5 +185,5 @@ int main() {
 }
 /*
     Topics: Array | Design | Binary Indexed Tree | Segment Tree
-    Link: https://leetcode.com/problems/range-sum-query-immutable/description/
+    Link: https://leetcode.com/problems/range-sum-query-mutable/description/
 */
