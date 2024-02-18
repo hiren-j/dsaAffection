@@ -130,7 +130,7 @@ private:
             }
             // Update the maximum value at the corresponding level in the buffer
             maxLevelWise[currDepth] = std::max(maxLevelWise[currDepth], currNode->val);
-            // Recurse to both the subtress and look for the maximum value at each level
+            // Recurse to both the subtrees and look for the maximum value at each level
             dfs(currNode->left, currDepth+1, maxLevelWise);
             dfs(currNode->right, currDepth+1, maxLevelWise);
         }
