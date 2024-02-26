@@ -63,7 +63,7 @@ public:
         for(int J=2; J<=N; J++)
             dp[J] = std::max(houses[J-1] + dp[J-2], dp[J-1]);
 
-        // Stores the overall amount of maximum money that can be robbed
+        // Return the overall amount of maximum money that can be robbed
         return dp[N];
     }
 
@@ -81,7 +81,7 @@ public:
             prevPrevMoney = prevMoney,
             prevMoney = maxMoney;
 
-        // Stores the overall amount of maximum money that can be robbed
+        // Return the overall amount of maximum money that can be robbed
         return maxMoney;
     }
 };
