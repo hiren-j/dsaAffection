@@ -135,15 +135,21 @@ int main() {
         cout<<"Enter the number of rows: "   ; cin>>M;
         cout<<"Enter the number of columns: "; cin>>N;
         
+        // Check the given value of rows and columns are valid or not
+        if(M <= 0 || N <= 0) {
+            cout<<"Enter a valid value, application expects a positive integer!";
+            return 0;
+        }
+        
         // Call to find the number of possible unique paths
         BottomUp bottomUp;
         cout<<"The number of possible unique paths that the robot can take to reach the bottom-right corner is: "<<bottomUp.uniquePaths_V3(M, N)<<'\n';
 
         // Input section to handle the flow of iterations of the application
-        char userChoise;
+        char userChoice;
         cout<<"\nPress \'R\' to restart the application, else application will exit automatically: ";
-        cin>>userChoise;
-        userWantsOperation = (userChoise == 'R') ? true : false;
+        cin>>userChoice;
+        userWantsOperation = (userChoice == 'R') ? true : false;
     }
 
     return 0;
