@@ -24,7 +24,7 @@ class Backtracking_V1 {
     }
 
 public:
-    // Method to find all possible valid combinations of "k" numbers that sums to "n" - O(9^9 * K) & O(M * K) : Where K let be the maximum size of any "currCombination" and M is the total number of all possible valid combinations
+    // Method to find all possible valid combinations of "k" numbers that sums to "n" - O(2^9 * K) & O(M * K) : Where K let be the maximum size of any "currCombination" and M is the total number of all possible valid combinations
     vector<vector<int>> combinationSum3(int k, int n) {
         vector<int> currCombination;
         getAllValidCombinations(currCombination, k, n, 1);
