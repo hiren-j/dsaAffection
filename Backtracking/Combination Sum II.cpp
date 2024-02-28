@@ -9,39 +9,6 @@ using namespace std;
 // #1 Backtracking approach:
 class Backtracking_V1 {
     vector<vector<int>> combinations;
-    int N;
-
-    void getAllUniqueCombinations(vector<int>& candidates, vector<int>& currCombination, int target, int startIdx) {
-        if(target == 0) {
-            combinations.push_back(currCombination);
-            return; // Backtrack
-        }
-
-        for(int J = startIdx; (J < N && candidates[J] <= target); J++) {
-            // Helps to ignore the duplicate elements
-            if(J != startIdx && candidates[J] == candidates[J-1])
-                continue;
-
-            currCombination.push_back(candidates[J]); // Include the element
-            getAllUniqueCombinations(candidates, currCombination, target-candidates[J], J+1);
-            currCombination.pop_back();               // Exclude the element
-        }
-    }
-
-public:
-    // Method to find the list of all unique combinations - O(N^N * K) & O(M * K) : Where N is the size of "candidates", K let be the maximum size of any "currCombination" and M let be the total number of unique combinations
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        N = candidates.size();
-        sort(begin(candidates), end(candidates));
-        vector<int> currCombination;
-        getAllUniqueCombinations(candidates, currCombination, target, 0);
-        return combinations;
-    }
-};
-
-// #2 Backtracking approach:
-class Backtracking_V2 {
-    vector<vector<int>> combinations;
     set<vector<int>> st; // Requires to ignore the duplicate combinations
     int N;
 
@@ -77,8 +44,8 @@ public:
 };
 // Note: This solution can lead to the "TLE / Time limit exceed"
 
-// #3 Backtracking approach:
-class Backtracking_V3 {
+// #2 Backtracking approach:
+class Backtracking_V2 {
     vector<vector<int>> combinations;
     int N;
 
@@ -115,6 +82,39 @@ public:
     }
 };
 
+// #3 Backtracking approach:
+class Backtracking_V3 {
+    vector<vector<int>> combinations;
+    int N;
+
+    void getAllUniqueCombinations(vector<int>& candidates, vector<int>& currCombination, int target, int startIdx) {
+        if(target == 0) {
+            combinations.push_back(currCombination);
+            return; // Backtrack
+        }
+
+        for(int J = startIdx; (J < N && candidates[J] <= target); J++) {
+            // Helps to ignore the duplicate elements
+            if(J != startIdx && candidates[J] == candidates[J-1])
+                continue;
+
+            currCombination.push_back(candidates[J]); // Include the element
+            getAllUniqueCombinations(candidates, currCombination, target-candidates[J], J+1);
+            currCombination.pop_back();               // Exclude the element
+        }
+    }
+
+public:
+    // Method to find the list of all unique combinations - O(2^N * K) & O(M * K) : Where N is the size of "candidates", K let be the maximum size of any "currCombination" and M let be the total number of unique combinations
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        N = candidates.size();
+        sort(begin(candidates), end(candidates));
+        vector<int> currCombination;
+        getAllUniqueCombinations(candidates, currCombination, target, 0);
+        return combinations;
+    }
+};
+
 // Driver code
 int main() {
     // Tracks the user wants to perform the operation or not
@@ -139,7 +139,7 @@ int main() {
         vector<int> candidates(N, 0);
 
         // Input the array values
-        cout<<"Enter the array values: ";
+        cout<<"Enter values of the array: ";
         for(int J = 0; J < N; ++J) {
             cin>>candidates[J];
         }
