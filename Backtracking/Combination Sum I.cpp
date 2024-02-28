@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-// #1 Solution class:
+// #1 Backtracking approach:
 class BackTracking_V1 {
     vector<vector<int>> combinations;
     int N;
@@ -26,7 +26,7 @@ class BackTracking_V1 {
     }
 
 public:
-    // Method to find the list of all unique combinations where the chosen numbers sums to target - O(N^T * K) & O(M * K) : Where N is the size of "candidates", T is the "target", K let be the maximum size of any "currCombination" and M let be the total number of unique combinations.
+    // Method to find the list of all unique combinations where the chosen numbers sums to target - O(2^T * K) & O(M * K) : Where N is the size of "candidates", T is the "target", K let be the maximum size of any "currCombination" and M let be the total number of unique combinations.
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         N = candidates.size();
         vector<int> currCombination;
@@ -35,7 +35,7 @@ public:
     }
 };
 
-// #2 Solution class:
+// #2 Backtracking approach:
 class BackTracking_V2 {
     vector<vector<int>> combinations;
     int N;
@@ -54,7 +54,7 @@ class BackTracking_V2 {
     }
 
 public:
-    // Method to find the list of all unique combinations where the chosen numbers sums to target - O(N^T * K) & O(M * K) : Where N is the size of "candidates", T is the "target", K let be the maximum size of any "currCombination" and M let be the total number of unique combinations.
+    // Method to find the list of all unique combinations where the chosen numbers sums to target - O(2^T * K) & O(M * K) : Where N is the size of "candidates", T is the "target", K let be the maximum size of any "currCombination" and M let be the total number of unique combinations.
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         N = candidates.size();
         sort(begin(candidates), end(candidates));
@@ -64,7 +64,7 @@ public:
     }
 };
 
-// #3 Solution class:
+// #3 Backtracking approach:
 class BackTracking_V3 {
     vector<vector<int>> combinations;
     int N;
@@ -119,7 +119,7 @@ int main() {
         vector<int> candidates(N, 0);
 
         // Input the array values
-        cout<<"Enter the array values: ";
+        cout<<"Enter unique values for the array: ";
         for(int J = 0; J < N; ++J) {
             cin>>candidates[J];
         }
