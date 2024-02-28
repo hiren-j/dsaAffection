@@ -25,7 +25,7 @@ class Backtracking_V1 {
     }
 
 public: 
-    // Method to find all the possible subsets - O(N^N * N) & O(2^N * N) : Where N is the size of "nums" (there could be 2^N possible subsets)
+    // Method to find all the possible subsets - O(2^N * N) & O(2^N * N) : Where N is the size of "nums" (there could be 2^N possible subsets)
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         N = nums.size();
         sort(begin(nums), end(nums));
