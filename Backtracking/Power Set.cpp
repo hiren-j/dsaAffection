@@ -28,12 +28,12 @@ class Backtracking_V1 {
     
 public:
     // Method to find all the possible subsequences of the string "s" in lexicographically-sorted order - O(2^N * N) & O(2^N * N)
-	vector<string> AllPossibleStrings(const string& s) {
-	    string currSubsequence;
-	    getAllUniqueSubsequences(s, currSubsequence, s.size(), 0);
-	    sort(begin(allSubsequences), end(allSubsequences));
-	    return allSubsequences;
-	}
+    vector<string> AllPossibleStrings(const string& s) {
+	string currSubsequence;
+	getAllUniqueSubsequences(s, currSubsequence, s.size(), 0);
+	sort(begin(allSubsequences), end(allSubsequences));
+	return allSubsequences;
+    }
 };
 
 // #2 Backtracking approach:
@@ -53,12 +53,12 @@ class Backtracking_V2 {
     
 public:
     // Method to find all the possible subsequences of the string "s" in lexicographically-sorted order - O(2^N * N) & O(2^N * N)
-	vector<string> AllPossibleStrings(const string& s) {
-	    string currSubsequence;
-	    getAllUniqueSubsequences(s, currSubsequence, s.size(), 0);
-	    sort(begin(allSubsequences), end(allSubsequences));
-	    return allSubsequences;
-	}
+    vector<string> AllPossibleStrings(const string& s) {
+	string currSubsequence;
+	getAllUniqueSubsequences(s, currSubsequence, s.size(), 0);
+	sort(begin(allSubsequences), end(allSubsequences));
+	return allSubsequences;
+    }
 };
 
 // Driver code
