@@ -6,7 +6,7 @@
 // Class to implement the "Top Down Approach"
 class TopDown {
 public:
-    // Method to find the maximum amount of money you can rob, using recursion without memoization - O(N) & O(N)
+    // Method to find the maximum amount of money you can rob, using recursion with memoization - O(N) & O(N)
     int getMaxMoney(std::vector<int>& houses) {
         int N = houses.size();
         std::vector<int> memory(N+1, -1);
