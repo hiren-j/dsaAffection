@@ -60,7 +60,7 @@ private:
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to find the minimum energy, using recursion with memoization - O(N * maxElement) & O(N * maxElement)
+    // Method to find the minimum energy, using recursion with memoization - O(N) & O(N)
     int minimumEnergy(vector<int>& heights, int N) {
         vector<int> memory(N+1, -1);
         return solveWithMemo(memory, heights, N, 0);
