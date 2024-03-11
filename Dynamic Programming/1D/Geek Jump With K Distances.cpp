@@ -1,5 +1,7 @@
 // Program to find the minimum possible total cost incurred before the Geek reaches the Nth stone, the Geek can jump to any one of the following, stone L+1, L+2, ... L+K stone and cost will be [hi-hj] is incurred, where R is the stone to land on ~ coded by Hiren
 #include <iostream>
+#include <climits>
+#include <cstdlib>
 #include <vector>
 #define controlAppFlow() {char userChoice; cout<<"\n\nPress \'R\' to restart the application, else it will exist: "; cin>>userChoice; userWantsOperation = (userChoice == 'R' ? true : false);}
 using namespace std;
