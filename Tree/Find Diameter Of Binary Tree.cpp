@@ -162,7 +162,7 @@ int main() {
         cout<<"\nLevel order traversal of the tree is:\n";
         rootNode->printTree(rootNode);
 
-        // Call to get the list containing the most frequent subtree sums
+        // Call to get the length of the diameter of the tree
         Solution_V2 solution;
         int diameter = solution.diameterOfBinaryTree(rootNode);
         cout<<"\nThe diameter value (length of the longest path between any two nodes in a tree) is: "<<diameter;
