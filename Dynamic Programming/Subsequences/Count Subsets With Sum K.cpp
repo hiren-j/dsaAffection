@@ -172,7 +172,7 @@ int main() {
     return 0;
 }
 /*
-    Topics: Array | Dynamic Programming
+	Topics: Array | Dynamic Programming
     Links: https://www.geeksforgeeks.org/problems/perfect-sum-problem5633/1
            https://www.codingninjas.com/studio/problems/count-subsets-with-sum-k_3952532?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf
 */
