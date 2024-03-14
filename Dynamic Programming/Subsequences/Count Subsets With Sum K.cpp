@@ -9,10 +9,10 @@ using namespace std;
 class TopDown {
 public:
     // Method to count all the subsets with a sum equal to the given sum, using recursion with memoization - O(N*S) & O(N*S) : Where N let be the array size and S let be the sum value
-	int countSubsetsEqualSum(vector<int>& nums, int N, int sum) {
-	    vector<vector<int>> memory(N, vector<int>(sum + 1, -1));
-	    return solveWithMemo(memory, nums, N, N-1, sum);
-	}
+    int countSubsetsEqualSum(vector<int>& nums, int N, int sum) {
+	vector<vector<int>> memory(N, vector<int>(sum + 1, -1));
+	return solveWithMemo(memory, nums, N, N-1, sum);
+    }
 
 private:
     // O(N*S) & O(N*S)
@@ -68,53 +68,53 @@ private:
 class BottomUp {
 public:
     // #1 Method to count all the subsets with a sum equal to the given sum, using 2D buffer for tabulation - O(N*S) & O(N*S) : Where N let be the array size and S let be the sum value
-	int countSubsetsEqualSum_V1(vector<int>& nums, int N, int sum) {        
-        // Tabulation buffer: dp[index][currSum] stores the count of all the subsets lying within the "index" elements (consider "index" elements from the start of the array) such that their sum equals to the "currSum"
-	    vector<vector<int>> dp(N + 1, vector<int>(sum + 1, 0));
+    int countSubsetsEqualSum_V1(vector<int>& nums, int N, int sum) {        
+    	// Tabulation buffer: dp[index][currSum] stores the count of all the subsets lying within the "index" elements (consider "index" elements from the start of the array) such that their sum equals to the "currSum"
+	vector<vector<int>> dp(N + 1, vector<int>(sum + 1, 0));
         
         // Edge case: If the array is empty and the sum is 0 then there always exists a single subset with sum 0
-	    dp[0][0] = 1;
+	dp[0][0] = 1;
 	    
         // Treat each index as the "number of elements can take from the start of the array" and count all the subsets lying within whose sum is equal to the "currSum"
-	    for(int index = 1; index <= N; ++index) {
-	        for(int currSum = 0; currSum <= sum; ++currSum) {
-	            int currSkip = dp[index - 1][currSum] % mod;
-	            int currTake = 0;
-	            if(nums[index - 1] <= currSum) {
-	                currTake = dp[index - 1][currSum - nums[index - 1]] % mod;
-	            }
-	            dp[index][currSum] = (currTake + currSkip) % mod;
+	for(int index = 1; index <= N; ++index) {
+	    for(int currSum = 0; currSum <= sum; ++currSum) {
+	        int currSkip = dp[index - 1][currSum] % mod;
+	        int currTake = 0;
+	        if(nums[index - 1] <= currSum) {
+	            currTake = dp[index - 1][currSum - nums[index - 1]] % mod;
 	        }
+	        dp[index][currSum] = (currTake + currSkip) % mod;
 	    }
+	}
 
         // Return the count of all the subsets with sum equal to the given sum  
-	    return dp[N][sum];
-	}
+	return dp[N][sum];
+    }
 
     // #2 Method to count all the subsets with a sum equal to the given sum, using 1D buffer for tabulation - O(N*S) & O(S) : Where N let be the array size and S let be the sum value
-	int countSubsetsEqualSum_V2(vector<int>& nums, int N, int sum) {        
-        // Tabulation buffer: prevRow[currSum] / currRow[currSum]" stores the count of all the subsets lying within the "index" elements (consider "index" elements from the start of the array) such that their sum equals to the "currSum"
-	    vector<int> prevRow(sum + 1, 0), currRow(sum + 1, 0);
+    int countSubsetsEqualSum_V2(vector<int>& nums, int N, int sum) {
+	// Tabulation buffer: prevRow[currSum] / currRow[currSum]" stores the count of all the subsets lying within the "index" elements (consider "index" elements from the start of the array) such that their sum equals to the "currSum"
+	vector<int> prevRow(sum + 1, 0), currRow(sum + 1, 0);
 
         // Edge case: If the array is empty and the sum is 0 then there always exists a single subset with sum 0
-	    prevRow[0] = 1;
+	prevRow[0] = 1;
 	    
         // Treat each index as the "number of elements can take from the start of the array" and count all the subsets lying within whose sum is equal to the "currSum"
-	    for(int index = 1; index <= N; ++index) {
-	        for(int currSum = 0; currSum <= sum; ++currSum) {
-	            int currSkip = prevRow[currSum] % mod;
-	            int currTake = 0;
-	            if(nums[index - 1] <= currSum) {
-	                currTake = prevRow[currSum - nums[index - 1]] % mod;
-	            }
-	            currRow[currSum] = (currTake + currSkip) % mod;
+	for(int index = 1; index <= N; ++index) {
+	    for(int currSum = 0; currSum <= sum; ++currSum) {
+	        int currSkip = prevRow[currSum] % mod;
+	        int currTake = 0;
+	        if(nums[index - 1] <= currSum) {
+		    currTake = prevRow[currSum - nums[index - 1]] % mod;
 	        }
-	        prevRow = currRow;
+	        currRow[currSum] = (currTake + currSkip) % mod;
 	    }
+	    prevRow = currRow;
+	}
 	    
         // Return the count of all the subsets with sum equal to the given sum  
-	    return prevRow[sum];
-	}
+	return prevRow[sum];
+    }
 };
 
 // Driver code
@@ -172,7 +172,7 @@ int main() {
     return 0;
 }
 /*
-	Topics: Array | Dynamic Programming
+    Topics: Array | Dynamic Programming
     Links: https://www.geeksforgeeks.org/problems/perfect-sum-problem5633/1
            https://www.codingninjas.com/studio/problems/count-subsets-with-sum-k_3952532?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf
 */
