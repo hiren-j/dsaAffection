@@ -73,11 +73,11 @@ public:
 	    vector<vector<int>> dp(N + 1, vector<int>(sum + 1, 0));
         
         // Edge case: If the array is empty and the sum is 0 then there always exists a single subset with sum 0
-	    dp[0][0] = 1;
+		dp[0][0] = 1;
 	    
         // Treat each index as the "number of elements can take from the start of the array" and count all the subsets lying within whose sum is equal to the "currSum"
 	    for(int index = 1; index <= N; ++index) {
-	        for(int currSum = 0; currSum <= sum; ++currSum) {
+			for(int currSum = 0; currSum <= sum; ++currSum) {
 	            int currSkip = dp[index - 1][currSum] % mod;
 	            int currTake = 0;
 	            if(nums[index - 1] <= currSum) {
