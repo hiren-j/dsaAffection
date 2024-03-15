@@ -165,7 +165,7 @@ public:
 
     // #2 Method to find the maximum value obtainable by cutting up the rod and selling the pieces, using 1D buffer for tabulation - O(N*N) & O(N)
     int cutRod_V2(vector<int>& price, int N) {
-        // Tabulation buffer: dp[cutLength][rodLength] represents the maximum value which is obtainable by cutting a rod of length "rodLength" in the length of "cutLength"
+        // Tabulation buffer: "prevRow[rodLength] / currRow[rodLength]" represents the maximum value which is obtainable by cutting a rod of length "rodLength" in the length of "cutLength"
         vector<int> prevRow(N + 1, 0), currRow(N + 1, 0);
         
         // Edge case: If the length of rod is 0 and the length of cut is also 0, then we can't cut the rod into peices, hence no value is obtainable
