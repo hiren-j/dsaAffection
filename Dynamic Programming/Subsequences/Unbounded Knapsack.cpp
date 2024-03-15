@@ -232,5 +232,5 @@ int main() {
 /*
     Topics: Array | Dynamic Programming
     Links: https://www.codingninjas.com/studio/problems/unbounded-unboundedKnapsack_1215029
-           https://www.geeksforgeeks.org/problems/unboundedKnapsack-with-duplicate-items4201/1
+           https://www.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1
 */
