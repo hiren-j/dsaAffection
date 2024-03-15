@@ -175,7 +175,7 @@ public:
     int lengthOfLongestSubsequence_V2(vector<int>& nums, int target) {
         int N = nums.size();
 
-        // Tabulation buffer: "prevRow[index][currTarget] / currRow[index][currTarget]" represents the length of the longest subsequence lying within the "index" elements from the start of the array, such that their sum is equal to the "currTarget"
+        // Tabulation buffer: "prevRow[currTarget] / currRow[currTarget]" represents the length of the longest subsequence lying within the "index" elements from the start of the array, such that their sum is equal to the "currTarget"
         vector<int> prevRow(target + 1, INT_MIN), currRow(target + 1, INT_MIN);
 
         // Edge case: If the array is empty and then target is 0, then no elements are required to sum to 0
