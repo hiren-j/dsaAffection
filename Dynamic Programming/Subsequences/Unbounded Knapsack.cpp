@@ -70,8 +70,8 @@ private:
 // #2 Class to implement the Top-down approach: 
 class TopDown_V2 {
 public:
-    // O(N*C) & O(N*C)
-    int knapSack(int N, int capacity, vector<int>& values, vector<int>& weights) {
+    // Method to find the maximum total value you can collect for the knapsack, using recursion with memoization - O(N*C) & O(N*C) : Where N let be the array size and C let be the capacity
+    int unboundedKnapsack(int N, int capacity, vector<int>& values, vector<int>& weights) {
         vector<vector<int>> memory(N, vector<int>(capacity + 1, -1));
         return solveWithMemo(memory, weights, values, N, 0, capacity);
     }
