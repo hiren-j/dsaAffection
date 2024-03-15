@@ -1,5 +1,6 @@
 // Program to count all the subsets of the given array with a sum equal to the given sum ~ coded by Hiren
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #define mod 1000000007
 #define controlAppFlow() {char userChoice; cout<<"\n\nPress \'R\' to restart the application, else it will exist: "; cin>>userChoice; userWantsOperation = (userChoice == 'R' ? true : false);}
