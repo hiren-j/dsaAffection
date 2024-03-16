@@ -36,7 +36,6 @@ public:
 		// Return the result value
 	    return minAbsDiff;
 	}
-	
 private:
     bool solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, int N, int index, int amount) {
         // Edge case: If the amount becomes zero, then there exists a subset with given amount 
