@@ -17,7 +17,7 @@ public:
 private:
     // O(N*N) & O(N*N)
     int solveWithMemo(vector<vector<int>>& memory, vector<int>& price, int N, int cutLength, int rodLength) {
-        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more peices
+        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more pieces
         if(cutLength - 1 == N)
             return (rodLength == 0) ? 0 : INT_MIN;
         
@@ -45,7 +45,7 @@ private:
 
     // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& price, int N, int cutLength, int rodLength) {
-        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more peices
+        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more pieces
         if(cutLength - 1 == N)
             return (rodLength == 0) ? 0 : INT_MIN;
             
@@ -80,7 +80,7 @@ public:
 private:
     // O(N*N) & O(N*N)
     int solveWithMemo(vector<vector<int>>& memory, vector<int>& price, int N, int startLength, int rodLength) {
-        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more peices
+        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more pieces
         if(startLength - 1 == N)
             return (rodLength == 0) ? 0 : INT_MIN;
             
@@ -110,7 +110,7 @@ private:
 
     // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& price, int N, int startLength, int rodLength) {
-        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more peices
+        // Edge case: If all the lengths are exhausted, then you can't cut the rod into more pieces
         if(startLength - 1 == N)
             return (rodLength == 0) ? 0 : INT_MIN;
             
@@ -143,7 +143,7 @@ public:
         // Tabulation buffer: dp[cutLength][rodLength] represents the maximum value which is obtainable by cutting a rod of length "rodLength" in the length of "cutLength"
         vector<vector<int>> dp(N + 1, vector<int>(N + 1, INT_MIN));
 
-        // Edge case: If the length of rod is 0 and the length of cut is also 0, then we can't cut the rod into peices, hence no value is obtainable
+        // Edge case: If the length of rod is 0 and the length of cut is also 0, then we can't cut the rod into pieces, hence no value is obtainable
         dp[0][0] = 0;
         
         // Treat each "cutLength" as the length of the cut that we can perform on the rod of length "rodLength" and find the maximum value which is obtainable
@@ -168,7 +168,7 @@ public:
         // Tabulation buffer: "prevRow[rodLength] / currRow[rodLength]" represents the maximum value which is obtainable by cutting a rod of length "rodLength" in the length of "cutLength"
         vector<int> prevRow(N + 1, 0), currRow(N + 1, 0);
         
-        // Edge case: If the length of rod is 0 and the length of cut is also 0, then we can't cut the rod into peices, hence no value is obtainable
+        // Edge case: If the length of rod is 0 and the length of cut is also 0, then we can't cut the rod into pieces, hence no value is obtainable
         prevRow[0] = 0;
         
         // Treat each "cutLength" as the length of the cut that we can perform on the rod of length "rodLength" and find the maximum value which is obtainable
