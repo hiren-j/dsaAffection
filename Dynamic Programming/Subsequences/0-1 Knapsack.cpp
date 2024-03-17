@@ -180,7 +180,7 @@ int main() {
 
     while(userWantsOperation) {
         // Controls console clearance for both "windows" and "linux" user
-        system("cles || clear");
+        system("cls || clear");
 
         cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
 
