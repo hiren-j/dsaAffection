@@ -135,7 +135,7 @@ private:
     }
 };
 
-// #2 Class to implement the Bottom-up approach:
+// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // #1 Method to find the minimum cost to buy weight kgs of oranges, using 2D buffer for tabulation - O(N*W) & O(N*W) : Where N let be the array size and W let be the weight
