@@ -9,11 +9,11 @@ using namespace std;
 class TopDown_V1 {
 public:
     // Method to find the minimum cost to buy weight kgs of oranges, using recursion with memoization - O(N*W) & O(N*W) : Where N let be the array size and W let be the weight
-	int minimumCost(vector<int>& cost, int N, int weight) {
-	    vector<vector<int>> memory(N, vector<int>(weight + 1, -1));
-	    int minCost = solveWithMemo(memory, cost, N, 1, weight);
-	    return (minCost == INT_MAX) ? -1 : minCost;
-	}
+    int minimumCost(vector<int>& cost, int N, int weight) {
+	vector<vector<int>> memory(N, vector<int>(weight + 1, -1));
+	int minCost = solveWithMemo(memory, cost, N, 1, weight);
+	return (minCost == INT_MAX) ? -1 : minCost;
+    }
 	
 private:
     // O(N*W) & O(N*W)
@@ -77,11 +77,11 @@ private:
 class TopDown_V2 {
 public:
     // Method to find the minimum cost to buy weight kgs of oranges, using recursion with memoization - O(N*W) & O(N*W) : Where N let be the array size and W let be the weight
-	int minimumCost(vector<int>& cost, int N, int weight) {
-	    vector<vector<int>> memory(N, vector<int>(weight + 1, -1));
-	    int minCost = solveWithMemo(memory, cost, N, 1, weight);
-	    return (minCost == INT_MAX) ? -1 : minCost;
-	}
+    int minimumCost(vector<int>& cost, int N, int weight) {
+	vector<vector<int>> memory(N, vector<int>(weight + 1, -1));
+	int minCost = solveWithMemo(memory, cost, N, 1, weight);
+	return (minCost == INT_MAX) ? -1 : minCost;
+    }
 	
 private:
     // O(N*W) & O(N*W)
@@ -139,55 +139,55 @@ private:
 class BottomUp {
 public:
     // #1 Method to find the minimum cost to buy weight kgs of oranges, using 2D buffer for tabulation - O(N*W) & O(N*W) : Where N let be the array size and W let be the weight
-	int minimumCost_V1(vector<int>& cost, int N, int weight) {
+    int minimumCost_V1(vector<int>& cost, int N, int weight) {
         // Tabulation buffer: dp[KG][currWeight] represents the minimum cost you can get by buying "currWeight" kgs of oranges such that by taking "KG" kgs 
-	    vector<vector<int>> dp(N + 1, vector<int>(weight + 1, INT_MAX));
+	vector<vector<int>> dp(N + 1, vector<int>(weight + 1, INT_MAX));
 
         // Edge case: If there is no kg and no weight, then you don't need any cost
-	    dp[0][0] = 0;
+	dp[0][0] = 0;
 
         // Treat each "KG" as the total kgs you can take and find the minimum cost you can get by buying "currWeight" kgs of oranges
-	    for(int KG = 1; KG <= N; ++KG) {
-	        for(int currWeight = 0; currWeight <= weight; ++currWeight) {
-	            int currSkip = dp[KG - 1][currWeight];
-	            int currTake = INT_MAX;
-	            if(cost[KG - 1] != -1 && KG <= currWeight) {
-	                currTake = dp[KG][currWeight - KG];
-	                currTake = (currTake != INT_MAX) ? currTake + cost[KG - 1] : currTake;
-	            }
-	            dp[KG][currWeight] = min(currTake, currSkip);
-	        }
+	for(int KG = 1; KG <= N; ++KG) {
+    	    for(int currWeight = 0; currWeight <= weight; ++currWeight) {
+	        int currSkip = dp[KG - 1][currWeight];
+	        int currTake = INT_MAX;
+	        if(cost[KG - 1] != -1 && KG <= currWeight) {
+	            currTake = dp[KG][currWeight - KG];
+		    currTake = (currTake != INT_MAX) ? currTake + cost[KG - 1] : currTake;
+		}
+	        dp[KG][currWeight] = min(currTake, currSkip);
 	    }
+	}
 	    
         // Return the minimum cost you can get to buy weight kgs of oranges
-	    return (dp[N][weight] == INT_MAX) ? -1 : dp[N][weight];
-	}
+	return (dp[N][weight] == INT_MAX) ? -1 : dp[N][weight];
+    }
 
     // #2 Method to find the minimum cost to buy weight kgs of oranges, using 1D buffer for tabulation - O(N*W) & O(W) : Where N let be the array size and W let be the weight
-	int minimumCost_V2(vector<int>& cost, int N, int weight) {
+    int minimumCost_V2(vector<int>& cost, int N, int weight) {
         // Tabulation buffer: "prevRow[currWeight] / currRow[currWeight]" represents the minimum cost you can get by buying "currWeight" kgs of oranges such that by taking "KG" kgs 
-	    vector<int> prevRow(weight + 1, INT_MAX), currRow(weight + 1, INT_MAX);
+	vector<int> prevRow(weight + 1, INT_MAX), currRow(weight + 1, INT_MAX);
 
         // Edge case: If there is no kg and no weight, then you don't need any cost
-	    prevRow[0] = 0;
+	prevRow[0] = 0;
 	    
         // Treat each "KG" as the total kgs you can take and find the minimum cost you can get by buying "currWeight" kgs of oranges
-	    for(int KG = 1; KG <= N; ++KG) {
-	        for(int currWeight = 0; currWeight <= weight; ++currWeight) {
-	            int currSkip = prevRow[currWeight];
-	            int currTake = INT_MAX;
-	            if(cost[KG - 1] != -1 && KG <= currWeight) {
-	                currTake = currRow[currWeight - KG];
-	                currTake = (currTake != INT_MAX) ? currTake + cost[KG - 1] : currTake;
-	            }
-	            currRow[currWeight] = min(currTake, currSkip);
+	for(int KG = 1; KG <= N; ++KG) {
+	    for(int currWeight = 0; currWeight <= weight; ++currWeight) {
+	        int currSkip = prevRow[currWeight];
+	        int currTake = INT_MAX;
+	        if(cost[KG - 1] != -1 && KG <= currWeight) {
+	            currTake = currRow[currWeight - KG];
+	            currTake = (currTake != INT_MAX) ? currTake + cost[KG - 1] : currTake;
 	        }
-	        prevRow = currRow;
+	        currRow[currWeight] = min(currTake, currSkip);
 	    }
+	    prevRow = currRow;
+	}
 	    
         // Return the minimum cost you can get to buy weight kgs of oranges
-	    return (prevRow[weight] == INT_MAX) ? -1 : prevRow[weight];
-	}
+	return (prevRow[weight] == INT_MAX) ? -1 : prevRow[weight];
+    }
 };
 
 // Driver code
