@@ -106,6 +106,6 @@ int main() {
     return 0;
 }
 /*
-	Topics: Array | Dynamic Programming
-	Link: https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
+    Topics: Array | Dynamic Programming
+    Link: https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
 */
