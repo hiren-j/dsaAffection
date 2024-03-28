@@ -79,10 +79,11 @@ int main() {
                 std::cin>>letter;
                 if(!islower(letter)) {
                     std::cout<<"You must enter a letter in lower case english letter!\n";
-                    continue;
                 }
-                s += letter;
-                index++;
+                else {
+                    s += letter;
+                    index++;
+                }
             }
 
             std::cout<<"\nYour string: "<<s;
@@ -97,7 +98,7 @@ int main() {
         char userChoice;
         std::cout<<"\n\nPress \'R\' to restart the application, else it will exit: ";
         std::cin>>userChoice;
-        userWantsOperation = (userChoice == 'R' ? true : false);
+        userWantsOperation = (userChoice == 'R');
     }
 
     return 0;
