@@ -97,6 +97,8 @@ int main() {
         // Controls console clearance for both "windows" and "linux" user
         system("cls || clear");
 
+        cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
+
         // Input the array size
         int N;
         cout<<"Enter the size of array: ";
