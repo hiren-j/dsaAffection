@@ -131,7 +131,6 @@ private:
 class BottomUp {
 public:
     // #1 Method to find the number of combinations that make up the given amount, using 2D buffer for tabulation - O(N*A) & O(N*A) : Where N let be the array size and A let be the amount
-    // O(N*A) & O(N*A)
     int countWaysToMakeAmount_V1(int amount, vector<int>& coins) {
         int N = coins.size();
 
