@@ -235,7 +235,7 @@ int main() {
             headNode->printList(headNode);
 
             // Segregation call
-            Solution_C solution;
+            Solution_B solution;
             headNode = solution.oddEvenList(headNode);
 
             // Print call
