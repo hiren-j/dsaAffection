@@ -8,54 +8,54 @@
 class Solution_A {
 public:
     // Method to find the missing numbers in the second array, using linear search - O(N*M) & O(1) : Where N let be the size of "nums1" and M of "nums2"
-	std::vector<int> getMissingNumbers(std::vector<int>& nums1, std::vector<int>& nums2) {
+    std::vector<int> getMissingNumbers(std::vector<int>& nums1, std::vector<int>& nums2) {
         // Stores the result values
-	    std::vector<int> result;
+	std::vector<int> result;
 	    
         // Iterate the first array
-	    for(int num1 : nums1) {
+	for(int num1 : nums1) {
             // Tracks the "num" exists in the second array or not
-	        bool isNotPresent = true;
+	    bool isNotPresent = true;
             // Iterate the second array and find the "num"
-	        for(int num2 : nums2) {
-	            if(num1 == num2) {
-	                isNotPresent = false;
-	                break;
-	            }
-	        }
-            // If the "num" is not present in the second array then store it to the result array
-	        if(isNotPresent) {
-	            result.push_back(num1);
-	        }
+	    for(int num2 : nums2) {
+	        if(num1 == num2) {
+	            isNotPresent = false;
+	            break;
+		}
 	    }
-
+            // If the "num" is not present in the second array then store it to the result array
+	    if(isNotPresent) {
+	        result.push_back(num1);
+	    }
+	}
+	    
         // Return the result array
-	    return result;
-	} 
+	return result;
+    } 
 };
 
 // #2 Solution class: 
 class Solution_B {
 public:
     // Method to find the missing numbers in the second array, using binary search - O(NLogM) & O(1) : Where N let be the size of "nums1" and M of "nums2"
-	std::vector<int> getMissingNumbers(std::vector<int>& nums1, std::vector<int>& nums2) {
+    std::vector<int> getMissingNumbers(std::vector<int>& nums1, std::vector<int>& nums2) {
         // Sort the second array to perform the binary search on it
-	    std::sort(std::begin(nums2), std::end(nums2));
+	std::sort(std::begin(nums2), std::end(nums2));
 
         // Stores the result values
-	    std::vector<int> result;
+	std::vector<int> result;
 	    
         // Iterate the first array
-	    for(int num : nums1) {
+	for(int num : nums1) {
             // If the "num" is not present in the second array then store it to the result array
-	        if(!binarySearch(nums2, nums2.size(), num)) {
-	            result.push_back(num);
-	        }
+	    if(!binarySearch(nums2, nums2.size(), num)) {
+	        result.push_back(num);
 	    }
+	}
 
         // Return the result array 
-	    return result;
-	} 
+	return result;
+    } 
 	
 private:
     // Method to check the given key is present in the given array or not - O(LogM) & O(1)
@@ -74,7 +74,7 @@ private:
                 end = mid - 1;
             }
         }
-        
+	    
         return false;
     }
 };
@@ -83,29 +83,29 @@ private:
 class Solution_C {
 public:
     // Method to find the missing numbers in the second array, using set - O(N+M) & O(M) : Where N let be the size of "nums1" and M of "nums2"
-	std::vector<int> getMissingNumbers(std::vector<int>& nums1, std::vector<int>& nums2) {
+    std::vector<int> getMissingNumbers(std::vector<int>& nums1, std::vector<int>& nums2) {
         // Stores the values of the second array
-	    std::unordered_set<int> visited;
+	std::unordered_set<int> visited;
 
         // Stores the result values
-	    std::vector<int> result;
+	std::vector<int> result;
     
         // Iterate the second array and store the values to the set
-	    for(int num : nums2) {
-	        visited.insert(num);
-	    }
+	for(int num : nums2) {
+	    visited.insert(num);
+	}
 
         // Iterate the first array
-	    for(int num : nums1) {
+	for(int num : nums1) {
             // If the "num" is not present in the second array then store it to the result array
-	        if(!visited.count(num)) {
-	            result.push_back(num);
-	        }
+	    if(!visited.count(num)) {
+	        result.push_back(num);
 	    }
+	}
 
         // Return the result array
-	    return result;
-	} 
+	return result;
+    } 
 };    
 
 // Class to implement the array operations:
