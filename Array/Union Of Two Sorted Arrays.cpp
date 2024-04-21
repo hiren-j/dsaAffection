@@ -143,6 +143,8 @@ int main() {
         // Controls console clearance for both "windows" and "linux" user
         system("cls || clear");
 
+        std::cout<<"The application only accepts non-decimal numeric type value, unless specified!\n\n";
+        
         // Create the arrays
         ArrayOperations arrOperation;
         vector<int> nums1 = arrOperation.createArray(1); cout<<"\n";
