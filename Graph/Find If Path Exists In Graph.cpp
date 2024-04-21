@@ -118,7 +118,7 @@ int main() {
 
         // Check the given values are lying within the problem constraints or not
         if(n <= 0 || n >= 2 * 1e5 + 1) {
-            std::cout<<"You must enter the value of n, which lies between 1 and 20^5!";
+            std::cout<<"You must enter the vertices value, which lies between 1 and 20^5!";
         }
         else if(size <= -1 || size >= 2 * 1e5 + 1) {
             std::cout<<"You must enter the edge size, which lies between 0 and 20^5!";
