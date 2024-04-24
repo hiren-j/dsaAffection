@@ -1,3 +1,4 @@
+// Program to delete the node with the given key in the binary search tree ~ coded by Hiren
 #include <iostream>
 #include <cstdlib>
 #include <vector>
@@ -228,12 +229,12 @@ int main() {
             Node* rootNode = nullptr;
 
             // Input the value of the nodes
-            for(int node=1; node<=n;) {
+            for(int node = 1; node <= n;) {
                 int value;
                 std::cout<<"Enter the value of the "<<node<<"th node: ";
                 std::cin>>value;
                 if(value <= -1e5 - 1 || value >= 1e5 + 1) {
-                    std::cout<<"You must enter a value which lies between -10^5 and 10^5!";
+                    std::cout<<"You must enter a value which lies between -10^5 and 10^5!\n";
                 }
                 else {
                     rootNode = rootNode->insertNode(rootNode, value);
