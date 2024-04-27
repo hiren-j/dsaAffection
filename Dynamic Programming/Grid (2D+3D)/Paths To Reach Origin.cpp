@@ -58,7 +58,7 @@ private:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // Method to find the total number of paths from points to the origin, using 2D buffer for tabulation - O(X*Y) & O(X*Y)
+    // #1 Method to find the total number of paths from points to the origin, using 2D buffer for tabulation - O(X*Y) & O(X*Y)
     int numPaths_V1(int X, int Y) {        
         // Tabulation buffer: dp[R][C] represents the total number of paths you can take to reach the origin (0, 0) from the cell (R, C)
         vector<vector<int>> dp(X + 1, vector<int>(Y + 1, 1));
@@ -78,7 +78,7 @@ public:
         return dp[X][Y];
     }
 
-    // Method to find the total number of paths from points to the origin, using 1D buffer for tabulation - O(X*Y) & O(Y)
+    // #2 Method to find the total number of paths from points to the origin, using 1D buffer for tabulation - O(X*Y) & O(Y)
     int numPaths_V2(int X, int Y) {
         vector<int> currRow(Y + 1, 1); // Tracks the tabulation values of any current row 
         vector<int> prevRow(Y + 1, 1); // Tracks the tabulation values of the previous row of the current row 
@@ -109,6 +109,8 @@ int main() {
     while(userNeedOperation) {
         // Controls console clearance for both "windows" and "linux" user
         system("cls || clear");
+
+        cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
 
         // Input the value of X and Y
         int X, Y;
