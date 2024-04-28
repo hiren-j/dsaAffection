@@ -175,7 +175,6 @@ int main() {
 
     return 0;
 }
-// Link: https://www.geeksforgeeks.org/problems/union-of-two-sorted-arrays-1587115621/1
 /*
     Topics: Array | Two Pointers
     Link: https://www.geeksforgeeks.org/problems/union-of-two-sorted-arrays-1587115621/1
