@@ -136,15 +136,15 @@ public:
 
 // Driver code
 int main() {
-    // Tracks the user wants to perform the arrOperation or not
-    bool userNeedOperation = true;
+    // Tracks the user wants to run the application or not
+    bool userRunsApplication = true;
 
-    while(userNeedOperation) {
+    while(userRunsApplication) {
         // Controls console clearance for both "windows" and "linux" user
         system("cls || clear");
 
-        std::cout<<"The application only accepts non-decimal numeric type value, unless specified!\n\n";
-        
+        cout<<"Note: The application only accepts non-decimal numeric type value, unless specifed!\n\n";
+
         // Create the arrays
         ArrayOperations arrOperation;
         vector<int> nums1 = arrOperation.createArray(1); cout<<"\n";
@@ -170,11 +170,12 @@ int main() {
         char userChoice;
         cout<<"\nPress \'R\' to restart the application, else it will exit: ";
         cin>>userChoice;
-        userNeedOperation = (userChoice == 'R');
+        userRunsApplication = (userChoice == 'R');
     }
 
     return 0;
 }
+// Link: https://www.geeksforgeeks.org/problems/union-of-two-sorted-arrays-1587115621/1
 /*
     Topics: Array | Two Pointers
     Link: https://www.geeksforgeeks.org/problems/union-of-two-sorted-arrays-1587115621/1
