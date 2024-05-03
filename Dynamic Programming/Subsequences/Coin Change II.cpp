@@ -1,6 +1,5 @@
 // Program to find the number of combinations that make up the given amount ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 using namespace std;
 
