@@ -1,6 +1,5 @@
 // Program to segregate all the nodes with odd position together followed by the nodes with even position and then return the reordered list (Note that the relative order inside both the even and odd groups should remain as it) ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 
 // List template
