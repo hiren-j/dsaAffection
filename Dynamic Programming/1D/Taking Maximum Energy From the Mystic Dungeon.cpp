@@ -62,7 +62,7 @@ private:
     }
 };
 
-// Class to implement the Bottom-down approach:
+// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the maximum possible energy you can gain, using constant auxiliary space - O(N) & O(1) : Where N let be the size of "energy" array
