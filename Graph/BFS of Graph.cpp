@@ -88,7 +88,7 @@ int main() {
         cout<<"Enter the total number of edges: ";
         cin>>E;
 
-        // Check the given arrays are lying within the problem constraints or not
+        // Check the given values are lying within the problem constraints or not
         if(V < 2 || V > 1e3) {
             std::cout<<"You must enter the size of vertices, which lies between 2 and 10^3!";
         }
