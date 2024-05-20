@@ -1,6 +1,5 @@
 // Program to partition the list such that all the nodes less than x come before nodes greater than or equal to x while maintaing the relative order ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 
 // List template
