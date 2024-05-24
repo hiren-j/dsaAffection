@@ -27,13 +27,13 @@ class Backtracking {
 
         // Explore all the 4 directions one by one from the current cell
         for(auto& dir : directions) {
-            int reachRow   = dir[0]; // Tracks the final row you can reach from the current cell
-            int reachCol   = dir[1]; // Tracks the final column you can reach from the current cell
-            char direction = dir[2]; // Tracks the value of current direction
+            int reachRow   = R + dir[0]; // Tracks the final row you can reach from the current cell
+            int reachCol   = C + dir[1]; // Tracks the final column you can reach from the current cell
+            char direction = dir[2];     // Tracks the value of current direction
             
-            currPath.push_back(direction);                               // Push the direction to ensure the correct order of the path
-            getAllDestinationPaths(grid, N, R + reachRow, C + reachCol); // Traverse and find the source to destination path from the directions chosen from the current cell
-            currPath.pop_back();                                         // Pop the previously visited direction to make sure the correct order of the upcoming direction
+            currPath.push_back(direction);                       // Push the direction to ensure the correct order of the path
+            getAllDestinationPaths(grid, N, reachRow, reachCol); // Traverse and find the source to destination path from the directions chosen from the current cell
+            currPath.pop_back();                                 // Pop the previously visited direction to make sure the correct order of the upcoming direction
         }
 
         // Mark the current cell as unvisited
