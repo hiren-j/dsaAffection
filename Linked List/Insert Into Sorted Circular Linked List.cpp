@@ -1,7 +1,6 @@
 // Program to insert a node into a sorted circular linked list ~ coded by Hiren
 #include <algorithm>
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 
 // List template
