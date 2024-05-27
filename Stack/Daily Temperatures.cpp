@@ -1,6 +1,5 @@
 // Program to return an array "answer" such that "answer[i]" is the number of days we have to wait after the ith day to get a warmer temperature ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 #include <stack>
 using namespace std;
