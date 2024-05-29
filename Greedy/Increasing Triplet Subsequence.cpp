@@ -1,7 +1,6 @@
 // Program to check is if there exists a triple of indices (i, j, k) such that (i < j < k) and (nums[i] < nums[j] < nums[k]) ~ coded by Hiren
 #define ll long long
 #include <iostream>
-#include <climits>
 #include <vector>
 
 // Solution class:
