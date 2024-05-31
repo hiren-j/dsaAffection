@@ -36,7 +36,7 @@ class Solution {
     }
 
 public:
-    // Method to find the maximum amount of gold you can collect under the specified conditions - O(4^(N*M)) & O(N*M)
+    // Method to find the maximum amount of gold you can collect under the specified conditions - O((N*M) * 4^(N*M)) & O(N*M)
     int getMaximumGold(vector<vector<int>>& grid) {
         N = grid.size(), M = grid[0].size();
 
