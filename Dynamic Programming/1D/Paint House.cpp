@@ -232,10 +232,10 @@ int main() {
 		}
 	    }
 			
-	   // Call to find the minimum cost
-	   BottomUp bottomUp;
-	   int minCost = bottomUp.paintHouse_B(cost);
-	   cout<<"\nThe minimum cost of painting all the houses such that no adjacent houses are painted with the same colour is: "<<minCost;
+	    // Call to find the minimum cost
+	    BottomUp bottomUp;
+	    int minCost = bottomUp.paintHouse_B(cost);
+	    cout<<"\nThe minimum cost of painting all the houses such that no adjacent houses are painted with the same colour is: "<<minCost;
 	}
 
 	// Input section to control the flow of iterations of the application
