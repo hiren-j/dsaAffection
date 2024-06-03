@@ -57,7 +57,7 @@ private:
     	return memory[house][skipColour] = min({paintGreen, paintRed, paintYellow});
     }
 	
-	// O(2^N) & O(N)
+    // O(2^N) & O(N)
     int solveWithoutMemo(vector<vector<int>>& cost, int N, int house, int skipColour) {
 	// Edge case: If all the houses are exhausted then you can't paint anymore
     	if(house == N)
