@@ -248,6 +248,7 @@ int main() {
     return 0;
 }
 /*
+	Topics: Array | Dynamic Programming
 	Links: https://www.naukri.com/code360/problems/paint-house_1460385
 	       https://leetcode.com/problems/paint-house/description/
 */
