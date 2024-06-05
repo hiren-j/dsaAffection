@@ -1,6 +1,5 @@
 // Program to find the knight's minimum initial health so that he can rescue the princess ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <climits>
 #include <vector>
 using namespace std;
@@ -269,7 +268,7 @@ int main() {
 
         // Prompt section to handle the flow of iterations of the application
         char userChoise;
-        cout<<"\n\nPress \'Y\' to perform the same operation on an another dungeon, else application will exit automatically: ";
+        cout<<"\n\nPress \'Y\' to perform the same operation on an another dungeon, else application will exit: ";
         cin>>userChoise;
         userWantsOperation = (userChoise == 'Y') ? true : false ;
     }
