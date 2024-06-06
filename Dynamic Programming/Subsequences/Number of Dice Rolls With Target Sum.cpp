@@ -1,8 +1,7 @@
 // Program to find the number of possible ways (out of the K^N total ways) to roll the dice, so the sum of the face-up numbers equals the target value ~ coded by Hiren
+#define MOD 1000000007
 #include <iostream>
-#include <cstdlib>
 #include <vector>
-#define mod 1000000007
 using namespace std;
 
 // Class to implement the Top-down approach:
@@ -25,14 +24,12 @@ private:
         if(memory[N][target] != -1)
             return memory[N][target];
 
-        // Stores the "total number of possible ways so the sum of the face-up numbers equals the target / result value"
+        // Stores the result value
         int count = 0;
 
         // Iterate and if possible, then take the face number in the target
-        for(int face = 1; face <= K; ++face) {
-            if(face <= target) {
-                count = (count + solveWithMemo(memory, N - 1, K, target - face)) % mod;
-            }
+        for(int face = 1; (face <= K && face <= target); ++face) {
+            count = (count + solveWithMemo(memory, N - 1, K, target - face)) % MOD;
         }   
 
         // Store the result value to the memoization table and then return it
@@ -45,14 +42,12 @@ private:
         if(N == 0) 
             return (target == 0);
 
-        // Stores the "total number of possible ways so the sum of the face-up numbers equals the target / result value"
+        // Stores the result value
         int count = 0;
 
         // Iterate and if possible, then take the face number in the target
-        for(int face = 1; face <= K; ++face) {
-            if(face <= target) {
-                count = (count + solveWithoutMemo(N - 1, K, target - face)) % mod;
-            }
+        for(int face = 1; (face <= K && face <= target); ++face) {
+            count = (count + solveWithoutMemo(N - 1, K, target - face)) % MOD;
         }
 
         // Return the result value
@@ -64,7 +59,7 @@ private:
 class BottomUp {
 public:
     // #1 Method to find the number of possible ways to roll the dice so the sum of the face-up numbers equals the target, using 2D buffer for tabulation - O(N*T*K) & O(N*T) : Where T let be the target
-    int numRollsToTarget_V1(int N, int K, int target) {        
+    int numRollsToTarget_A(int N, int K, int target) {        
         // Tabulation buffer: dp[dice][currTarget] represents the total number of possible ways so the sum of the face-up numbers equals the "currTarget" such that by rolling "dice" number of dice
         vector<vector<int>> dp(N + 1, vector<int>(target + 1, 0));
 
@@ -73,12 +68,10 @@ public:
 
         // Treat each "dice" as the number of dice rolled and find the total number of possible ways so the sum of the face-up numbers equals the "currTarget"
         for(int dice = 1; dice <= N; ++dice) {
-            for(int currTarget = 0; currTarget <= target; ++currTarget) {
+            for(int currTarget = 1; currTarget <= target; ++currTarget) {
                 int count = 0;
-                for(int face = 1; face <= K; ++face) {
-                    if(face <= currTarget) {
-                        count = (count + dp[dice - 1][currTarget - face]) % mod;
-                    }
+                for(int face = 1; (face <= K && face <= currTarget); ++face) {
+                    count = (count + dp[dice - 1][currTarget - face]) % MOD;
                 }
                 dp[dice][currTarget] = count;
             }
@@ -89,7 +82,7 @@ public:
     }
 
     // #2 Method to find the number of possible ways to roll the dice so the sum of the face-up numbers equals the target, using 1D buffer for tabulation - O(N*T*K) & O(T) : Where T let be the target
-    int numRollsToTarget_V2(int N, int K, int target) {        
+    int numRollsToTarget_B(int N, int K, int target) {        
         // Tabulation buffer: "prevRow[currTarget] / currRow[currTarget]" represents the total number of possible ways so the sum of the face-up numbers equals the "currTarget" such that by rolling "dice" number of dice
         vector<int> prevRow(target + 1, 0), currRow(target + 1, 0);
 
@@ -98,12 +91,10 @@ public:
 
         // Treat each "dice" as the number of dice rolled and find the total number of possible ways so the sum of the face-up numbers equals the "currTarget"
         for(int dice = 1; dice <= N; ++dice) {
-            for(int currTarget = 0; currTarget <= target; ++currTarget) {
+            for(int currTarget = 1; currTarget <= target; ++currTarget) {
                 int count = 0;
-                for(int face = 1; face <= K; ++face) {
-                    if(face <= currTarget) {
-                        count = (count + prevRow[currTarget - face]) % mod;
-                    }
+                for(int face = 1; (face <= K && face <= currTarget); ++face) {
+                    count = (count + prevRow[currTarget - face]) % MOD;
                 }
                 currRow[currTarget] = count;
             }
@@ -118,9 +109,9 @@ public:
 // Driver code
 int main() {
     // Tracks the user wants to perform the operation or not
-    bool userWantsOperation = true;
+    bool userRunsApp = true;
 
-    while(userWantsOperation) {
+    while(userRunsApp) {
         // Controls console clearance for both "windows" and "linux" user
         system("cls || clear");
 
@@ -141,7 +132,7 @@ int main() {
         cout<<"Enter the target value: ";
         cin>>target;
 
-        // Check the given values are valid or not
+        // Check the given values are lying within the problem constraints or not
         if(N <= 0 || N >= 31 || K <= 0 || K >= 31) {
             cout<<"You must enter the value of N and K, which lies between 1 and 30!";
         }
@@ -150,7 +141,7 @@ int main() {
         }
         else {
             BottomUp bottomUp;
-            int numWays = bottomUp.numRollsToTarget_V2(N, K, target);
+            int numWays = bottomUp.numRollsToTarget_B(N, K, target);
             cout<<"\nThe total number of possible ways to roll the dice so the sum of the face-up numbers equals the target "<<target<<" is: "<<numWays;
         }
 
@@ -158,7 +149,7 @@ int main() {
         char userChoice;
         cout<<"\n\nPress \'R\' to restart the application, else it will exit: ";
         cin>>userChoice;
-        userWantsOperation = (userChoice == 'R' ? true : false);
+        userRunsApp = (userChoice == 'R');
     }
 
     return 0;
