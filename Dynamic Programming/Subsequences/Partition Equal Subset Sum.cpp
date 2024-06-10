@@ -1,6 +1,5 @@
 // Program to determine if you can partition the array into two subsets such that the sum of the elements in both the subsets is equal or not ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <numeric>
 #include <vector>
 using namespace std;
@@ -225,7 +224,7 @@ int main() {
         char userChoice;
         cout<<"\n\nPress \'R\' to restart the application, else it will exit: ";
         cin>>userChoice;
-        userWantsOperation = (userChoice == 'R' ? true : false);
+        userWantsOperation = (userChoice == 'R');
     }
 
     return 0;
