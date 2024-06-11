@@ -214,7 +214,6 @@ int main() {
 
     return 0;
 }
-*/
 /*
     Topics: Array | Dynamic Programming
     Links: https://www.codingninjas.com/studio/problems/unbounded-unboundedKnapsack_1215029
