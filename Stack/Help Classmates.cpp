@@ -1,6 +1,5 @@
 // Program to find each student's classmate with lower marks and a higher roll number ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 #include <stack>
 typedef long long ll;
@@ -121,7 +120,7 @@ int main() {
         char userChoise;
         cout<<"\n\nPress \'R\' to restart the application, else it will exit automatically: ";
         cin>>userChoise;
-        userWantsOperation = (userChoise == 'R' ? true : false);
+        userWantsOperation = (userChoise == 'R');
     }
 
     return 0;
