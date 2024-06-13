@@ -1,6 +1,5 @@
 // Program to find the the previous greater element of each element of an array ~ coded by Hiren
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 #include <stack>
 typedef long long ll;
