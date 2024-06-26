@@ -89,7 +89,7 @@ int main() {
         char userChoise;
         cout<<"\n\nPress \'R\' to restart the application, else application will exit automatically: ";
         cin>>userChoise;
-        canPerformOperation = (userChoise == 'R' ? true : false);        
+        canPerformOperation = (userChoise == 'R');        
     }
 
     return 0;
