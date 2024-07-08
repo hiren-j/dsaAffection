@@ -1,7 +1,11 @@
+// Program to find the maximum amount of money the thief can rob without alerting the police ~ coded by Hiren
+
+(:--------------------------------------------------------------------------------------------------------------:)
+
 // Class to implement the Top-down approach:
 class TopDown {
 public:
-    // Method to find the maximum amount of money can rob, using recursion with memoization - O(N) & O(N)
+    // Method to find the maximum amount of money the thief can rob, using recursion with memoization - O(N) & O(N)
     int robMaxMoney(TreeNode* rootNode) {
         unordered_map<TreeNode*, int> memory;
         return solveWithMemo(rootNode, memory);
@@ -56,7 +60,8 @@ private:
         return max(currRob, currSkip);
     }
 };
-/*
-    Topics: Dynamic Programming | Tree | Depth-First Search | Binary Tree
-    Link: https://leetcode.com/problems/house-robber-iii/description/
-*/
+
+(:--------------------------------------------------------------------------------------------------------------:)
+    
+Topics: Dynamic Programming | Tree | Depth-First Search | Binary Tree
+Link  : https://leetcode.com/problems/house-robber-iii/description/
