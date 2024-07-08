@@ -42,7 +42,7 @@ private:
 
         // There are always two possibilities to perform at each node
         int currSkip = solveWithoutMemo(rootNode->left) + solveWithoutMemo(rootNode->right); // Is to skip the rob and move to it's child nodes
-        int currRob  = rootNode->val;                                                                  // Is to rob and take the value of it                
+        int currRob  = rootNode->val;                                                        // Is to rob and take the value of it                
 
         // If you rob at the node then you can't rob at it's left child / adjacent node
         if(rootNode->left) 
