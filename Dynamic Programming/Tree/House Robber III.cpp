@@ -1,4 +1,4 @@
-// Program to find the maximum amount of money the thief can rob without alerting the police ~ coded by Hiren
+// Code to find the maximum amount of money the thief can rob without alerting the police ~ coded by Hiren
 
 (:--------------------------------------------------------------------------------------------------------------:)
 
