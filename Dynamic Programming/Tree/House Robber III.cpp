@@ -1,6 +1,6 @@
 // Code to find the maximum amount of money the thief can rob without alerting the police ~ coded by Hiren
 
-(:--------------------------------------------------------------------------------------------------------------:)
+--------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -61,7 +61,7 @@ private:
     }
 };
 
-(:--------------------------------------------------------------------------------------------------------------:)
+--------------------------------------------------------------------------------------------------------------------
     
 Topics: Dynamic Programming | Tree | Depth-First Search | Binary Tree
 Link  : https://leetcode.com/problems/house-robber-iii/description/
