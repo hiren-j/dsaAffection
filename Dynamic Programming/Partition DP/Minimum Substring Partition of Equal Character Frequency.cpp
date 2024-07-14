@@ -94,7 +94,7 @@ public:
     int minimumSubstringsInPartition(string& s) {
         int n = s.size();
 
-        // DP Table: dp[startIndex] represents the minimum number of substrings that you can partition "s" into such that by considering the string of index "0" to "startIndex"
+        // DP Table: dp[startIndex] represents the minimum number of substrings that you can partition "s" into such that by considering the string of index "n-1" to "startIndex"
         vector<int> dp(n + 1, INT_MAX);
 
         // Base case: If all the letters are exhausted then you can't do any partitions
