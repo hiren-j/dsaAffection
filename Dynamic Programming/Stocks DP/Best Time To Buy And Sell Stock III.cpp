@@ -89,7 +89,7 @@ public:
         return dp[0][1][2];
     }
 
-    // #1 Method to find the maximum profit you can achieve, using 1D tabulation - O(N*2*3) & O(2*3)
+    // #2 Method to find the maximum profit you can achieve, using 1D tabulation - O(N*2*3) & O(2*3)
     int maxProfit_V2(vector<int>& prices) {
         int n = prices.size();
 
