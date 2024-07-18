@@ -63,7 +63,7 @@ private:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // #1 Method to find the maximum profit you can achieve, using 2D tabulation - O(N*2*3) & O(N*2*3)
+    // #1 Method to find the maximum profit you can achieve, using 3D tabulation - O(N*2*3) & O(N*2*3)
     int maxProfit_V1(vector<int>& prices) {
         int n = prices.size();
 
@@ -89,7 +89,7 @@ public:
         return dp[0][1][2];
     }
 
-    // #2 Method to find the maximum profit you can achieve, using 1D tabulation - O(N*2*3) & O(2*3)
+    // #2 Method to find the maximum profit you can achieve, using 2D tabulation - O(N*2*3) & O(2*3)
     int maxProfit_V2(vector<int>& prices) {
         int n = prices.size();
 
