@@ -77,7 +77,7 @@ public:
 // Solution class
 class Solution {
     unordered_map<TreeNode*, bool> isParentPresent;
-    unordered_set<int> nodesForDeletion;
+    unordered_set<int> nodesToDelete;
 
     TreeNode* deleteNodesAndUpdateParentInfo(TreeNode* rootNode) {
         // Edge case: When the tree is empty
@@ -88,7 +88,7 @@ class Solution {
         rootNode->right = deleteNodesAndUpdateParentInfo(rootNode->right);
 
         // If the node is going to be deleted
-        if(nodesForDeletion.count(rootNode->val)) {
+        if(nodesToDelete.count(rootNode->val)) {
             // Mark the left child as orphan
             if(rootNode->left)
                 isParentPresent[rootNode->left] = false;
@@ -113,12 +113,12 @@ public:
     // Method to delete the nodes and return the forest using hashmap, hashset and dfs - O(N) & O(N)
     vector<TreeNode*> deleteNodesReturnForest(TreeNode* rootNode, vector<int>& to_delete) {
         for(int node : to_delete)
-            nodesForDeletion.insert(node);
+            nodesToDelete.insert(node);
 
         deleteNodesAndUpdateParentInfo(rootNode); 
 
         // If the root node of the tree is not for deletion then reset it as the root node of the tree
-        if(!nodesForDeletion.count(rootNode->val))
+        if(!nodesToDelete.count(rootNode->val))
             isParentPresent[rootNode] = false;
 
         vector<TreeNode*> forest;
