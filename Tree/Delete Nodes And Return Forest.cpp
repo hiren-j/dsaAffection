@@ -172,6 +172,7 @@ private:
             cout<<"\nEnter the size of \"to_delete\" array: ";
         cin>>n;
 
+        // Check the array size is lying within the problem constraints or not
         while(n < 1 || n > 1000) {
             cout<<"\nYou must enter a size which lies between 1 and 1000!\nKindly! Enter the size again: ";
             cin>>n;
