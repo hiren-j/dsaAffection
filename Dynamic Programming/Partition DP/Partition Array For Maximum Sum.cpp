@@ -25,7 +25,7 @@ private:
 
         int maximumSum = 0, maxElement = 0;
 
-        // Perform all the K partitions of the index and chose the partition with the maximum sum
+        // Perform all the K partitions for the index and chose the partition with the maximum sum
         for(int index = startIndex; index < min(startIndex + k, n); ++index) {
             maxElement       = max(maxElement, nums[index]);
             int partitionSum = ((index - startIndex + 1) * maxElement) + solveWithMemo(memory, nums, k, n, index + 1);
@@ -44,7 +44,7 @@ private:
 
         int maximumSum = 0, maxElement = 0;
 
-        // Perform all the K partitions on the index and chose the partition with the maximum sum
+        // Perform all the K partitions for the index and chose the partition with the maximum sum
         for(int index = startIndex; index < min(startIndex + k, n); ++index) {
             maxElement       = max(maxElement, nums[index]);
             int partitionSum = ((index - startIndex + 1) * maxElement) + solveWithoutMemo(nums, k, n, index + 1);
