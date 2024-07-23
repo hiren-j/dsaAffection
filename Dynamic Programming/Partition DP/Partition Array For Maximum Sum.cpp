@@ -85,7 +85,5 @@ public:
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-/*
-    Topics: Array | Dynamic Programming
-    Link  : https://leetcode.com/problems/partition-array-for-maximum-sum/description/
-*/
+Topics: Array | Dynamic Programming
+Link  : https://leetcode.com/problems/partition-array-for-maximum-sum/description/
