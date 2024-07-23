@@ -170,7 +170,5 @@ public:
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-    Topics: String | Dynamic Programming
-    Link  : https://leetcode.com/problems/palindrome-partitioning-ii/description/
-*/
+Topics: String | Dynamic Programming
+Link  : https://leetcode.com/problems/palindrome-partitioning-ii/description/
