@@ -8,7 +8,7 @@ class TopDown {
 
     // O(M^(N*M)) & O(N)
     int solveWithoutMemo(vector<vector<int>>& grid, vector<vector<int>>& moveCost, int R, int prevCol) {
-        // Edge case: If all the rows are exhausted then 
+        // Edge case: If all the rows are exhausted then there's no more cost to pick 
         if(R == N)
             return 0;
 
@@ -28,7 +28,7 @@ class TopDown {
 
     // O(M*N*M) & O(N*M + N)
     int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, vector<vector<int>>& moveCost, int R, int prevCol) {
-        // 
+        // Edge case: If all the rows are exhausted then there's no more cost to pick
         if(R == N)
             return 0;
 
