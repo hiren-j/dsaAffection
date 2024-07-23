@@ -1,4 +1,4 @@
-// Program to find the minimum cost of a path that starts from any cell in the first row and ends at any cell in the last row ~ coded by Hiren
+// Code to find the minimum cost of a path that starts from any cell in the first row and ends at any cell in the last row ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
