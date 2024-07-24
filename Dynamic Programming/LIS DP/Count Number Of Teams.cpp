@@ -18,7 +18,7 @@ private:
     int n;
 
     // O(2*N*N*4) & O(N*N*4 + N)
-    int solveWithMemo(vector<vector<vector<int>>>& memory, vector<int>& rating, int k, int index, int   prevIndex, bool toFindIncreasing) {
+    int solveWithMemo(vector<vector<vector<int>>>& memory, vector<int>& rating, int k, int index, int prevIndex, bool toFindIncreasing) {
         // Edge case: If you've found a strictly increasing subsequence of length 3 then return 1 
         if(k == 0)
             return 1;
