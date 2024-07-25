@@ -1,4 +1,4 @@
-// Program to find the length of the longest subsequence in array which is an arithmetic sequence such that the difference between adjacent elements in the subsequence is equal to the given difference ~ coded by Hiren
+// Code to find the length of the longest subsequence in array which is an arithmetic sequence such that the difference between adjacent elements in the subsequence is equal to the given difference ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
