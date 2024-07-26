@@ -1,4 +1,4 @@
-// Program to find the length of the longest bitonic subsequence. A subsequence of array is called Bitonic if it is first strictly increasing, then strictly decreasing. A strictly increasing or a strictly decreasing sequence should not be considered as a bitonic sequence ~ coded by Hiren
+// Code to find the length of the longest bitonic subsequence. A subsequence of array is called Bitonic if it is first strictly increasing, then strictly decreasing. A strictly increasing or a strictly decreasing sequence should not be considered as a bitonic sequence ~ coded by Hiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
