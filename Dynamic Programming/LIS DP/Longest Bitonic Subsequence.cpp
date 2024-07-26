@@ -7,8 +7,8 @@ class BottomUp {
 public:
     // Method to find the length of the longest bitonic subsequence, using 1D tabulation - O(N*N) & O(N)
     int LongestBitonicSequence(int n, vector<int>& nums) {
-        vector<int> LIS(n, 1); // LIS[index] represents the length of the LIS ending at index
-        vector<int> LDS(n, 1); // LDS[index] represents the length of the LDS ending at index
+        vector<int> LIS(n, 1); // LIS[index] represents the length of the LIS ending at that index
+        vector<int> LDS(n, 1); // LDS[index] represents the length of the LDS ending at that index
         
         // Compute the length of the LIS of each index
         for(int index = 0; index < n; ++index) 
