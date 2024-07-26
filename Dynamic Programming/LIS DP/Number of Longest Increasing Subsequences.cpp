@@ -5,7 +5,7 @@
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // O(N*N) & O(N)
+    // Method to find the number of longest increasing subsequences, using 1D tabulation - O(N*N) & O(N)
     int findNumberOfLIS(vector<int>& nums) {
         int n = nums.size();
 
