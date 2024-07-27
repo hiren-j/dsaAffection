@@ -161,7 +161,7 @@ public:
 
         // O(2^size) & O(size)
         int solveWithoutMemo(vector<string>& strs, int m, int n, int index) {
-            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication
+            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
             if(index == size) 
                 return (m >= 0 && n >= 0) ? 0 : INT_MIN;
 
