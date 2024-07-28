@@ -112,4 +112,4 @@ public:
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming
-Link  : https://leetcode.com/problems/longest-common-subsequence/
+Link  : https://www.geeksforgeeks.org/problems/find-number-of-times-a-string-occurs-as-a-subsequence3020/1
