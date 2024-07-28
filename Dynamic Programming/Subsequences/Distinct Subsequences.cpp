@@ -4,10 +4,10 @@
 using namespace std;
 
 // #1 Class to implement the Top-down approach:
-class TopDown_A {
+class TopDown_V1 {
     int n, m;
 
-    // O(2^N) & O(max(N,M)) 
+    // O(2^N) & O(N)
     int solveWithoutMemo(string& s1, string& s2, int i, int j) {
         // Edge case: If all the letters of "s2" are exhausted then you've one valid way 
         if(j == m)
@@ -25,11 +25,11 @@ class TopDown_A {
         if(s1[i] == s2[j])
             currTake = solveWithoutMemo(s1, s2, i + 1, j + 1);
             
-        // Return ther result value
+        // Return the result value
         return (currSkip + currTake);
     }
     
-    // O(N*M) & O(N*M)
+    // O(2*N*M) & O(N*M + N)
     int solveWithMemo(vector<vector<int>>& memory, string& s1, string& s2, int i, int j) {
         // Edge case: If all the letters of "s2" are exhausted then you've one valid way 
         if(j == m)
@@ -65,10 +65,10 @@ public:
 };
 
 // #2 Class to implement the Top-down approach:
-class TopDown_B {
+class TopDown_V2 {
     int n, m;
 
-    // O(2^N) & O(max(N,M))
+    // O(N^N) & O(N)
     int solveWithoutMemo(string& s1, string& s2, int startIndex, int j) {
         // Edge case: If all the letters of "s2" are exhausted then you've one valid way 
         if(j == m)
@@ -92,7 +92,7 @@ class TopDown_B {
         return resCount;
     }
 
-    // O(N*M) & O(N*M)
+    // O(N*N*M) & O(N*M + N)
     int solveWithMemo(vector<vector<int>>& memory, string& s1, string& s2, int startIndex, int j) {
         // Edge case: If all the letters of "s2" are exhausted then you've one valid way 
         if(j == m)
@@ -121,7 +121,7 @@ class TopDown_B {
     }
     
 public:
-    // Method to count the total number of subsequences of string "s1" equal to string "s2", using recursion with memoization - O(N*M) & O(N*M)
+    // Method to count the total number of subsequences of string "s1" equal to string "s2", using recursion with memoization - O(N*N*M) & O(N*M)
     int numDistinct(string& s1, string& s2) {
         n = s1.size(), m = s2.size();
         vector<vector<int>> memory(n, vector<int>(m, -1));
@@ -133,13 +133,13 @@ public:
 class BottomUp {
 public:
     // #1 Method to count the total number of subsequences of string "s1" equal to string "s2", using 2D tabulation - O(N*M) & O(N*M)
-    int numDistinct_A(string& s1, string& s2) {
+    int numDistinct_V1(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
         
-        // 2D table for tabulation: dp[i][j] stores the count of total number of subsequences of "s1" equal to "s2" such that by considering the first i letters of "s1" and j letters of "s2"
+        // 2D DP table: dp[i][j] stores the count of total number of subsequences of "s1" equal to "s2" such that by considering the first i letters of "s1" and j letters of "s2"
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
         
-        // Edge case: If "s2" is empty then for any size of "s1" you've one valid way
+        // Set the first edge case: If "s2" is empty then for any size of "s1" you've one valid way
         for(int i = 0; i < n; ++i) {
             dp[i][0] = 1;
         }
@@ -155,21 +155,18 @@ public:
                 dp[i][j] = (currSkip + currTake);
             }
         }
-        
-        // Return the count of total number of subsequences of "s1" equal to "s2" such that by considering the whole "s1" and "s2"
+
+        // Return the result value 
         return dp[n][m];
     }
 
     // #2 Method to count the total number of subsequences of string "s1" equal to string "s2", using 1D tabulation - O(N*M) & O(M)
-    int numDistinct_B(string& s1, string& s2) {
+    int numDistinct_V2(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
         
-        // 1D table for tabulation: "prevRow[j] or currRow[j]" stores the count of total number of subsequences of "s1" equal to "s2" such that by considering the first i letters of "s1" and j letters of "s2"
         vector<int> prevRow(m + 1, 0), currRow(m + 1, 0);
         
-        // Fill the 2D table
         for(int i = 1; i <= n; ++i) {
-            // If "s2" is empty then for any size of "s1" you've one valid way
             prevRow[0] = 1;
             for(int j = 1; j <= m; ++j) {
                 unsigned int currSkip = prevRow[j];
@@ -179,11 +176,9 @@ public:
                 }
                 currRow[j] = (currSkip + currTake);
             }
-            // Update the previous row of the upcoming row
             prevRow = currRow;
         }
-        
-        // Return the count of total number of subsequences of "s1" equal to "s2" such that by considering the whole "s1" and "s2"
+
         return prevRow[m];
     }
 };
@@ -191,22 +186,22 @@ public:
 // Driver code
 int main() {
     int testCases;
-    cout<<"Enter the total number of cases to test: ";
+    cout<<"Enter the number of testcases: ";
     cin>>testCases;
 
     while(testCases--) {
         string s1, s2;
         cout<<"\nEnter the first string: "; cin>>s1;
-        cout<<"Enter the seconod string: "; cin>>s2;
+        cout<<"Enter the second string: "; cin>>s2;
         int n = s1.size(), m = s2.size();
 
         // Check the string size is lying within the problem constraints or not
-        if(n < 1 || n > 500 || m < 1 || m > 500) {
-            cout<<"You must enter the string of size which lies between 1 and 500!\n";
+        if(n < 1 || n > 1000 || m < 1 || m > 1000) {
+            cout<<"You must enter the string size which lies between 1 and 1000!\n";
         }
         else {
             BottomUp bottomUp;
-            cout<<"The total number of subsequences is: "<<bottomUp.numDistinct_B(s1, s2)<<'\n';    
+            cout<<"The total number of distinct subsequences is: "<<bottomUp.numDistinct_V2(s1, s2)<<'\n';    
         }
     }
 
@@ -214,6 +209,6 @@ int main() {
 }
 /*
     Topics: String | Dynamic Programming
-    Links: https://leetcode.com/discuss/interview-question/433901/Google-or-Phone-or-Distinct-subsequences
-           https://leetcode.com/problems/distinct-subsequences/description/
+    Links : https://leetcode.com/discuss/interview-question/433901/Google-or-Phone-or-Distinct-subsequences
+            https://leetcode.com/problems/distinct-subsequences/description/
 */
