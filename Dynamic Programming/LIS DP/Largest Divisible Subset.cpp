@@ -5,7 +5,7 @@
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // O(N*N) & O(N)
+    // Method to find the length of the largest divisible subset, using 1D tabulation - O(N*N) & O(N)
     vector<int> largestDivisibleSubset(vector<int>& nums) {
         int n = nums.size();
         sort(begin(nums), end(nums));
