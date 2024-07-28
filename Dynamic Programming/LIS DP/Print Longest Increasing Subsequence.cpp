@@ -10,7 +10,7 @@ public:
         int n = nums.size();
 
         vector<int> dp(n, 1);    // dp[index] represents the length of the LIS ending at that index 
-        vector<int> temp(n, -1); // temp[index] represents the index of the value which is considered as the part of the LIS ending at that index
+        vector<int> temp(n, -1); // temp[index] represents the index of the recently seen value which is considered as the part of the LIS ending at that index
 
         // Find the length of the LIS ending at each index
         for(int index = 0; index < n; ++index) {   
