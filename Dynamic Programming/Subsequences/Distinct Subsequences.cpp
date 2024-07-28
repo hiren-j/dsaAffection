@@ -216,5 +216,4 @@ int main() {
     Topics: String | Dynamic Programming
     Links: https://leetcode.com/discuss/interview-question/433901/Google-or-Phone-or-Distinct-subsequences
            https://leetcode.com/problems/distinct-subsequences/description/
-           https://www.geeksforgeeks.org/problems/find-number-of-times-a-string-occurs-as-a-subsequence3020/1
 */
