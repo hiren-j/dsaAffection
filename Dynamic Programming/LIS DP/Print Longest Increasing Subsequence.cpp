@@ -1,4 +1,4 @@
-// Code to find and print the longest increasing subsequence of the given array ~ coded by Hiren
+// Code to find the longest increasing subsequence of the given array ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
