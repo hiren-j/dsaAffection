@@ -28,7 +28,7 @@ public:
         return maxLength;
     }
 
-    // #2 Method to find the length of the longest common substring, using 1D tabulation - O(N*M) & O(N*M)
+    // #2 Method to find the length of the longest common substring, using 1D tabulation - O(N*M) & O(M)
     int longestCommonSubstring_V2(string& s1, string& s2, int n, int m) {
         vector<int> prevRow(m + 1), currRow(m + 1);
         
