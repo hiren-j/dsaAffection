@@ -88,7 +88,7 @@ private:
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to find the length of the longest word chain, using recursion with 1D memoization - O(N*N) & O(N*N)
+    // Method to find the length of the longest word chain, using recursion with 1D memoization - O(N*N) & O(N)
     int longestStrChain(vector<string>& words) {
         int n = words.size();
         sort(begin(words), end(words), comparator);
