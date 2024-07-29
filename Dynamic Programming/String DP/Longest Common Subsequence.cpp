@@ -12,7 +12,7 @@ class TopDown {
         if(i < 0 || j < 0)
             return 0;
 
-        // If the letters of both the string matches then we've got a subsequence of length 1 
+        // If the letters of both the string matches then we've got a common subsequence of length 1 
         if(s1[i] == s2[j])
             return 1 + solveWithoutMemo(s1, s2, i-1, j-1);
         
@@ -30,7 +30,7 @@ class TopDown {
         if(memory[i][j] != -1)
             return memory[i][j];
 
-        // If the letters of both the string matches then we've got a subsequence of length 1 
+        // If the letters of both the string matches then we've got a common subsequence of length 1 
         if(s1[i] == s2[j])
             return memory[i][j] = 1 + solveWithMemo(memory, s1, s2, i-1, j-1);
         
