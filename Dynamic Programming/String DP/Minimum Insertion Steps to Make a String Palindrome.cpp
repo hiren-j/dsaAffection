@@ -21,7 +21,7 @@ private:
 
         vector<vector<int>> memory(n, vector<int>(n, -1));
 
-        return solveWithMemo(memory, s1, s2, n - 1, n - 1);
+        return solveWithMemo(memory, s1, s2, n-1, n-1);
     }
 
     // O(2*N*N) & O(N*N + N+N)
