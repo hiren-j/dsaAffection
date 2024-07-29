@@ -1,4 +1,4 @@
-// Code to find the longest palindromic subsequence of s1 and s2 ~ coded by Hiren
+// Code to find the longest palindromic subsequence of given string ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
