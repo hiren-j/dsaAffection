@@ -12,7 +12,7 @@ public:
     }
 
 private:
-    // Method to find the length of the longest palindromic subsequence, using recursion with memoization - O(N*M) & O(N*M)
+    // Method to find the length of the longest palindromic subsequence, using recursion with memoization - O(N*N) & O(N*N)
     int longestPalindromeSubseq(string& s1, int n) {
         string s2(n, ' ');
 
@@ -109,4 +109,5 @@ private:
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming
-Link  : https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/
+Links : https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/
+        https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/String%20DP/Longest%20Palindromic%20Subsequence.cpp
