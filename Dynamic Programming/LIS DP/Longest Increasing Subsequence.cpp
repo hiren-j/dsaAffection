@@ -179,7 +179,7 @@ public:
         vector<int> LIS; 
         LIS.push_back(nums[0]);
 
-        for(int index = 0; index < n; ++index) {
+        for(int index = 1; index < n; ++index) {
             // If the last element of the "LIS" array is lesser than the current element of the "nums" array then push the current element to the "LIS" array
             if(LIS.back() < nums[index]) {
                 LIS.push_back(nums[index]);
