@@ -179,15 +179,15 @@ public:
         vector<int> LIS; 
         LIS.push_back(nums[0]);
 
-        for(int index = 1; index < n; ++index) {
+        for(int num : nums) {
             // If the last element of the "LIS" array is lesser than the current element of the "nums" array then push the current element to the "LIS" array
-            if(LIS.back() < nums[index]) {
-                LIS.push_back(nums[index]);
+            if(LIS.back() < num) {
+                LIS.push_back(num);
             }
             // Else then find the index of the just greater element of the current element and then replace the value lying in the "LIS" array by the current element
             else {
-                int i = lower_bound(begin(LIS), end(LIS), nums[index]) - begin(LIS);
-                LIS[i] = nums[index];
+                int i  = lower_bound(begin(LIS), end(LIS), num) - begin(LIS);
+                LIS[i] = num;
             }
         }
 
