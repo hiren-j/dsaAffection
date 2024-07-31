@@ -78,7 +78,7 @@ public:
     int minCostClimbingStairs_V2(vector<int>& cost) {
         int n = cost.size();
 
-        int prevPrevCost = cost[0];           // For the 0th step the minimum cost needed to reach it is the cost that the step have
+        int prevPrevCost = cost[0];               // For the 0th step the minimum cost needed to reach it is the cost that the step have
         int prevCost     = cost[1];               // For the 1th step the minimum cost needed to reach it is the cost that the step have            
         int currCost     = min(cost[0], cost[1]); // Compute and store the minimum cost needed to reach the top (considering the first two steps only)
 
