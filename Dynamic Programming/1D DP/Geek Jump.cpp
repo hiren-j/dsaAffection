@@ -27,11 +27,11 @@ private:
         if(memory[step][prevHeight] != -1)
             return memory[step][prevHeight];
 
-        // There are always two possibilities at each step
+        // There are always two possibilities to perform at each step
         int climbOneStep = solveWithMemo(memory, heights, N, step+1, heights[step]); // Is to advance one step ahead from this step
         int climbTwoStep = solveWithMemo(memory, heights, N, step+2, heights[step]); // Is to advance two steps ahead from this step
             
-        // Store the value of the minimum energy to the memoization table and then return it
+        // Store the result value to the memoization table and then return it
         return memory[step][prevHeight] = abs(prevHeight - heights[step]) + min(climbOneStep, climbTwoStep);
     }
     
@@ -45,11 +45,11 @@ private:
         if(step == N-1)
             return abs(prevHeight - heights[step]);
             
-        // There are always two possibilities at each step
+        // There are always two possibilities to perform at each step
         int climbOneStep = solveWithoutMemo(heights, N, step+1, heights[step]); // Is to advance one step ahead from this step
         int climbTwoStep = solveWithoutMemo(heights, N, step+2, heights[step]); // Is to advance two steps ahead from this step
         
-        // Compute the value of the minimum energy and then return it        
+        // As we're striving for the minimum energy hence return the minimum value     
         return abs(prevHeight - heights[step]) + min(climbOneStep, climbTwoStep);
     }
 };
@@ -76,7 +76,7 @@ private:
         if(memory[step] != -1)
             return memory[step];
             
-        // There are always two possibilities at each step
+        // There are always two possibilities to perform at each step
         int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithMemo(memory, heights, N, step+1); // Is to advance one step ahead from this step
         int climbTwoStep = INT_MAX;                                                                          // Is to advance two steps ahead from this step
                     
@@ -94,7 +94,7 @@ private:
         if(step == N-1)
             return 0;
             
-        // There are always two possibilities at each step
+        // There are always two possibilities to perform at each step
         int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithoutMemo(heights, N, step+1); // Is to advance one step ahead from this step
         int climbTwoStep = INT_MAX;                                                                     // Is to advance two steps ahead from this step
                     
