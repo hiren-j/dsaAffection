@@ -38,7 +38,7 @@ private:
     };
 };
 
-// Class to implement the "Bottom UP Approach":
+// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // #1 Method to find the Nth number of the sequence, using 1D tabulation - O(N) & O(N)
