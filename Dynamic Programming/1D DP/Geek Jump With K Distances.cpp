@@ -57,7 +57,7 @@ private:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up Approach:
+// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the minimum possible total cost, using 1D tabulation - O(N*K) & O(N)
