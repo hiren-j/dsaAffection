@@ -1,4 +1,4 @@
-// Code to find the minimum possible total cost incurred before the Geek reaches the Nth stone, the Geek can jump to any one of the following, stone startStone + 1, startStone + 2, ... startStone + K stone and cost will be [hi - hj] is incurred, where jump is the stone to land on ~ coded by Hiren
+// Code to find the minimum possible total cost incurred before the Geek reaches the Nth stone, the Geek can jump to any one of the following, stone + 1, stone + 2, ... stone + K stone and cost will be [hi - hj] is incurred, where jump is the stone to land on ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
