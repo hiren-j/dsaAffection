@@ -81,6 +81,7 @@ public:
         return currNum;
     }
 };
+
 // Driver code
 int main() {
     cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
