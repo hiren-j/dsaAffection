@@ -108,6 +108,6 @@ int main() {
 };
 /*
         
-    Topics: Dyanmic Programming | Math | Memoization
+    Topics: Dynamic Programming | Math | Memoization
     Link  : https://leetcode.com/problems/N-th-tribonacci-number/description/
 */
