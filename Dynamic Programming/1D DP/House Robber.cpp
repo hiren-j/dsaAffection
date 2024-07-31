@@ -24,7 +24,7 @@ private:
             return memory[J];
 
         // There are always two possibilities to perform at each house 
-        int currHouseRob  = houses[J] + solveWithMemo(memory, houses, N, J+2); // Is to rob the it and then advance two steps ahead from it
+        int currHouseRob  = houses[J] + solveWithMemo(memory, houses, N, J+2); // Is to rob it and then advance two steps ahead from it
         int currHouseSkip = solveWithMemo(memory, houses, N, J+1);             // Is to skip it and move to the next house
 
         // Store the result value to the memoization table and then return it
@@ -38,10 +38,10 @@ private:
             return 0;
 
         // There are always two possibilities to perform at each house 
-        int currHouseRob  = houses[J] + solveWithoutMemo(houses, N, J+2); // Is to rob the it and then advance two steps ahead from it
+        int currHouseRob  = houses[J] + solveWithoutMemo(houses, N, J+2); // Is to rob it and then advance two steps ahead from it
         int currHouseSkip = solveWithoutMemo(houses, N, J+1);             // Is to skip it and move to the next house
 
-        // Return the maximum money get from both the possibilities
+        // As we're striving for the maximum money hence return the maximum value
         return std::max(currHouseRob, currHouseSkip);
     }
 };
