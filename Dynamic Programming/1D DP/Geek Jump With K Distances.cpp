@@ -1,6 +1,6 @@
 // Code to find the minimum possible total cost incurred before the Geek reaches the Nth stone, the Geek can jump to any one of the following, stone startStone + 1, startStone + 2, ... startStone + K stone and cost will be [hi - hj] is incurred, where jump is the stone to land on ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -55,7 +55,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up Approach:
 class BottomUp {
@@ -83,7 +83,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Links : https://www.geeksforgeeks.org/problems/minimal-cost/1
