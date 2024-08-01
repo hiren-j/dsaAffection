@@ -18,7 +18,7 @@ public:
                     dp[i][j] = 1 + dp[i - 1][j - 1];
                     if(dp[i][j] > maxLength) {
                         maxLength = dp[i][j];
-                        endIndex = i;
+                        endIndex  = i;
                     }
                 }
                 // Else when both the letters don't match
