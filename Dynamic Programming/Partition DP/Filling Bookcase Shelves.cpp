@@ -2,6 +2,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the minimum possible height, using recursion with memoization - O(N*N) & O(N)
@@ -13,16 +14,21 @@ public:
 
 private:   
     // O(N*N) & O(N+N)
-    int solveWithMemo(vector<vector<int>>& books, int shelfWidth, int n, int startPoint, vector<int>& memory) {
-        if(startPoint == n)
+    int solveWithMemo(vector<vector<int>>& books, int shelfWidth, int n, int currentShelve, vector<int>& memory) {
+        // Edge case: If all the books are exhausted then you can't place any more to the bookcase
+        if(currentShelve == n)
             return 0;
 
-        if(memory[startPoint] != -1)
-            return memory[startPoint];
+        // Memoization table: If the current state is already computed then return the computed value
+        if(memory[currentShelve] != -1)
+            return memory[currentShelve];
 
-        int sumThickness = 0, maxHeight = 0, resultHeight = INT_MAX;
+        int sumThickness = 0;       // Stores the thickness sum of books placed in the current shelve
+        int maxHeight    = 0;       // Stores the maximum height of any book placed in the current shelve 
+        int resultHeight = INT_MAX; // Stores the result value
 
-        for(int book = startPoint; book < n; ++book) {
+        // Perform all the partitions of placing the books and update the result by the minimum value
+        for(int book = currentShelve; book < n; ++book) {
             sumThickness += books[book][0];
             if(sumThickness > shelfWidth) {
                 break;
@@ -32,17 +38,22 @@ private:
             resultHeight   = min(resultHeight, nextResult + maxHeight);
         }
 
-        return memory[startPoint] = resultHeight;
+        // Store the result value to the memoization table and then return it
+        return memory[currentShelve] = resultHeight;
     }
 
     // O(N^N) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& books, int shelfWidth, int n, int startPoint) {
-        if(startPoint == n)
+    int solveWithoutMemo(vector<vector<int>>& books, int shelfWidth, int n, int currentShelve) {
+        // Edge case: If all the books are exhausted then you can't place any more to the bookcase
+        if(currentShelve == n)
             return 0;
 
-        int sumThickness = 0, maxHeight = 0, resultHeight = INT_MAX;
+        int sumThickness = 0;       // Stores the thickness sum of books placed in the current shelve
+        int maxHeight    = 0;       // Stores the maximum height of any book placed in the current shelve 
+        int resultHeight = INT_MAX; // Stores the result value
 
-        for(int book = startPoint; book < n; ++book) {
+        // Perform all the partitions of placing the books and update the result by the minimum value
+        for(int book = currentShelve; book < n; ++book) {
             sumThickness += books[book][0];
             if(sumThickness > shelfWidth) {
                 break;
@@ -52,12 +63,14 @@ private:
             resultHeight   = min(resultHeight, nextResult + maxHeight);
         }
 
+        // Return the result value
         return resultHeight;
     }
-};
+};  
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the minimum possible height, using 1D tabulation - O(N*N) & O(N)
@@ -65,12 +78,14 @@ public:
         int n = books.size();
 
         vector<int> dp(n+1, INT_MAX);
+
+        // Set the edge case: If all the books are exhausted then you can't place any more to the bookcase
         dp[n] = 0;
 
-        for(int startPoint = n-1; startPoint >= 0; --startPoint) {
+        for(int currentShelve = n-1; currentShelve >= 0; --currentShelve) {
             int sumThickness = 0, maxHeight = 0, resultHeight = INT_MAX;
 
-            for(int book = startPoint; book < n; ++book) {
+            for(int book = currentShelve; book < n; ++book) {
                 sumThickness += books[book][0];
                 if(sumThickness > shelfWidth) {
                     break;
@@ -80,7 +95,7 @@ public:
                 resultHeight   = min(resultHeight, nextResult + maxHeight);
             }
 
-            dp[startPoint] = resultHeight;
+            dp[currentShelve] = resultHeight;
         }
 
         return dp[0];
