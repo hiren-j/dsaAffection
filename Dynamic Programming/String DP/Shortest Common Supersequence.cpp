@@ -35,7 +35,7 @@ public:
                 i--;
                 j--;
             }
-            // Else when the letters don't match
+            // Else when both the letters don't match
             else {
                 // If it's maximum then string1 will shrink by size 1. So before shrink take that dropped letter of string1
                 if(dp[i - 1][j] > dp[i][j - 1]) {
