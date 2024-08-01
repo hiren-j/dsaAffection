@@ -25,7 +25,7 @@ private:
         // Stores the result value
         int maxProduct = INT_MIN;
 
-        // Iterate and explore all the possibilities of breaking the n and update the result value by the maximum value each time
+        // Explore all the possibilities of breaking the n and update the result by the maximum value
         for(int num = 1; num <= n-1; ++num) {
             int nextProduct = max(n - num, solveWithMemo(n - num, memory));
             maxProduct      = max(maxProduct, num * nextProduct);
@@ -44,7 +44,7 @@ private:
         // Stores the "maximum product you can get by breaking the n / result value"
         int maxProduct = INT_MIN;
 
-        // Iterate and explore all the possibilities of breaking the n and update the result value by the maximum value each time
+        // Explore all the possibilities of breaking the n and update the result by the maximum value
         for(int num = 1; num <= n-1; ++num) {
             int nextProduct = max(n - num, solveWithoutMemo(n - num));
             maxProduct      = max(maxProduct, num * nextProduct);
