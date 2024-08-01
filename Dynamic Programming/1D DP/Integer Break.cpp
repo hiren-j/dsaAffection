@@ -62,17 +62,17 @@ class BottomUp {
 public:
     // Method to find the maximum product you can get, using 1D tabulation - O(N*N) & O(N)
     int integerBreak(int n) {
-        // 1D table: dp[j] represents the maximum product you can get by breaking the Jth index
+        // 1D table: dp[i] represents the maximum product you can get by breaking the Jth index
         vector<int> dp(n + 1, INT_MIN);
 
         // Set the edge case: If n is equal to 2 then the maximum product you can ge is 1
         dp[2] = 1; 
 
-        // Treat each index 'j' as an individual n and then break it and then look for the maximum product you can get
-        for(int j = 3; j <= n; ++j) {
-            for(int num = 1; num <= j-1; ++num) {
-                int nextProduct = max(j - num, dp[j - num]);
-                dp[j] = max(dp[j], num * nextProduct);    
+        // Treat each index 'i' as an individual n and then break it and then look for the maximum product you can get
+        for(int i = 3; i <= n; ++i) {
+            for(int num = 1; num <= i-1; ++num) {
+                int nextProduct = max(i - num, dp[i - num]);
+                dp[i] = max(dp[i], num * nextProduct);    
             }
         }
         
