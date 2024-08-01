@@ -177,13 +177,10 @@ public:
             dp[0][0] = true;
 
             // Suppose if the string "s" is exhausted then consider all the beginning '*' of the string "p" as an empty sequence and as it's an empty sequence so we could say that both the strings completely matches each other hence set true for these states in table
-            for(int j = 1; j <= m; ++j) {
-                if(p[j-1] == '*') {
-                    dp[0][j] = true;
-                } 
-                else {
-                    break;
-                }
+            int j = 1;
+            while(j <= m && p[j-1] == '*') {
+                dp[0][j] = true;
+                j++;
             }
             
             // Fill the rest of the table
