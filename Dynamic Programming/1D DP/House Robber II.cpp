@@ -99,7 +99,7 @@ private:
 
         // Iterate and find the maximum money that can be robbed till the Jth house
         for(int J=2; J<=N; J++)
-            maxMoney       = std::max(houses[J-1] + prevPrevMoney, prevMoney),
+            maxMoney      = std::max(houses[J-1] + prevPrevMoney, prevMoney),
             prevPrevMoney = prevMoney,
             prevMoney     = maxMoney;
 
@@ -194,9 +194,9 @@ private:
 
         // Iterate and find the maximum money that can be robbed till the Jth house
         for(int J = start+1; J <= end; ++J) 
-            maxMoney = std::max(houses[J] + prevPrevMoney, prevMoney),
+            maxMoney      = std::max(houses[J] + prevPrevMoney, prevMoney),
             prevPrevMoney = prevMoney,
-            prevMoney = maxMoney;
+            prevMoney     = maxMoney;
 
         // Return the maximum money that can be robbed
         return maxMoney;
