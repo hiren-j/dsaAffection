@@ -6,7 +6,7 @@
 class TopDown {
 public:
     // Method to find the maximum number of jumps, using recursion with memoization - O(N*N) & O(N)
-    int maximumJumps(vector<int>& nums, int target) {
+    int maxJumpsToReachLastIndex(vector<int>& nums, int target) {
         int n = nums.size();
         vector<int> memory(n, -1);
         int maxJumps = solveWithMemo(memory, nums, n, target, 0);
@@ -71,7 +71,7 @@ private:
 class BottomUp {
 public:
     // Method to find the maximum number of jumps, using 1D tabulation - O(N*N) & O(N)
-    int maximumJumps(vector<int>& nums, int target) {
+    int maxJumpsToReachLastIndex(vector<int>& nums, int target) {
         int n = nums.size();
 
         // 1D table: dp[index] represents the maximum number of jumps required to reach the individual index
