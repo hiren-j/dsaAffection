@@ -4,6 +4,8 @@
 
 // Class to implement the Top-down approach:
 class TopDown {
+    typedef long long ll;
+
 public:
     // Method to find the maximum points you can earn for the exam, using recursion with memoization - O(N) & O(N)
     ll mostPoints(vector<vector<int>>& ques) {
@@ -50,6 +52,8 @@ private:
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
+    typedef long long ll;
+
 public:
     // Method to find the maximum points you can earn for the exam, using 1D tabulation - O(N) & O(N)
     ll mostPoints(vector<vector<int>>& ques) {
