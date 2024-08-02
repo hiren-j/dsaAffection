@@ -1,7 +1,6 @@
-// Program to find the total number of distinct ways from which you can climb to the top ~ coded by Hiren
-#include <iostream>
-#include <vector>
-using namespace std;
+// Code to find the total number of distinct ways from which you can climb to the top ~ coded by Hiren
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -15,7 +14,7 @@ public:
 private:
     // O(2*N) & O(N+N)
     int solveWithMemo(int N, vector<int>& cache) {
-        // Edge case: When N is less than 2, then there's just a 1 way to reach the stair
+        // Edge case: When N is less than 2 then there's just a 1 way to reach the stair
         if(N < 2) 
             return 1;
 
@@ -33,7 +32,7 @@ private:
 
     // O(2^N) & O(N)
     int solveWithoutMemo(int N) {
-        // Edge case: When N is less than 2, then there's just 1 way to reach the stair
+        // Edge case: When N is less than 2 then there's just 1 way to reach the stair
         if(N < 2) 
             return 1;
 
@@ -45,6 +44,8 @@ private:
         return climbOneStep + climbTwoStep;
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -90,32 +91,7 @@ public:
     }
 };
 
-// Driver code
-int main() {
-    cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
+---------------------------------------------------------------------------------------------------------------------------------------------
 
-    int testCases;
-    cout<<"Enter the total number of testcases: ";
-    cin>>testCases;
-
-    while(testCases--) {
-        int N;
-        cout<<"\nEnter a value: ";
-        cin>>N;
-
-        // Check the given value is lying within the problem constraints or not
-        if(N < 1 || N > 45) {
-            cout<<"Enter a value which lies between 1 and 45!\n";
-        }
-        else {
-            BottomUp bottomUp;
-            cout<<"The total number of distinct ways to reach the "<<N<<"th stair is: "<<bottomUp.climbStairs_V2(N)<<'\n';
-        }
-    }
-
-    return 0;
-}
-/*
-    Topics: Math | Dynamic Programming | Memoization
-    Link  : https://leetcode.com/problems/climbing-stairs/description/
-*/
+Topics: Math | Dynamic Programming | Memoization
+Link  : https://leetcode.com/problems/climbing-stairs/description/
