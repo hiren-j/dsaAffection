@@ -53,7 +53,7 @@ private:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // Method to check whether you can reach the last index or not, using recursion with memoization - O(N*N) & O(N)
+    // Method to check whether you can reach the last index or not, using 1D tabulation - O(N*N) & O(N)
     bool canJumpToLastIndex(vector<int>& nums) {
         int n = nums.size();
 
