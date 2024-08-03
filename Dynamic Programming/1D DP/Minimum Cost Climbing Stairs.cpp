@@ -31,8 +31,8 @@ private:
             return memory[step];
         
         // There are always two possibilities to perform at each step
-        int climbOneStep = solveWithMemo(cost, memory, n, step + 1); // Is to jump and advance one step ahead
-        int climbTwoStep = solveWithMemo(cost, memory, n, step + 2); // Is to jump and advance two steps ahead
+        int climbOneStep = solveWithMemo(cost, memory, n, step + 1); // Is to jump and advance one step ahead from it
+        int climbTwoStep = solveWithMemo(cost, memory, n, step + 2); // Is to jump and advance two steps ahead from it
 
         // Store the result value to the memoization table and then return it
         return memory[step] = cost[step] + min(climbOneStep, climbTwoStep);
@@ -40,13 +40,13 @@ private:
 
     // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& cost, int n, int step) {
-        // Edge case: If we reached the top of the floor, then we don't need any cost
+        // Edge case: If we reached the top of the floor then we don't need any cost
         if(step >= n)
             return 0;
 
         // There are always two possibilities to perform at each step
-        int climbOneStep = solveWithoutMemo(cost, n, step + 1); // Is to jump and advance one step ahead from this step
-        int climbTwoStep = solveWithoutMemo(cost, n, step + 2); // Is to jump and advance two steps ahead from this step
+        int climbOneStep = solveWithoutMemo(cost, n, step + 1); // Is to jump and advance one step ahead from it
+        int climbTwoStep = solveWithoutMemo(cost, n, step + 2); // Is to jump and advance two steps ahead from it
 
         // As we're striving for the minimum cost hence return the minimum value
         return cost[step] + min(climbOneStep, climbTwoStep);
