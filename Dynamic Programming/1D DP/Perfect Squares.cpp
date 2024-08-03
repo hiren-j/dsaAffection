@@ -61,7 +61,7 @@ public:
         // 1D table: dp[num] stores the least number of perfect square numbers which can sum to num
         vector<int> dp(N+1, INT_MAX);
 
-        // Set the edge case: If N is equal to 0 then its not possible to get any perfect square number
+        // Initialize the edge case: If N is equal to 0 then its not possible to get any perfect square number
         dp[0] = 0;
         
         // Consider each num as an individual N and calculate the least number of perfect square numbers that sums to it
