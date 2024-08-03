@@ -15,21 +15,21 @@ public:
 private:
     // O(2*N*maxElement) & O(N*maxElement + N)
     int solveWithMemo(vector<vector<int>>& memory, vector<int>& heights, int N, int step, int prevHeight) {
-        // Edge case: If we're not able to reach the last step, then it's not possible to have a valid way
+        // Edge case: If we're not able to reach the last step then it's not possible to have a valid way
         if(step >= N)
             return INT_MAX;
         
-        // Edge case: If we reached the last step, then return the energy value as a valid indication of a valid way
+        // Edge case: If we reached the last step then return the energy value as a valid indication of it
         if(step == N-1)
             return abs(prevHeight - heights[step]);
         
-        // Memoization table: If the current state is already computed, then return the computed value
+        // Memoization table: If the current state is already computed then return the computed value
         if(memory[step][prevHeight] != -1)
             return memory[step][prevHeight];
 
         // There are always two possibilities to perform at each step
-        int climbOneStep = solveWithMemo(memory, heights, N, step+1, heights[step]); // Is to advance one step ahead from this step
-        int climbTwoStep = solveWithMemo(memory, heights, N, step+2, heights[step]); // Is to advance two steps ahead from this step
+        int climbOneStep = solveWithMemo(memory, heights, N, step+1, heights[step]); // Is to advance one step ahead from it
+        int climbTwoStep = solveWithMemo(memory, heights, N, step+2, heights[step]); // Is to advance two steps ahead from it
             
         // Store the result value to the memoization table and then return it
         return memory[step][prevHeight] = abs(prevHeight - heights[step]) + min(climbOneStep, climbTwoStep);
@@ -37,17 +37,17 @@ private:
     
     // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& heights, int N, int step, int prevHeight) {
-        // Edge case: If we're not able to reach the last step, then it's not possible to have a valid way
+        // Edge case: If we're not able to reach the last step then it's not possible to have a valid way
         if(step >= N)
             return INT_MAX;
             
-        // Edge case: If we reached the last step, then return the energy value as an valid indication 
+        // Edge case: If we reached the last step then return the energy value as an valid indication of it
         if(step == N-1)
             return abs(prevHeight - heights[step]);
             
         // There are always two possibilities to perform at each step
-        int climbOneStep = solveWithoutMemo(heights, N, step+1, heights[step]); // Is to advance one step ahead from this step
-        int climbTwoStep = solveWithoutMemo(heights, N, step+2, heights[step]); // Is to advance two steps ahead from this step
+        int climbOneStep = solveWithoutMemo(heights, N, step+1, heights[step]); // Is to advance one step ahead from it
+        int climbTwoStep = solveWithoutMemo(heights, N, step+2, heights[step]); // Is to advance two steps ahead from it
         
         // As we're striving for the minimum energy hence return the minimum value     
         return abs(prevHeight - heights[step]) + min(climbOneStep, climbTwoStep);
@@ -77,8 +77,8 @@ private:
             return memory[step];
             
         // There are always two possibilities to perform at each step
-        int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithMemo(memory, heights, N, step+1); // Is to advance one step ahead from this step
-        int climbTwoStep = INT_MAX;                                                                          // Is to advance two steps ahead from this step
+        int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithMemo(memory, heights, N, step+1); // Is to advance one step ahead from it
+        int climbTwoStep = INT_MAX;                                                                          // Is to advance two steps ahead from it
                     
         // If it's possible then advance two steps ahead from this step
         if(step+2 < N)
@@ -95,8 +95,8 @@ private:
             return 0;
             
         // There are always two possibilities to perform at each step
-        int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithoutMemo(heights, N, step+1); // Is to advance one step ahead from this step
-        int climbTwoStep = INT_MAX;                                                                     // Is to advance two steps ahead from this step
+        int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithoutMemo(heights, N, step+1); // Is to advance one step ahead from it
+        int climbTwoStep = INT_MAX;                                                                     // Is to advance two steps ahead from it
                     
         // If it's possible to advance two steps ahead from this step
         if(step+2 < N)
