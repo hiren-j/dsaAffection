@@ -1,12 +1,12 @@
-// Program to count all the possible distinct binary strings of length N such that there are no consecutive 1’s ~ coded by Hiren
-#define MOD 1000000007
-#define ll long long
-#include <iostream>
-#include <vector>
-using namespace std;
+// Code to count all the possible distinct binary strings of length N such that there are no consecutive 1’s ~ coded by Hiren
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
+    typedef long long ll;
+    const int MOD = 1e9+7;
+
 public:
     // Method to count all the possible distinct binary strings of length N such that there are no consecutive 1’s, using recursion with memoization - O(N) & O(N)
     ll countStrings(int N) {
@@ -41,8 +41,13 @@ private:
     }
 };
 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
 // Class to implement the Bottom-up approach:
 class BottomUp {
+    typedef long long ll;
+    const int MOD = 1e9+7;
+
 public:
     // #1 Method to count all the possible distinct binary strings of length N such that there are no consecutive 1’s, using 1D tabulation - O(N) & O(N)
     ll countStrings_V1(int N) {
@@ -74,33 +79,7 @@ public:
     }
 };
 
-// Driver code
-int main() {
-    cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
-	
-    int testCases;
-    cout<<"Enter the total number of testcases: ";
-    cin>>testCases;
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
-    while(testCases--) {
-        int N;
-        cout<<"\nEnter the value of N: ";
-        cin>>N;
-
-        // Check the given value is lying within the problem constraints or not
-	if(N < 1 || N > 1e5) {
-	    cout<<"You must enter a value which lies between 1 and 10^5!\n";
-	}
-	else {
-	    BottomUp bottomUp;
-	    int resultCount = bottomUp.countStrings_V2(N);
-            cout<<"There are total "<<resultCount<<" possible distinct binary strings of length "<<N<<"\n";
-	}
-    }
-
-    return 0;
-}
-/*
-    Topics: Array | Dynamic Programming
-    Link  : https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
-*/
+Topics: Array | Dynamic Programming
+Link  : https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
