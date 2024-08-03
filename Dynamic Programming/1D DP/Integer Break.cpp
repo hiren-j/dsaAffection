@@ -1,4 +1,4 @@
-// Code to break the given n into the sum of K positive integers, where K >= 2, and maximize the product of those integers ~ coded by Hiren
+// Code to break the given n into the sum of k positive integers, where k >= 2, and maximize the product of those integers ~ coded by Hiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ private:
         if(n <= 2)
             return 1;
 
-        // Stores the "maximum product you can get by breaking the n / result value"
+        // Stores the result value
         int maxProduct = INT_MIN;
 
         // Explore all the possibilities of breaking the n and update the result by the maximum value
@@ -65,7 +65,7 @@ public:
         // 1D table: dp[i] represents the maximum product you can get by breaking the Jth index
         vector<int> dp(n + 1, INT_MIN);
 
-        // Set the edge case: If n is equal to 2 then the maximum product you can ge is 1
+        // Initialize the edge case: If n is equal to 2 then the maximum product you can ge is 1
         dp[2] = 1; 
 
         // Treat each index 'i' as an individual n and then break it and then look for the maximum product you can get
