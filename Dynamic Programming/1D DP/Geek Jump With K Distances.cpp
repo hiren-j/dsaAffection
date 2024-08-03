@@ -86,5 +86,4 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
-Links : https://www.geeksforgeeks.org/problems/minimal-cost/1
-        https://www.codingninjas.com/studio/problems/minimal-cost_8180930?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf 
+Link  : https://www.geeksforgeeks.org/problems/minimal-cost/1
