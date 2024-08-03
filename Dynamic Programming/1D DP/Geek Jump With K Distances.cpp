@@ -18,7 +18,7 @@ private:
         if(startStone == N-1)
             return 0;
 
-        // Memoization table: If the current state is already computed, then return the computed value
+        // Memoization table: If the current state is already computed then return the computed value
         if(memory[startStone] != -1)
             return memory[startStone];
         
@@ -65,7 +65,7 @@ public:
         // 1D table: dp[stone] represents the minimum cost required to reach the individual stone
         vector<int> dp(N, INT_MAX); 
 
-        // Set the edge case: If Geek reached the last stone then there's no need to compute more cost
+        // Initialize the edge case: If Geek reached the last stone then there's no need to compute more cost
         dp[N - 1] = 0;                 
         
         for(int startStone = N-2; startStone >= 0; --startStone) {  
