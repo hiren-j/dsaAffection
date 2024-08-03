@@ -98,7 +98,7 @@ private:
         int climbOneStep = abs(heights[step] - heights[step+1]) + solveWithoutMemo(heights, N, step+1); // Is to advance one step ahead from it
         int climbTwoStep = INT_MAX;                                                                     // Is to advance two steps ahead from it
                     
-        // If it's possible to advance two steps ahead from this step
+        // If it's possible then advance two steps ahead from this step
         if(step+2 < N)
             climbTwoStep = abs(heights[step] - heights[step+2]) + solveWithoutMemo(heights, N, step+2);
             
