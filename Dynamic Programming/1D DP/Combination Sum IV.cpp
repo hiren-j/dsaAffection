@@ -87,7 +87,7 @@ private:
         return memory[target] = count;
     }
 
-    // O(2^T) & O(T)
+    // O(N^T) & O(T)
     int solveWithoutMemo(vector<int>& nums, int n, int target) {
         // Edge case: If the target becomes zero then you've got one valid way
         if(target == 0)
