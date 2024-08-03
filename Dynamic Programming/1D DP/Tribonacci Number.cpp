@@ -1,7 +1,6 @@
-// Program to find the Nth number of the tribonacci sequence ~ coded by Hiren
-#include <iostream>
-#include <vector>
-using namespace std;
+// Code to find the Nth number of the tribonacci sequence ~ coded by Hiren
+
+--------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -37,6 +36,8 @@ private:
         return solveWithoutMemo(N-1) + solveWithoutMemo(N-2) + solveWithoutMemo(N-3);
     };
 };
+
+--------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -82,33 +83,7 @@ public:
     }
 };
 
-// Driver code
-int main() {
-    cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
+--------------------------------------------------------------------------------------------------------------------------------
 
-    int testCases;
-    cout<<"Enter the total number of testcases: ";
-    cin>>testCases;
-
-    while(testCases--) {
-        int N;
-        cout<<"\nEnter a value: ";
-        cin>>N;
-
-        // Check the given value is lying within the problem constraints or not
-        if(N < 0 || N > 37) {
-            cout<<"Enter a value which lies between 0 and 37!\n";
-        }
-        else {
-            BottomUp bottomUp;
-            cout<<"The "<<N<<"th number of the tribonacci sequence is: "<<bottomUp.getNthTribonacci_V2(N)<<'\n';
-        }
-    }
-
-    return 0;
-};
-/*
-        
-    Topics: Dynamic Programming | Math | Memoization
-    Link  : https://leetcode.com/problems/N-th-tribonacci-number/description/
-*/
+Topics: Dynamic Programming | Math | Memoization
+Link  : https://leetcode.com/problems/N-th-tribonacci-number/description/
