@@ -1,12 +1,12 @@
-// Program to find the total number of ways the frog can take to reach the top of the Nth step, a frog can jump either 1, 2, or 3 steps to go to the top ~ coded by Hiren
-#define MOD 1000000007
-#define ll long long
-#include <iostream>
-#include <vector>
-using namespace std;
+// Code to find the total number of ways the frog can take to reach the top of the Nth step, a frog can jump either 1, 2, or 3 steps to go to the top ~ coded by Hiren
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {    
+    #define MOD 1000000007
+    typedef long long ll;
+
 public:
     // Method to find the total number of ways, using recursion with memoization - O(N) & O(N)
     ll countWays(int N) {
@@ -25,7 +25,7 @@ private:
         if(N < 0)
             return 0;
             
-        // Memoization table: If the current state is already computed, then return the computed value
+        // Memoization table: If the current state is already computed then return the computed value
         if(memory[N] != -1)
             return memory[N];
         
@@ -58,8 +58,13 @@ private:
     }
 };
 
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
 // Class to implement the Bottom-up approach:
 class BottomUp {
+    #define MOD 1000000007
+    typedef long long ll;
+
 public:
     // #1 Method to find the total number of ways, using 1D tabulation - O(N) & O(N)
     ll countWays_V1(int N) {
@@ -108,32 +113,7 @@ public:
     }
 };
 
-// Driver code
-int main() {
-    cout<<"Note: The application only accepts non-decimal numeric type value, unless specified!\n\n";
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
-    int testCases;
-    cout<<"Enter the total number of testcases: ";
-    cin>>testCases;
-
-    while(testCases--) {
-        int N;
-        cout<<"\nEnter a value: ";
-        cin>>N;
-
-        // Check the given value is lying within the problem constraints or not
-        if(N < 1 || N > 1e5) {
-            cout<<"Enter a value which lies between 1 and 10^5!\n";
-        }
-        else {
-            BottomUp bottomUp;
-            cout<<"The total number of ways the frog can take to reach the "<<N<<"th step is: "<<bottomUp.countWays_V2(N)<<'\n';
-        }
-    }
-
-    return 0;
-}
-/*
-    Topics: Array | Dynamic Programming
-    Link  : https://www.geeksforgeeks.org/problems/count-number-of-hops-1587115620/1
-*/
+Topics: Array | Dynamic Programming
+Link  : https://www.geeksforgeeks.org/problems/count-number-of-hops-1587115620/1
