@@ -87,3 +87,4 @@ public:
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/minimal-cost/1
+c
