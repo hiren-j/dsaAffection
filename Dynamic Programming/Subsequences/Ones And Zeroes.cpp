@@ -18,7 +18,7 @@ public:
     private:
         // O(2*size*m*n * 100) & O(size*m*n + size)
         int solveWithMemo(vector<string>& strs, int m, int n, int index, int size, vector<vector<vector<int>>>& memory) {
-            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             if(index == size) 
                 return (m >= 0 && n >= 0) ? 0 : INT_MIN;
 
@@ -46,7 +46,7 @@ public:
 
         // O(2^size * 100) & O(size)
         int solveWithoutMemo(vector<string>& strs, int m, int n, int index, int size) {
-            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             if(index == size) 
                 return (m >= 0 && n >= 0) ? 0 : INT_MIN;
 
@@ -79,14 +79,14 @@ public:
             // 3D DP table
             vector<vector<vector<int>>> dp(size + 1, vector<vector<int>>(m + 2, vector<int>(n + 2, INT_MIN)));
 
-            // Set the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Initialize the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             for(int M = 0; M <= m+1; ++M) {
                 for(int N = 0; N <= n+1; ++N) {
                     dp[size][M][N] = 0;
                 }
             }
 
-            // Fill the rest of the DP table
+            // Fill the rest of the table
             for(int index = size-1; index >= 0; --index) {
                 for(int M = 0; M <= m; ++M) {
                     for(int N = 0; N <= n; ++N) {
@@ -117,12 +117,12 @@ public:
             // 2D DP tables
             vector<vector<int>> nextRow(m + 2, vector<int>(n + 2, INT_MIN)), idealRow(m + 2, vector<int>(n + 2, INT_MIN));
 
-            // Set the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Initialize the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             for(int M = 0; M <= m+1; ++M) 
                 for(int N = 0; N <= n+1; ++N) 
                     nextRow[M][N] = 0;
 
-            // Fill the rest of the DP table
+            // Fill the rest of the table
             for(int index = size-1; index >= 0; --index) {
                 for(int M = 0; M <= m; ++M) {
                     for(int N = 0; N <= n; ++N) {
@@ -161,7 +161,7 @@ public:
 
         // O(2^size) & O(size)
         int solveWithoutMemo(vector<string>& strs, int m, int n, int index) {
-            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             if(index == size) 
                 return (m >= 0 && n >= 0) ? 0 : INT_MIN;
 
@@ -175,7 +175,7 @@ public:
 
             // Get the count of total number of 1's and 0's of the string and further complete the consideration process 
             int nextLength = solveWithoutMemo(strs, m - countZerosOnes[index].first, n - countZerosOnes[index].second, index + 1);
-            currTake       = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
+            currTake = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
 
             // As we're striving for the largest subset hence return the maximum value
             return max(currSkip, currTake);
@@ -183,7 +183,7 @@ public:
 
         // O(2*size*m*n) & O(size*m*n + size)
         int solveWithMemo(vector<string>& strs, int m, int n, int index, vector<vector<vector<int>>>& memory) {
-            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             if(index == size) 
                 return (m >= 0 && n >= 0) ? 0 : INT_MIN;
 
@@ -201,7 +201,7 @@ public:
 
             // Get the count of total number of 1's and 0's of the string and further complete the consideration process 
             int nextLength = solveWithMemo(strs, m - countZerosOnes[index].first, n - countZerosOnes[index].second, index + 1, memory);
-            currTake       = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
+            currTake = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
 
             // Stores the result value to the memoization table and then return it
             return memory[index][m][n] = max(currSkip, currTake);
@@ -251,12 +251,12 @@ public:
             // 3D DP table
             vector<vector<vector<int>>> dp(size + 1, vector<vector<int>>(m + 2, vector<int>(n + 2, INT_MIN)));
             
-            // Set the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Initialize the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             for(int m = 0; m <= m+1; ++m)
                 for(int n = 0; n <= n+1; ++n)
                     dp[size][m][n] = 0;
 
-            // Fill the rest of the DP table
+            // Fill the rest of the table
             for(int index = size-1; index >= 0; --index) {
                 for(int m = 0; m <= m; ++m) {
                     for(int n = 0; n <= n; ++n) {
@@ -267,7 +267,7 @@ public:
 
                         if(newRow >= 0 && newCol >= 0) {
                             int nextLength = dp[index + 1][newRow][newCol];
-                            currTake       = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
+                            currTake = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
                         }
 
                         dp[index][m][n] = max(currSkip, currTake); 
@@ -298,12 +298,12 @@ public:
             // 2D DP tables
             vector<vector<int>> nextRow(m + 2, vector<int>(n + 2, INT_MIN)), idealRow(m + 2, vector<int>(n + 2, INT_MIN));
 
-            // Set the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it hence return 0 as a valid indication of it
+            // Initialize the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
             for(int m = 0; m <= m+1; ++m)
                 for(int n = 0; n <= n+1; ++n)
                     nextRow[m][n] = 0;
 
-            // Fill the rest of the DP table
+            // Fill the rest of the table
             for(int index = size-1; index >= 0; --index) {
                 for(int m = 0; m <= m; ++m) {
                     for(int n = 0; n <= n; ++n) {
@@ -314,7 +314,7 @@ public:
 
                         if(newRow >= 0 && newCol >= 0) {
                             int nextLength = nextRow[newRow][newCol];
-                            currTake       = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
+                            currTake = (nextLength != INT_MIN ? 1 + nextLength : INT_MIN);
                         }
 
                         idealRow[m][n] = max(currSkip, currTake); 
