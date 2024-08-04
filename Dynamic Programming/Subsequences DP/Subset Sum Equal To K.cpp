@@ -81,6 +81,10 @@ private:
         if(sum == 0)
             return true;
         
+        // Edge case: If all the elements are exhausted then return false
+        if(startIndex == n)
+            return false;
+        
         // Memoization table: If the current state is already computed then return the computed value
         if(memory[startIndex][sum] != -1)
             return memory[startIndex][sum];
