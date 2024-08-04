@@ -103,15 +103,6 @@ public:
     int countPartitions_V2(int N, int D, vector<int>& nums) {
         int totalSum = accumulate(begin(nums), end(nums), 0);
         
-        // Edge case: If the difference becomes negative or odd, then you can't have valid partitions
-        if(totalSum - D < 0 || (totalSum - D) % 2 != 0)
-            return false;
-            
-        // If the difference is an even value, then you can have valid partitions 
-        int target = (totalSum - D) / 2;
-
-        int totalSum = accumulate(begin(nums), end(nums), 0);
-        
         // Edge case: If the difference becomes negative or odd then you can't have valid partitions
         if(totalSum - D < 0 || (totalSum - D) % 2 != 0)
             return false;
