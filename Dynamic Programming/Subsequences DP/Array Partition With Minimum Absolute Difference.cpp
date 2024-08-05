@@ -7,29 +7,29 @@ class TopDown {
 public:
     // Method to find the minimum absolute difference, using recursion with memoization - O(N*T) & O(N*T) : Where T let be the total sum
     int minSubsetSumDifference(vector<int>& nums, int n) {
-	    int totalSum = accumulate(begin(nums), end(nums), 0);       
+	int totalSum = accumulate(begin(nums), end(nums), 0);       
         
         // 2D DP table
-	    vector<vector<int>> dp(n, vector<int>(totalSum + 1, -1));
+	vector<vector<int>> dp(n, vector<int>(totalSum + 1, -1));
     
-	    // If a single subset exists then the another subset can easily be identified, hence look for the existence of all the possible subsets through their sum value
-	    for(int subset1Sum = 0; subset1Sum <= totalSum; ++subset1Sum) {
-	        solveWithMemo(dp, nums, n, n - 1, subset1Sum);
-	    }
+	// If a single subset exists then the another subset can easily be identified, hence look for the existence of all the possible subsets through their sum value
+	for(int subset1Sum = 0; subset1Sum <= totalSum; ++subset1Sum) {
+	    solveWithMemo(dp, nums, n, n - 1, subset1Sum);
+	}
 
         // Stores the result value 
-	    int minAbsDiff = INT_MAX;
+	int minAbsDiff = INT_MAX;
     
-	    // Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
-	    for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
-	        if(dp[n - 1][subset1Sum]) {
-	            int subset2Sum = totalSum - subset1Sum;
-	            minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
-	        }
+	// Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
+	for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
+	    if(dp[n - 1][subset1Sum]) {
+	        int subset2Sum = totalSum - subset1Sum;
+	        minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
 	    }
+	}
     
-	    // Return the result value
-	    return minAbsDiff;
+	// Return the result value
+	return minAbsDiff;
     }
 
 private:
@@ -38,7 +38,7 @@ private:
         if(sum == 0)
             return dp[index][sum] = true;        
     
-	    // Edge case: If you're at the 0th index and the value is equal to the sum then there exists a subset with given sum
+	// Edge case: If you're at the 0th index and the value is equal to the sum then there exists a subset with given sum
         if(index == 0)
             return dp[index][sum] = (nums[index] == sum);
 
@@ -46,11 +46,11 @@ private:
         if(dp[index][sum] != -1)
             return dp[index][sum];
 
-	    // There are always two possibilties to perform at each index
+	// There are always two possibilties to perform at each index
         bool currSkip = solveWithMemo(dp, nums, N, index - 1, sum); // Is to skip the index value
         bool currTake = false;				                        // Is to take the index value	
 
-	    // If possible then take the index value
+	// If possible then take the index value
         if(nums[index] <= sum) 
             currTake = solveWithMemo(dp, nums, N, index - 1, sum - nums[index]);
 
@@ -66,10 +66,10 @@ class BottomUp {
 public:
     // #1 Method to find the minimum absolute difference, using 2D tabulation - O(N*T) & O(N*T)
     int minSubsetSumDifference_V1(vector<int>& nums, int n) {
-	    int totalSum = accumulate(begin(nums), end(nums), 0);
+	int totalSum = accumulate(begin(nums), end(nums), 0);
 
         // 2D DP table
-	    vector<vector<bool>> dp(n, vector<bool>(totalSum + 1, false));
+	vector<vector<bool>> dp(n, vector<bool>(totalSum + 1, false));
 
         // Initialize the first edge case: If the sum becomes zero then there exists a subset with given sum 
         for(int index = 0; index < n; ++index)
@@ -92,23 +92,23 @@ public:
         }
 
         // Stores the result value 
-	    int minAbsDiff = INT_MAX;
+	int minAbsDiff = INT_MAX;
     
-	    // Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
-	    for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
-	        if(dp[n - 1][subset1Sum]) {
-	            int subset2Sum = totalSum - subset1Sum;
-	            minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
-	        }
+	// Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
+	for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
+	    if(dp[n - 1][subset1Sum]) {
+	        int subset2Sum = totalSum - subset1Sum;
+	        minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
 	    }
+	}
     
-	    // Return the result value
-	    return minAbsDiff;
+	// Return the result value
+	return minAbsDiff;
     }
 
     // #1 Method to find the minimum absolute difference, using 1D tabulation - O(N*T) & O(T)
     int minSubsetSumDifference_V2(vector<int>& nums, int n) {
-	    int totalSum = accumulate(begin(nums), end(nums), 0);
+	int totalSum = accumulate(begin(nums), end(nums), 0);
 
         // 1D DP tables
         vector<bool> prevRow(totalSum + 1, false), idealRow(totalSum + 1, false);
@@ -132,18 +132,18 @@ public:
         }
 
         // Stores the result value 
-	    int minAbsDiff = INT_MAX;
+	int minAbsDiff = INT_MAX;
     
-	    // Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
-	    for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
-	        if(prevRow[subset1Sum]) {
-	            int subset2Sum = totalSum - subset1Sum;
-	            minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
-	        }
+	// Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
+	for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
+	    if(prevRow[subset1Sum]) {
+	        int subset2Sum = totalSum - subset1Sum;
+	        minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
 	    }
-    
-	    // Return the result value
-	    return minAbsDiff;
+	}
+
+	// Return the result value
+	return minAbsDiff;
     }
 };
 
