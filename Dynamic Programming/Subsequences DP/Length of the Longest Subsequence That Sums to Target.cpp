@@ -30,7 +30,7 @@ private:
 
         // There are always two possibilities to perform at each index
         int currSkip = solveWithMemo(memory, nums, n, index + 1, target); // Is to skip the index value
-        int currTake = INT_MIN;                                           // Is to take the index value on                                            
+        int currTake = INT_MIN;                                           // Is to take the index value                                          
 
         // If possible then take the index value
         if(nums[index] <= target) {
@@ -54,7 +54,7 @@ private:
 
         // There are always two possibilities to perform at each index
         int currSkip = solveWithoutMemo(nums, n, index + 1, target); // Is to skip the index value
-        int currTake = INT_MIN;                                     // Is to take the index value on                                            
+        int currTake = INT_MIN;                                      // Is to take the index value                                            
 
         // If possible then take the index value
         if(nums[index] <= target) {
