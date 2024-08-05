@@ -48,7 +48,7 @@ private:
 
 	// There are always two possibilties to perform at each index
         bool currSkip = solveWithMemo(dp, nums, N, index - 1, sum); // Is to skip the index value
-        bool currTake = false;				                        // Is to take the index value	
+        bool currTake = false;				            // Is to take the index value	
 
 	// If possible then take the index value
         if(nums[index] <= sum) 
