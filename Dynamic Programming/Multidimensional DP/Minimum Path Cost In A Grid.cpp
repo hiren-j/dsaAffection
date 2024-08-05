@@ -1,6 +1,6 @@
 // Code to find the minimum cost of a path that starts from any cell in the first row and ends at any cell in the last row ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -12,6 +12,7 @@ class TopDown {
         if(R == N)
             return 0;
 
+        // Stores the result value
         int minPathCost = INT_MAX;
 
         // Explore all the paths from the cell and update the result value by the minimum cost
@@ -21,8 +22,9 @@ class TopDown {
                 currPathCost += moveCost[grid[R-1][prevCol]][C];
             }
             minPathCost = min(minPathCost, currPathCost);
-        }
+        }   
 
+        // Return the result value
         return minPathCost;
     }
 
@@ -36,6 +38,7 @@ class TopDown {
         if(memory[R][prevCol + 1] != -1)
             return memory[R][prevCol + 1];
         
+        // Stores the result value
         int minPathCost = INT_MAX;
 
         // Explore all the paths from the cell and update the result value by the minimum cost
@@ -60,17 +63,19 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // Method to find the minimum cost, using 2D tabulation - O(M*N*M) & O(N*M)
+    // #1 Method to find the minimum cost, using 2D tabulation - O(N*M*M) & O(N*M)
     int minPathCost_V1(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
         int N = grid.size(), M = grid[0].size();
 
+        // 2D DP table
         vector<vector<int>> dp(N+1, vector<int>(M+1, 0));
 
+        // Fill the table
         for(int R = N-1; R >= 0; --R) {
             for(int prevCol = M-1; prevCol >= -1; --prevCol) {
                 int minPathCost = INT_MAX;
@@ -87,15 +92,18 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0][0];
     }
 
-    // Method to find the minimum cost, using 1D tabulation - O(M*N*M) & O(M)
+    // #2 Method to find the minimum cost, using 1D tabulation - O(M*N*M) & O(M)
     int minPathCost_V2(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
         int N = grid.size(), M = grid[0].size();
 
+        // 1D DP tables
         vector<int> nextRow(M+1, 0), currRow(M+1, 0);
 
+        // Fill the table
         for(int R = N-1; R >= 0; --R) {
             for(int prevCol = M-1; prevCol >= -1; --prevCol) {
                 int minPathCost = INT_MAX;
@@ -113,11 +121,12 @@ public:
             nextRow = currRow;
         }
 
+        // Return the result value
         return currRow[0];
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Link   : https://leetcode.com/problems/minimum-path-cost-in-a-grid/description/
-Topics : Array | Dynamic Programming | Matrix
+Topics: Array | Dynamic Programming | Matrix
+Link  : https://leetcode.com/problems/minimum-path-cost-in-a-grid/description/
