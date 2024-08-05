@@ -211,7 +211,6 @@ public:
         // Method to find the size of the largest subset, using recursion with memoization :-
         int findMaxForm(vector<string>& strs, int m, int n) {
             size = strs.size();
-
             countZerosOnes.resize(size);
 
             // Iterate and store the count of total number of 0's and 1's of each string
