@@ -35,6 +35,24 @@ private:
         // Store the result value to the memoization table and then return it
         return memory[X][Y] = (numPathsFromX + numPathsFromY) % MOD;
     }
+    
+    // O(2^(X*Y)) & O(X+Y)
+    int solveWithMemo(int X, int Y) {
+        // Edge case: If the points reaches the origin (0, 0) then you've one valid path
+        if(X == 0 && Y == 0)
+            return 1;
+        
+        // Edge case: If any of the point becomes negative then you've no valid path
+        if(X < 0 || Y < 0)
+            return 0;
+
+        // There are always two possibilites to perform at each step
+        int numPathsFromX = solveWithMemo(X - 1, Y); // Is to move one-step to the up-side 
+        int numPathsFromY = solveWithMemo(X, Y - 1); // Is to move one-step to the left-side 
+
+        // Return the result value
+        return (numPathsFromX + numPathsFromY) % MOD;
+    }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
