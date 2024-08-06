@@ -73,10 +73,10 @@ public:
 	// Fill the rest of the table
         for(int house = n-1; house >= 0; --house) {
             for(int prevColor = 0; prevColor < 4; ++prevColor) {
-	            int minCost = INT_MAX;
-	            for(int color = 0; color < 3; ++color) {
-	                if(color != prevColor) {
-	            	    minCost = min(minCost, cost[house][color] + dp[house + 1][color]);
+	        int minCost = INT_MAX;
+	        for(int color = 0; color < 3; ++color) {
+	            if(color != prevColor) {
+	            	minCost = min(minCost, cost[house][color] + dp[house + 1][color]);
                     }
                 }
 	        dp[house][prevColor] = minCost;
@@ -101,11 +101,11 @@ public:
 	// Fill the rest of the table
         for(int house = n-1; house >= 0; --house) {
             for(int prevColor = 0; prevColor < 4; ++prevColor) {
-	            int minCost = INT_MAX;
-	            for(int color = 0; color < 3; ++color) {
-	                if(color != prevColor) {
-	            	    minCost = min(minCost, cost[house][color] + nextRow[color]);
-                    }
+	        int minCost = INT_MAX;
+	        for(int color = 0; color < 3; ++color) {
+	            if(color != prevColor) {
+			minCost = min(minCost, cost[house][color] + nextRow[color]);
+		    }
                 }
 	        currRow[prevColor] = minCost;
             }   
