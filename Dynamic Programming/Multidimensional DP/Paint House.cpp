@@ -7,50 +7,50 @@ class TopDown {
 public:
     // Method to find the minimum cost, using recursion with memoization - O(N) & O(N)
     int minCostToPaintHouse(vector<vector<int>>& cost) {
-	    int n = cost.size();
-	    vector<vector<int>> memory(n, vector<int>(4, -1));
-	    return solveWithMemo(memory, cost, n, 0, 3);
+	int n = cost.size();
+	vector<vector<int>> memory(n, vector<int>(4, -1));
+	return solveWithMemo(memory, cost, n, 0, 3);
     }
 
 private:
     // O(2*N*4) & O(N*4 + N)
     int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& cost, int n, int house, int prevColor) {
-	    // Edge case: If all the houses are exhausted then there's no more house to paint
-	    if(house == n)
-	        return 0;
+	// Edge case: If all the houses are exhausted then there's no more house to paint
+	if(house == n)
+	    return 0;
     
-	    // Memoization table: If the current state is already computed then return the computed value 
-	    if(memory[house][prevColor] != -1)
-	        return memory[house][prevColor];
+	// Memoization table: If the current state is already computed then return the computed value 
+	if(memory[house][prevColor] != -1)
+	    return memory[house][prevColor];
 
-	    // Stores the result value
-	    int minCost = INT_MAX;
+	// Stores the result value
+	int minCost = INT_MAX;
     
-	    // Explore the colors and if the previous house is not painted with the current color then paint the current house with it
-	    for(int color = 0; color < 3; ++color) 
-	        if(color != prevColor) 
-	    	    minCost = min(minCost, cost[house][color] + solveWithMemo(memory, cost, n, house + 1, color));
+	// Explore the colors and if the previous house is not painted with the current color then paint the current house with it
+	for(int color = 0; color < 3; ++color) 
+	    if(color != prevColor) 
+	    	minCost = min(minCost, cost[house][color] + solveWithMemo(memory, cost, n, house + 1, color));
                 
-	    // Store the result value to the memoization table and then return it
-	    return memory[house][prevColor] = minCost;
+	// Store the result value to the memoization table and then return it
+	return memory[house][prevColor] = minCost;
     }
 
     // O(2^N) & O(N)
     int solveWithoutMemo(vector<vector<int>>& cost, int n, int house, int prevColor) {
-	    // Edge case: If all the houses are exhausted then there's no more house to paint
-	    if(house == n)
-	        return 0;
+	// Edge case: If all the houses are exhausted then there's no more house to paint
+	if(house == n)
+	    return 0;
 
-	    // Stores the result value
-	    int minCost = INT_MAX;
+	// Stores the result value
+	int minCost = INT_MAX;
     
-	    // Explore the colors and if the previous house is not painted with the current color then paint the current house with it
-	    for(int color = 0; color < 3; ++color) 
-	        if(color != prevColor) 
-	    	    minCost = min(minCost, cost[house][color] + solveWithoutMemo(cost, n, house + 1, color));
+	// Explore the colors and if the previous house is not painted with the current color then paint the current house with it
+	for(int color = 0; color < 3; ++color) 
+	    if(color != prevColor) 
+	    	minCost = min(minCost, cost[house][color] + solveWithoutMemo(cost, n, house + 1, color));
 
         // Return the result value
-	    return minCost;
+	return minCost;
     }
 };
 
@@ -61,16 +61,16 @@ class BottomUp {
 public:
     // #1 Method to find the minimum cost, using 2D tabulation - O(N*4*3) & O(N*4)
     int minCostToPaintHouse_V1(vector<vector<int>>& cost) {
-	    int n = cost.size();
+	int n = cost.size();
 
-		// 2D DP table
-	    vector<vector<int>> dp(n + 1, vector<int>(4, INT_MAX));
+	// 2D DP table
+	vector<vector<int>> dp(n + 1, vector<int>(4, INT_MAX));
 
-		// Initialize the edge case: If all the houses are exhausted then there's no more house to paint
+	// Initialize the edge case: If all the houses are exhausted then there's no more house to paint
         for(int color = 0; color < 3; ++color) 
             dp[n][color] = 0;
 
-		// Fill the rest of the table
+	// Fill the rest of the table
         for(int house = n-1; house >= 0; --house) {
             for(int prevColor = 0; prevColor < 4; ++prevColor) {
 	            int minCost = INT_MAX;
@@ -83,22 +83,22 @@ public:
             }   
         }
 
-		// Return the result value
-	    return dp[0][3];
+	// Return the result value
+	return dp[0][3];
     }
 
     // #2 Method to find the minimum cost, using 1D tabulation - O(N*4*3) & O(2*4)
     int minCostToPaintHouse_V2(vector<vector<int>>& cost) {
-	    int n = cost.size();
+	int n = cost.size();
 
-		// 1D DP tables
+	// 1D DP tables
         vector<int> nextRow(4, INT_MAX), currRow(4, INT_MAX);
 
-		// Initialize the edge case: If all the houses are exhausted then there's no more house to paint
+	// Initialize the edge case: If all the houses are exhausted then there's no more house to paint
         for(int color = 0; color < 3; ++color) 
             nextRow[color] = 0;
 
-		// Fill the rest of the table
+	// Fill the rest of the table
         for(int house = n-1; house >= 0; --house) {
             for(int prevColor = 0; prevColor < 4; ++prevColor) {
 	            int minCost = INT_MAX;
@@ -112,8 +112,8 @@ public:
             nextRow = currRow;
         }
 
-		// Return the result value
-	    return nextRow[3];
+	// Return the result value
+	return nextRow[3];
     }
 };
 
@@ -121,4 +121,4 @@ public:
 
 Topics: Array | Dynamic Programming
 Links : https://www.naukri.com/code360/problems/paint-house_1460385
-	    https://leetcode.com/problems/paint-house/description/
+	https://leetcode.com/problems/paint-house/description/
