@@ -5,7 +5,7 @@
 Note: 1 <= grid[i][j] <= 70
 Note: 1 <= N, M <= 70
 Note: So, In the worst case the highest value of sum could be 70*70 = 4900. 
-      Didn't understand? Imagine the worst case when there will be 70 rows and 70 columns and all the cells contain value 70. 
+      Didn't understand? Imagine the worst case when there will be 70 rows and 70 columns and all the cells contains value 70. 
       So, based on my logic you could see we're looking for the result value by moving from the first row to the last row.
       So, If you add the value 70 of the chosen cells across the path then you'll end up having the sum of 4900 at max or when you end up reaching all the rows.
       So, I measured it through the problem constraints. Hope you've got it!
@@ -22,12 +22,14 @@ class TopDown {
         if(startRow == N)
             return abs(target - sum);
 
+        // Stores the result value
         int minAbsDiff = INT_MAX;
         
-        // Explore all the possible paths of chosing elements from the cell and update the result by the minimum value
+        // Explore all the possible paths of choosing elements from the cell and update the result by the minimum value
         for(int C = 0; C < M; ++C) 
             minAbsDiff = min(minAbsDiff, solveWithoutMemo(grid, target, startRow + 1, sum + grid[startRow][C]));
 
+        // Return the result vlaue  
         return minAbsDiff;
     } 
 
@@ -41,9 +43,10 @@ class TopDown {
         if(memory[startRow][sum] != -1)
             return memory[startRow][sum];
 
+        // Stores the result value
         int minAbsDiff = INT_MAX;
 
-        // Explore all the possible paths of chosing elements from the cell and update the result by the minimum value
+        // Explore all the possible paths of choosing elements from the cell and update the result by the minimum value
         for(int C = 0; C < M; ++C) 
             minAbsDiff = min(minAbsDiff, solveWithMemo(memory, grid, target, startRow + 1, sum + grid[startRow][C]));
 
@@ -64,18 +67,19 @@ public:
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
-    int N, M;
-
 public:
     // Method to find the minimum absolute difference, using 2D tabulation - O(N*2501*M) & O(N*4901)
     int minimizeTheDifference_V1(vector<vector<int>>& grid, int target) {
-        N = grid.size(), M = grid[0].size();
+        int N = grid.size(), M = grid[0].size();
 
+        // 2D DP table
         vector<vector<int>> dp(N + 1, vector<int>(4901, INT_MAX));
 
+        // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
         for(int sum = 0; sum <= 4900; ++sum)
             dp[N][sum] = abs(target - sum);
 
+        // Fill the rest of the table
         for(int startRow = N-1; startRow >= 0; --startRow) {
             for(int sum = 2500; sum >= 0; --sum) {
                 int minAbsDiff = INT_MAX;
@@ -86,18 +90,22 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0][0];
     }
 
     // Method to find the minimum absolute difference, using 1D tabulation - O(N*2501*M) & O(2*4901)
     int minimizeTheDifference_V2(vector<vector<int>>& grid, int target) {
-        N = grid.size(), M = grid[0].size();
+        int N = grid.size(), M = grid[0].size();
 
+        // 1D DP tables
         vector<int> nextRow(4901, INT_MAX), currRow(4901, INT_MAX);
 
+        // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
         for(int sum = 0; sum <= 4900; ++sum)
             nextRow[sum] = abs(target - sum);
 
+        // Fill the rest of the table
         for(int startRow = N-1; startRow >= 0; --startRow) {
             for(int sum = 2500; sum >= 0; --sum) {
                 int minAbsDiff = INT_MAX;
@@ -109,6 +117,7 @@ public:
             nextRow = currRow;
         }
 
+        // Return the result value
         return currRow[0];
     }
 };
