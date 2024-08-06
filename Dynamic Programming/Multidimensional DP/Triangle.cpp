@@ -100,7 +100,7 @@ public:
         return dp[0][0];    
     }
 
-    // #3 Method to find the minimum path sum from top to bottom, using 2D tabulation - O(N*N) & O(N)
+    // #3 Method to find the minimum path sum from top to bottom, using 1D tabulation - O(N*N) & O(N)
     int minimumTotal_V3(vector<vector<int>>& triangle) {
         int N = triangle.size();
 
