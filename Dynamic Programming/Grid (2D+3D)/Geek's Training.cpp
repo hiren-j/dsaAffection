@@ -198,4 +198,4 @@ int main() {
 /*
     Topics: Array | Matrix | Dynamic Programming
     Links: https://www.geeksforgeeks.org/problems/geeks-training/1
-*/c
+*/
