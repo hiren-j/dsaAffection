@@ -198,5 +198,4 @@ int main() {
 /*
     Topics: Array | Matrix | Dynamic Programming
     Links: https://www.geeksforgeeks.org/problems/geeks-training/1
-           https://www.codingninjas.com/studio/problems/ninja-s-training_3621003d?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTabValue=PROBLEM
 */
