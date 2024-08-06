@@ -1,8 +1,4 @@
 // Code to find out the maximum amount of gold which the miner can collect until he can no longer move in the grid ~ coded by Hiren
-#include <algorithm>
-#include <iostream>
-#include <vector>
-using namespace std;
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
