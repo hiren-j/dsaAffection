@@ -79,7 +79,7 @@ public:
 	            	    minCost = min(minCost, cost[house][color] + dp[house + 1][color]);
                     }
                 }
-	            dp[house][prevColor] = minCost;
+	        dp[house][prevColor] = minCost;
             }   
         }
 
@@ -107,7 +107,7 @@ public:
 	            	    minCost = min(minCost, cost[house][color] + nextRow[color]);
                     }
                 }
-	            currRow[prevColor] = minCost;
+	        currRow[prevColor] = minCost;
             }   
             nextRow = currRow;
         }
