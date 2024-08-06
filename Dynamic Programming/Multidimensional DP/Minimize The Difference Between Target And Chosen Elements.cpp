@@ -1,13 +1,13 @@
-// Code to find the minimum absolute difference, The absolute difference between two numbers a and b is the absolute value of a - b. We could Choose one integer from each row in the matrix such that the absolute difference between target and the sum of the chosen elements is minimized ~ coded by Hiren
+// Code to find the minimum absolute difference, The absolute difference between two numbers a and b is the absolute value of a - b. We could Choose one integer from each row in the matrix such that the absolute difference between target and the pathSum of the chosen elements is minimized ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Note: 1 <= grid[i][j] <= 70
 Note: 1 <= N, M <= 70
-Note: So, In the worst case the highest value of sum could be 70*70 = 4900. 
+Note: So, In the worst case the highest value of pathSum could be 70*70 = 4900. 
       Didn't understand? Imagine the worst case when there will be 70 rows and 70 columns and all the cells contains value 70. 
       So, based on my logic you could see we're looking for the result value by moving from the first row to the last row.
-      So, If you add the value 70 of the chosen cells across the path then you'll end up having the sum of 4900 at max or when you end up reaching all the rows.
+      So, If you add the value 70 of the chosen cells across the path then you'll end up having the pathSum of 4900 at max or when you end up reaching all the rows.
       So, I measured it through the problem constraints. Hope you've got it!
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -17,41 +17,41 @@ class TopDown {
     int N, M;
 
     // O(M^(N*M)) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& grid, int target, int startRow, int sum) {
+    int solveWithoutMemo(vector<vector<int>>& grid, int target, int startRow, int pathSum) {
         // Edge case: If all the rows are exhausted then return the absolute difference of the current path
         if(startRow == N)
-            return abs(target - sum);
+            return abs(target - pathSum);
 
         // Stores the result value
         int minAbsDiff = INT_MAX;
         
         // Explore all the possible paths of choosing elements from the cell and update the result by the minimum value
         for(int C = 0; C < M; ++C) 
-            minAbsDiff = min(minAbsDiff, solveWithoutMemo(grid, target, startRow + 1, sum + grid[startRow][C]));
+            minAbsDiff = min(minAbsDiff, solveWithoutMemo(grid, target, startRow + 1, pathSum + grid[startRow][C]));
 
         // Return the result vlaue  
         return minAbsDiff;
     } 
 
     // O(M*N*4901) & O(N*4901 + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int target, int startRow, int sum) {
+    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int target, int startRow, int pathSum) {
         // Edge case: If all the rows are exhausted then return the absolute difference of the current path
         if(startRow == N)
-            return abs(target - sum);
+            return abs(target - pathSum);
 
         // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startRow][sum] != -1)
-            return memory[startRow][sum];
+        if(memory[startRow][pathSum] != -1)
+            return memory[startRow][pathSum];
 
         // Stores the result value
         int minAbsDiff = INT_MAX;
 
         // Explore all the possible paths of choosing elements from the cell and update the result by the minimum value
         for(int C = 0; C < M; ++C) 
-            minAbsDiff = min(minAbsDiff, solveWithMemo(memory, grid, target, startRow + 1, sum + grid[startRow][C]));
+            minAbsDiff = min(minAbsDiff, solveWithMemo(memory, grid, target, startRow + 1, pathSum + grid[startRow][C]));
 
         // Store the result value to the memoization table and then return it
-        return memory[startRow][sum] = minAbsDiff;
+        return memory[startRow][pathSum] = minAbsDiff;
     } 
 
 public:
@@ -76,17 +76,17 @@ public:
         vector<vector<int>> dp(N + 1, vector<int>(4901, INT_MAX));
 
         // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
-        for(int sum = 0; sum <= 4900; ++sum)
-            dp[N][sum] = abs(target - sum);
+        for(int pathSum = 0; pathSum <= 4900; ++pathSum)
+            dp[N][pathSum] = abs(target - pathSum);
 
         // Fill the rest of the table
         for(int startRow = N-1; startRow >= 0; --startRow) {
-            for(int sum = 2500; sum >= 0; --sum) {
+            for(int pathSum = 2500; pathSum >= 0; --pathSum) {
                 int minAbsDiff = INT_MAX;
                 for(int C = 0; C < M; ++C) {
-                    minAbsDiff = min(minAbsDiff, dp[startRow + 1][sum + grid[startRow][C]]);
+                    minAbsDiff = min(minAbsDiff, dp[startRow + 1][pathSum + grid[startRow][C]]);
                 }
-                dp[startRow][sum] = minAbsDiff;            
+                dp[startRow][pathSum] = minAbsDiff;            
             }
         }
 
@@ -102,17 +102,17 @@ public:
         vector<int> nextRow(4901, INT_MAX), currRow(4901, INT_MAX);
 
         // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
-        for(int sum = 0; sum <= 4900; ++sum)
-            nextRow[sum] = abs(target - sum);
+        for(int pathSum = 0; pathSum <= 4900; ++pathSum)
+            nextRow[pathSum] = abs(target - pathSum);
 
         // Fill the rest of the table
         for(int startRow = N-1; startRow >= 0; --startRow) {
-            for(int sum = 2500; sum >= 0; --sum) {
+            for(int pathSum = 2500; pathSum >= 0; --pathSum) {
                 int minAbsDiff = INT_MAX;
                 for(int C = 0; C < M; ++C) {
-                    minAbsDiff = min(minAbsDiff, nextRow[sum + grid[startRow][C]]);
+                    minAbsDiff = min(minAbsDiff, nextRow[pathSum + grid[startRow][C]]);
                 }
-                currRow[sum] = minAbsDiff;            
+                currRow[pathSum] = minAbsDiff;            
             }
             nextRow = currRow;
         }
