@@ -38,18 +38,6 @@ public:
         // Return the result row
         return prevRow;
     }
-
-    // #3 Method to find the rowIndex row of the Pascal's triangle, using constant auxiliary space - O(rowIndex^2) & O(1) 
-    vector<int> getRow_V3(int rowIndex) {
-        vector<int> currRow(rowIndex + 1, 1);
-
-        for(int r = 2; r <= rowIndex; ++r) 
-            for(int c = r-1; c > 0; --c) 
-                currRow[c] += currRow[c - 1];
-
-        // Return the result row
-        return currRow;
-    }
 };
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
