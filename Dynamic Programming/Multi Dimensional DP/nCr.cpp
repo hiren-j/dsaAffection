@@ -51,5 +51,5 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
-Links : https://leetcode.com/problems/pascals-triangle-ii/
+Links : https://www.geeksforgeeks.org/problems/ncr1019/1
         https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/Multi%20Dimensional%20DP/Pascal's%20Triangle%20II.cpp
