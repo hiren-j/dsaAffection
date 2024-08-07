@@ -4,6 +4,8 @@
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
+    const int MOD = 1e9+7;
+    
 public:
     // #1 Method to find the nCr of given two integers, using 2D tabulation - O(N^2) & O(N^2) 
     int nCr_V1(int N, int R) {
