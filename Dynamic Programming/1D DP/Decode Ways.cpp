@@ -15,11 +15,11 @@ public:
 private:
     // O(2*N) & O(N+N)
     int solveWithMemo(vector<int>& memory, const string& s, int n, int index) {
-        // Edge case: If all the letters are exhausted then you've decoded the whole string hence you've one valid way
+        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
         if(index == n)
             return 1;
 
-        // Edge case: If the letter is 0 then you've can't decode it in the valid way
+        // Edge case: If the characters is '0' then you've can't decode it in the valid way
         if(s[index] == '0')
             return 0;
 
@@ -27,10 +27,10 @@ private:
         if(memory[index] != -1)
             return memory[index];
 
-        // If you're here then it's guaranteed that the letter lies within '1' to '9' which can be decoded hence consider it and move to the next letter
+        // If you're here then it's guaranteed that the character lies within '1' to '9' which can be decoded hence consider it and move to the next character
         int numWays = solveWithMemo(memory, s, n, index + 1);
 
-        // If you're here then there are two possible ways of decoding: When the current letter is '1' then it's guaranteed that the next letter will be within '0' to '9'. If the current letter is '2' then you can only decode when the next letter lies within '0' to '6'
+        // If you're here then there are two possible ways of decoding: When the current character is '1' then it's guaranteed that the next character will be within '0' to '9'. If the current character is '2' then you can only decode when the next character lies within '0' to '6'
         if(index + 1 < n && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6')))
             numWays += solveWithMemo(memory, s, n, index + 2);
         
@@ -40,18 +40,18 @@ private:
 
     // O(2^N) & O(N)
     int solveWithoutMemo(const string& s, int n, int index) {
-        // Edge case: If all the letters are exhausted then you've decoded the whole string hence you've one valid way
+        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
         if(index == n)
             return 1;
 
-        // Edge case: If the letter is 0 then you've can't decode it in the valid way
+        // Edge case: If the characters is '0' then you've can't decode it in the valid way
         if(s[index] == '0')
             return 0;
 
-        // If you're here then it's guaranteed that the letter lies within '1' to '9' which can be decoded hence consider it and move to the next letter
+        // If you're here then it's guaranteed that the character lies within '1' to '9' which can be decoded hence consider it and move to the next character
         int numWays = solveWithoutMemo(s, n, index + 1);
 
-        // If you're here then there are two possible ways of decoding: When the current letter is '1' then it's guaranteed that the next letter will be within '0' to '9'. If the current letter is '2' then you can only decode when the next letter lies within '0' to '6'
+        // If you're here then there are two possible ways of decoding: When the current character is '1' then it's guaranteed that the next character will be within '0' to '9'. If the current character is '2' then you can only decode when the next character lies within '0' to '6'
         if(index + 1 < n && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6')))
             numWays += solveWithoutMemo(s, n, index + 2);
 
@@ -72,7 +72,7 @@ public:
         // 1D table: dp[i] represents the total number of ways to decode the string from index 0 to i
         vector<int> dp(n + 1, 0);
 
-        // Initialize the edge case: If all the letters are exhausted then you've decoded the whole string hence you've one valid way
+        // Initialize the edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
         dp[n] = 1;
 
         // Fill the rest of the table
