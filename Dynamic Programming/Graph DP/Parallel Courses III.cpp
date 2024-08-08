@@ -43,7 +43,7 @@ class DynamicProgramming {
 public:
     // Method to find minimum number of months needed to complete all the courses, using recursion with memoization - O(V+E) & O(V+E) : Where V let be the total number of courses and E be the size of relations array
     int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time) {
-        // Edge case: If the graph is empty then return the maximum time  
+        // Edge case: If there is are relations then return the maximum time  
         if(relations.size() == 0)
             return *max_element(begin(time), end(time));
 
