@@ -12,7 +12,7 @@ class DynamicProgramming {
         // Stores the total time required to complete the course
         int maximumTime = 0;
 
-        // Explore each neighbor courses and find the maximum remaining time to complete the course
+        // Explore each neighbour courses and find the maximum remaining time to complete the course
         for(int neighbor : adjList[course]) 
             maximumTime = max(maximumTime, solveWithoutMemo(neighbor, time));
 
