@@ -5,7 +5,7 @@
 // Class to implement the Top-down approach:
 class TopDown {
 public:
-    // Method to find the total number of ways to decode the given string in specified way, using recursion with memoization - O(N) & O(N)
+    // Method to find the total number of ways to decode the string in the specified way, using recursion with memoization - O(N) & O(N)
     int numDecodings(string& s) {
         int n = s.size();
         vector<int> memory(n, -1);
@@ -65,7 +65,7 @@ private:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // #1 Method to find the total number of ways to decode the given string in specified way, using 1D tabulation - O(N) & O(N)
+    // #1 Method to find the total number of ways to decode the string in the specified way, using 1D tabulation - O(N) & O(N)
     int numDecodings_V1(string& s) {
         int n = s.size();
 
@@ -90,7 +90,7 @@ public:
         return dp[0];
     }
 
-    // #2 Method to find the total number of ways to decode the given string in specified way, using constant auxiliary space - O(N) & O(1)
+    // #2 Method to find the total number of ways to decode the string in the specified way, using constant auxiliary space - O(N) & O(1)
     int numDecodings_V2(string& s) {
         int n = s.size(), nextWays1 = 1, nextWays2 = 0, result = 0; 
 
