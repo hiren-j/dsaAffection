@@ -7,7 +7,7 @@ class DynamicProgramming {
     vector<vector<int>> adjList;
     vector<int> visited;  
 
-    // O(V * (V+E)) & O(V)
+    // O(E^V) & O(V)
     int solveWithoutMemo(int course, vector<int>& time) {
         // Stores the total time required to complete the course
         int maximumTime = 0;
@@ -20,7 +20,7 @@ class DynamicProgramming {
         return (maximumTime == 0) ? time[course - 1] : time[course - 1] + maximumTime;
     }
     
-    // O(V + V+E) & O(V+V)
+    // O(V+E) & O(V+V)
     int solveWithMemo(int course, vector<int>& time) {
         // Stores the total time required to complete the course
         int maximumTime = 0;
@@ -41,7 +41,7 @@ class DynamicProgramming {
     }
 
 public:
-    // Method to find minimum number of months needed to complete all the courses, using recursion with memoization - O(V+E) & O(V+E)
+    // Method to find minimum number of months needed to complete all the courses, using recursion with memoization - O(V+E) & O(V+E) : Where V let be the total number of courses and E be the size of relations array
     int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time) {
         // Edge case: If the graph is empty then return the maximum time  
         if(relations.size() == 0)
@@ -67,7 +67,7 @@ public:
         // Stores the result value
         int minMonths = 0;
         
-        // Explore each course 
+        // Start doing the courses one by one and find the total time required to complete all the courses through it and then update the result by the maximum value
         for(int course = 1; course <= n; ++course) 
             if(!visited[course]) 
                 minMonths = max(minMonths, solveWithMemo(course, time));
