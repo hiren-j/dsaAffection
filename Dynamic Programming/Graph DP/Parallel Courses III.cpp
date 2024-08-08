@@ -67,7 +67,7 @@ public:
         // Stores the result value
         int minMonths = 0;
         
-        // Start doing the courses one by one and find the total time required to complete all the courses through it and then update the result by the maximum value
+        // Start doing the courses and find the total time required to complete all the courses through each of them and update the result by the maximum value
         for(int course = 1; course <= n; ++course) 
             if(!visited[course]) 
                 minMonths = max(minMonths, solveWithMemo(course, time));
