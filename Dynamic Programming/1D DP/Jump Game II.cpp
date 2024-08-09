@@ -1,6 +1,7 @@
 // Code to find the minimum number of jumps to reach the last index of the array ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // Class to implement the Top-down approach:
 class TopDown {
 public:
@@ -60,6 +61,7 @@ private:
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
