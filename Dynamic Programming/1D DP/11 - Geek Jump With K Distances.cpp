@@ -1,6 +1,6 @@
 // Code to find the minimum possible total cost incurred before the Geek reaches the Nth stone, the Geek can jump to any one of the following, stone + 1, stone + 2, ... stone + K stone and cost will be [hi - hj] is incurred, where jump is the stone to land on ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -55,7 +55,7 @@ private:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -67,15 +67,14 @@ public:
 
         // Initialize the edge case: If Geek reached the last stone then there's no need to compute more cost
         dp[N - 1] = 0;                 
-        
+
+        // Fill the rest of the table
         for(int startStone = N-2; startStone >= 0; --startStone) {  
             int minCost = INT_MAX;
-
             for(int jump = 1; (jump <= K && startStone + jump < N); jump++) {
                 int nextCost = dp[startStone + jump];
                 minCost      = min(minCost, nextCost + abs(height[startStone] - height[startStone + jump]));
             }
-
             dp[startStone] = minCost; 
         }
 
@@ -83,7 +82,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/minimal-cost/1
