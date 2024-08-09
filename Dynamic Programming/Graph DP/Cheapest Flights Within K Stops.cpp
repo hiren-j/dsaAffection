@@ -2,9 +2,10 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-    NOTE REGARDING THE LAST TESTCASE: When (source == 0 && destination == 4 && k == 3) then we need to return value 40 as it's correct output. So, this is the only case where our memoization solution fails and the reason is the visited and unvisited happenings. But the intuition of the approach is correct, if you want the proof then just do this: Hit the "solveWithoutMemo" solution on the last testcase and you'll see that it's working fine. So hope you've got it that why i am considering my memoization solution as correct. So moral of the story is that when you do visited and unvisited things in the recursive solution then it may effect your memoization or may not be.
-*/
+NOTE REGARDING THE LAST TESTCASE: When (source == 0 && destination == 4 && k == 3) then we need to return value 40 as it's correct output. 
+So, this is the only case where our memoization solution fails and the reason is the visited and unvisited happenings. 
+But the intuition of the approach is correct, if you want the proof then just do this: Hit the "solveWithoutMemo" solution on the last testcase and you'll see that it's working fine. 
+So hope you've got it that why i am considering my memoization solution as correct. So moral of the story is that when you do visited and unvisited things in the recursive solution then it may effect your memoization or may not be.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
