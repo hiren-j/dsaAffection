@@ -60,7 +60,7 @@ public:
         int N = ques.size();     
 
         // 1D table: dp[J] represents the maximum points you can earn till the Jth question
-        vector<ll> dp(N+1);
+        vector<ll> dp(N+1, 0);
 
         // Iterate from the back side and compute the maximum points you can earn till the Jth question
         for(int J=N-1; J>=0; J--) {
