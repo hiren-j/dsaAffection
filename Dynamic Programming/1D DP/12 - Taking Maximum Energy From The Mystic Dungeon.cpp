@@ -118,5 +118,3 @@ public:
 
 Topics: Array | Prefix Sum | Dynamic Programming
 Link  : https://leetcode.com/problems/taking-maximum-energy-from-the-mystic-dungeon/description/
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
