@@ -90,7 +90,7 @@ class DynamicProgramming {
     }
 
 public:
-    // Method to find the cheapest price from source to destination with at most k stops, using recursion with memoization - O(M*N*K) & (N*K) : Where M let be the maximum number of neighbour flights
+    // Method to find the cheapest price from source to destination with at most k stops, using recursion with memoization - O(M*N*K) & (N*K) : Where M let be the maximum number of neighbours of any flight
     int findCheapestPrice(int n, vector<vector<int>>& flights, int source, int destination, int k) {
         // Last testcase: Hit the "solveWithoutMemo" solution on this testcase. It will work fine and this proves that the intuition of the solution is correct
         if(source == 0 && destination == 4 && k == 3)
