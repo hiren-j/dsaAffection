@@ -1,6 +1,6 @@
 // Code to find the maximum amount of money that you can rob tonight without alerting the police ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -57,7 +57,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Bottom-up approach:
 class BottomUp_V1 {
@@ -126,7 +126,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Bottom-up approach:
 class BottomUp_V2 {
@@ -166,7 +166,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #3 Class to implement the Bottom-up approach:
 class BottomUp_V3 {
@@ -179,15 +179,15 @@ public:
         if(N == 1)
             return houses[0];
 
-        int maxMoneyA = getMaxMoney(houses, N, 0, N-2); // Visit all the houses excluding the last house
-        int maxMoneyB = getMaxMoney(houses, N, 1, N-1); // Visit all the houses excluding the first house
+        int maxMoneyA = solveWithoutTable(houses, N, 0, N-2); // Visit all the houses excluding the last house
+        int maxMoneyB = solveWithoutTable(houses, N, 1, N-1); // Visit all the houses excluding the first house
 
         // Return the maximum money get from both the possibilities
         return std::max(maxMoneyA, maxMoneyB);
     }
 
 private:
-    int getMaxMoney(std::vector<int>& houses, int N, int start, int end) {
+    int solveWithoutTable(std::vector<int>& houses, int N, int start, int end) {
         int prevPrevMoney = 0;             // Initially no house at the beginning hence consider the money as zero
         int prevMoney     = houses[start]; // The maximum money for the first house is the money that the house have
         int maxMoney      = prevMoney;     // Stores the overall amount of maximum money that can be robbed
@@ -203,7 +203,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/house-robber-ii/
