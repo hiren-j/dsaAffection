@@ -1,6 +1,6 @@
 // Code to find the total number of distinct ways from which you can climb to the top ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -23,8 +23,8 @@ private:
             return cache[N];
 
         // There are always two possibilities to reach the Nth stair
-        int climbOneStep = solveWithMemo(N-1, cache); // Is to jump from the immediate 1st stair below the Nth stair
-        int climbTwoStep = solveWithMemo(N-2, cache); // Is to jump from the immediate 2nd stair below the Nth stair
+        int climbOneStep = solveWithMemo(N-1, cache); // Is to jump from the immediate 1st stair which is below the Nth stair
+        int climbTwoStep = solveWithMemo(N-2, cache); // Is to jump from the immediate 2nd stair which is below the Nth stair
 
         // Store the result value to the memoization table and then return it
         return cache[N] = climbOneStep + climbTwoStep;
@@ -37,15 +37,15 @@ private:
             return 1;
 
         // There are always two possibilities to reach the Nth stair
-        int climbOneStep = solveWithoutMemo(N-1); // Is to jump from the immediate 1st stair below the Nth stair
-        int climbTwoStep = solveWithoutMemo(N-2); // Is to jump from the immediate 2nd stair below the Nth stair
+        int climbOneStep = solveWithoutMemo(N-1); // Is to jump from the immediate 1st stair which is below the Nth stair
+        int climbTwoStep = solveWithoutMemo(N-2); // Is to jump from the immediate 2nd stair which is below the Nth stair
 
         // Return the result value
         return climbOneStep + climbTwoStep;
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -91,7 +91,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Math | Dynamic Programming | Memoization
 Link  : https://leetcode.com/problems/climbing-stairs/description/
