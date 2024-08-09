@@ -1,6 +1,6 @@
 // Code to find the minimum cost to reach the top of the floor ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -53,7 +53,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -62,11 +62,13 @@ public:
     int minCostClimbingStairs_V1(vector<int>& cost) {
         int n = cost.size();
 
+        // 1D table: dp[step] represents the minimum cost needed to reach the individual step by considering the movements starting from 0th and 1th step
         vector<int> dp(n, 0);
+        
         dp[0] = cost[0]; // For the 0th step the minimum cost needed to reach it is the cost that the step have
         dp[1] = cost[1]; // For the 1th step the minimum cost needed to reach it is the cost that the step have
 
-        // Iterate and compute the minimum cost needed to reach the stepth step
+        // Iterate and compute the minimum cost needed to reach the individual step
         for(int step = 2; step < n; ++step)
             dp[step] = cost[step] + min(dp[step - 1], dp[step - 2]);
 
@@ -82,7 +84,7 @@ public:
         int prevCost     = cost[1];               // For the 1th step the minimum cost needed to reach it is the cost that the step have            
         int currCost     = min(cost[0], cost[1]); // Compute and store the minimum cost needed to reach the top (considering the first two steps only)
 
-        // Iterate and compute the minimum cost needed to reach the Jth step
+        // Iterate and compute the minimum cost needed to reach the individual step
         for(int step = 2; step < n; ++step)
             currCost     = cost[step] + min(prevPrevCost, prevCost),
             prevPrevCost = prevCost,
@@ -93,7 +95,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/min-cost-climbing-stairs/description/
