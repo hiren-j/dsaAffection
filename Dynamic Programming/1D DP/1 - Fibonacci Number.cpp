@@ -3,9 +3,9 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 DON'T IGNORE MUST READ: In the first 9 problems of this 1D Dynamic Programming pattern, the focus is on developing intuitive bottom-up solutions, not just straightforward conversions from memoized code. 
-                         This approach is designed to help you grasp the principles of Dynamic Programming from the ground up. 
-                         Although this process might be time-consuming and sometimes frustrating, it is essential for building a strong foundation. 
-                         Don't hesitate to use a pen and paper as you work through these problems.
+                        This approach is designed to help you grasp the principles of Dynamic Programming from the ground up. 
+                        Although this process might be time-consuming and sometimes frustrating, it is essential for building a strong foundation. 
+                        Don't hesitate to use a pen and paper as you work through these problems.
     
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
