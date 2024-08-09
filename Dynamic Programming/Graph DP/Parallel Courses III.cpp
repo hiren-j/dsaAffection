@@ -50,18 +50,11 @@ public:
         adjList.resize(n + 1); // Stores the list of neighbours of each course
         visited.resize(n + 1); // Memoization table
 
-        int source = -1, maxNeighbors = -1;
-
         // Create the adjacency list and get the maximum number of neighbours
         for(auto& r : relations) {
             int prevCourse = r[1];
             int nextCourse = r[0];
             adjList[prevCourse].push_back(nextCourse);
-            int totalNeighbors = adjList[prevCourse].size();
-            if(totalNeighbors > maxNeighbors) {
-                source = prevCourse;
-                maxNeighbors = totalNeighbors;
-            }
         }
 
         // Stores the result value
