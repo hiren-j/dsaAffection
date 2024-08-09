@@ -1,11 +1,20 @@
 // Code to find the minimum energy that can be used by the Geek to jump from step 0 to step N-1 ~ coded by Hiren
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-NOTE REGARDING THE FIRST SOLUTION (TopDown_V1): You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
+DON'T IGNORE MUST READ: Starting from this 10th problem, you'll notice a shift in the approach. Here, the bottom-up solutions are direct conversions from the memoized ones. 
+                        This change is made to reduce the time spent and avoid the need for pen and paper, making the process more efficient. 
+                        Since I'm not physically teaching you, when working through the bottom-up solution, make sure to switch tabs and view the memoized solution side-by-side. 
+                        This will help you see the code similarities, such as how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
+                        This conversion technique will be applied to the remaining problems across all DP patterns.
+    
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NOTE REGARDING THE FIRST SOLUTION (TopDown_V1): You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, 
+                                                you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now.
+    
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
 public:
