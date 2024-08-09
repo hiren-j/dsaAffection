@@ -1,6 +1,10 @@
 // Code to count all the possible distinct binary strings of length N such that there are no consecutive 1’s ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NOTE: This problem is totally same as the previous one (Fibonacci Number). The edge case in the only change.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -17,31 +21,38 @@ public:
 private:
     // O(2*N) & O(N+N)
     ll solveWithMemo(vector<ll>& memory, int N) {
+    	// Edge case: When the value of N is less than 2 then return it by adding one to it
 	if(N < 2)
 	    return N + 1;
     
+    	// Memoization table: If the current state is already computed then return the computed value
 	if(memory[N] != -1)
 	    return memory[N];
-
+    
+    	// Recursively find the two preceding values of N
 	ll count1 = solveWithMemo(memory, N - 1);
 	ll count2 = solveWithMemo(memory, N - 2);
     
+    	// Store the result value to the memoizationt table and then return it
 	return memory[N] = (count1 + count2) % MOD;
     }
 
     // O(2^N) & O(N)
     ll solveWithoutMemo(int N) {
+    	// Edge case: When the value of N is less than 2 then return it by adding one to it
 	if(N < 2)
 	    return N + 1;
 
+    	// Recursively find the two preceding values of N
 	ll count1 = solveWithoutMemo(N - 1);
 	ll count2 = solveWithoutMemo(N - 2);
     
+    	// Add the values and then return it
 	return (count1 + count2) % MOD;
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -79,7 +90,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
