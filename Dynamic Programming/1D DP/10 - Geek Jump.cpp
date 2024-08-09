@@ -10,8 +10,7 @@ DON'T IGNORE MUST READ: Starting from this 10th problem, you'll notice a shift i
     
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-NOTE REGARDING THE FIRST SOLUTION (TopDown_V1): You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, 
-                                                you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now.
+NOTE REGARDING THE FIRST SOLUTION (TopDown_V1): You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now.
     
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
