@@ -72,5 +72,5 @@ public:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Topics: Array | Dynamic Programming | Graph
+Topics: Array | Dynamic Programming | Graph | Topological Sort
 Link  : https://leetcode.com/problems/parallel-courses-iii/description/
