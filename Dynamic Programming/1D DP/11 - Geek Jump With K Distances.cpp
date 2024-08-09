@@ -78,6 +78,7 @@ public:
             dp[startStone] = minCost; 
         }
 
+        // Return the result value
         return dp[0];
     }
 };
