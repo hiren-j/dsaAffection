@@ -120,11 +120,16 @@ public:
         // Initialize the edge case: If the target becomes zero then you've got one valid way
         dp[0] = 1;
 
-        // Treat each individual target and find the number of possible combinations that add up to it
-        for(int currTarget = 1; currTarget <= target; ++currTarget) 
-            for(int index = 0; index < n; ++index) 
-                if(nums[index] <= currTarget) 
-                    dp[currTarget] += dp[currTarget - nums[index]];
+        // Fill the rest of the table
+        for(int currTarget = 1; currTarget <= target; ++currTarget) {
+            int count = 0;
+            for(int index = 0; index < n; ++index) {
+                if(nums[index] <= currTarget) {
+                    count += dp[currTarget - nums[index]];
+                }
+            }
+            dp[currTarget] = count;
+        }
 
         // Return the result value
         return dp[target];
@@ -135,16 +140,20 @@ public:
         int n = nums.size();
         sort(begin(nums), end(nums));
 
-        // 1D table: dp[target] represents the number of possible combinations that add up to target
+        // 1D table: dp[target] represents the number of possible combinations that add up to the target
         vector<unsigned int> dp(target + 1, 0);
-        
-        // Initialize the edge case: If the target becomes zero then you've got one valid way
-        dp[0] = 1; 
 
-        // Treat each individual target and find the number of possible combinations that add up to it
-        for(int currTarget = 1; currTarget <= target; ++currTarget) 
-            for(int index = 0; (index < n && nums[index] <= currTarget); ++index) 
-                dp[currTarget] += dp[currTarget - nums[index]];
+        // Initialize the edge case: If the target becomes zero then you've got one valid way
+        dp[0] = 1;
+
+        // Fill the rest of the table
+        for(int currTarget = 1; currTarget <= target; ++currTarget) {
+            int count = 0;
+            for(int index = 0; (index < n && nums[index] <= currTarget); ++index) {
+                count += dp[currTarget - nums[index]];
+            }
+            dp[currTarget] = count;
+        }
 
         // Return the result value
         return dp[target];
