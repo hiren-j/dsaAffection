@@ -65,12 +65,10 @@ public:
         dp[0] = 0;
         
         // Consider each num as an individual N and calculate the least number of perfect square numbers that sums to it
-        for(int num=1; num<=N; num++) {
-            for(int J=1; J*J<=num; J++) {
+        for(int num=1; num<=N; num++) 
+            for(int J=1; J*J<=num; J++) 
                 dp[num] = min(dp[num], 1 + dp[num - J*J]);
-            }
-        }
-
+        
         // Return the result value
         return dp[N];
     }
