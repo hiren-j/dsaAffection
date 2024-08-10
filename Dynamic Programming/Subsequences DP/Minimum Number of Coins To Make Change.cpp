@@ -31,7 +31,7 @@ private:
         int currSkip = solveWithMemo(memory, coins, n, index + 1, cents); // Is to skip the index value 
         int currTake = INT_MAX;                                           // Is to take the index value
         
-        // If possible then take the index value
+        // If possible then take the index value and then stay on the same index
         if(cents - coins[index] >= 0) {
             int nextCoins = solveWithMemo(memory, coins, n, index, cents - coins[index]);
             currTake = (nextCoins != INT_MAX) ? nextCoins + 1 : INT_MAX;
@@ -55,7 +55,7 @@ private:
         int currSkip = solveWithoutMemo(coins, n, index + 1, cents); // Is to skip the index value 
         int currTake = INT_MAX;                                      // Is to take the index value
         
-        // If possible then take the index value
+        // If possible then take the index value and then stay on the same index
         if(cents - coins[index] >= 0) {
             int nextCoins = solveWithoutMemo(coins, n, index, cents - coins[index]);
             currTake = (nextCoins != INT_MAX) ? nextCoins + 1 : INT_MAX;
@@ -91,7 +91,8 @@ private:
 
         // Stores the result value
         int minCoins = INT_MAX;
-    
+
+	// Iterate and if possible then take the index value and then stay on the same index
         for(int index = startIndex; index < n; ++index) {
             if(cents - coins[index] >= 0) {
                 int nextCoins = solveWithMemo(memory, coins, n, index, cents - coins[index]);
@@ -113,7 +114,8 @@ private:
 
         // Stores the result value
         int minCoins = INT_MAX;
-    
+	    
+	// Iterate and if possible then take the index value and then stay on the same index
         for(int index = startIndex; index < n; ++index) {
             if(cents - coins[index] >= 0) {
                 int nextCoins = solveWithoutMemo(coins, n, index, cents - coins[index]);
