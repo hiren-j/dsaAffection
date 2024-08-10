@@ -1,6 +1,6 @@
 // Code to find the nCr of given two integers ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -12,10 +12,10 @@ public:
         if(R > N)
             return 0;
         
-        // Stores the values of the Pascal's triangle
+        // Stores the values of the pascal's triangle
         vector<vector<int>> pascalTable;
 
-        // In Pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
+        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
         for(int row = 0; row <= N; row++) {
             pascalTable.emplace_back(vector<int>(row + 1, 1));
             for(int col = 1; col < row; col++) {
@@ -34,7 +34,7 @@ public:
         
         vector<int> prevRow;
 
-        // In Pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
+        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
         for(int row = 0; row <= N; row++) {
             vector<int> currRow(row + 1, 1);
             for(int col = 1; col < row; col++) {
@@ -48,7 +48,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Links : https://www.geeksforgeeks.org/problems/ncr1019/1
