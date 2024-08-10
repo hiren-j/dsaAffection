@@ -69,7 +69,7 @@ public:
     int numDecodings_V1(string& s) {
         int n = s.size();
 
-        // 1D table: dp[i] represents the total number of ways to decode the string from index 0 to i
+        // 1D table: dp[i] represents the total number of ways to decode the string from index 0 to i-1
         vector<int> dp(n + 1, 0);
 
         // Initialize the edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
