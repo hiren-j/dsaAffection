@@ -137,7 +137,7 @@ private:
 class BottomUp {
 public:
     // #1 Method to find the minimum number of coins to make the change for given cents, using 2D tabulation - O(N*C) & O(N*C)
-	int minCoinsToMakeChange_V1(vector<int>& coins, int n, int cents) { 
+    int minCoinsToMakeChange_V1(vector<int>& coins, int n, int cents) { 
         // 2D DP table
         vector<vector<int>> dp(n + 1, vector<int>(cents + 1, INT_MAX));
 
@@ -165,7 +165,7 @@ public:
     }
 
     // #2 Method to find the minimum number of coins to make the change for given cents, using 1D tabulation - O(N*C) & O(C)
-	int minCoinsToMakeChange_V2(vector<int>& coins, int n, int cents) { 
+    int minCoinsToMakeChange_V2(vector<int>& coins, int n, int cents) { 
         // 1D DP tables
         vector<int> nextRow(cents + 1, INT_MAX), idealRow(cents + 1, INT_MAX);
         nextRow[0] = 0;
