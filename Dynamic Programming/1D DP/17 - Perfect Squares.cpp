@@ -64,7 +64,7 @@ public:
         // Initialize the edge case: If N is equal to 0 then its not possible to get any perfect square number
         dp[0] = 0;
 
-        // Fill the rest of the tbale 
+        // Fill the rest of the table
         for(int num = 1; num <= N; ++num) {
             int minCount = INT_MAX;
             for(int J = 1; J*J <= num; ++J) {
