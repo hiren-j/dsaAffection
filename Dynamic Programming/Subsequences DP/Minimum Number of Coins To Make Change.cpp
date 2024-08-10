@@ -6,7 +6,7 @@
 class TopDown_V1 {
 public:
     // Method to find the minimum number of coins to make the change for given cents, using recursion with memoization - O(N*C) & O(N*C) : Where C let be the cents
-	int minCoinsToMakeChange(vector<int>& coins, int n, int cents) { 
+    int minCoinsToMakeChange(vector<int>& coins, int n, int cents) { 
         vector<vector<int>> memory(n, vector<int>(cents + 1, -1));
         int minCoins = solveWithMemo(memory, coins, n, 0, cents);
         return (minCoins == INT_MAX) ? -1 : minCoins;
@@ -72,7 +72,7 @@ private:
 class TopDown_V2 {
 public:
     // Method to find the minimum number of coins to make the change for given cents, using recursion with memoization - O(N*N*C) & O(N*C)
-	int minCoinsToMakeChange(vector<int>& coins, int n, int cents) { 
+    int minCoinsToMakeChange(vector<int>& coins, int n, int cents) { 
         vector<vector<int>> memory(n, vector<int>(cents + 1, -1));
         int minCoins = solveWithMemo(memory, coins, n, 0, cents);
         return (minCoins == INT_MAX) ? -1 : minCoins;
