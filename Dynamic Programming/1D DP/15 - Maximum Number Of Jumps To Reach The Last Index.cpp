@@ -1,6 +1,6 @@
 // Code to find the maximum number of jumps required to reach the last index of the array with following the mentioned rules ~ coded by Hiren
 
-------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -65,8 +65,7 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
@@ -79,10 +78,11 @@ public:
 
         // Initialize the edge case: If you reached the last index then return 0 as a valid indication of it
         dp[n-1] = 0;
-        
+
+        // Fill the rest of the table
         for(int startIndex = n-2; startIndex >= 0; --startIndex) {
             int maxJumps = INT_MIN;
-
+            
             for(int jump = startIndex+1; jump < n; ++jump) {
                 if((-target <= nums[jump] - nums[startIndex]) && (nums[jump] - nums[startIndex] <= target)) {
                     int nextJumps = dp[jump];
@@ -91,17 +91,17 @@ public:
                     } 
                 }
             }
-
+            
             dp[startIndex] = maxJumps;
         }
 
         int maxJumps = dp[0];
 
+        // Return the result value
         return (maxJumps == INT_MIN) ? -1 : maxJumps;
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/maximum-number-of-jumps-to-reach-the-last-index/description/
