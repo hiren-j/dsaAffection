@@ -1,13 +1,13 @@
 // Code to find the number of possible unique paths that the robot can take to reach the bottom-right corner ~ coded by Hiren
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the number of possible unique paths, using recursion with memoization - O(M*N) & O(M*N)
     int uniquePaths(int M, int N) {
-        vector<vector<int>> memory(M+1, vector<int>(N+1, -1));
+        vector<vector<int>> memory(M, vector<int>(N, -1));
         return solveWithMemo(memory, M, N, 0, 0);
     }
 
@@ -44,10 +44,6 @@ private:
         if(R == M || C == N)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value 
-        if(memory[R][C] != -1)
-            return memory[R][C];
-
         // There are always two possibilities to perform at each cell
         int moveRight = solveWithoutMemo(M, N, R, C+1); // Is to move right
         int moveDown  = solveWithoutMemo(M, N, R+1, C); // Is to move down
@@ -57,8 +53,8 @@ private:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
@@ -110,7 +106,7 @@ public:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Maths | Dynamic Programming | Combinatorics
 Link  : https://leetcode.com/problems/unique-paths/description/
