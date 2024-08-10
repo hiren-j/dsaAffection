@@ -26,7 +26,7 @@ private:
         int minCount = INT_MAX;
 
         // Explore all the possibilities which can sum to N and update the result by the minimum value
-        for(int J=1; J*J<=N; J++) 
+        for(int J = 1; J*J <= N; ++J) 
             minCount = min(minCount, 1 + solveWithMemo(N - J*J, memory));
 
         // Store the result value to the memoization table and then return it
@@ -43,7 +43,7 @@ private:
         int minCount = INT_MAX;
 
         // Explore all the possibilities which can sum to N and update the result by the minimum value
-        for(int J=1; J*J<=N; J++) 
+        for(int J = 1; J*J <= N; ++J) 
             minCount = min(minCount, 1 + solveWithoutMemo(N - J*J));
 
         // Return the result value
@@ -63,11 +63,15 @@ public:
 
         // Initialize the edge case: If N is equal to 0 then its not possible to get any perfect square number
         dp[0] = 0;
-        
-        // Consider each num as an individual N and calculate the least number of perfect square numbers that sums to it
-        for(int num=1; num<=N; num++) 
-            for(int J=1; J*J<=num; J++) 
-                dp[num] = min(dp[num], 1 + dp[num - J*J]);
+
+        // Fill the rest of the tbale 
+        for(int num = 1; num <= N; ++num) {
+            int minCount = INT_MAX;
+            for(int J = 1; J*J <= num; ++J) {
+                minCount = min(minCount, 1 + dp[num - J*J]);
+            }
+            dp[num] = minCount;
+        }
         
         // Return the result value
         return dp[N];
