@@ -2,12 +2,12 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-DON'T IGNORE MUST READ: Starting from this 10th problem, you'll notice a shift in the approach. Here, the bottom-up solutions are direct conversions from the memoized ones. 
-                        This change is made to reduce the time spent and avoid the need for pen and paper, making the process more efficient. 
-                        Since I'm not physically teaching you, when working through the bottom-up solution, make sure to switch tabs and view the memoized solution side-by-side. 
-                        This will help you see the code similarities, such as how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
-                        This technique will help you create bottom-up solutions within minutes, usually less than 5 or 3 minutes. This conversion technique will be applied to the remaining problems across all DP patterns.
-
+DON'T IGNORE MUST READ: Starting from the 10th problem, you’ll notice a shift in the approach. The bottom-up solutions will now be direct conversions from the memoized ones. 
+                        This change aims to reduce time and avoid the need for pen and paper, making the process more efficient. As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side. 
+                        This will help you see how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
+                        With practice, you’ll be able to create bottom-up solutions within minutes or even seconds, as I have developed the habit of doing. 
+                        This conversion technique will be applied to the remaining problems across all DP patterns.
+    
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 NOTE REGARDING THE FIRST SOLUTION (TopDown_V1): You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now.
