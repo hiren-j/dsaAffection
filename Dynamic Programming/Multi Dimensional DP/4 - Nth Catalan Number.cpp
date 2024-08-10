@@ -23,7 +23,7 @@ public:
                 else if(C == R)
                     dp[R][C] = dp[R][C - 1] % MOD;
 
-                // Else then add the value lying at the same column in the previous row with the value value lying at the previous column in the same row
+                // Else then add the value lying at the same column in the previous row with the value lying at the previous column in the same row
                 else
                     dp[R][C] = (dp[R - 1][C] + dp[R][C - 1]) % MOD;
             }
@@ -48,7 +48,7 @@ public:
                 else if(C == R)
                     currRow[C] = currRow[C - 1] % MOD;
 
-                // Else then add the value lying at the same column in the previous row with the value value lying at the previous column in the same row
+                // Else then add the value lying at the same column in the previous row with the value lying at the previous column in the same row
                 else
                     currRow[C] = (prevRow[C] + currRow[C - 1]) % MOD;
             }
