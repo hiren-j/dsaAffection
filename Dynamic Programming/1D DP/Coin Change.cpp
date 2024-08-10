@@ -40,7 +40,7 @@ private:
         return memory[amount] = minCoins;
     }
 
-    // O(2^A) & O(A)
+    // O(N^A) & O(A)
     int solveWithoutMemo(vector<int>& coins, int amount, int n) {
         // Edge case: If the amount becomes zero then it's not possible to pick more coins
         if(amount == 0)
@@ -103,7 +103,7 @@ private:
         return memory[amount] = minCoins;
     }
 
-    // O(2^A) & O(A)
+    // O(N^A) & O(A)
     int solveWithoutMemo(vector<int>& coins, int amount, int n) {
         // Edge case: If the amount becomes zero then it's not possible to pick more coins
         if(amount == 0)
