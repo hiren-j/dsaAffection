@@ -1,11 +1,11 @@
 // Code to find the number of possible combinations that add up to target. Note that the array values are distinct ~ coded by Hiren
 
-------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
 public:
-    // Method to find the number of possible combinations that add up to target, using recursion with memoization :- O(N*T) & O(T) : Where T let be the target
+    // Method to find the number of possible combinations that add up to target, using recursion with memoization - O(N*T) & O(T) : Where T let be the target
     int combinationSum4(vector<int>& nums, int target) {
         vector<int> memory(target + 1, -1);
         return solveWithMemo(memory, nums, nums.size(), target);
@@ -53,12 +53,12 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to find the number of possible combinations that add up to target, using recursion with memoization :- O(N*T) & O(T) 
+    // Method to find the number of possible combinations that add up to target, using recursion with memoization - O(N*T) & O(T) 
     int combinationSum4(vector<int>& nums, int target) {
         sort(begin(nums), end(nums));
         vector<int> memory(target + 1, -1);
@@ -105,12 +105,12 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // #1 Method to find the number of possible combinations that add up to target, using 1D tabulation :- O(N*T) & O(T)
+    // #1 Method to find the number of possible combinations that add up to target, using 1D tabulation - O(N*T) & O(T)
     int combinationSum4_V1(vector<int>& nums, int target) {
         int n = nums.size();
 
@@ -130,7 +130,7 @@ public:
         return dp[target];
     }
 
-    // #2 Method to find the number of possible combinations that add up to target, using 1D tabulation :- O(N*T) & O(T)
+    // #2 Method to find the number of possible combinations that add up to target, using 1D tabulation - O(N*T) & O(T)
     int combinationSum4_V2(vector<int>& nums, int target) {
         int n = nums.size();
         sort(begin(nums), end(nums));
@@ -151,7 +151,7 @@ public:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/combination-sum-iv/
