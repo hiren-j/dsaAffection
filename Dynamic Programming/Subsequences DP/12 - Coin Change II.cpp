@@ -1,6 +1,6 @@
 // Code to find the total number of combinations that make up the given amount ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
@@ -62,12 +62,12 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to find the number of combinations that make up the given amount, using recursion with memoization - O(N*A) & O(N*A)
+    // Method to find the number of combinations that make up the given amount, using recursion with memoization - O(N*N*A) & O(N*A)
     int countWaysToMakeAmount(int amount, vector<int>& coins) {
         int n = coins.size();
         vector<vector<int>> memory(n, vector<int>(amount + 1, -1));
@@ -119,8 +119,9 @@ private:
         return countWays;
     }
 };
+// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
---------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -179,7 +180,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/coin-change-ii/description/
