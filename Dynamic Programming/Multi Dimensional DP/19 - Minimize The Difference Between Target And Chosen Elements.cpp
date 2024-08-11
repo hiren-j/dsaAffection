@@ -16,7 +16,7 @@ NOTE: In the bottom-up approach, the sum iterations start from 2500 and go down 
       After several adjustments, 2500 emerged as the most fitting value based on my intuition. This adjustment is necessary to ensure we cover all relevant sum values. 
       Starting from 4089 works, but starting from 4900 or higher can lead to segmentation faults due to out-of-bounds accesses. 
       Starting from 2500 ensures we cover all possible sums more efficiently and avoids such issues, requiring only 2500 iterations. 
-      This approach helps to effectively explore all possible sums and capture the minimum absolute difference within the problem's context.
+      This approach helps to effectively explore all possible sums and capture the minimum absolute difference within the problem's context
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       
