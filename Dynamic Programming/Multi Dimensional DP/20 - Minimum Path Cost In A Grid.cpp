@@ -1,6 +1,6 @@
 // Code to find the minimum cost of a path that starts from any cell in the first row and ends at any cell in the last row ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -55,7 +55,7 @@ class TopDown {
     }
 
 public:
-    // Method to find the minimum cost, using recursion with memoization :-
+    // Method to find the minimum cost, using recursion with memoization - O(N*M*M) & O(N*M)
     int minPathCost(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
         N = grid.size(), M = grid[0].size();
         vector<vector<int>> memory(N, vector<int>(M+1, -1));
@@ -63,7 +63,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -79,7 +79,6 @@ public:
         for(int R = N-1; R >= 0; --R) {
             for(int prevCol = M-1; prevCol >= -1; --prevCol) {
                 int minPathCost = INT_MAX;
-
                 for(int C = 0; C < M; ++C) {
                     int currPathCost = grid[R][C] + dp[R+1][C+1];
                     if(prevCol != -1 && R-1 >= 0) {
@@ -87,7 +86,6 @@ public:
                     }
                     minPathCost = min(minPathCost, currPathCost);
                 }
-
                 dp[R][prevCol + 1] = minPathCost;
             }
         }
@@ -107,7 +105,6 @@ public:
         for(int R = N-1; R >= 0; --R) {
             for(int prevCol = M-1; prevCol >= -1; --prevCol) {
                 int minPathCost = INT_MAX;
-
                 for(int C = 0; C < M; ++C) {
                     int currPathCost = grid[R][C] + nextRow[C+1];
                     if(prevCol != -1 && R-1 >= 0) {
@@ -115,7 +112,6 @@ public:
                     }
                     minPathCost = min(minPathCost, currPathCost);
                 }
-
                 currRow[prevCol + 1] = minPathCost;
             }
             nextRow = currRow;
@@ -126,7 +122,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Matrix
 Link  : https://leetcode.com/problems/minimum-path-cost-in-a-grid/description/
