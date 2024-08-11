@@ -77,10 +77,10 @@ public:
 	        for(int color = 0; color < 3; ++color) {
 	            if(color != prevColor) {
 	            	minCost = min(minCost, cost[house][color] + dp[house + 1][color]);
-                    }
+		    }
                 }
-	        dp[house][prevColor] = minCost;
-            }   
+		dp[house][prevColor] = minCost;
+	    }   
         }
 
 	// Return the result value
@@ -104,13 +104,13 @@ public:
 	        int minCost = INT_MAX;
 	        for(int color = 0; color < 3; ++color) {
 	            if(color != prevColor) {
-			minCost = min(minCost, cost[house][color] + nextRow[color]);
-		    }
+	            	minCost = min(minCost, cost[house][color] + nextRow[color]);
+                    }
                 }
-	        currRow[prevColor] = minCost;
+		currRow[prevColor] = minCost;
             }   
             nextRow = currRow;
-        }
+	}
 
 	// Return the result value
 	return nextRow[3];
