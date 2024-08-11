@@ -2,7 +2,7 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-DON'T IGNORE MUST READ : This question's top-down solutions can be converted into a loop-based solution. However, due to the extensive lines of code (LOC) involved, I’ve decided not to include the loop-based version here. 
+DON'T IGNORE MUST READ : This question's top-down solutions can be converted into a loop-based recursive solution. However, due to the extensive lines of code (LOC) involved, I’ve decided not to include the loop-based version here. 
                          If you're up for it, you can try converting it yourself!
     
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
