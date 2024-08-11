@@ -24,6 +24,7 @@ public:
     }
     
 private:
+    // O(2*N*S) & O(N*S + N)
     bool solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int index, int sum) {
         // Edge case: If the sum becomes zero then there exists a subset with given sum 
         if(sum == 0)
@@ -74,6 +75,7 @@ public:
     }
     
 private:
+    // O(N*N*S) & O(N*S + N)
     bool solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int startIndex, int sum) {
         // Edge case: If the sum becomes zero then there exists a subset with given sum 
         if(sum == 0)
