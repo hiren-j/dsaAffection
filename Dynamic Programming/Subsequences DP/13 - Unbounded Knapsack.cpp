@@ -1,6 +1,6 @@
 // Code to find the maximum total value you can collect for the knapsack (each item can be taken any number of times) ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Top-down approach: 
 class TopDown_V1 {
@@ -12,7 +12,7 @@ public:
     }
     
 private:
-    // O(2*N*C) & O(N*C + N)
+    // O(2*N*C) & O(N*C + C)
     int solveWithMemo(vector<vector<int>>& memory, vector<int>& weights, vector<int>& values, int n, int index, int capacity) {
         // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
         if(index == n || capacity == 0)
@@ -53,19 +53,19 @@ private:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Top-down approach: 
 class TopDown_V2 {
 public:
-    // Method to find the maximum total value you can collect for the knapsack, using recursion with memoization - O(N*C) & O(N*C)
+    // Method to find the maximum total value you can collect for the knapsack, using recursion with memoization - O(N*N*C) & O(N*C)
     int unboundedKnapsack(int n, int capacity, vector<int>& values, vector<int>& weights) {
         vector<vector<int>> memory(n, vector<int>(capacity + 1, -1));
         return solveWithMemo(memory, weights, values, n, 0, capacity);
     }
     
 private:
-    // O(2*N*C) & O(N*C)
+    // O(N*N*C) & O(N*C + C)
     int solveWithMemo(vector<vector<int>>& memory, vector<int>& weights, vector<int>& values, int n, int startIndex, int capacity) {
         // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
         if(startIndex == n || capacity == 0)
@@ -87,7 +87,7 @@ private:
         return memory[startIndex][capacity] = maxValue;
     }
 
-    // O(2^C) & O(C)
+    // O(N^C) & O(C)
     int solveWithoutMemo(vector<int>& weights, vector<int>& values, int n, int startIndex, int capacity) {
         // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
         if(startIndex == n || capacity == 0)
@@ -105,9 +105,9 @@ private:
         return maxValue;
     }
 };
-// Note: This solution can lead to the time-limit-exceed
+// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach: 
 class BottomUp {
@@ -150,7 +150,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Links : https://www.codingninjas.com/studio/problems/unbounded-unboundedKnapsack_1215029
