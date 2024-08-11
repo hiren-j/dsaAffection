@@ -1,11 +1,11 @@
 // Code to find the size of the largest subset of strs such that there are at most m 0's and n 1's in the subset (A set x is a subset of a set y if all elements of x are also elements of y) ~ coded by Hiren
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 DON'T IGNORE MUST READ : This question's top-down solutions can be converted into a loop-based recursive solution. However, due to the extensive lines of code (LOC) involved, I’ve decided not to include the loop-based version here. 
                          If you're up for it, you can try converting it yourself!
     
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the brute force approach:
 class BruteForce_DP {
@@ -85,11 +85,9 @@ public:
             vector<vector<vector<int>>> dp(size + 1, vector<vector<int>>(m + 2, vector<int>(n + 2, INT_MIN)));
 
             // Initialize the first base case: If all the strings are exhausted and you've found a subset such that there are at most m 0's and n 1's in it then return 0 as a valid indication of it
-            for(int M = 0; M <= m+1; ++M) {
-                for(int N = 0; N <= n+1; ++N) {
+            for(int M = 0; M <= m+1; ++M) 
+                for(int N = 0; N <= n+1; ++N) 
                     dp[size][M][N] = 0;
-                }
-            }
 
             // Fill the rest of the table
             for(int index = size-1; index >= 0; --index) {
@@ -154,8 +152,8 @@ public:
     };
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 // Class to implement the optimized approach:
 class Optimized_DP {
 public:
@@ -227,8 +225,10 @@ public:
                 countZerosOnes[index] = {countZeros, countOnes};
             }
 
+            // 3D memoization table
             vector<vector<vector<int>>> memory(size, vector<vector<int>>(m + 1, vector<int>(n + 1, -1)));
 
+            // Find and return the result value
             return solveWithMemo(strs, m, n, 0, memory);
         }
     };
@@ -333,7 +333,7 @@ public:
     };
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 Topics: Array | String | Dynamic Programming
 Link  : https://leetcode.com/problems/ones-and-zeroes/description/
