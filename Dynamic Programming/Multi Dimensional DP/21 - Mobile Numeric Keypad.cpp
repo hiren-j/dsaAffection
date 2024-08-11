@@ -104,7 +104,7 @@ public:
         ll resCount = 0;
         
         // 3D DP table
-        vector<vector<vector<ll>>> dp(N + 1, vector<vector<ll>>(4, vector<ll>(3, 0)));
+        vector<vector<vector<ll>>> dp(N, vector<vector<ll>>(4, vector<ll>(3, 0)));
 
         // Initialize the second edge case: If you've correctly dialed a phone number of length N then you've one valid way
         for(int R = 0; R < 4; ++R)
