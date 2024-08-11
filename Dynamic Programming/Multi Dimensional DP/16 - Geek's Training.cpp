@@ -12,7 +12,7 @@ public:
     }
     
 private:
-    // O(3*N*4) & O(N*4 + N)
+    // O(2*N*4) & O(N*4 + N)
     int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& points, int n, int day, int skipActivity) {
         // Edge case: If all the days are exhausted then it's not possible to perform more activities
         if(day == n)
@@ -37,7 +37,7 @@ private:
         return memory[day][skipActivity + 1] = maxPoints;
     }
 
-    // O(3^(N*3)) & O(N)
+    // O(2^(N*3)) & O(N)
     int solveWithoutMemo(vector<vector<int>>& points, int n, int day, int skipActivity) {
         // Edge case: If all the days are exhausted then it's not possible to perform more activities
         if(day == n)
