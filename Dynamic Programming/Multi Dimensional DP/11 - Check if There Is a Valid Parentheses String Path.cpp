@@ -71,7 +71,7 @@ class TopDown {
     }
 
 public:
-    // Method to check whether there exists a valid parentheses string path or not :-
+    // Method to check whether there exists a valid parentheses string path or not, using recursion with memoization :-
     bool hasValidPath(vector<vector<char>>& grid) {
         N = grid.size(), M = grid[0].size();
         if(N == 1 && M == 1) return false;
