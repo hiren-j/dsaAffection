@@ -33,6 +33,7 @@ public:
     }
 
 private:
+    // O(2*N*T) & O(N*T + N)
     bool solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, int N, int index, int sum) {
         // Edge case: If the sum becomes zero then there exists a subset with given sum 
         if(sum == 0)
