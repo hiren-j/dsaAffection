@@ -1,17 +1,25 @@
 // Code to find the minimum absolute difference, The absolute difference between two numbers a and b is the absolute value of a - b. We could Choose one integer from each row in the matrix such that the absolute difference between target and the pathSum of the chosen elements is minimized ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Note: 1 <= grid[i][j] <= 70
-Note: 1 <= N, M <= 70
-Note: So, In the worst case the highest value of pathSum could be 70*70 = 4900. 
+NOTE: 1 <= grid[i][j] <= 70
+NOTE: 1 <= N, M <= 70
+NOTE: So, In the worst case the highest value of pathSum could be 70*70 = 4900. 
       Didn't understand? Imagine the worst case when there will be 70 rows and 70 columns and all the cells contains value 70. 
       So, based on my logic you could see we're looking for the result value by moving from the first row to the last row.
       So, If you add the value 70 of the chosen cells across the path then you'll end up having the pathSum of 4900 at max or when you end up reaching all the rows.
       So, I measured it through the problem constraints. Hope you've got it!
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+NOTE: In the bottom-up approach, the sum iterations start from 2500 and go down to 0. Initially, I started with a larger value, around 4089, and experimented with different values to avoid extra iterations. 
+      After several adjustments, 2500 emerged as the most fitting value based on my intuition. This adjustment is necessary to ensure we cover all relevant sum values. 
+      Starting from 4089 works, but starting from 4900 or higher can lead to segmentation faults due to out-of-bounds accesses. 
+      Starting from 2500 ensures we cover all possible sums more efficiently and avoids such issues, requiring only 2500 iterations. 
+      This approach helps to effectively explore all possible sums and capture the minimum absolute difference within the problem's context.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      
 // Class to implement the Top-down approach:
 class TopDown {
     int N, M;
@@ -63,7 +71,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -76,7 +84,7 @@ public:
         vector<vector<int>> dp(N + 1, vector<int>(4901, INT_MAX));
 
         // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
-        for(int pathSum = 0; pathSum <= 4900; ++pathSum)
+        for(int pathSum = 0; pathSum <= 2500; ++pathSum)
             dp[N][pathSum] = abs(target - pathSum);
 
         // Fill the rest of the table
@@ -102,7 +110,7 @@ public:
         vector<int> nextRow(4901, INT_MAX), currRow(4901, INT_MAX);
 
         // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
-        for(int pathSum = 0; pathSum <= 4900; ++pathSum)
+        for(int pathSum = 0; pathSum <= 2500; ++pathSum)
             nextRow[pathSum] = abs(target - pathSum);
 
         // Fill the rest of the table
@@ -122,7 +130,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Matrix
 Link  : https://leetcode.com/problems/minimize-the-difference-between-target-and-chosen-elements/description/
