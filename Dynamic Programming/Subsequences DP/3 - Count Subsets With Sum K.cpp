@@ -1,6 +1,6 @@
 // Code to find the count of all the subsets of the given array with a sum equal to the given sum ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -42,7 +42,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -81,7 +81,7 @@ public:
         return dp[n - 1][sum];
     }
 
-    // #2 Method to count all the subsets whose sum equals to the given sum, using 1D tabulation - O(N*S) & O(N*S)
+    // #2 Method to count all the subsets whose sum equals to the given sum, using 1D tabulation - O(N*S) & O(S)
     int countSubsetEqualsSum_V2(vector<int>& nums, int sum) {
         int n = nums.size();
 
@@ -115,7 +115,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/perfect-sum-problem5633/1
