@@ -1,6 +1,6 @@
 // Code to find the length of the longest subsequence of the array that sums up to target. If no such subsequence exists then return -1 ~ coded by Hiren
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
@@ -67,12 +67,12 @@ private:
     }
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to find the length of the longest subsequence which sums to target, using recursion with memoization - O(N*T) & O(N*T)
+    // Method to find the length of the longest subsequence which sums to target, using recursion with memoization - O(N*N*T) & O(N*T)
     int lengthOfLongestSubsequence(vector<int>& nums, int target) {
         int n = nums.size();
         vector<vector<int>> memory(n, vector<int>(target + 1, -1));
@@ -135,9 +135,9 @@ private:
         return maxLength;
     }
 };
-// Note: This solution can lead to the time-limit-exceed
+// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -198,7 +198,7 @@ public:
     }
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/length-of-the-longest-subsequence-that-sums-to-target/description/
