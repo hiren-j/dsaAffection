@@ -1,6 +1,6 @@
 // Code to find the total number of paths to move the ball out of the grid boundary from the cell (startRow, startColumn) ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -61,7 +61,7 @@ class TopDown {
     }
 
 public:
-    // Method to find the number of paths, using recursion with memoization :-
+    // Method to find the number of paths, using recursion with memoization - O(maxMove*M*N) & (maxMove*M*N)
     int findPaths(int m, int n, int maxMove, int startRow, int startCol) {
         M = m, N = n;
         vector<vector<vector<int>>> memory(maxMove + 1, vector<vector<int>>(M, vector<int>(N, -1)));
@@ -69,7 +69,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -77,7 +77,7 @@ class BottomUp {
     const int MOD = 1e9+7;
 
 public:
-    // Method to find the number of paths, using 3D tabulation - O(maxMove * M * N * 4) & O(maxMove * M * N)
+    // Method to find the number of paths, using 3D tabulation - O(maxMove*M*N) & O(maxMove*M*N)
     int findPaths(int M, int N, int maxMove, int startRow, int startCol) {
         // 3D DP table
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
@@ -127,7 +127,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Dynamic Programming | Matrix 
 Link  : https://leetcode.com/problems/out-of-boundary-paths/description/
