@@ -1,6 +1,6 @@
 // Code to find the maximum number of moves that you can perform in the grid. You can start at any cell in the first column of the matrix, and traverse the grid in the following way: From a cell (row, col), you can move to any of the cells: (row - 1, col + 1), (row, col + 1) and (row + 1, col + 1) such that the value of the cell you move to, should be strictly bigger than the value of the current cell ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -84,7 +84,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Array | Dynamic Programming | Matrix
 Link  : https://leetcode.com/problems/maximum-number-of-moves-in-a-grid/description/
