@@ -7,8 +7,7 @@ DON'T IGNORE MUST READ: As I mentioned earlier, I'll be providing multiple ways 
                         This will help you figure out multiple ways of writing a top-down solution. Again, I'll be doing it for both the Subsequence and LIS patterns to help you grasp various techniques and perspectives.
                         In this Subsequence pattern, there are a total of 17 questions, and 11 of them contain multiple ways of writing the top-down solution. 
                         For the rest, if multiple ways are not provided, consider that I tried but couldn’t get them to work through all test cases. 
-    
-Hope you’re enjoying the series!
+                        Hope you’re enjoying the series!
 */
   
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
