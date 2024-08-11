@@ -77,7 +77,7 @@ private:
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to determine if there exists the mentioned subset, using recursion with memoization - O(N*S) & O(N*S)
+    // Method to determine if there exists the mentioned subset, using recursion with memoization - O(N*N*S) & O(N*S)
     bool isSubsetSum(vector<int>& nums, int sum) {
         int n = nums.size();
         vector<vector<int>> memory(n + 1, vector<int>(sum + 1, -1));
