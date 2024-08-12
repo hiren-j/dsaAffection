@@ -22,7 +22,7 @@ public:
     
 	// Check the existence of the subsets of the array and if a subset exists then it's a valid partition hence update the result by the minimum value
 	for(int subset1Sum = 0; subset1Sum <= totalSum/2; ++subset1Sum) {
-	    if(dp[n - 1][subset1Sum]) {
+	    if(dp[n - 1][subset1Sum] == 1) {
 	        int subset2Sum = totalSum - subset1Sum;
 	        minAbsDiff = min(minAbsDiff, abs(subset1Sum - subset2Sum));
 	    }
