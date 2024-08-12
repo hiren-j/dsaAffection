@@ -1,6 +1,6 @@
 // Code to find the minimum cost to buy exactly W kg of oranges. The cost array has a 1-based indexing. If buying exactly W kg of oranges is impossible then return -1 ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
@@ -66,12 +66,12 @@ private:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
-    // Method to find the minimum cost, using recursion with memoization - O(N*W) & O(N*W)
+    // Method to find the minimum cost, using recursion with memoization - O(N*N*W) & O(N*W)
     int minimumCost(int N, int W, vector<int>& cost) {
         vector<vector<int>> memory(N + 1, vector<int>(W + 1, -1));
         int minCost = solveWithMemo(memory, cost, N, 1, W);
@@ -137,8 +137,9 @@ private:
         return minCost;
     }
 };
+// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -195,7 +196,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/minimum-cost-to-fill-given-weight-in-a-bag1956/1?page=3&difficulty%5B%5D=1&category%5B%5D=Dynamic%2520Programming&sortBy=submissions*/
