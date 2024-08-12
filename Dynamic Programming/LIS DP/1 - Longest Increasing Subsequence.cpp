@@ -186,10 +186,10 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size(), maxLength = 0;
         
-        // DP table: dp[index] represents the length of the LIS ending at the index
+        // 1D table: dp[index] represents the length of the LIS ending at the individual index
         vector<int> dp(n, 1);
 
-        // Fill the DP table
+        // Fill the table
         for(int index = 0; index < n; ++index) {
             for(int prevIndex = 0; prevIndex < index; ++prevIndex) {
                 if(nums[index] > nums[prevIndex]) {
@@ -213,7 +213,7 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
 
-        // This array doesn't necessarily store the values of the LIS in the correct order. This is due to updates made during the binary search. However, it will correctly provide the length of the actual LIS.
+        // This array doesn't necessarily store the values of the LIS in the correct order. This is due to updates made during the binary search. However, it will correctly provide the length of the actual LIS
         vector<int> LIS; 
         LIS.push_back(nums[0]);
 
