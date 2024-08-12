@@ -209,6 +209,7 @@ public:
         // Suppose you're placing envelopes in ascending order by width and then an upcoming envelope have the same width as the previously placed one. Now we want to put maximum envelopes in one another and if the height of this new envelope is greater then the previous one then you can easily put the previous one in it. So that's why when the widths are same then sorting by height in descending order is required 
         sort(begin(envelopes), end(envelopes), comparator);
 
+        // This array doesn't necessarily store the values of the LIS in the correct order. This is due to updates made during the binary search. However, it will correctly provide the length of the actual LIS
         vector<int> LIS;
         LIS.push_back(envelopes[0][1]);
 
@@ -225,6 +226,7 @@ public:
             }
         }
 
+        // Return the result value
         return maxLength;
     }
 };
