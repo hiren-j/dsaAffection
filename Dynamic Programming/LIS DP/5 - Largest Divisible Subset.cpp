@@ -1,6 +1,6 @@
 // Code to find the largest subset answer such that every pair (answer[i], answer[j]) of elements in this subset satisfies: answer[i] % answer[j] == 0, or answer[j] % answer[i] == 0 ~ coded by Hiren
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -26,7 +26,7 @@ public:
             }
         }
         
-        int resultIndex = -1; // Stores the index of the last value of the actual LDS
+        int resultIndex = -1; // Stores the index of the value which has to be taken (result value)
         int lengthLDS   = -1; // Stores the length of the LDS
         
         // Find the length of the LDS
@@ -55,7 +55,7 @@ public:
     }
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/largest-divisible-subset/description/
