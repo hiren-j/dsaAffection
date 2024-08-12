@@ -1,7 +1,7 @@
 // Code to find the length of the longest ideal string ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
 public:
@@ -54,8 +54,8 @@ private:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
 public:
@@ -81,11 +81,9 @@ private:
         int maxLength = 0;
 
         // Find the length of all the longest ideal strings and update the result by the maximum value
-        for(int index = startIndex; index < n; ++index) {
-            if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k) {            
+        for(int index = startIndex; index < n; ++index) 
+            if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k)        
                 maxLength = std::max(maxLength, 1 + solveWithMemo(memory, s, k, n, index + 1, s[index]));
-            }
-        }
         
         // Store the result value to the memoization table and then return it
         return memory[startIndex][prevLetter] = maxLength;
@@ -101,20 +99,18 @@ private:
         int maxLength = 0;
 
         // Find the length of all the longest ideal strings and update the result by the maximum value
-        for(int index = startIndex; index < n; ++index) {
-            if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k) {            
+        for(int index = startIndex; index < n; ++index) 
+            if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k)          
                 maxLength = std::max(maxLength, 1 + solveWithoutMemo(s, k, n, index + 1, s[index]));
-            }
-        }
         
         // Return the result value                
         return maxLength;
     }
 };
-// Note: This solution can lead to the time-limit-exceed
+// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2). It will lead to the time-limit-exceed
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
@@ -122,8 +118,10 @@ public:
     int longestIdealString_V1(const std::string& s, int k) {
         int n = s.size();
 
+        // 2D DP table
         std::vector<std::vector<int>> dp(n + 1, std::vector<int>(123, 0));
 
+        // Fill the table
         for(int index = n-1; index >= 0; --index) {
             for(int prevLetter = 122; prevLetter >= 0; --prevLetter) {
                 int currSkip = dp[index + 1][prevLetter];
@@ -135,6 +133,7 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0][0];
     }
 
@@ -142,8 +141,10 @@ public:
     int longestIdealString_V2(const std::string& s, int k) {
         int n = s.size();
 
+        // 1D DP tables
         std::vector<int> nextRow(123, 0), idealRow(123, 0);
 
+        // Fill the table
         for(int index = n-1; index >= 0; --index) {
             for(int prevLetter = 122; prevLetter >= 0; --prevLetter) {
                 int currSkip = nextRow[prevLetter];
@@ -156,11 +157,12 @@ public:
             nextRow = idealRow;
         }
 
+        // Return the result value
         return idealRow[0];
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Hash Table | String | Dynamic Programming 
 Link  : https://leetcode.com/problems/longest-ideal-subsequence/description/
