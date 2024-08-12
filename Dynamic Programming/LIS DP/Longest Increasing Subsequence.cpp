@@ -1,6 +1,7 @@
 // Code to find the length of the longest strictly increasing subsequence ~ coded by Hiren
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
@@ -54,7 +55,7 @@ private:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
@@ -89,8 +90,47 @@ private:
         return memory[prevIndex + 1] = max(currSkip, currTake);
     }
 };
+// Note: This solution (TopDown_V2) is the space optimized version of the (TopDown_V1) solution
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// #3 Class to implement the Top-down approach:
+class TopDown_V3 {
+public:
+    // Method to find the length of the longest strictly increasing subsequence, using recursion with memoization - O(N^3) & O(N^2)
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> memory(n, vector<int>(n + 1, -1));
+        return solveWithMemo(memory, nums, n, 0, -1);
+    }
+
+private:
+    // O(N*N*N) & O(N*N + N)
+    int solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int startIndex, int prevIndex) {
+        // Edge case: If all the values are exhausted then you can't take any more
+        if(startIndex == n)
+            return 0;
+
+        // Memoization table: If the current state is already computed then return the computed value
+        if(memory[startIndex][prevIndex + 1] != -1)
+            return memory[startIndex][prevIndex + 1];
+
+        // Stores the result value 
+        int maxLength = 0;
+
+        // Iterate and if the previous value is lesser than the index value then take the index value
+        for(int index = startIndex; index < n; ++index) 
+            if(prevIndex == -1 || nums[index] > nums[prevIndex]) 
+                maxLength = max(maxLength, 1 + solveWithMemo(memory, nums, n, index + 1, index));
+
+        // Store the result value to the memoization table and then return it
+        return memory[startIndex][prevIndex + 1] = maxLength;
+    }
+    // Note: `solveWithoutMemo` function will have O(N^N) time complexity and O(N) auxiliary space. You can easily create it by removing the memoization from this `solveWithMemo`, which is straightforward to implement. The full function isn't provided here to avoid larger code
+};
+// Note: This solution (TopDown_V3) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V3)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Bottom-up approach:
 class BottomUp_V1 {
@@ -105,10 +145,9 @@ public:
             for(int prevIndex = n-1; prevIndex >= -1; --prevIndex) {
                 int currSkip = dp[index + 1][prevIndex + 1];
                 int currTake = 0;
-
-                if(prevIndex == -1 || nums[index] > nums[prevIndex])
+                if(prevIndex == -1 || nums[index] > nums[prevIndex]) {
                     currTake = 1 + dp[index + 1][index + 1];
-
+                }
                 dp[index][prevIndex + 1] = max(currSkip, currTake);
             }
         }
@@ -126,10 +165,9 @@ public:
             for(int prevIndex = n-1; prevIndex >= -1; --prevIndex) {
                 int currSkip = nextRow[prevIndex + 1];
                 int currTake = 0;
-
-                if(prevIndex == -1 || nums[index] > nums[prevIndex])
+                if(prevIndex == -1 || nums[index] > nums[prevIndex]) {
                     currTake = 1 + nextRow[index + 1];
-
+                }
                 idealRow[prevIndex + 1] = max(currSkip, currTake);
             }
             nextRow = idealRow;
@@ -139,7 +177,7 @@ public:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Bottom-up approach:
 class BottomUp_V2 {
@@ -166,7 +204,7 @@ public:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #3 Class to implement the Bottom-up approach:
 class BottomUp_V3 {
@@ -196,7 +234,7 @@ public:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Binary Search | Dynamic Programming
 Link  : https://leetcode.com/problems/longest-increasing-subsequence/description/
