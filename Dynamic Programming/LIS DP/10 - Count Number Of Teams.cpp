@@ -131,7 +131,7 @@ private:
 
     // O(N*N*3) & O(2*N*4)
     int solveUsingTabulation_V1(vector<int>& rating, int k, bool toFindIncreasing) {
-        // 2D DP table
+        // 2D DP tables
         vector<vector<int>> nextRow(n + 1, vector<int>(4, 0)), idealRow(n + 1, vector<int>(4, 0));
         
         // Initialize the first edge case: If you've found a strictly increasing or decreasing subsequence of length 3 then return 1
