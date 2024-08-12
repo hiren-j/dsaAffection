@@ -23,7 +23,7 @@ public:
             }
         }
 
-        int resultIndex = -1; // Stores the index of the last value of the actual LIS
+        int resultIndex = -1; // Stores the index of the result value which has to be taken
         int maxLength   = -1; // Stores the length of the LIS
 
         // Find the length of the LIS 
