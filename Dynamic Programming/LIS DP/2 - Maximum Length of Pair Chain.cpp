@@ -20,7 +20,7 @@ private:
         if(index == n)
             return 0;
 
-        // Memoizationt table: If the current state is already computed then return the computed value
+        // Memoization table: If the current state is already computed then return the computed value
         if(memory[index][prevIndex + 1] != -1)
             return memory[index][prevIndex + 1];
 
@@ -113,7 +113,7 @@ private:
         if(startIndex == n)
             return 0;
 
-        // Memoizationt table: If the current state is already computed then return the computed value
+        // Memoization table: If the current state is already computed then return the computed value
         if(memory[startIndex][prevIndex + 1] != -1)
             return memory[startIndex][prevIndex + 1];
         
@@ -142,8 +142,10 @@ public:
         int n = pairs.size();
         sort(begin(pairs), end(pairs));
 
+        // 2D DP table
         vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
 
+        // Fill the table
         for(int index = n-1; index >= 0; --index) {
             for(int prevIndex = index-1; prevIndex >= -1; --prevIndex) {
                 int currSkip = dp[index + 1][prevIndex + 1];
@@ -155,6 +157,7 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0][0];
     }
     // Note: This bottom-up solution is created from the memoized solution of (TopDown_V1)
@@ -164,8 +167,10 @@ public:
         int n = pairs.size();
         sort(begin(pairs), end(pairs));
 
+        // 1D DP tables
         vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
 
+        // Fill the table
         for(int index = n-1; index >= 0; --index) {
             for(int prevIndex = index-1; prevIndex >= -1; --prevIndex) {
                 int currSkip = nextRow[prevIndex + 1];
@@ -178,6 +183,7 @@ public:
             nextRow = idealRow;
         }
 
+        // Return the result value
         return idealRow[0];
     }
 };
@@ -190,11 +196,12 @@ public:
     // Method to find the length of the longest chain which can be formed, using 1D tabulation - O(N*N) & O(N)
     int findLongestChain(vector<vector<int>>& pairs) {
         int n = pairs.size(), maxLength = 0;
-
         sort(begin(pairs), end(pairs));
 
+        // 1D table: dp[index] represents the length of the longest chain ending at the individual index
         vector<int> dp(n, 1);
 
+        // Fill the table
         for(int index = 0; index < n; ++index) {
             for(int prevIndex = 0; prevIndex < index; ++prevIndex) {
                 if(pairs[prevIndex][1] < pairs[index][0]) {
@@ -204,6 +211,7 @@ public:
             maxLength = max(maxLength, dp[index]);
         }
 
+        // Return the result value
         return maxLength;
     }
 };
