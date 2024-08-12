@@ -153,6 +153,7 @@ public:
 
         return dp[0][0];
     }
+    // Note: This bottom-up solution is created from the memoized solution of (TopDown_V1)
 
     // #2 Method to find the length of the longest strictly increasing subsequence, using 1D tabulation - O(N*N) & O(N)
     int lengthOfLIS_V2(vector<int>& nums) {
