@@ -1,10 +1,12 @@
 // Code to find the length of the longest possible word chain with words chosen from the given list of words ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 
-DON'T IGNORE MUST READ: In the previous LIS problems, we implemented loop conversion, and we could do the same here. However, the Lines of Code (LOC) for this solution are already quite large, 
-                        so I’m not including the loop-based recursive solution this time. By now, you likely understand the concept, so you can try it on your own if needed.
-
+    DON'T IGNORE MUST READ: In the previous LIS problems, we implemented loop conversion, and we could do the same here. However, the Lines of Code (LOC) for this solution are already quite large, 
+                            so I’m not including the loop-based recursive solution this time. By now, you likely understand the concept, so you can try it on your own if needed.
+                            
+*/
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Top-down approach:
