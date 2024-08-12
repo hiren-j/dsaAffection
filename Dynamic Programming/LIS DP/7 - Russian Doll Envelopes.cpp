@@ -226,7 +226,7 @@ public:
             }
         }
 
-        // Return the result value
+        // Return the length of the LIS
         return maxLength;
     }
 };
