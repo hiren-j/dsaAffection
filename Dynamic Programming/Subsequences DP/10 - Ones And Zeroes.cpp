@@ -236,7 +236,7 @@ public:
     // Subclass to implement the Bottom-up approach:
     class BottomUp {
     public:
-        // #1 Method to find the size of the largest subset, using 3D tabulation - O(size*zeros*ones) & O(size*zeros*ones)
+        // #1 Method to find the size of the largest subset, using 3D tabulation - O(size*m*n) & O(size*m*n)
         int findMaxcForm_V1(vector<string>& strs, int m, int n) {
             int size = strs.size();
 
@@ -283,7 +283,7 @@ public:
             return dp[0][m][n];
         }
 
-        // #2 Method to find the size of the largest subset, using 2D tabulation - O(size*zeros*ones) & O(zeros*ones)
+        // #2 Method to find the size of the largest subset, using 2D tabulation - O(size*m*n) & O(m*n)
         int findMaxForm_V2(vector<string>& strs, int m, int n) {
             int size = strs.size();
 
