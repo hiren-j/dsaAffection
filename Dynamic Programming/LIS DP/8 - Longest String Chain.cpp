@@ -154,6 +154,7 @@ private:
         return word1.size() < word2.size();
     }
 };
+// Note: This solution (TopDown_V2) is the space optimized version of the (TopDown_V1) solution
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -180,7 +181,8 @@ public:
 
         return dp[0][0];
     }
-
+    // Note: This bottom-up solution is created from the memoized solution of (TopDown_V1)
+    
     // #2 Method to find the length of the longest word chain, using 1D tabulation - O(N*N*32) & O(N)
     int longestStrChain_V2(vector<string>& words) {
         int n = words.size();
