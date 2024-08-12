@@ -107,7 +107,7 @@ public:
 	return minAbsDiff;
     }
 
-    // #1 Method to find the minimum absolute difference, using 1D tabulation - O(N*T) & O(T)
+    // #2 Method to find the minimum absolute difference, using 1D tabulation - O(N*T) & O(T)
     int minSubsetSumDifference_V2(vector<int>& nums, int n) {
 	int totalSum = accumulate(begin(nums), end(nums), 0);
 
