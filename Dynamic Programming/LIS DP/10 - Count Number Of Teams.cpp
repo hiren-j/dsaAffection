@@ -118,7 +118,7 @@ private:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // Method to find the number of teams you can form under the given conditions, using 1D and 2D tabulation :-
+    // Method to find the number of teams you can form under the given conditions, using 2D and 3D tabulation :-
     int numTeams(vector<int>& rating) {
         n = rating.size();
         int countIncreasingSubseqLen3 = solveUsingTabulation_V1(rating, 3, true);
