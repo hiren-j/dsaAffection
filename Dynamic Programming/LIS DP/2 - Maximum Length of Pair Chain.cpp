@@ -1,6 +1,6 @@
 // Code to find the length of the longest chain which can be formed under the mentioned instructions ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Top-down approach:
 class TopDown_V1 {
@@ -55,7 +55,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Top-down approach:
 class TopDown_V2 {
@@ -91,8 +91,48 @@ private:
         return memory[prevIndex + 1] = max(currSkip, currTake);
     }
 };
+// Note: This solution (TopDown_V2) is the space optimized version of the (TopDown_V1) solution
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// #3 Class to implement the Top-down approach:
+class TopDown_V3 {
+public:
+    // Method to find the length of the longest chain which can be formed, using recursion with memoization - O(N^3) & O(N^2)
+    int findLongestChain(vector<vector<int>>& pairs) {
+        int n = pairs.size();
+        sort(begin(pairs), end(pairs));
+        vector<vector<int>> memory(n, vector<int>(n + 1, -1));
+        return solveWithMemo(memory, pairs, n, 0, -1);
+    }
+
+private:
+    // O(N*N*N) & O(N*N + N)
+    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& pairs, int n, int startIndex, int prevIndex) {
+        // Edge case: If all the elements are exhausted then you can't pick any more
+        if(startIndex == n)
+            return 0;
+
+        // Memoizationt table: If the current state is already computed then return the computed value
+        if(memory[startIndex][prevIndex + 1] != -1)
+            return memory[startIndex][prevIndex + 1];
+        
+        // Stores the result value
+        int maxLength = 0;
+
+        // Iterate and if the previous value is strictly lesser than the index value then pick the index value
+        for(int index = startIndex; index < n; ++index) 
+            if(prevIndex == -1 || pairs[prevIndex][1] < pairs[index][0])
+                maxLength = max(maxLength, 1 + solveWithMemo(memory, pairs, n, index + 1, index));
+
+        // Store the result value to the memoization table and then return it
+        return memory[startIndex][prevIndex + 1] = maxLength;
+    }
+    // Note: `solveWithoutMemo` function will have O(N^N) time complexity and O(N) auxiliary space. You can easily create it by removing the memoization from this `solveWithMemo`, which is straightforward to implement. The full function isn't provided here to avoid larger code
+};
+// Note: This solution (TopDown_V3) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V3)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #1 Class to implement the Bottom-up approach:
 class BottomUp_V1 {
@@ -100,7 +140,6 @@ public:
     // #1 Method to find the length of the longest chain which can be formed, using 2D tabulation - O(N*N) & O(N*N)
     int findLongestChain_V1(vector<vector<int>>& pairs) {
         int n = pairs.size();
-        
         sort(begin(pairs), end(pairs));
 
         vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
@@ -118,11 +157,11 @@ public:
 
         return dp[0][0];
     }
+    // Note: This bottom-up solution is created from the memoized solution of (TopDown_V1)
 
     // #2 Method to find the length of the longest chain which can be formed, using 1D tabulation - O(N*N) & O(N)
     int findLongestChain_V2(vector<vector<int>>& pairs) {
         int n = pairs.size();
-
         sort(begin(pairs), end(pairs));
 
         vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
@@ -143,8 +182,8 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // #2 Class to implement the Bottom-up approach:
 class BottomUp_V2 {
 public:
@@ -169,7 +208,6 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Topics: Array | Dynamic Programming | Greedy | Sorting
 Link  : https://leetcode.com/problems/maximum-length-of-pair-chain/description/
