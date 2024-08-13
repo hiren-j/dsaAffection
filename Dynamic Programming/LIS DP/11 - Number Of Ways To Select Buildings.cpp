@@ -149,7 +149,7 @@ public:
     ll numberOfWays_V2(const string& s) {
         int n = s.size();
 
-        // 2D DP table
+        // 2D DP tables
         vector<vector<ll>> nextRow(3, vector<ll>(4, 0)), idealRow(3, vector<ll>(4, 0));
 
         // Initialize the edge case: If you've selected 3 buildings then you've got one valid way
