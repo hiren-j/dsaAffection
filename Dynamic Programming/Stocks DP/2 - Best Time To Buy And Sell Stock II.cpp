@@ -1,6 +1,6 @@
 // Code to find the maximum profit you can achieve by making the specified transaction ~ coded by Hiren
 
-------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -23,7 +23,7 @@ private:
         if(memory[day][canBuy] != -1)
             return memory[day][canBuy];
 
-        // If It's possible to buy the share then we have two possibilities on the day
+        // If it's possible to buy the share then we have two possibilities on the day
         if(canBuy) {
             int currBuy  = solveWithMemo(memory, prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
             int currSkip = solveWithMemo(memory, prices, n, day + 1, true);                // Is to skip the buy at the current price 
@@ -58,7 +58,7 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -67,8 +67,10 @@ public:
     int maxProfit_V1(vector<int>& prices) {
         int n = prices.size();
 
+        // 2D DP table
         vector<vector<int>> dp(n + 1, vector<int>(2, 0));
 
+        // Fill the table
         for(int day = n-1; day >= 0; --day) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
                 if(canBuy) {
@@ -84,6 +86,7 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0][true];
     }
 
@@ -91,8 +94,10 @@ public:
     int maxProfit_V2(vector<int>& prices) {
         int n = prices.size();
 
+        // 1D DP tables
         vector<int> nextRow(2, 0), idealRow(2, 0);
 
+        // Fill the table
         for(int day = n-1; day >= 0; --day) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
                 if(canBuy) {
@@ -109,6 +114,7 @@ public:
             nextRow = idealRow;
         }
 
+        // Return the result value
         return idealRow[true];
     }
 
@@ -140,7 +146,7 @@ public:
     }
 };
 
-------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Greedy
 Link  : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
