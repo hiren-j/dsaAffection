@@ -212,7 +212,7 @@ public:
     int longestSubsequence(vector<int>& nums, int difference) {
         int n = nums.size(), maxLength = 0;
 
-        // Stores the length of the longest arithmetic subsequence which could be seen till an index value 
+        // Stores the length of the longest arithmetic subsequence which can be seen till an index value 
         unordered_map<int, int> mp;
 
         for(int currNum : nums) {
