@@ -5,6 +5,7 @@
 // Class to implement the Top-down approach:
 class TopDown {
     vector<char> vowels = {'a','e','i','o','u'};
+    const int MOD = 1e9+7;
 
 public:
     // Method to count how many such strings of length n that can be formed, using recursion with memoization - O(N) & O(N)
@@ -60,6 +61,7 @@ private:
 // #2 Class to implement the Bottom-up approach:
 class BottomUp {
     vector<char> vowels = {'a','e','i','o','u'};
+    const int MOD = 1e9+7;
 
 public:
     // #1 Method to count how many such strings of length n that can be formed, using 2D tabulation - O(N*23*5) & O(N*26)
@@ -72,15 +74,15 @@ public:
             dp[0][ch] = 1;
 
         // Fill the rest of the table
-        for(int n = 1; n <= n; ++n) {
+        for(int length = 1; length <= n; ++length) {
             for(char prevLetter = 'a'; prevLetter <= 'w'; ++prevLetter) {
                 int count = 0;
                 for(char v : vowels) {
                     if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) {
-                        count = count % MOD + dp[n - 1][v - 'a'] % MOD;
+                        count = count % MOD + dp[length - 1][v - 'a'] % MOD;
                     }
                 }
-                dp[n][prevLetter - 'a'] = count % MOD;
+                dp[length][prevLetter - 'a'] = count % MOD;
             }
         }
 
@@ -98,7 +100,7 @@ public:
             prevRow[ch] = 1;
 
         // Fill the rest of the table
-        for(int n = 1; n <= n; ++n) {
+        for(int length = 1; length <= n; ++length) {
             for(char prevLetter = 'a'; prevLetter <= 'w'; ++prevLetter) {
                 int count = 0;
                 for(char v : vowels) {
