@@ -1,13 +1,13 @@
 // Code to find the number of valid ways to select 3 buildings ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
-class TopDown {
+// #1 Class to implement the Top-down approach:
+class TopDown_V1 {
     typedef long long ll;
 
 public:
-    // Method to find the number of valid ways to select 3 buildings, using recursion with memoizatin - O(N) & O(N)
+    // Method to find the number of valid ways to select 3 buildings, using recursion with memoization - O(N) & O(N)
     ll numberOfWays(string& s) {
         int n = s.size();
         vector<vector<vector<ll>>> memory(n, vector<vector<ll>>(3, vector<ll>(4, -1)));
@@ -64,23 +64,70 @@ private:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// #2 Class to implement the Top-down approach:
+class TopDown_V2 {
+    typedef long long ll;
+
+public:
+    // Method to find the number of valid ways to select 3 buildings, using recursion with memoization - O(N*N) & O(N)
+    ll numberOfWays(string& s) {
+        int n = s.size();
+        vector<vector<vector<ll>>> memory(n, vector<vector<ll>>(3, vector<ll>(4, -1)));
+        return solveWithMemo(memory, s, n, 0, '2', 3);
+    }
+
+private:
+    // O(N*N*3*4) & O(N*3*4 + N)
+    ll solveWithMemo(vector<vector<vector<ll>>>& memory, const string& s, int n, int startIndex, char prevBuilding, int k) {
+        // Edge case: If you've selected 3 buildings then you've got one valid way
+        if(k == 0)
+            return 1;
+
+        // Edge case: If all the buildings are exhausted then you've no valid way
+        if(startIndex == n)
+            return 0;
+
+        // Memoization table: If the current state is already computed then return the computed value
+        if(memory[startIndex][prevBuilding - '0'][k] != -1)
+            return memory[startIndex][prevBuilding - '0'][k];
+
+        // Stores the result value
+        ll count = 0;
+
+        // Iterate and if the previous and index building is not same then select the index building
+        for(int index = startIndex; index < n; ++index)
+            if(prevBuilding == '2' || prevBuilding != s[index])
+                count += solveWithMemo(memory, s, n, index + 1, s[index], k - 1);
+
+        // Store the result value to the memoization table and then return it
+        return memory[startIndex][prevBuilding - '0'][k] = count;
+    }
+    // Note: `solveWithoutMemo` function will have O(N^N) time complexity and O(N) auxiliary space. You can easily create it by removing the memoization from this `solveWithMemo`, which is straightforward to implement. The full function isn't provided here to avoid larger code
+};
+// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2). It will lead to time-limit-exceed
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
     typedef long long ll;
 
 public:
-    // #1 Method to find the number of valid ways to select 3 buildings, using 2D tabulation - O(N*3*3) & O(N*3*4)
+    // #1 Method to find the number of valid ways to select 3 buildings, using 3D tabulation - O(N*3*3) & O(N*3*4)
     ll numberOfWays_V1(const string& s) {
         int n = s.size();
 
+        // 3D DP table
         vector<vector<vector<ll>>> dp(n + 1, vector<vector<ll>>(3, vector<ll>(4, 0)));
 
+        // Initialize the first edge case: If you've selected 3 buildings then you've got one valid way
         for(int index = 0; index <= n; ++index)
             for(char prevBuilding = '0'; prevBuilding <= '2'; ++prevBuilding)
                 dp[index][prevBuilding - '0'][0] = 1;
 
+        // Fill the rest of the table
         for(int index = n-1; index >= 0; --index) {
             for(char prevBuilding = '0'; prevBuilding <= '2'; ++prevBuilding) {
                 for(int k = 1; k <= 3; ++k) {
@@ -94,18 +141,22 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0]['2' - '0'][3];
     }
 
-    // #2 Method to find the number of valid ways to select 3 buildings, using 1D tabulation - O(N*3*3) & O(2*3*4)
+    // #2 Method to find the number of valid ways to select 3 buildings, using 2D tabulation - O(N*3*3) & O(2*3*4)
     ll numberOfWays_V2(const string& s) {
         int n = s.size();
 
+        // 2D DP table
         vector<vector<ll>> nextRow(3, vector<ll>(4, 0)), idealRow(3, vector<ll>(4, 0));
 
+        // Initialize the edge case: If you've selected 3 buildings then you've got one valid way
         for(char prevBuilding = '0'; prevBuilding <= '2'; ++prevBuilding)
             nextRow[prevBuilding - '0'][0] = 1;
 
+        // Fill the rest of the table
         for(int index = n-1; index >= 0; --index) {
             for(char prevBuilding = '0'; prevBuilding <= '2'; ++prevBuilding) {
                 idealRow[prevBuilding - '0'][0] = 1;
@@ -121,11 +172,12 @@ public:
             nextRow = idealRow;
         }
 
+        // Return the result value
         return idealRow['2' - '0'][3];
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming | Prefix Sum
 Link  : https://leetcode.com/problems/number-of-ways-to-select-buildings/description/
