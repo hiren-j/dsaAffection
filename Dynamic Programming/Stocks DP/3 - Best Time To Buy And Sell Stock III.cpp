@@ -1,6 +1,6 @@
 // Code to find the maximum profit you can achieve by completing at most two transactions ~ coded by Hiren
 
-------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -58,7 +58,7 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -67,8 +67,10 @@ public:
     int maxProfit_V1(vector<int>& prices) {
         int n = prices.size();
 
+        // 3D DP table
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(3, 0)));
 
+        // Fill the table
         for(int day = n-1; day >= 0; --day) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
                 for(int k = 1; k <= 2; ++k) {
@@ -86,6 +88,7 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0][1][2];
     }
 
@@ -93,8 +96,10 @@ public:
     int maxProfit_V2(vector<int>& prices) {
         int n = prices.size();
 
+        // 2D DP tables
         vector<vector<int>> nextRow(2, vector<int>(3, 0)), idealRow(2, vector<int>(3, 0));
 
+        // Fill the table
         for(int day = n-1; day >= 0; --day) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
                 for(int k = 1; k <= 2; ++k) {
@@ -113,11 +118,12 @@ public:
             nextRow = idealRow;
         }
 
+        // Return the result value
         return idealRow[1][2];
     }
 };
 
-------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/
