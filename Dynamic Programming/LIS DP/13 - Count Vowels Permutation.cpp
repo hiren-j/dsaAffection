@@ -1,6 +1,6 @@
 // Code to count how many strings of length n can be formed under the mentioned rules ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -28,11 +28,9 @@ private:
         int count = 0;
         
         // Explore all the ways of creating such string from the vowels
-        for(char v : vowels) {
-            if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) {
+        for(char v : vowels) 
+            if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) 
                 count = count % MOD + solveWithMemo(memory, n - 1, v) % MOD;
-            }
-        }
 
         // Store the result value to the memoization table and then return it
         return memory[n][prevLetter - 'a'] = count % MOD;
@@ -48,18 +46,16 @@ private:
         int count = 0;
         
         // Explore all the ways of creating such string from the vowels
-        for(char v : vowels) {
-            if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) {
+        for(char v : vowels) 
+            if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) 
                 count = count % MOD + solveWithoutMemo(n - 1, v) % MOD;
-            }
-        }
 
         // Return the result value
         return count % MOD;
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #2 Class to implement the Bottom-up approach:
 class BottomUp {
@@ -68,11 +64,14 @@ class BottomUp {
 public:
     // #1 Method to count how many such strings of length n that can be formed, using 2D tabulation - O(N*23*5) & O(N*26)
     int countVowelPermutation_V1(int n) {
+        // 2D DP table
         vector<vector<int>> dp(n + 1, vector<int>(26, 0));
-        
+
+        // Intialize the edge case: If you've created such string of length n then return 1
         for(int ch = 0; ch < 26; ++ch)
             dp[0][ch] = 1;
 
+        // Fill the rest of the table
         for(int n = 1; n <= n; ++n) {
             for(char prevLetter = 'a'; prevLetter <= 'w'; ++prevLetter) {
                 int count = 0;
@@ -85,16 +84,20 @@ public:
             }
         }
 
+        // Return the result value
         return dp[n]['w' - 'a'];
     }
 
     // #2 Method to count how many such strings of length n that can be formed, using 1D tabulation - O(N*23*5) & O(2*26)
     int countVowelPermutation_V2(int n) {
+        // 1D DP tables
         vector<int> prevRow(26, 0), currRow(26, 0);
 
+        // Intialize the edge case: If you've created such string of length n then return 1
         for(int ch = 0; ch < 26; ++ch)
             prevRow[ch] = 1;
 
+        // Fill the rest of the table
         for(int n = 1; n <= n; ++n) {
             for(char prevLetter = 'a'; prevLetter <= 'w'; ++prevLetter) {
                 int count = 0;
@@ -108,11 +111,12 @@ public:
             prevRow = currRow;
         }
 
+        // Return the result value
         return prevRow['w' - 'a'];
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Dynamic Programming
 Link  : https://leetcode.com/problems/count-vowels-permutation/
