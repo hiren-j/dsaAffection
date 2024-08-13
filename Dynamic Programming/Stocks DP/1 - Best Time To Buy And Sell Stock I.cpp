@@ -1,7 +1,8 @@
 // Code to find the maximum profit you can achieve from the specified transaction ~ coded by Hiren
 
--------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the maximum profit you can achieve - O(N) & O(1)
@@ -17,7 +18,7 @@ public:
     }
 };
 
--------------------------------------------------------------------------------------------
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Array | Dynamic Programming
-Link  : https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
+Link  : https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description
