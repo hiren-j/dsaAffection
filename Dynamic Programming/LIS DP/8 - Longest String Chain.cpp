@@ -84,7 +84,7 @@ private:
     }
 
 private:
-    // Method to chose the word which have the shorter length - O(1) & O(1)
+    // Method to choose the word based on the shorter length - O(1) & O(1)
     static bool comparator(const string& word1, const string& word2) {
         return word1.size() < word2.size();
     }
@@ -149,7 +149,7 @@ private:
     }
 
 private:
-    // Method to chose the word which have the shorter length - O(1) & O(1)
+    // Method to choose the word based on the shorter length - O(1) & O(1)
     static bool comparator(const string& word1, const string& word2) {
         return word1.size() < word2.size();
     }
@@ -228,7 +228,7 @@ private:
     }
 
 private:
-    // Method to chose the word which have the shorter length - O(1) & O(1)
+    // Method to choose the word based on the shorter length - O(1) & O(1)
     static bool comparator(const string& word1, const string& word2) {
         return word1.size() < word2.size();
     }
