@@ -1,6 +1,6 @@
 // Code to find the maximum profit you can achieve by completing as many transactions as you like (i.e., buy one and sell one share of the stock multiple times) with the restriction: After you sell your stock, you cannot buy stock on the next day (i.e., cooldown one day) ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -23,7 +23,7 @@ private:
         if(memory[day][canBuy] != -1)
             return memory[day][canBuy];
 
-        // If It's possible to buy the share then we have two possibilities on the day
+        // If it's possible to buy the share then we have two possibilities on the day
         if(canBuy) {
             int currBuy  = solveWithMemo(memory, prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
             int currSkip = solveWithMemo(memory, prices, n, day + 1, true);                // Is to skip the buy at the current price 
@@ -43,7 +43,7 @@ private:
         if(day >= n)
             return 0;
 
-        // If It's possible to buy the share then we have two possibilities on the day
+        // If it's possible to buy the share then we have two possibilities on the day
         if(canBuy) {
             int currBuy  = solveWithoutMemo(prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
             int currSkip = solveWithoutMemo(prices, n, day + 1, true);                // Is to skip the buy at the current price 
@@ -58,7 +58,7 @@ private:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -114,7 +114,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/description/
