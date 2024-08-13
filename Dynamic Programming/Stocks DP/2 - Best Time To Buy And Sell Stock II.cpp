@@ -43,7 +43,7 @@ private:
         if(day == n)
             return 0;
 
-        // If It's possible to buy the share then we have two possibilities on the day
+        // If it's possible to buy the share then we have two possibilities on the day
         if(canBuy) {
             int currBuy  = solveWithoutMemo(prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
             int currSkip = solveWithoutMemo(prices, n, day + 1, true);                // Is to skip the buy at the current price 
