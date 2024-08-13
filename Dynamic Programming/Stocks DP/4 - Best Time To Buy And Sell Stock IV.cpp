@@ -11,6 +11,7 @@ public:
         vector<vector<vector<int>>> memory(n, vector<vector<int>>(2, vector<int>(k + 1, -1)));
         return solveWithMemo(memory, k, prices, n, 0, true);
     }
+    
 private:
     // O(2*N*2*K) & O(N*2*K + N)
     int solveWithMemo(vector<vector<vector<int>>>& memory, int k, vector<int>& prices, int n, int day, bool canBuy) {
