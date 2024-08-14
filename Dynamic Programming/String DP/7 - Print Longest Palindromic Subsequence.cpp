@@ -1,6 +1,6 @@
 // Code to find the longest palindromic subsequence of given string ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -55,8 +55,8 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: String | Dynamic Programming
 Links : https://leetcode.com/problems/longest-palindromic-subsequence/description/
         https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/String%20DP/Longest%20Palindromic%20Subsequence.cpp
