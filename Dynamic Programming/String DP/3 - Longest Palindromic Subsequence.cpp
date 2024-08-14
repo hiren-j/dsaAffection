@@ -104,4 +104,5 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming
-Link  : https://leetcode.com/problems/longest-palindromic-subsequence/description/
+Links : https://leetcode.com/problems/longest-palindromic-subsequence/description/
+        https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/String%20DP/1%20-%20Longest%20Common%20Subsequence.cpp
