@@ -1,11 +1,11 @@
 // Code to count the number of subsequences of string s1 which are equal to string s2 ~ coded by Hiren
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
 public:
-    // Method to count the number of subsequences of string s1 which are equal to string s2, using recursion with memoization :-
+    // Method to count the number of subsequences of string s1 which are equal to string s2, using recursion with memoization - O(N*M) & O(N*M)
     int countWays(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
         vector<vector<int>> memory(n, vector<int>(m, -1));
@@ -56,7 +56,7 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -67,9 +67,10 @@ public:
     int countWays_V1(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
 
+        // 2D DP table
         vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
 
-        // Set the first edge case: If all the letters of s2 are exhausted then you've got 1 occurence of s2 in s1
+        // Initialize the first edge case: If all the letters of s2 are exhausted then you've got 1 occurence of s2 in s1
         for(int i = 0; i <= n; ++i)
             dp[i][0] = 1;
 
@@ -91,11 +92,14 @@ public:
     int countWays_V2(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
 
+        // 1D DP tables
         vector<int> prevRow(m+1), currRow(m+1);
+        
+        // Initialize the first edge case: If all the letters of s2 are exhausted then you've got 1 occurence of s2 in s1 
         prevRow[0] = 1;
 
         for(int i = 1; i <= n; ++i) {
-            currRow[0] = 1;
+            currRow[0] = 1; // Initialize the first edge case
             for(int j = 1; j <= m; ++j) {
                 if(s1[i-1] == s2[j-1])
                     currRow[j] = (prevRow[j-1] + prevRow[j]) % MOD;
@@ -105,11 +109,12 @@ public:
             prevRow = currRow;
         }
 
+        // Return the result value
         return prevRow[m];
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/find-number-of-times-a-string-occurs-as-a-subsequence3020/1
