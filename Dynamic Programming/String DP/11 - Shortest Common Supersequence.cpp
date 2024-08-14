@@ -1,6 +1,6 @@
 // Code to find the shortest string that has both str1 and str2 as subsequences. If there are multiple valid strings, return any of them ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -9,6 +9,7 @@ public:
     string shortestCommonSupersequence(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
 
+        // 2D DP table
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
         // Find the length of the longest common subsequence of both the strings
@@ -69,7 +70,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming
 Links : https://leetcode.com/problems/shortest-common-supersequence/
