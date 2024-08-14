@@ -1,6 +1,6 @@
 // Code to find the minimum number of steps to make string "s" palindrome ~ coded by Hiren 
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -16,11 +16,14 @@ private:
     int longestPalindromeSubseq(string& s1, int n) {
         string s2(n, ' ');
 
+        // Create the reverse of string s1
         for(int i = 0; i < n; ++i)
             s2[i] = s1[n - i - 1];
 
+        // 2D memoization table
         vector<vector<int>> memory(n, vector<int>(n, -1));
 
+        // Find and return the length of the LCS of the strings
         return solveWithMemo(memory, s1, s2, n-1, n-1);
     }
 
@@ -43,8 +46,7 @@ private:
     }
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -60,6 +62,7 @@ private:
     int longestPalindromeSubseq_V1(string& s1, int n) {
         string s2(n, ' ');
 
+        // Create the reverse of string s1
         for(int i = 0; i < n; ++i)
             s2[i] = s1[n - i - 1];
 
@@ -84,10 +87,11 @@ private:
     int longestPalindromeSubseq_V2(string& s1, int n) {
         string s2(n, ' ');
 
+        // Create the reverse of string s1
         for(int i = 0; i < n; ++i)
             s2[i] = s1[n - i - 1];
             
-        // 2D DP tables
+        // 1D DP tables
         vector<int> prevRow(n+1), currRow(n+1);
 
         // Find the length of the LCS of s1 and s2
@@ -106,8 +110,8 @@ private:
     }
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: String | Dynamic Programming
 Links : https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/
         https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/String%20DP/Longest%20Palindromic%20Subsequence.cpp
