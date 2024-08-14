@@ -1,9 +1,9 @@
 // Code to find the maximum amount of money the thief can rob without alerting the police ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
-class TopDown {
+class DynamicProgramming {
 public:
     // Method to find the maximum amount of money the thief can rob, using recursion with memoization - O(N) & O(N)
     int robMaxMoney(TreeNode* rootNode) {
@@ -12,7 +12,7 @@ public:
     }
 
 private:
-    // O(6*N) & O(N+N)
+    // O(2*N) & O(N+N)
     int solveWithMemo(TreeNode* rootNode, unordered_map<TreeNode*, int>& memory) {
         // Edge case: If there's no node then there's no money to rob
         if(!rootNode)
@@ -38,7 +38,7 @@ private:
         return memory[rootNode] = max(currRob, currSkip);
     }
 
-    // O(6^N) & O(N)
+    // O(2^N) & O(N)
     int solveWithoutMemo(TreeNode* rootNode) {
         // Edge case: If there's no node then there's no money to rob
         if(!rootNode)
@@ -61,7 +61,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 Topics: Dynamic Programming | Tree | Depth-First Search | Binary Tree
 Link  : https://leetcode.com/problems/house-robber-iii/description/
