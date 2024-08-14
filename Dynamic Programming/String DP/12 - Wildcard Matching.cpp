@@ -1,6 +1,6 @@
 // Code to implement wildcard pattern matching with support for '?' and '*' where: '?' Matches any single character. '*' Matches any sequence of characters (including the empty sequence). The matching should cover the entire input string (not partial) ~ coded by Hiren
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the brute force approach:
 class BruteForce_DP {
@@ -8,7 +8,7 @@ public:
     // Subclass to implement the Top-down approach:
     class TopDown {
     public:
-        // Method to check whether the string "p" matches the string "s" after implementing the wildcard matching, using recursion with memoization :-
+        // Method to check whether the string "p" matches the string "s" after implementing the wildcard matching, using recursion with memoization - O(N*M*N) & O(N*M)
         bool isMatch(string& s, string& p) {
             int n = s.size(), m = p.size();
             vector<vector<int>> memory(n, vector<int>(m, -1));
@@ -16,7 +16,7 @@ public:
         }
 
     private:
-        // O(K*N*M) & O(N*M + N+M)
+        // O(N*N*M) & O(N*M + N+M)
         bool solveWithMemo(vector<vector<int>>& memory, string& s, string& p, int i, int j) {
             // If the string "s" is exhausted and all the remaining letters of the string "p" are '*' then consider all those letters as an empty sequence 
             if(i < 0) {
@@ -71,7 +71,7 @@ public:
             // 2D DP table
             vector<vector<bool>> dp(n+1, vector<bool>(m+1, false));
 
-            // Set the first base case: If both the string completely matches each other then return true
+            // Initialize the first base case: If both the string completely matches each other then return true
             dp[0][0] = true;
 
             // Suppose if the string "s" is exhausted then consider all the beginning '*' of the string "p" as an empty sequence and as it's an empty sequence so we could say that both the strings completely matches each other hence set true for these states in table
@@ -113,7 +113,7 @@ public:
     };
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the optimized approach:
 class Optimized_DP {
@@ -121,7 +121,7 @@ public:
     // Subclass to implement the Top-down approach:
     class TopDown {
     public:
-        // Method to check whether the string "p" matches the string "s" after implementing the wildcard matching, using recursion with memoization :-
+        // Method to check whether the string "p" matches the string "s" after implementing the wildcard matching, using recursion with memoization - O(N*M) & O(N*M)
         bool isMatch(string& s, string& p) {
             int n = s.size(), m = p.size();
             vector<vector<int>> memory(n, vector<int>(m, -1));
@@ -166,14 +166,14 @@ public:
     // Class to implement the Bottom-up approach:
     class BottomUp {
     public:
-        // O(N*M) & O(N*M)
+        // Method to check whether the string "p" matches the string "s" after implementing the wildcard matching, using 2D tabulation - O(N*M*N) & O(N*M)
         bool isMatch(string& s, string& p) {
             int n = s.size(), m = p.size();
             
             // 2D DP table
             vector<vector<bool>> dp(n+1, vector<bool>(m+1, false));
 
-            // Set the first base case: If both the string completely matches each other then return true
+            // Initialize the first base case: If both the string completely matches each other then return true
             dp[0][0] = true;
 
             // Suppose if the string "s" is exhausted then consider all the beginning '*' of the string "p" as an empty sequence and as it's an empty sequence so we could say that both the strings completely matches each other hence set true for these states in table
@@ -203,7 +203,7 @@ public:
     };
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: String | Dynamic Programming | Greedy | Recursion
 Link  : https://leetcode.com/problems/wildcard-matching/description/
