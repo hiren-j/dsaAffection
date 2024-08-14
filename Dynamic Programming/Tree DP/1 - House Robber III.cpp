@@ -23,14 +23,14 @@ private:
             return memory[rootNode];
 
         // There are always two possibilities to perform at each node
-        int currSkip = solveWithMemo(rootNode->left, memory) + solveWithMemo(rootNode->right, memory); // Is to skip the rob and move to it's child nodes
-        int currRob  = rootNode->val;                                                                  // Is to rob and take the value of it                
+        int currSkip = solveWithMemo(rootNode->left, memory) + solveWithMemo(rootNode->right, memory); // Is to skip it and move to it's child nodes
+        int currRob  = rootNode->val;                                                                  // Is to rob it and take the value of it                
 
-        // If you rob at the node then you can't rob at it's left child / adjacent node
+        // If you rob the node then you can't rob at it's left child / adjacent node
         if(rootNode->left) 
             currRob += solveWithMemo(rootNode->left->left, memory) + solveWithMemo(rootNode->left->right, memory);
             
-        // If you rob at the node then you can't rob at it's right child / adjacent node
+        // If you rob the node then you can't rob at it's right child / adjacent node
         if(rootNode->right) 
             currRob += solveWithMemo(rootNode->right->left, memory) + solveWithMemo(rootNode->right->right, memory);
 
@@ -45,14 +45,14 @@ private:
             return 0;   
 
         // There are always two possibilities to perform at each node
-        int currSkip = solveWithoutMemo(rootNode->left) + solveWithoutMemo(rootNode->right); // Is to skip the rob and move to it's child nodes
-        int currRob  = rootNode->val;                                                        // Is to rob and take the value of it                
+        int currSkip = solveWithoutMemo(rootNode->left) + solveWithoutMemo(rootNode->right); // Is to skip it and move to it's child nodes
+        int currRob  = rootNode->val;                                                        // Is to rob it and take the value of it                
 
-        // If you rob at the node then you can't rob at it's left child / adjacent node
+        // If you rob the node then you can't rob at it's left child / adjacent node
         if(rootNode->left) 
             currRob += solveWithoutMemo(rootNode->left->left) + solveWithoutMemo(rootNode->left->right);
             
-        // If you rob at the node then you can't rob at it's right child / adjacent node
+        // If you rob the node then you can't rob at it's right child / adjacent node
         if(rootNode->right) 
             currRob += solveWithoutMemo(rootNode->right->left) + solveWithoutMemo(rootNode->right->right);
 
