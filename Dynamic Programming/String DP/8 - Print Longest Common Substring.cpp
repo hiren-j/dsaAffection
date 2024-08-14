@@ -1,6 +1,6 @@
 // Code to find the longest common substring of given two strings ~ coded by Hiren 
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -9,6 +9,7 @@ public:
     string getLongestCommonSubstr_V1(string& s1, string& s2) {
         int n = s1.size(), m = s2.size(), maxLength = 0, endIndex = 0;
 
+        // 2D DP table
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
         for(int i = 1; i <= n; ++i) {
@@ -36,6 +37,7 @@ public:
     string getLongestCommonSubstr_V2(string& s1, string& s2) {
         int n = s1.size(), m = s2.size(), maxLength = 0, endIndex = 0;
 
+        // 1D DP tables
         vector<int> prevRow(m + 1, 0), currRow(m + 1, 0);
 
         for(int i = 1; i <= n; ++i) {
@@ -61,7 +63,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: String | Dynamic Programming 
 Link  : https://www.geeksforgeeks.org/print-longest-common-substring/
