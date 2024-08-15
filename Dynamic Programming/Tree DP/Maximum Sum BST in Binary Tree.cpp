@@ -34,7 +34,7 @@ class DynamicProgramming {
     int maximumSum = INT_MIN;
 
     bool solveWithMemo(TreeNode* rootNode, int& prevValue, int& sum) {
-        // Edge case: If the tree is empty then it's also a valid BST
+        // Edge case: If the tree is empty then it's also a BST
         if(!rootNode)
             return true;
 
@@ -44,7 +44,7 @@ class DynamicProgramming {
 
         bool isBSTLeft = solveWithMemo(rootNode->left, prevValue, sum);
 
-        // If the previous node value is not strictly lesser than the current node's value then the subtree is not a valid BST
+        // If the previous node value is not strictly lesser than the current node's value then the subtree is not a BST
         if(prevValue >= rootNode->val)
             return dp[{rootNode, prevValue}] = false;
 
@@ -89,7 +89,7 @@ class Solution_V2 {
     int maximumSum = INT_MIN;
 
     vector<int> findMaxSumBST(TreeNode* rootNode) {
-        // Edge case: If the tree is empty then it's also a valid BST
+        // Edge case: If the tree is empty then it's also a BST
         if(!rootNode)
             // Return {information of being a BST or not, sum of the BST, minimum value of the BST, maximum value of the BST}
             return {true, 0, INT_MAX, INT_MIN}; 
