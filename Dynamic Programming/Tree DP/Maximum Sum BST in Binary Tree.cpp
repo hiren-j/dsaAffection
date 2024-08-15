@@ -44,7 +44,7 @@ class DynamicProgramming {
 
         bool isBSTLeft = solveWithMemo(rootNode->left, prevValue, sum);
 
-        // If the previous node value is not strictly lesser than the current node's value then the subtree is not a BST
+        // If the previous node value is not strictly lesser than the current node's value then the current subtree is not a BST
         if(prevValue >= rootNode->val)
             return dp[{rootNode, prevValue}] = false;
 
@@ -64,7 +64,7 @@ class DynamicProgramming {
         int prevValue = INT_MIN; // Tracks the previous node of any node in the inorder fashion
         int sum = 0;             // Stores the sum of a BST
 
-        // If the current subtree is a valid BST then update the result by the maximum value
+        // If the current subtree is a BST then update the result by the maximum value
         if(solveWithMemo(rootNode, prevValue, sum))
             maximumSum = max(maximumSum, sum);
 
