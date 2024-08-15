@@ -18,7 +18,7 @@
                           Explanation: The size of the memoization table could be N*3 which can be simplified as N. As you could see that the table is an ordered map and we're doing operations such as insertion and searching in it, which takes logarithmic time. 
                                        More clearly both the insertion and searching will end up taking `Log(sizeofmap)` time. More clearly Log(N) time and as we're doing it for each node hence the overall time complexity becomes NLogN.
                                        
-                        - Auxiliary space : O(N*2 + H)
+                        - Auxiliary space : O(N*3 + N*3 + N)
                           Explanation: The first N*3 represents the overall space taken by the adjacency list. It's because for any node there can be at most 3 neighbours, its because we're dealing with a binary tree. 
                                        So as we're storing neighbours of each node thus the total space taken by the adjacency list is N*3.
                                        The second N*3 represents the overall space taken by the memoization table. 
