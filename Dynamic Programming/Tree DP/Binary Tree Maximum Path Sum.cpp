@@ -5,20 +5,20 @@
 /*
     DON'T IGNORE MUST READ:
 
-        `solveWithoutMemo` - Time complexity: O(N*N) 
-                             Explanation: The total number of nodes is N and for each node we're calling the `solveWithoutMemo` function so the overall time complexity is O(N*N),
-                                          where the `solveWithoutMemo` auxiliary time is O(N) its because the `solveWithoutMemo` is visiting all the nodes in the recursion
+        `getLongestPath` - Time complexity: O(N*N) 
+                           Explanation: The total number of nodes is N and for each node we're calling the `getLongestPath` function so the overall time complexity is O(N*N),
+                                        where the `getLongestPath` auxiliary time is O(N) its because the `getLongestPath` is visiting all the nodes in the recursion
                             
                            - Auxiliary space : O(N*3 + N)
-                             Explanation: The first N*3 represents the overall space taken by the adjacency list. It's because for any node there can be at most 3 neighbours, its because we're dealing with a binary tree. 
-                                          So as we're storing neighbours of each node thus the total space taken by the adjacency list is N*3.
-                                          The second term N represents the maximum depth of the recursion stack.
+                            Explanation: The first N*3 represents the overall space taken by the adjacency list. It's because for any node there can be at most 3 neighbours, its because we're dealing with a binary tree. 
+                                         So as we're storing neighbours of each node thus the total space taken by the adjacency list is N*3.
+                                         The second term N represents the maximum depth of the recursion stack.
 
-        `solveWithMemo` - Time complexity: O(NLogN) 
-                          Explanation: The size of the memoization table could be N*3 which can be simplified as N. As you could see that the table is an ordered map and we're doing operations such as insertion and searching in it, which takes logarithmic time. 
-                                       More clearly both the insertion and searching will end up taking `Log(sizeofmap)` time. More clearly Log(N) time and as we're doing it for each node hence the overall time complexity becomes NLogN.
+        `getLongestPath` - Time complexity: O(NLogN) 
+                           Explanation: The size of the memoization table could be N*3 which can be simplified as N. As you could see that the table is an ordered map and we're doing operations such as insertion and searching in it, which takes logarithmic time. 
+                                        More clearly both the insertion and searching will end up taking `Log(sizeofmap)` time. More clearly Log(N) time and as we're doing it for each node hence the overall time complexity becomes NLogN.
                                        
-                        - Auxiliary space : O(N*3 + N*3 + N)
+                        - Auxiliary space : O(N*2 + H)
                           Explanation: The first N*3 represents the overall space taken by the adjacency list. It's because for any node there can be at most 3 neighbours, its because we're dealing with a binary tree. 
                                        So as we're storing neighbours of each node thus the total space taken by the adjacency list is N*3.
                                        The second N*3 represents the overall space taken by the memoization table. 
