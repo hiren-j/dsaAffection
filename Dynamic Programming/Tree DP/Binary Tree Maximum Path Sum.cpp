@@ -7,7 +7,7 @@
 
         `solveWithoutMemo` - Time complexity: O(N*N) 
                              Explanation: The total number of nodes is N and for each node we're calling the `solveWithoutMemo` function so the overall time complexity is O(N*N),
-                                          where the `solveWithoutMemo` auxiliary time is O(N) its because the `solveWithoutMemo` is visiting all the nodes in the recursion
+                                          where the `solveWithoutMemo` auxiliary time is O(N) its because the `solveWithoutMemo` is visiting all the nodes in the recursion.
                             
                            - Auxiliary space : O(N*3 + N)
                              Explanation: The first N*3 represents the overall space taken by the adjacency list. It's because for any node there can be at most 3 neighbours, its because we're dealing with a binary tree. 
