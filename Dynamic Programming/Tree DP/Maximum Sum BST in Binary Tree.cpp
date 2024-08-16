@@ -6,14 +6,14 @@
     DON'T IGNORE MUST READ (REGARDING THE FIRST SOLUTION):
         This solution will lead to time limit exceed due to the frequent checks performed in logarithmic time. 
         The primary issue is the use of a `map`, which takes `log(sizeofmap)` time for insertion and searching, 
-        resulting in inefficiencies. Both recursion and memoization will result in TLE.
-
+        resulting in inefficiencies. 
+        
         Including the recursive solution alone, the time complexity is O(N*N). With memoization, it seems to be 
-        improved but still suffers from the `map`'s logarithmic complexity, leading to TLE.
+        improved but still suffers from the `map`'s logarithmic complexity, leading to TLE. Both recursion and memoization will result in TLE.
 
         However, this approach illustrates how memoization can be applied. The brute-force method checks if 
         each subtree is a BST, which is inefficient. Memoization attempts to optimize by storing results 
-        to avoid redundant checks, but due to the `map`'s logarithmic complexity, it still results in TLE.
+        to avoid redundant checks, but due to the map's logarithmic complexity, it still results in TLE.
 */
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ class DynamicProgramming {
     }
 
     void exploreAllBST(TreeNode* rootNode) {
-        // Edge case: If the tree is empty then
+        // Edge case: If the tree is empty then then it's also a BST
         if(!rootNode)
             return;
 
