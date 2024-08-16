@@ -6,6 +6,12 @@ DON'T IGNORE MUST READ: In the first 9 problems of this 1D Dynamic Programming p
                         This approach is designed to help you grasp the principles of Dynamic Programming from the ground up. 
                         Although this process might be time-consuming and sometimes frustrating, it is essential for building a strong foundation. 
                         Don't hesitate to use a pen and paper as you work through these problems.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+DON'T IGNORE MUST READ: For the Top-Down DP problems in this series, each problem will feature two solutions: solveWithoutMemo and solveWithMemo. 
+                        You must start with `solveWithoutMemo`, which demonstrates the recursive solution without memoization and which is expected to run into TLE (Time Limit Exceeded). 
+                        After understanding the non-optimized approach, move to `solveWithMemo` for the memoized solution. Follow this order for all Top-Down DP solutions in the DP series.
     
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
