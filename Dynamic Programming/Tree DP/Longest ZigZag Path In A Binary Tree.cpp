@@ -58,7 +58,7 @@ class DynamicProgramming {
         result = max(result, getLongestPath(rootNode, true));  // Get the length of the longest ZigZag path from the left subtree of the node
         result = max(result, getLongestPath(rootNode, false)); // Get the length of the longest ZigZag path from the right subtree of the node 
 
-        // Recursively explore all the ZigZag paths lying in the subtrees
+        // Recursively explore all the ZigZag paths of the rest of the nodes
         DFS(rootNode->left);
         DFS(rootNode->right);
     }
