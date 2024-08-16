@@ -15,7 +15,7 @@ class DynamicProgramming {
     vector<vector<int>> memory;
     vector<bool> visited;
 
-    // O(M^N) & O(N)
+    // O(M^N) & O(N+N)
     int solveWithoutMemo(int source, int destination, int k) {
         // Edge case: If you reached the destination and zero or more stops are left then return 0 as a indication of it
         if(source == destination && k >= 0)
@@ -50,7 +50,7 @@ class DynamicProgramming {
         return minCost;
     }
 
-    // O(M*N*K) & (N*K + N)
+    // O(M*N*K) & (N*K + N+N)
     int solveWithMemo(int source, int destination, int k) {
         // Edge case: If you reached the destination and zero or more stops are left then return 0 as a indication of it
         if(source == destination && k >= 0)
