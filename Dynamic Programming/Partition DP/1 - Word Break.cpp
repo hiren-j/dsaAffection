@@ -1,6 +1,6 @@
 // Code to check whether given string can be segmented into a space-separated sequence of one or more dictionary words ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -29,7 +29,7 @@ class TopDown {
 
     // O(N*N) & O(N+N+M)
     bool solveWithMemo(vector<int>& memory, string& s, int startIndex) {
-        // Base case: If all the letters of the string are exhausted then return true
+        // Edge case: If all the letters of the string are exhausted then return true
         if(startIndex == n)
             return true;
 
@@ -61,7 +61,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -72,9 +72,13 @@ public:
 
         unordered_set<string> dictionary(begin(wordDict), end(wordDict));
 
+        // 1D DP table
         vector<bool> dp(n + 1, false);
+
+        // Initialize the edge case: If all the letters of the string are exhausted then return true
         dp[n] = true;
 
+        // Fill the rest of the table
         for(int startIndex = n-1; startIndex >= 0; --startIndex) {
             string word;
             for(int index = startIndex; index < n; ++index) {
@@ -85,11 +89,12 @@ public:
             }
         }
 
+        // Return the result value
         return dp[0];
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Array | Hash Table | String | Dynamic Programming | Memoization 
 Link  : https://leetcode.com/problems/word-break/description/
