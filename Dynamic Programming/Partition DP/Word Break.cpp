@@ -7,9 +7,9 @@ class TopDown {
     unordered_set<string> dictionary;
     int n;
 
-    // O(N^N) & O(N)
+    // O(N^N) & O(N+M)
     bool solveWithoutMemo(string& s, int startIndex) {
-        // Base case: If all the letters of the string are exhausted then return true
+        // Edge case: If all the letters of the string are exhausted then return true
         if(startIndex == n)
             return true;
 
@@ -27,7 +27,7 @@ class TopDown {
         return false;
     }
 
-    // O(N*N) & O(N)
+    // O(N*N) & O(N+N+M)
     bool solveWithMemo(vector<int>& memory, string& s, int startIndex) {
         // Base case: If all the letters of the string are exhausted then return true
         if(startIndex == n)
@@ -52,7 +52,7 @@ class TopDown {
     }
 
 public:
-    // Method to check whether given string can be segmented into a space-separated sequence of one or more dictionary words, using recursion with memoization :-
+    // Method to check whether given string can be segmented into a space-separated sequence of one or more dictionary words, using recursion with memoization - O(N*N) & O(N+M) : Where M let be the size of "dictionary"
     bool wordBreak(string& s, vector<string>& wordDict) {
         n = s.size();
         for(auto& word : wordDict) dictionary.insert(word);
@@ -66,7 +66,7 @@ public:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // Method to check whether given string can be segmented into a space-separated sequence of one or more dictionary words, using 1D tabulation - O(N*N) & O(N)
+    // Method to check whether given string can be segmented into a space-separated sequence of one or more dictionary words, using 1D tabulation - O(N*N) & O(N+M)
     bool wordBreak(string& s, vector<string>& wordDict) {
         int n = s.size();
 
