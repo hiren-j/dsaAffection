@@ -72,7 +72,7 @@ public:
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
-    // Method to find the minimum number of extra characters, using 2D tabulation - O(N^3) & O(N^2)
+    // Method to find the minimum number of extra characters, using 2D tabulation - O(N^3) & O(N^2 + M)
     int minExtraChar(string& s, vector<string>& dictionary) {
         int n = s.size();
 
