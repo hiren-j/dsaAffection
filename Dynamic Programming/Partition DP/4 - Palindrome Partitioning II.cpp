@@ -146,7 +146,7 @@ public:
     // Class to implement the Bottom-up approach:
     class BottomUp {
     public:
-        // Method to find the minimum cuts needed for such palindrome partitioning, using 2D tabulation - O(N^2) & O(N^2)
+        // Method to find the minimum cuts needed for such palindrome partitioning, using 2D and 1D tabulation - O(N^2) & O(N^2)
         int minCut(string& s) {
             int n = s.size();
             
