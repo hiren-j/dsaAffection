@@ -63,7 +63,7 @@ public:
     // Method to find the minimum cost required to multiply all the matrices, using recursion with memoization - O(N^3) & O(N^2)
     int matrixMultiplication(vector<int>& nums, int n) {
         vector<vector<int>> memory(n, vector<int>(n, -1));
-        return solveWithMemo(memory, nums, n, 1, n-1);
+        return solveWithMemo(memory, nums, n, 1, n - 1);
     }
 };
 
@@ -128,7 +128,7 @@ public:
         }
 
         // Return the result value
-        return dp[1][n-1];
+        return dp[1][n - 1];
     }
 };
 
