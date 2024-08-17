@@ -83,11 +83,13 @@ public:
     int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
         int n = books.size();
 
+        // 1D DP table
         vector<int> dp(n+1, INT_MAX);
 
-        // Set the edge case: If all the books are exhausted then you can't place any more to the bookcase
+        // Initialize the edge case: If all the books are exhausted then you can't place any more to the bookcase
         dp[n] = 0;
 
+        // Fill the rest of the table
         for(int currentShelve = n-1; currentShelve >= 0; --currentShelve) {
             int sumThickness = 0, maxHeight = 0, resultHeight = INT_MAX;
 
@@ -104,6 +106,7 @@ public:
             dp[currentShelve] = resultHeight;
         }
 
+        // Return the result value
         return dp[0];
     }
 };
