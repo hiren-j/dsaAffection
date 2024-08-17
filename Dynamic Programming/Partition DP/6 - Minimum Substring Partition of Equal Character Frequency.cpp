@@ -1,6 +1,6 @@
 // Code to find the minimum number of substrings such that you can partition the string "s" into one or more balanced substrings ~ coded by Hiren
  
---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -26,7 +26,7 @@ private:
         // Stores the result value
         int minPartitions = INT_MAX;
 
-        // Tracks the frequency of letters in each partition
+        // Tracks the frequency of letters of a particular partition
         vector<int> count(26);
 
         // Perform all the partitions one by one and update the result value by the minimum value
@@ -51,7 +51,7 @@ private:
         // Stores the result value
         int minPartitions = INT_MAX;
 
-        // Tracks the frequency of letters in each partition
+        // Tracks the frequency of letters of a particular partition
         vector<int> count(26);
 
         // Perform all the partitions one by one and update the result value by the minimum value
@@ -71,7 +71,8 @@ private:
     // Method to check whether a substring is balanced or not - O(26) & O(1)
     bool isBalanced(vector<int>& count) {
         int prevCount = -1;
-    
+
+        // If the frequency of each letter is not same then the string is not balanced
         for(int ch = 0; ch < 26; ++ch) {
             if(count[ch] > 0) {
                 if(prevCount != -1 && count[ch] != prevCount) {
@@ -85,7 +86,7 @@ private:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -97,13 +98,12 @@ public:
         // DP Table: dp[startIndex] represents the minimum number of substrings that you can partition "s" into such that by considering the string of index "n-1" to "startIndex"
         vector<int> dp(n + 1, INT_MAX);
 
-        // Base case: If all the letters are exhausted then you can't do any partitions
+        // Initialize the base case: If all the letters are exhausted then you can't do any partitions
         dp[n] = 0;
 
-        // Fill the DP table
+        // Fill the rest of the table
         for(int startIndex = n-1; startIndex >= 0; --startIndex) {
-            int minPartitions = INT_MAX;
-            
+            int minPartitions = INT_MAX;           
             vector<int> count(26);
 
             for(int index = startIndex; index < n; ++index) {
@@ -126,6 +126,7 @@ private:
     bool isBalanced(vector<int>& count) {
         int prevCount = -1;
 
+        // If the frequency of each letter is not same then the string is not balanced
         for(int ch = 0; ch < 26; ++ch) {
             if(count[ch] > 0) {
                 if(prevCount != -1 && count[ch] != prevCount) {
@@ -139,7 +140,7 @@ private:
     }
 };
 
-------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Hash Table | String | Dynamic Programming | Counting
 Link  : https://leetcode.com/problems/minimum-substring-partition-of-equal-character-frequency/description/
