@@ -1,6 +1,12 @@
 // Code to find the minimum possible height that the total bookshelf can be after placing shelves in this manner ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+DON'T IGNORE MUST READ: The (currentShelve) variable is assumed to indicate the shelve at which the books are being placed. 
+                        Initially (currentShelve == 0) refers to the topmost shelve of the bookcase and then as the (currentShelve) increases 
+                        imagine we're moving to the next shelve of the bookcase and so on.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -68,7 +74,7 @@ private:
     }
 };  
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -102,7 +108,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/filling-bookcase-shelves/description/?envType=daily-question&envId=2024-07-31
