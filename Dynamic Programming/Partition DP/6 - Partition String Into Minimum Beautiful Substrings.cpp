@@ -1,6 +1,6 @@
 // Code to find the minimum number of substrings such that partition the string into one or more substrings in which each substring is beautiful. If it is impossible to do such partition then return -1 ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -16,7 +16,7 @@ public:
 private:
     // O(N^3) & O(N+N)
     int solveWithMemo(vector<int>& memory, string& s, int n, int startIndex) {
-        // Edge case: If all the elements are exhausted then you can't do any partitions
+        // Edge case: If all the elements are exhausted then you can't do more partitions
         if(startIndex == n)
             return 0;
 
@@ -43,7 +43,7 @@ private:
 
     // O(N^N * N) & O(N)
     int solveWithoutMemo(string& s, int n, int startIndex) {
-        // Edge case: If all the elements are exhausted then you can't do any partitions
+        // Edge case: If all the elements are exhausted then you can't do more partitions
         if(startIndex == n)
             return 0;
 
@@ -65,7 +65,7 @@ private:
     }
 
 private:    
-    // Method to check whether a substring is beautiful or not - O(N) & O(1)
+    // Method to check whether a string is beautiful or not - O(N) & O(1)
     bool isBeautiful(string& s, int start, int end) {
         // Early exit: A string is beautiful if it doesn't contain leading zeros
         if(s[start] == '0')
@@ -92,7 +92,7 @@ private:
     }
 };
 
------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -104,9 +104,10 @@ public:
         // DP Table: dp[startIndex] represents the minimum number of substrings that you can partition "s" into such that by considering the string of index "n-1" to "startIndex"
         vector<int> dp(n + 1, INT_MAX);
 
-        // Base case: If all the elements are exhausted then you can't do any partitions
+        // Initialize the edge case: If all the elements are exhausted then you can't do more partitions
         dp[n] = 0;
 
+        // Fill the rest of the table
         for(int startIndex = n-1; startIndex >= 0; --startIndex) {
             int minCount = INT_MAX;
 
@@ -121,14 +122,15 @@ public:
 
             dp[startIndex] = minCount;
         }
-
+        
         int minCount = dp[0]; 
 
+        // Return the result value
         return (minCount == INT_MAX) ? -1 : minCount;
     }
 
 private:
-    // Method to check whether a substring is beautiful or not - O(N) & O(1)
+    // Method to check whether a string is beautiful or not - O(N) & O(1)
     bool isBeautiful(string& s, int start, int end) {
         // Early exit: A string is beautiful if it doesn't contain leading zeros
         if(s[start] == '0')
@@ -155,7 +157,7 @@ private:
     }
 };
 
------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Hash Table | String | Dynamic Programming | Backtracking
 Link  : https://leetcode.com/problems/partition-string-into-minimum-beautiful-substrings/description/
