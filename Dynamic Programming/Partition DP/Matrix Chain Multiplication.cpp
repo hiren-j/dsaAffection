@@ -108,16 +108,20 @@ public:
         // Fill the table
         for(int i = n-1; i >= 1; --i) {
             for(int j = 1; j <= n-1; ++j) {
-                if(i != j) {
-                    int minCost = INT_MAX;
-                    for(int k = i; k < j; ++k) {
-                        int currCost = nums[i - 1] * nums[k] * nums[j] 
-                                     + dp[i][k] 
-                                     + dp[k + 1][j];            
-                        minCost = min(minCost, currCost);
-                    }
-                    dp[i][j] = minCost; 
+                // Ensure to handle the base case
+                if(i == j)
+                    continue;
+                    
+                int minCost = INT_MAX;
+                
+                for(int k = i; k < j; ++k) {
+                    int currCost = nums[i - 1] * nums[k] * nums[j] 
+                                 + dp[i][k] 
+                                 + dp[k + 1][j];
+                    minCost = min(minCost, currCost);
                 }
+                
+                dp[i][j] = minCost; 
             }
         }
 
