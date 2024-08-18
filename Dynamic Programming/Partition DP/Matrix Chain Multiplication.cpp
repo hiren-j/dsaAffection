@@ -3,13 +3,14 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
-    NOTE (REGARDING TIME COMPLEXITY OF `solveWithoutMemo` FUNCTION) => O(2^N) : At each matrix you're exploring 2 options or doing 2 partitions. As we've N-1 matrices, so for all of them you're exploring 2 options, which makes it 2^(N-1) = O(2^N)
+    NOTE (REGARDING TIME COMPLEXITY OF `solveWithoutMemo` FUNCTION) => O(N * 2^N) : At each matrix you're exploring 2 options or doing 2 partitions. As we've N-1 matrices, so for all of them you're exploring 2 options, which makes it 2^(N-1) = O(2^N). 
+                                                                                    In each recursive call you will again explore 2 options on that same matrix, which you may have explored already for any other matrix, So in the worst case it will be O(N * 2^N).
 */
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    // O(2^N) & O(N)
+    // O(N * 2^N) & O(N)
     int solveWithoutMemo(vector<int>& nums, int n, int i, int j) {
         // Base case: If there's only a single matrix then no multiplication is required or could say no cost is required
         if(i == j)
