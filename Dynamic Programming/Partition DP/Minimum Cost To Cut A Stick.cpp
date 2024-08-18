@@ -5,7 +5,7 @@
 class TopDown {
 public:
     // Method to find the minimum total cost of the cuts, using recursion with memoization - O(M^3) & O(M^2)
-    int minCost(int n, vector<int>& cuts) {
+    int getMinimumCost(int n, vector<int>& cuts) {
         cuts.insert(begin(cuts), 0);
         sort(begin(cuts), end(cuts));
         cuts.push_back(n);
@@ -64,7 +64,7 @@ private:
 class BottomUp {
 public:
     // Method to find the minimum total cost of the cuts, using 2D tabulation - O(M^3) & O(M^2)
-    int minCost(int n, vector<int>& cuts) {
+    int getMinimumCost(int n, vector<int>& cuts) {
         // Inserting 0 and n helps to easily find the cost of any particular cut. Sorting makes it easier to maintain the correct sequence of the cuts within any subproblem while recursion 
         cuts.insert(begin(cuts), 0);
         sort(begin(cuts), end(cuts));
