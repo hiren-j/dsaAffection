@@ -1,7 +1,24 @@
 // Code to check whether given string can be segmented into a space-separated sequence of one or more dictionary words ~ coded by Hiren
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+    DON'T IGNORE MUST READ: This Partition DP pattern is designed to help you understand different ways to partition an array or string to solve complex problems. The pattern contains a total of 10 problems:
+    
+        -> Problems 1 to 7: These problems involve making a single partition on the right side after reaching any point in the array or string. For example, consider an array [1, 2, 3]. If you choose index 1 as the partition point, you split the array into [1] and [2, 3]. 
+                         You then solve the problem for the right side starting from index 2. In these problems, you are considering only one cut or one partition at a time.
+    
+        -> Problems 8 to 10: These problems involve making two cuts or two partitions simultaneously to cover multiple segments of the array or string. For example, with the array [1, 2, 3, 4, 5], if you make two cuts at indices 1 and 3, you divide the array into [1], [2, 3, 4], and [5]. 
+                          Here, you are considering two cuts or two partitions at the same time to cover multiple segments.
+    
+        -> Difference: In problems 1 to 7, you only need to make one cut at a time to split the array or string into segments. In problems 8 to 10, you need to consider making two cuts simultaneously to define multiple segments. 
+                    Understanding this difference is crucial for applying the correct strategy.
+    
+        -> If this distinction isn’t clear yet, don’t worry—solving the problems will help you grasp the concept better. This note is just to highlight the key differences.
+*/
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // Class to implement the Top-down approach:
 class TopDown {
     unordered_set<string> dictionary;
@@ -61,7 +78,7 @@ public:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Bottom-up approach:
 class BottomUp {
@@ -94,7 +111,7 @@ public:
     }
 };
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 Topics: Array | Hash Table | String | Dynamic Programming | Memoization 
 Link  : https://leetcode.com/problems/word-break/description/
