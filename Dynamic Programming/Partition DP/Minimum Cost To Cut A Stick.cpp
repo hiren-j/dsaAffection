@@ -27,7 +27,7 @@ private:
         
         int minCost = INT_MAX;
 
-        // Consider each cut as an unique start point and for that particular consideration find the minimum cost to cut the stick. Among all the considerations choose the one which gives the minimum cost
+        // Consider each cut as an unique start point and for a particular consideration find the total cost to cut the stick. Among all the considerations choose the one which gives the minimum cost
         for(int k = i; k <= j; ++k) {
             int currCost = cuts[j + 1] - cuts[i - 1]
                          + solveWithMemo(memory, cuts, i, k - 1)
