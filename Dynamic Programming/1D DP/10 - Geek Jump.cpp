@@ -146,6 +146,7 @@ public:
         // Return the result value
         return dp[0];
     }
+    // Note: This bottom-up solution is created from the memoized solution of (TopDown_V2)
 
     // #2 Method to find the minimum energy, using constant auxiliary space - O(N) & O(1)
     int minimumEnergy_V2(vector<int>& heights, int N) {
