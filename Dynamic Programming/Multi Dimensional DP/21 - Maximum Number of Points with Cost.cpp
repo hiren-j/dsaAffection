@@ -52,7 +52,7 @@ class TopDown {
     }
 
 public:
-    // Method to find the maximum points you can achieve by performing the specified movements, using recursion with memoization - O(M*N*M) & O(N*M)
+    // Method to find the maximum points you can achieve by performing the specified movements, using recursion with memoization - O(N*M*M) & O(N*M)
     ll maxPoints(vector<vector<int>>& points) {
         N = points.size(), M = points[0].size();
         vector<vector<ll>> memory(N, vector<ll>(M+1, -1));
