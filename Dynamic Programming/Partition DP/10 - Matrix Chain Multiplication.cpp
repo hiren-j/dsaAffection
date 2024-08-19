@@ -19,7 +19,7 @@ class TopDown {
         // Stores the minimum cost required to multiply matrices lying within i to j (result value)
         int minCost = INT_MAX;
 
-        // Consider each partition point and recursively calculate the cost of multiplying the matrices before and after it, then choose the minimum cost from all possibilities
+        // Consider each matrix as an unique start point and from a particular consideration find the total cost to multiply all the matrices. Among all the considerations choose the one which gives the minimum cost 
         for(int k = i; k < j; ++k) {
             int currCost = nums[i - 1] * nums[k] * nums[j] 
                          + solveWithoutMemo(nums, n, i, k)
