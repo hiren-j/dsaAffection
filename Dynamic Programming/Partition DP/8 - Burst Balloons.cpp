@@ -18,6 +18,16 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
+    NOTE (REGARDING TIME COMPLEXITY OF `solveWithoutMemo` FUNCTION) => O(N * 2^N) : At each balloon, you're exploring 2 options or doing 2 partitions. 
+                                                                                    As we have N balloons, so for all of them, you're exploring 2 options, which makes it 2^N. Now apart from this, 
+                                                                                    In each recursive call, you will again explore 2 options on that same balloon, which you may have already explored 
+                                                                                    for any other balloon in a different recursive call. So, in the worst case, we have N balloons, so for each, 
+                                                                                    you may do the same thing in the recursion, making it O(N * 2^N).
+*/
+    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
     DON'T IGNORE MUST READ (REGARDING THE INTUITION BEHIND THE CODE SEGMENT):
 
         for(int k = i; k <= j; ++k) {
