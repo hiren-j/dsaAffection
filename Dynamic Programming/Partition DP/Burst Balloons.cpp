@@ -116,7 +116,7 @@ public:
         }
 
         // Return the result value
-        return dp[1][n-2];
+        return dp[1][n - 2];
     }
 
     // #2 Method to find the maximum coins you can get by bursting balloons, using 2D tabulation - O(N^3) & O(N^2)
