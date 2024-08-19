@@ -1,6 +1,13 @@
 // Code to check whether there exists a valid parentheses string path in the grid or not ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a bottom-up solution provided. 
+                        This is one of the two problems in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
+                        The issue wasn't with time limits but with incorrect results. So, I've only included the top-down (memoized) solution for this problem. 
+                        There are only two problems in the entire DP series without bottom-up solutions, all being in this folder.
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Class to implement the Top-down approach:
 class TopDown {
@@ -80,7 +87,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Matrix
 Link  : https://leetcode.com/problems/check-if-there-is-a-valid-parentheses-string-path/description/
