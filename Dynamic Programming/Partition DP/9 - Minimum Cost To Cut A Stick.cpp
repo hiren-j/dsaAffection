@@ -65,7 +65,7 @@ class BottomUp {
 public:
     // Method to find the minimum total cost of the cuts, using 2D tabulation - O(M^3) & O(M^2)
     int getMinimumCost(int n, vector<int>& cuts) {
-        // Inserting 0 and n helps to easily find the cost of any particular cut. Sorting makes it easier to maintain the correct sequence of the cuts within any subproblem while recursion 
+        // Inserting 0 and n helps to easily find the cost of any particular cut. Sorting ensures the cuts are in the correct order for processing each subproblem
         cuts.insert(begin(cuts), 0);
         sort(begin(cuts), end(cuts));
         cuts.push_back(n);
