@@ -135,8 +135,6 @@ public:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-    Topics: Array | Matrix | Dynamic Programming
-    Links : https://www.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1
-            https://www.naukri.com/code360/problems/matrix-chain-multiplication_975344
-*/
+Topics: Array | Matrix | Dynamic Programming
+Links : https://www.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1
+        https://www.naukri.com/code360/problems/matrix-chain-multiplication_975344
