@@ -2,6 +2,13 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a bottom-up solution provided. 
+                        This is one of the three problems in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
+                        The issue wasn't with time limits but with incorrect results. So, I've only included the top-down (memoized) solution for this problem. 
+                        There are only three problems in the entire DP series without bottom-up solutions. These three lies in this folder.
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 /*
     DON'T IGNORE MUST READ (REGARDING THE INTUITION BEHIND THE LINE): int offset = (startPos - k) + k*2 + 1
 
