@@ -1,11 +1,11 @@
 // Code to find the maximum number of moves that you can perform in the grid. You can start at any cell in the first column of the matrix, and traverse the grid in the following way: From a cell (row, col), you can move to any of the cells: (row - 1, col + 1), (row, col + 1) and (row + 1, col + 1) such that the value of the cell you move to, should be strictly bigger than the value of the current cell ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
+
 DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a bottom-up solution provided. 
-                        This is one of the two problems in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
+                        This is one of the three problems in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
                         The issue wasn't with time limits but with incorrect results. So, I've only included the top-down (memoized) solution for this problem. 
-                        There are only two problems in the entire DP series without bottom-up solutions. These two lies in this folder.
+                        There are only three problems in the entire DP series without bottom-up solutions. These three lies in this folder.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
