@@ -38,7 +38,7 @@ class TopDown {
         Note: solve(k+1, j) represents the minimum "multiplications / cost" required to multiply matrices lying within k+1 to j.
     */
 
-    // O(N*N*N) & O(N*N + N)
+    // O(N * 2*N*N) & O(N*N + N)
     int solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int i, int j) {
         // Base case: If there's only a single matrix then no multiplication is required or could say no cost is required
         if(i == j)
