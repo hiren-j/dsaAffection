@@ -30,9 +30,9 @@ private:
         // Perform all the partitions one by one and update the result value by the minimum value
         for(int index = startIndex; index < n; ++index) {
             if(isBeautiful(s, startIndex, index)) {
-                int currCount = solveWithMemo(memory, s, n, index + 1);
-                if(currCount != INT_MAX) {
-                    minCount = min(minCount, currCount + 1);
+                int nextCount = solveWithMemo(memory, s, n, index + 1);
+                if(nextCount != INT_MAX) {
+                    minCount = min(minCount, nextCount + 1);
                 }
             }
         }
@@ -53,9 +53,9 @@ private:
         // Perform all the partitions one by one and update the result value by the minimum value
         for(int index = startIndex; index < n; ++index) {
             if(isBeautiful(s, startIndex, index)) {
-                int currCount = solveWithoutMemo(s, n, index + 1);
-                if(currCount != INT_MAX) {
-                    minCount = min(minCount, currCount + 1);
+                int nextCount = solveWithoutMemo(s, n, index + 1);
+                if(nextCount != INT_MAX) {
+                    minCount = min(minCount, nextCount + 1);
                 }
             }
         }
@@ -113,9 +113,9 @@ public:
 
             for(int index = startIndex; index < n; ++index) {
                 if(isBeautiful(s, startIndex, index)) {
-                    int currCount = dp[index + 1];
-                    if(currCount != INT_MAX) {
-                        minCount = min(minCount, currCount + 1);
+                    int nextCount = dp[index + 1];
+                    if(nextCount != INT_MAX) {
+                        minCount = min(minCount, nextCount + 1);
                     }
                 }
             }
