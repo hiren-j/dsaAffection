@@ -70,7 +70,7 @@ private:
 class BottomUp {
 public:
     // #1 Method to find minimum number of operations, using 2D tabulation - O(N*M) & O(N*M)
-    int minDistance(string& s1, string& s2) {
+    int minDistance_V1(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
 
         // 2D DP table
@@ -104,7 +104,7 @@ public:
     }
 
     // #2 Method to find minimum number of operations, using 1D tabulation - O(N*M) & O(M)
-    int minDistance(string& s1, string& s2) {
+    int minDistance_V2(string& s1, string& s2) {
         int n = s1.size(), m = s2.size();
 
         // 1D DP tables
