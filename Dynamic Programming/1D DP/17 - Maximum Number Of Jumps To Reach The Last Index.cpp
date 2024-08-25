@@ -66,6 +66,7 @@ private:
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 // Class to implement the Bottom-up approach:
 class BottomUp {
 public:
@@ -103,5 +104,6 @@ public:
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/maximum-number-of-jumps-to-reach-the-last-index/description/
