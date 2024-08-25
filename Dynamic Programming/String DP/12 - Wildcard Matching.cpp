@@ -163,7 +163,7 @@ public:
         }
     };
     
-    // Class to implement the Bottom-up approach:
+    // Subclass to implement the Bottom-up approach:
     class BottomUp {
     public:
         // Method to check whether the string "p" matches the string "s" after implementing the wildcard matching, using 2D tabulation - O(N*M*N) & O(N*M)
