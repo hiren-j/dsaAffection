@@ -5,12 +5,12 @@
 class TopDown_V1 {
 public:
     // Method to find the maximum sum of an increasing subsequence of length k, using recursion with memoization - O(N^2 * K) & O(N^2 * K)
-	int maxSumSubseqLengthK(vector<int>& nums, int k) {
-	    int n = nums.size();
-	    vector<vector<vector<int>>> memory(n, vector<vector<int>>(n + 1, vector<int>(k + 1, -1)));
-	    int maxSum = solveWithMemo(memory, nums, n, 0, -1, k);
-	    return (maxSum == INT_MIN) ? -1 : maxSum;
-	}
+    int maxSumSubseqLengthK(vector<int>& nums, int k) {
+	int n = nums.size();
+	vector<vector<vector<int>>> memory(n, vector<vector<int>>(n + 1, vector<int>(k + 1, -1)));
+	int maxSum = solveWithMemo(memory, nums, n, 0, -1, k);
+	return (maxSum == INT_MIN) ? -1 : maxSum;
+    }
 	
 private:
     // O(2*N*N*K) & O(N*N*K + N)
@@ -71,12 +71,12 @@ private:
 class TopDown_V2 {
 public:
     // Method to find the maximum sum of an increasing subsequence of length k, using recursion with memoization - O(N^3 * K) & O(N^2 * K)
-	int maxSumSubseqLengthK(vector<int>& nums, int k) {
-	    int n = nums.size();
-	    vector<vector<vector<int>>> memory(n, vector<vector<int>>(n + 1, vector<int>(k + 1, -1)));
-	    int maxSum = solveWithMemo(memory, nums, n, 0, -1, k);
-	    return (maxSum == INT_MIN) ? -1 : maxSum;
-	}
+    int maxSumSubseqLengthK(vector<int>& nums, int k) {
+	int n = nums.size();
+	vector<vector<vector<int>>> memory(n, vector<vector<int>>(n + 1, vector<int>(k + 1, -1)));
+	int maxSum = solveWithMemo(memory, nums, n, 0, -1, k);
+	return (maxSum == INT_MIN) ? -1 : maxSum;
+    }
 	
 private:
     // O(N*N*N*K) & O(N*N*K + N)
@@ -117,11 +117,11 @@ private:
 class BottomUp {
 public:
     // #1 Method to find the maximum sum of an increasing subsequence of length k, using 3D tabulation - O(N^2 * K) & O(N^2 * K)
-	int maxSumSubseqLengthK_V1(vector<int>& nums, int k) {
-	    int n = nums.size();
+    int maxSumSubseqLengthK_V1(vector<int>& nums, int k) {
+	int n = nums.size();
 
         // 3D DP table
-	    vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(n + 1, vector<int>(k + 1, INT_MIN)));
+	vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(n + 1, vector<int>(k + 1, INT_MIN)));
 
         // Initialize the first edge case
         for(int index = 0; index <= n; ++index) 
@@ -145,15 +145,15 @@ public:
             }
         }
 
-	    int maxSum = dp[0][0][k];
+	int maxSum = dp[0][0][k];
 
         // Return the result value
-	    return (maxSum == INT_MIN) ? -1 : maxSum;
-	}
+	return (maxSum == INT_MIN) ? -1 : maxSum;
+    }
 
     // #2 Method to find the maximum sum of an increasing subsequence of length k, using 2D tabulation - O(N^2 * K) & O(N*K)
-	int maxSumSubseqLengthK_V2(vector<int>& nums, int k) {
-	    int n = nums.size();
+    int maxSumSubseqLengthK_V2(vector<int>& nums, int k) {
+	int n = nums.size();
 
         // 2D DP tables
         vector<vector<int>> nextRow(n + 1, vector<int>(k + 1, INT_MIN)), idealRow(n + 1, vector<int>(k + 1, INT_MIN));
@@ -181,11 +181,11 @@ public:
             nextRow = idealRow;
         }
 
-	    int maxSum = nextRow[0][k];
+	int maxSum = nextRow[0][k];
 
         // Return the result value
-	    return (maxSum == INT_MIN) ? -1 : maxSum;
-	}
+	return (maxSum == INT_MIN) ? -1 : maxSum;
+    }
 };
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
