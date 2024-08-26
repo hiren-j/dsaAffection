@@ -8,7 +8,7 @@
                             Although this process might be time-consuming and sometimes frustrating, it is essential for building a strong foundation.
                             Don't hesitate to use a pen and paper as you work through these problems.
                             Even if the bottom-up solutions look like direct conversions, they are made with intuitive thinking to help you learn better.
-                            Reminder: After these 9 problems, all remaining bottom-up solutions of each pattern will be direct conversions.
+                            Reminder: After these 9 problems, all remaining bottom-up solutions of the series will be direct conversions.
 */
     
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
