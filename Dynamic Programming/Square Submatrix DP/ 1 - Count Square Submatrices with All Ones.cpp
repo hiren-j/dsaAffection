@@ -112,7 +112,6 @@ public:
             }
         }
 
-
         return count;
     }
 
@@ -138,7 +137,6 @@ public:
             }
             nextRow = currRow;
         }
-
 
         return count;
     }
