@@ -140,6 +140,27 @@ public:
 
         return count;
     }
+
+    // #4 Method to count the total square submatrices having all ones, using constant auxiliary space - O(N*M) & O(1)
+    int countSquares_V4(vector<vector<int>>& grid) {
+        int N = grid.size(), M = grid[0].size(), count = 0;
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = M-1; C >= 0; --C) {
+                if(grid[R][C] == 0) 
+                    continue;
+                    
+                int moveRight     = (C+1 < M) ? grid[R][C+1] : 0;
+                int moveDown      = (R+1 < N) ? grid[R+1][C] : 0;
+                int moveDownRight = (R+1 < N && C+1 < M) ? grid[R+1][C+1] : 0;
+                grid[R][C] = 1 + min({moveRight, moveDown, moveDownRight});  
+
+                count += grid[R][C];
+            }
+        }
+
+        return count;
+    }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
