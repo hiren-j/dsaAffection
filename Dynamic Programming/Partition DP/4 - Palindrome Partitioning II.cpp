@@ -106,7 +106,7 @@ class DP_V2 {
     }
 
 public:
-    // Class to implement the Top-down approach:
+    // Subclass to implement the Top-down approach:
     class TopDown {
         // O(N^2 + N^2) & O(N^2 + N+N)
         int solveWithMemo(vector<vector<int>>& memory1, vector<int>& memory2, const string& s, int n, int startIndex) {
@@ -143,7 +143,7 @@ public:
         }
     };
 
-    // Class to implement the Bottom-up approach:
+    // Subclass to implement the Bottom-up approach:
     class BottomUp {
     public:
         // Method to find the minimum cuts needed for such palindrome partitioning, using 2D and 1D tabulation - O(N^2) & O(N^2)
