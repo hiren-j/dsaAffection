@@ -59,7 +59,7 @@ private:
         int deleteOp  = solveWithoutMemo(s1, s2, i-1, j);   // Is to delete the ith letter 
         int replaceOp = solveWithoutMemo(s1, s2, i-1, j-1); // Is to replace the ith letter by the jth letter
 
-        // Store the result value to the memoization table and then return it
+        // As we're striving for minimum operations hence add the minimum value and then return the result
         return 1 + min({insertOp, deleteOp, replaceOp});
     }
 };
