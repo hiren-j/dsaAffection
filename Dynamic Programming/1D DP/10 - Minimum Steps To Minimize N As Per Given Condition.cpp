@@ -15,10 +15,10 @@
 class TopDown {
 public:
     // Method to find the minimum steps required to reduce n to 1, using recursion with memoization - O(N) & O(N)
-	int minStepsToMakeOne(int n) {
-	    vector<int> dp(n + 1, -1);
-	    return solveWithMemo(dp, n);
-	} 
+    int minStepsToMakeOne(int n) {
+	vector<int> dp(n + 1, -1);
+	return solveWithMemo(dp, n);
+    } 
 	
 private:
     // O(2*N) & O(N+N)
@@ -73,15 +73,15 @@ private:
 class BottomUp {
 public:
     // Method to find the minimum steps required to reduce n to 1, using 1D tabulation - O(N) & O(N)
-	int minStepsToMakeOne(int n) {
+    int minStepsToMakeOne(int n) {
         // 1D DP table: dp[i] represents the minimum steps required to reduce 'i' to 1
-	    vector<int> dp(n + 1, -1);
+	vector<int> dp(n + 1, -1);
 
         // Initialize the edge case
-	    dp[1] = 0;     
+	dp[1] = 0;     
 
         // Fill the rest of the table
-	    for(int num = 2; num <= n; ++num) {
+	for(int num = 2; num <= n; ++num) {
             int minSteps = dp[num - 1];
                     
             if(num % 2 == 0) 
@@ -91,11 +91,11 @@ public:
                 minSteps = min(minSteps, dp[num / 3]);
             
             dp[num] = 1 + minSteps;
-	    }
+	}
 
         // Return the result value
-	    return dp[n];
-	} 
+	return dp[n];
+     } 
 };
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
