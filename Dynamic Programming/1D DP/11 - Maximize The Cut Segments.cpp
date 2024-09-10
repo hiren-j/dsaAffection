@@ -1,17 +1,7 @@
 // Code to find the maximum number of cut segments possible. Given an integer n denoting the Length of a line segment. You need to cut the line segment in such a way that the cut length of a line segment each time is either x , y or z. Here x, y, and z are integers. After performing all the cut operations, your total number of cut segments must be maximum ~ coded by Hiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-    DON'T IGNORE MUST READ: Starting from the 10th problem, you’ll notice a shift in the approach. The bottom-up solutions will now be direct conversions from the memoized ones. 
-                            This change aims to reduce time and avoid the need for pen and paper, making the process more efficient. As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side. 
-                            This will help you see how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
-                            With practice, you’ll be able to create bottom-up solutions within minutes or even seconds, as I have developed the habit of doing. 
-                            This conversion technique will be applied to the remaining problems across all DP patterns.
-*/    
-  
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+    
 class TopDown {
 public:
     // Method to find the maximum number of cut segments, using recursion with memoization - O(N) & O(N)
