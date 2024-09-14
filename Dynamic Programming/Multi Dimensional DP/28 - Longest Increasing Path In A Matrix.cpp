@@ -22,7 +22,7 @@ class TopDown {
         if(!isValid(R, C) || matrix[R][C] == -1)
             return 0;
 
-        int maxLength = 0, actualVal = matrix[R][C];
+        int maxLength = 0, currCellValue = matrix[R][C];
 
         // Mark the cell (R, C) as visited
         matrix[R][C] = -1;
@@ -31,13 +31,13 @@ class TopDown {
         for(auto& dir : directions) {
             int reachRow = R + dir[0];
             int reachCol = C + dir[1];
-            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > actualVal) {
+            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > currCellValue) {
                 maxLength = max(maxLength, 1 + solveWithoutMemo(matrix, reachRow, reachCol));
             }
         }
 
         // Mark the cell (R, C) as unvisited
-        matrix[R][C] = actualVal;
+        matrix[R][C] = currCellValue;
 
         return maxLength;
     }
@@ -52,7 +52,7 @@ class TopDown {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLength = 0, actualVal = matrix[R][C];
+        int maxLength = 0, currCellValue = matrix[R][C];
 
         // Mark the cell (R, C) as visited
         matrix[R][C] = -1;
@@ -61,13 +61,13 @@ class TopDown {
         for(auto& dir : directions) {
             int reachRow = R + dir[0];
             int reachCol = C + dir[1];
-            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > actualVal) {
+            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > currCellValue) {
                 maxLength = max(maxLength, 1 + solveWithMemo(dp, matrix, reachRow, reachCol));
             }
         }
 
         // Mark the cell (R, C) as unvisited
-        matrix[R][C] = actualVal;
+        matrix[R][C] = currCellValue;
 
         // Store the result value to the memoization table and then return it
         return dp[R][C] = maxLength;
