@@ -7,7 +7,7 @@ class TopDown {
     const int MOD = 1e9+7;
 
 public:
-    // Method to find the number of possible ways, using recursion with memoization - O(K*N*T) & O(N*T) : Where T let be the target
+    // Method to find the number of possible ways, using recursion with memoization - O(N*T*K) & O(N*T) : Where T let be the target
     int numRollsToTarget(int n, int k, int target) {
         vector<vector<int>> memory(n + 1, vector<int>(target + 1, -1));
         return solveWithMemo(memory, n, k, target);
