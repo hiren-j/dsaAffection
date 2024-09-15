@@ -7,7 +7,7 @@ class DynamicProgramming {
     map<pair<ListNode*, TreeNode*>, bool> dp;
     ListNode* origHead = nullptr;
 
-    // O(4^N) & O(H) : Where N and H is the number of nodes and height of the tree
+    // O(N^4) & O(H) : Where N and H is the number of nodes and height of the tree
     bool solveWithoutMemo(ListNode* headNode, TreeNode* rootNode) {
         // Edge case: If the list is empty then return true
         if(!headNode)
