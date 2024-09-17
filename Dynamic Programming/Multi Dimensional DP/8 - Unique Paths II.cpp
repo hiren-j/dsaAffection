@@ -129,4 +129,5 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Matrix
-Link  : https://leetcode.com/problems/unique-paths-ii/description
+Links : https://leetcode.com/problems/unique-paths-ii/description
+        https://cses.fi/problemset/task/1638
