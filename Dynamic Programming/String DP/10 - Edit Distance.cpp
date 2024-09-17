@@ -142,4 +142,5 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 Topics: String | Dynamic Programming
-Link  : https://leetcode.com/problems/edit-distance/description/
+Links : https://leetcode.com/problems/edit-distance/description/
+        https://cses.fi/problemset/task/1639
