@@ -183,4 +183,5 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
-Link  : https://leetcode.com/problems/coin-change-ii/description/
+Links : https://leetcode.com/problems/coin-change-ii/description/
+        https://cses.fi/problemset/task/1636
