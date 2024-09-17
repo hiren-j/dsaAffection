@@ -237,4 +237,5 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Binary Search | Dynamic Programming
-Link  : https://leetcode.com/problems/longest-increasing-subsequence/description/
+Links : https://leetcode.com/problems/longest-increasing-subsequence/description/
+        https://cses.fi/problemset/task/1145
