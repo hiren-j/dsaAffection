@@ -163,4 +163,5 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
-Link  : https://leetcode.com/problems/combination-sum-iv/
+Links : https://leetcode.com/problems/combination-sum-iv/
+        https://cses.fi/problemset/task/1635/
