@@ -127,4 +127,5 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Math | Dynamic Programming | Game Theory
-Link  : https://www.geeksforgeeks.org/problems/optimal-strategy-for-a-game-1587115620/1
+Links : https://www.geeksforgeeks.org/problems/optimal-strategy-for-a-game-1587115620/1
+        https://cses.fi/problemset/task/1097
