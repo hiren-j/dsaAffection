@@ -7,6 +7,7 @@ class DP_V1 {
 public:
     class TopDown {
         unordered_set<string> dict;
+        int n;
 
         // O(N^3) & O(N^2 + N+M) : Where N and M let be the size of "s" and "dict".
         int solveWithMemo(vector<vector<int>>& memory, const string& s, int startIndex, int partitionLength) {
