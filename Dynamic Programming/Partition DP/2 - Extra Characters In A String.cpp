@@ -9,7 +9,7 @@ public:
         unordered_set<string> dict;
         int n;
 
-        // O(N^3) & O(N^2 + N+M + N*N) : Where N and M let be the size of "s" and "dict".
+        // O(N^3) & O(N^2 + N+M) : Where N and M let be the size of "s" and "dict".
         int solveWithMemo(vector<vector<int>>& memory, const string& s, int startIndex, int partitionLength) {
             // Edge case: If all the letters are exhausted then you've created a partition hence calculate the number of extra characters in it and then return it
             if(startIndex == n)
@@ -95,7 +95,7 @@ public:
         unordered_set<string> dict;
         int n;
 
-        // O(N*N) & O(N+M + N*N)
+        // O(N*N) & O(N + N+M)
         int solveWithMemo(vector<int>& memory, const string& s, int startIndex) {
             // Edge case: If all the letters are exhausted then you've created a partition hence return 0
             if(startIndex == n)
