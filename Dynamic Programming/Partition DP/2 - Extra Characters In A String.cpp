@@ -9,7 +9,7 @@ public:
         unordered_set<string> dict;
         int n;
 
-        // O(N^3) & O(N^2 + N+M) : Where N and M let be the size of "s" and "dict".
+        // O(N^3) & O(N^2 + N+M + N*N) : Where N and M let be the size of "s" and "dict".
         int solveWithMemo(vector<vector<int>>& memory, const string& s, int startIndex, int partitionLength) {
             // Edge case: If all the letters are exhausted then you've created a partition hence calculate the number of extra characters in it and then return it
             if(startIndex == n)
@@ -95,6 +95,7 @@ public:
         unordered_set<string> dict;
         int n;
 
+        // O(N*N) & O(N+M + N*N)
         int solveWithMemo(vector<int>& memory, const string& s, int startIndex) {
             // Edge case: If all the letters are exhausted then you've created a partition hence return 0
             if(startIndex == n)
@@ -124,7 +125,7 @@ public:
         // Note: `solveWithoutMemo` function will have O(N^N) time complexity and O(N+M) auxiliary space. You can easily create it by removing the memoization from this `solveWithMemo`, which is straightforward to implement. The full function isn't provided here to avoid larger code
 
     public:
-        // Method to find the minimum number of extra characters, using recursion with 1D memoization - O(N*N) & O(N+M)
+        // Method to find the minimum number of extra characters, using recursion with 1D memoization :-
         int minExtraChar(string& s, vector<string>& dictionary) {
             n = s.size();
             for(auto& word : dictionary) dict.insert(word);
