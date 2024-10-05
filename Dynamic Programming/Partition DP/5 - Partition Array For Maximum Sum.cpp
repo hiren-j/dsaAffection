@@ -2,7 +2,6 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the largest sum of the array after partitioning, using recursion with memoization - O(N*K) & O(N)
@@ -60,7 +59,6 @@ private:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the largest sum of the array after partitioning, using 1D tabulation - O(N*K) & O(N)
