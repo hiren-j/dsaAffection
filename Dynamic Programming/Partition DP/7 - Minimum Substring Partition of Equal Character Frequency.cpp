@@ -2,7 +2,6 @@
  
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the minimum number of substrings that you can partition "s" into, using recursion with memoization - O(N*N) & O(N)
@@ -88,7 +87,6 @@ private:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the minimum number of substrings that you can partition "s" into, using 1D tabulation - O(N*N*26) & O(N+26)
