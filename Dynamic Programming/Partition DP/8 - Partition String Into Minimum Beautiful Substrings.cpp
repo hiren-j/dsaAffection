@@ -2,7 +2,6 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the minimum number of substrings in such partition, using recursion with memoization - O(N^3) & O(N)
@@ -94,7 +93,6 @@ private:
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the minimum number of substrings in such partition, using 1D tabulation - O(N^3) & O(N)
