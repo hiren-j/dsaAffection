@@ -20,7 +20,7 @@ DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there is
 
     -> Handling Negative Points
         To map these points into an array:
-            Calculate Offset: int offset = (startPos - k) + k*2 + 1
+        Calculate Offset: int offset = (startPos - k) + k*2 + 1
 
         Explanation:
             (startPos - k): Determines the furthest left point, which could be negative.
