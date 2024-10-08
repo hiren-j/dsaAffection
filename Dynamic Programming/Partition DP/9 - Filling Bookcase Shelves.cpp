@@ -8,7 +8,6 @@ DON'T IGNORE MUST READ: The (currentShelve) variable is assumed to indicate the 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the minimum possible height, using recursion with memoization - O(N*N) & O(N)
@@ -76,7 +75,6 @@ private:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the minimum possible height, using 1D tabulation - O(N*N) & O(N)
