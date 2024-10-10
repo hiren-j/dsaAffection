@@ -2,7 +2,6 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the number of possible unique paths, using recursion with memoization - O(M*N) & O(M*N)
@@ -54,8 +53,7 @@ private:
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-// Class to implement the Bottom-up approach:
+
 class BottomUp {
 public:
     // #1 Method to find the number of possible unique paths, using 2D tabulation - O(M*N) & O(M*N)
