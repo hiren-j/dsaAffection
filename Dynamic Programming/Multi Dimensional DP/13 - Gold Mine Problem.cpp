@@ -15,7 +15,6 @@
     
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the maximum amount of gold the miner can collect, using recursion with memoization - O(N*M) & O(N*M)
@@ -73,7 +72,6 @@ private:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // #1 Method to find the maximum amount of gold the miner can collect, using 2D tabulation - O(N*M) & O(N*M)
