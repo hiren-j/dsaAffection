@@ -2,7 +2,6 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the minimum absolute difference, using recursion with memoization - O(N*T) & O(N*T) : Where T let be the total sum
@@ -62,7 +61,6 @@ private:
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // #1 Method to find the minimum absolute difference, using 2D tabulation - O(N*T) & O(N*T)
