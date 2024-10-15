@@ -2,7 +2,6 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
 public:
     // Method to find the knight's minimum initial health, using recursion with memoization - O(N*M) & O(N*M)
@@ -64,7 +63,6 @@ private:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // #1 Method to find the knight's minimum initial health, using 2D tabulation - O(N*M) & O(N*M)
