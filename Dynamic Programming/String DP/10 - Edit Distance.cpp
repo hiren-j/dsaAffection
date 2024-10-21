@@ -2,7 +2,6 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:    
 class TopDown {
 public:
     // Method to find minimum number of operations, using recursion with memoization - O(N*M) & O(N*M)
@@ -65,8 +64,7 @@ private:
 };
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// Class to implement the Bottom-up approach:  
+  
 class BottomUp {
 public:
     // #1 Method to find minimum number of operations, using 2D tabulation - O(N*M) & O(N*M)
