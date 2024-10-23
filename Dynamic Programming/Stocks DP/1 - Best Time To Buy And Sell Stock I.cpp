@@ -2,7 +2,6 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
 public:
     // Method to find the maximum profit you can achieve - O(N) & O(1)
