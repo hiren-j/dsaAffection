@@ -122,4 +122,4 @@ public:
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Matrix | Dynamic Programming  
-Link  : https://leetcode.com/problems/count-paths-with-the-given-xor-value/description/ 
+Link  : https://leetcode.com/problems/count-paths-with-the-given-xor-value/description/
