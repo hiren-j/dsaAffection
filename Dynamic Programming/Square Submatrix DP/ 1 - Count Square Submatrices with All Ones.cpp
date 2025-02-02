@@ -119,15 +119,14 @@ public:
     int countSquares_V3(vector<vector<int>>& grid) {
         int N = grid.size(), M = grid[0].size(), count = 0;
 
-        vector<int> nextRow(M+1, 0), currRow(M+1, 0);
+        vector<int> nextRow(M+1, 0);
 
         for(int R = N-1; R >= 0; --R) {
+            vector<int> currRow(M+1, 0);
             for(int C = M-1; C >= 0; --C) {
-                if(grid[R][C] == 0) {
-                    currRow[C] = 0; 
+                if(grid[R][C] == 0) 
                     continue;
-                }
-                    
+
                 int moveRight     = currRow[C+1];
                 int moveDown      = nextRow[C];
                 int moveDownRight = nextRow[C+1];
