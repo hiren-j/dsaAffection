@@ -112,10 +112,8 @@ public:
 
         // Set tail node of sum list, get the head node of it and then delete to avoid memory leak issues
         dummyTail->next = nullptr;
-        ListNode* sumListHead = dummyHead->next;
+        ListNode* sumListHead = reverseList(dummyHead->next);
         delete dummyHead;
-
-        sumListHead = reverseList(sumListHead);
 
         while(sumListHead && sumListHead->val == 0) // Skip leading zeros
             sumListHead = sumListHead->next;
