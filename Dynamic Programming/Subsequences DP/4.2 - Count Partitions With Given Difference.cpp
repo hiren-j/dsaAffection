@@ -111,4 +111,4 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
-Link  : https://www.geeksforgeeks.org/problems/partitions-with-given-difference/1
+Link  : https://www.geeksforgeeks.org/problems/partitions-with-given-difference/1 
