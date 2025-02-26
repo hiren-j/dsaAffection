@@ -66,4 +66,4 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Dynamic Programming 
-Link  : https://leetcode.com/problems/count-ways-to-build-good-strings/description/?envType=daily-question&envId=2024-12-30
+Link  : https://leetcode.com/problems/count-ways-to-build-good-strings/description/?envType=daily-question&envId=2024-12-30 
