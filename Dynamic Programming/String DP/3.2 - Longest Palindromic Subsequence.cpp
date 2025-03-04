@@ -67,8 +67,8 @@ class BottomUp {
         
         for(int i = n-1; i >= 0; --i) {
             for(int j = 0; j <= n-1; ++j) {
-                if(i == j || i > j)
-                    continue;
+                if(i >= j)
+                    continue; // Skip the edge cases
                 
                 if(s[i] == s[j]) {
                     dp[i][j] = 2 + (j-1 >= 0 ? dp[i+1][j-1] : 0);
