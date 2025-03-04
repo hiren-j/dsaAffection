@@ -91,33 +91,33 @@ class BottomUp {
         vector<vector<int>> dp(n+1, vector<int>(n, 0));
         
         for(int i = 0; i < n; ++i) // Initialize the first edge case
-            dp[i][i] = 1;
-
-            for(int i = n-1; i >= 0; --i) {
-                for(int j = i+1; j <= n-1; ++j) {
-                    if(s[i] == s[j]) {
-                        dp[i][j] = 2 + (j-1 >= 0 ? dp[i+1][j-1] : 0);
-                    }
-                    else {
-                        int exclude_j = (j-1 >= 0 ? dp[i][j-1] : 0);
-                        int exclude_i = dp[i+1][j];   
-                        dp[i][j] = max(exclude_i, exclude_j);
-                    }
+        dp[i][i] = 1;
+        
+        for(int i = n-1; i >= 0; --i) {
+            for(int j = i+1; j <= n-1; ++j) {
+                if(s[i] == s[j]) {
+                    dp[i][j] = 2 + (j-1 >= 0 ? dp[i+1][j-1] : 0);
+                }
+                else {
+                    int exclude_j = (j-1 >= 0 ? dp[i][j-1] : 0);
+                    int exclude_i = dp[i+1][j];   
+                    dp[i][j] = max(exclude_i, exclude_j);
                 }
             }
-            
-            return dp[0][n-1];
         }
         
-        // O(N^2) & O(N)
-        int solveBy1DTable(string& s) {
-            int n = s.size();
-            
-            vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
-            
-            for(int i = n-1; i >= 0; --i) {
-                idealRow[i] = 1; // Initialize the first edge case
-                for(int j = i+1; j <= n-1; ++j) {
+        return dp[0][n-1];
+    }
+        
+    // O(N^2) & O(N)
+    int solveBy1DTable(string& s) {
+        int n = s.size();
+        
+        vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
+        
+        for(int i = n-1; i >= 0; --i) {
+            idealRow[i] = 1; // Initialize the first edge case
+             for(int j = i+1; j <= n-1; ++j) {
                 if(s[i] == s[j]) {
                     idealRow[j] = 2 + (j-1 >= 0 ? nextRow[j-1] : 0);
                 }
@@ -129,7 +129,6 @@ class BottomUp {
             }
             nextRow = idealRow;
         }
-
         return idealRow[n-1];
     }
 
