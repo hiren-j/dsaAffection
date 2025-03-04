@@ -63,15 +63,15 @@ class BottomUp {
         vector<vector<int>> dp(n+1, vector<int>(n, 0));
         
         for(int i = 0; i < n; ++i) // Initialize the first edge case
-        dp[i][i] = 1;
+            dp[i][i] = 1;
         
         for(int i = n-1; i >= 0; --i) {
             for(int j = 0; j <= n-1; ++j) {
                 if(i == j || i > j)
                     continue;
-
-                    if(s[i] == s[j]) {
-                        dp[i][j] = 2 + (j-1 >= 0 ? dp[i+1][j-1] : 0);
+                
+                if(s[i] == s[j]) {
+                    dp[i][j] = 2 + (j-1 >= 0 ? dp[i+1][j-1] : 0);
                 }
                 else {
                     int exclude_j = (j-1 >= 0 ? dp[i][j-1] : 0);
@@ -91,7 +91,7 @@ class BottomUp {
         vector<vector<int>> dp(n+1, vector<int>(n, 0));
         
         for(int i = 0; i < n; ++i) // Initialize the first edge case
-        dp[i][i] = 1;
+            dp[i][i] = 1;
         
         for(int i = n-1; i >= 0; --i) {
             for(int j = i+1; j <= n-1; ++j) {
