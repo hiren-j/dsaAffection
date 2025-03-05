@@ -58,7 +58,7 @@ public:
         // Fill rest of the table
         for(int start = n-1; start >= 0; --start) 
             for(int end = 0; end <= n-1; ++end) 
-                if(s[start] == s[end] && start < end)
+                if(start < end && s[start] == s[end])
                     dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
 
         int maxLength = 0;
@@ -97,7 +97,7 @@ public:
         // Fill rest of the table along with find length of the longest palindromic substring
         for(int start = n-1; start >= 0; --start) {
             for(int end = 0; end <= n-1; ++end) {
-                if(s[start] == s[end] && start < end) {
+                if(start < end && s[start] == s[end]) {
                     dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
                 } 
                 if(dp[start][end] && end-start+1 > maxLength) { 
