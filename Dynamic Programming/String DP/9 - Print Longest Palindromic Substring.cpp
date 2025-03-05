@@ -87,9 +87,8 @@ public:
 
         // Initialize the first edge case
         for(int start = n-1; start >= 0; --start)
-            for(int end = 0; end < n; ++end)
-                if(start >= end)
-                    dp[start][end] = true;
+            for(int end = 0; end <= start; ++end)
+                dp[start][end] = true;
 
         int maxLength = 0;
         int i, j;
