@@ -67,7 +67,7 @@ private:
         vector<vector<int>> idealRow(n, vector<int>(given_k + 1, 0));
 
         for(int i = n-1; i >= 0; --i) {
-            for(int j = i+1; j <= n-1; ++j) {
+            for(int j = i+1; j <= n-1; ++j) { // Start j from i+1 to skip edge cases
                 for(int k = 0; k <= given_k; ++k) {
                     idealRow[i][k] = 1; // Initialize the first edge case
 
