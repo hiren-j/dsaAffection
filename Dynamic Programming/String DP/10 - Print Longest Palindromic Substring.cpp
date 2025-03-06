@@ -28,8 +28,7 @@ public:
         int maxLength = 0;
         int start, end;
         
-        // Find length of the longest palindromic substring
-        for(int i = 0; i < n; ++i) 
+        for(int i = 0; i < n; ++i) // Find length of the longest palindromic substring
             for(int j = i; j < n; ++j)
                 if(isPalindrome(dp, s, i, j) && j-i+1 > maxLength) 
                     maxLength = j-i+1, start = i, end = j;
@@ -50,14 +49,12 @@ public:
 
         vector<vector<bool>> dp(n + 1, vector<bool>(n, false));
 
-        // Initialize the first edge case
-        for(int start = n-1; start >= 0; --start) 
+        for(int start = n-1; start >= 0; --start) // Initialize the first edge case
             for(int end = 0; end < n; ++end)
                 if(start >= end)
                     dp[start][end] = true;
 
-        // Fill rest of the table
-        for(int start = n-1; start >= 0; --start) 
+        for(int start = n-1; start >= 0; --start) // Fill rest of the table
             for(int end = 0; end <= n-1; ++end) 
                 if(start < end && s[start] == s[end])
                     dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
@@ -65,8 +62,7 @@ public:
         int maxLength = 0;
         int start, end;
 
-        // Find length of the longest palindromic substring
-        for(int i = 0; i < n; ++i) 
+        for(int i = 0; i < n; ++i) // Find length of the longest palindromic substring
             for(int j = i; j < n; ++j)
                 if(dp[i][j] && j-i+1 > maxLength) 
                     maxLength = j-i+1, start = i, end = j;
@@ -86,16 +82,14 @@ public:
 
         vector<vector<bool>> dp(n + 1, vector<bool>(n, false));
 
-        // Initialize the first edge case
-        for(int start = n-1; start >= 0; --start)
+        for(int start = n-1; start >= 0; --start) // Initialize the first edge case
             for(int end = 0; end <= start; ++end)
                 dp[start][end] = true;
 
         int maxLength = 0;
         int i, j;
 
-        // Fill rest of the table along with find length of the longest palindromic substring
-        for(int start = n-1; start >= 0; --start) {
+        for(int start = n-1; start >= 0; --start) { // Fill rest of the table along with find length of the longest palindromic substring
             for(int end = 0; end <= n-1; ++end) {
                 if(start < end && s[start] == s[end]) {
                     dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
