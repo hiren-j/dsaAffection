@@ -26,8 +26,7 @@ public:
 
         vector<vector<int>> dp(n, vector<int>(n, -1));
 
-        // Check all the substrings and count the palindromes
-        for(int i = 0; i < n; ++i)
+        for(int i = 0; i < n; ++i) // Check all the substrings and count the palindromes
             for(int j = i; j < n; ++j)
                 if(isPalindrome(dp, s, i, j))
                     count++;
@@ -48,20 +47,17 @@ public:
 
         vector<vector<bool>> dp(n + 1, vector<bool>(n, false));
 
-        // Initialize the first edge case
-        for(int start = n-1; start >= 0; --start)
+        for(int start = n-1; start >= 0; --start) // Initialize the first edge case
             for(int end = 0; end <= n-1; ++end)
                 if(start >= end)
                     dp[start][end] = true;
 
-        // Fill the rest of table
-        for(int start = n-1; start >= 0; --start)
+        for(int start = n-1; start >= 0; --start) // Fill the rest of table
             for(int end = 0; end <= n-1; ++end)
                 if(start < end && s[start] == s[end])
                     dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
 
-        // Check all the substrings and count the palindromes
-        for(int i = 0; i < n; ++i)
+        for(int i = 0; i < n; ++i) // Check all the substrings and count the palindromes
             for(int j = i; j < n; ++j)
                 if(dp[i][j])
                     count++;
@@ -81,14 +77,12 @@ public:
 
         vector<vector<bool>> dp(n + 1, vector<bool>(n, false));
 
-        // Initiailze the first edge case
-        for(int start = n-1; start >= 0; --start)
+        for(int start = n-1; start >= 0; --start) // Initiailze the first edge case
             for(int end = 0; end <= n-1; ++end)
                 if(start >= end)
                     dp[start][end] = true;
 
-        // Fill rest of the table and count the palindromes
-        for(int start = n-1; start >= 0; --start) {
+        for(int start = n-1; start >= 0; --start) { // Fill rest of the table and count the palindromes
             for(int end = 0; end <= n-1; ++end) {
                 if(start < end && s[start] == s[end])
                     dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
