@@ -103,7 +103,7 @@ private:
                 dp[i][i][k] = 1;
 
         for(int i = n-1; i >= 0; --i) {
-            for(int j = i+1; j <= n-1; ++j) {
+            for(int j = i+1; j <= n-1; ++j) { // Start j from i+1 to skip edge cases
                 for(int k = 0; k <= given_k; ++k) {
                     if(s[i] == s[j]) {
                         dp[i][j][k] = 2 + (j-1 >= 0 ? dp[i+1][j-1][k] : 0);
