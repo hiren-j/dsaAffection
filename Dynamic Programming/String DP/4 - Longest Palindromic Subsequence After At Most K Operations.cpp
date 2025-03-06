@@ -92,7 +92,7 @@ private:
         return nextRow[n-1][given_k];
     }
 
-    // O(N^3) & O(N*K)
+    // O(N^3) & O(N*N*K)
     int solveUsing3DTable(string& s, int given_k) {
         int n = s.size();
 
