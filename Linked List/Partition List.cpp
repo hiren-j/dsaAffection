@@ -314,4 +314,5 @@ int main() {
 /*
     Topics: Linked List | Two Pointers
     Link: https://leetcode.com/problems/partition-list/
+    New Solutions Created By Me: https://leetcode.com/problems/partition-list/solutions/3913316/memory-beats-100-4-solutions-bruteoptima-1mgh/
 */
