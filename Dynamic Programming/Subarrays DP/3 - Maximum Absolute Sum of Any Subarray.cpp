@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& nums, int i, bool prevPick, bool toFindMax) {
         if(i == n)
             return (prevPick ? 0 : (toFindMax ? INT_MIN : INT_MAX));
@@ -24,6 +25,7 @@ class TopDown {
         }
     }
 
+    // O(2*N*2) & O(N*2 + N)
     int solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, int i, bool prevPick, bool toFindMax) {
         if(i == n)
             return (prevPick ? 0 : (toFindMax ? INT_MIN : INT_MAX));
@@ -58,6 +60,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(N*2) & O(N*2)
     int solveBy2DTable(vector<int>& nums, bool toFindMax) {
         vector<vector<int>> dp(n + 1, vector<int>(2, (toFindMax ? INT_MIN : INT_MAX)));
         dp[n][1] = 0;
@@ -81,6 +84,7 @@ class BottomUp {
         return dp[0][false];
     }
 
+    // O(N*2) & O(2*2)
     int solveBy1DTable(vector<int>& nums, bool toFindMax) {
         vector<int> nextRow(2, (toFindMax ? INT_MIN : INT_MAX));
         nextRow[1] = 0;
@@ -106,6 +110,7 @@ class BottomUp {
         return nextRow[false];
     }
 
+    // O(N*2) & O(1)
     int solveInPlace(vector<int>& nums, bool toFindMax) {
         int nextRow_1 = 0;
         int nextRow_0 = (toFindMax) ? INT_MIN : INT_MAX;
