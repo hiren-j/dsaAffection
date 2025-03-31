@@ -150,6 +150,7 @@ public:
 
 class KadaneAlgorithm {
 public:
+    // O(N) & O(1)
     int maxAbsoluteSum(vector<int>& nums) {
         int maxTillNow = 0;
         int minTillNow = 0;
