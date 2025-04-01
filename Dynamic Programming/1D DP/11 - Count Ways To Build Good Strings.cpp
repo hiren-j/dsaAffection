@@ -1,7 +1,17 @@
 // Code to find the number of good strings the can be constructed satisfying the mentioned properties ~ coded by Hiren
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+    DON'T IGNORE MUST READ: Starting from the 10th problem, you’ll notice a shift in the approach. The bottom-up solutions will now be direct conversions from the memoized ones. 
+                            This change aims to reduce time and avoid the need for pen and paper, making the process more efficient. As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side. 
+                            This will help you see how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
+                            With practice, you’ll be able to create bottom-up solutions within minutes or even seconds, as I have developed the habit of doing. 
+                            This conversion technique will be applied to the remaining problems across all DP patterns.
+*/    
+  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 class TopDown {
     const int MOD = 1e9+7;
 
@@ -40,7 +50,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     const int MOD = 1e9+7;
@@ -63,7 +73,7 @@ public:
     }
 };
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Dynamic Programming 
 Link  : https://leetcode.com/problems/count-ways-to-build-good-strings/description/?envType=daily-question&envId=2024-12-30 
