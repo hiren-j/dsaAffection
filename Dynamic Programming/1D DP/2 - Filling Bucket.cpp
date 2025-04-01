@@ -5,31 +5,35 @@
 class TopDown {
     const int MOD = 1e8;
     
+    // O(2^N) & O(N)
     int solveWithoutMemo(int N) {
-        if(N == 0)
+        if(N == 0) // Edge case: If you've filled the whole bucket then you've got 1 way 
             return 1;
         
-        if(N < 0)
+        if(N < 0) // Edge case: If the bucket is overfilled then its not valid
             return 0;
             
-        int fill1Litre = solveWithoutMemo(N - 1);
-        int fill2Litre = solveWithoutMemo(N - 2);
+        // There are always two possibilities to perform
+        int fill1Litre = solveWithoutMemo(N - 1); // Is to fill bucket with 1 litre
+        int fill2Litre = solveWithoutMemo(N - 2); // Is to fill bucket with 2 litre
             
         return (fill1Litre + fill2Litre) % MOD;
     }
 
+    // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, int N) {
-        if(N == 0)
+        if(N == 0) // Edge case: If you've filled the whole bucket then you've got 1 way 
             return 1;
         
-        if(N < 0)
+        if(N < 0) // Edge case: If the bucket is overfilled then its not valid
             return 0;
             
         if(dp[N] != -1)
             return dp[N];
             
-        int fill1Litre = solveWithMemo(dp, N - 1);
-        int fill2Litre = solveWithMemo(dp, N - 2);
+        // There are always two possibilities to perform at each step
+        int fill1Litre = solveWithMemo(dp, N - 1); // Is to fill bucket with 1 litre
+        int fill2Litre = solveWithMemo(dp, N - 2); // Is to fill bucket with 2 litre
             
         return dp[N] = (fill1Litre + fill2Litre) % MOD;
     }
@@ -47,9 +51,10 @@ class BottomUp {
     const int MOD = 1e8;
     
 public:
+    // O(N) & O(N)
     int fillingBucket_V1(int N) {
         vector<int> dp(N + 1, 0);
-        dp[0] = 1;
+        dp[0] = 1; // Initialize the edge case
         
         for(int capacity = 1; capacity <= N; ++capacity) {
             int fill1Litre = (capacity - 1 >= 0) ? dp[capacity - 1] : 0;
@@ -60,6 +65,7 @@ public:
         return dp[N];
     }
 
+    // O(N) & O(1)
     int fillingBucket_V2(int N) {
         int prev_1 = 1; 
         int prev_2 = 0;
