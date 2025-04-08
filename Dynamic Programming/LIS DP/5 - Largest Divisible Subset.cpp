@@ -3,54 +3,82 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // Method to find the largest divisible subset, using 1D tabulation - O(N*N) & O(N)
-    vector<int> largestDivisibleSubset(vector<int>& nums) {
+    // O(N^2) & O(N^2)
+    vector<int> solveBy2DTable(vector<int>& nums) {
+        sort(begin(nums), end(nums));
+        int n = nums.size();
+        int maxLenLDS = 0;
+        
+        vector<int> LDS(n, 1);
+        vector<vector<int>> divSubset(n);
+
+        for(int j = 0; j < n; ++j) { // Find the length of longest divisible subset and the values of it
+            divSubset[j].push_back(nums[j]);
+            for(int i = 0; i < j; ++i) {
+                if(nums[j] % nums[i] == 0) {
+                    if(LDS[j] < LDS[i] + 1) {
+                        LDS[j] = LDS[i] + 1;
+                        divSubset[j] = divSubset[i]; 
+                        divSubset[j].push_back(nums[j]);
+                    }
+                }
+            }
+            maxLenLDS = max(maxLenLDS, LDS[j]);
+        }
+
+        for(int j = 0; j < n; ++j) // Return the values of the longest divisible subset 
+            if(LDS[j] == maxLenLDS) 
+                return divSubset[j];
+                        
+        return {};
+    }
+    
+    // O(N^2) & O(N)
+    vector<int> solveBy1DTable(vector<int>& nums) {
         int n = nums.size();
         sort(begin(nums), end(nums));
         
-        vector<int> dp(n, 1);    // dp[index] represents the length of the LDS ending at that index 
-        vector<int> temp(n, -1); // temp[index] represents the index of the recently seen value which is considered as the part of the LDS ending at that index
+        vector<int> LDS(n, 1);   // LDS[i] represents the length of the LDS ending at that ith index 
+        vector<int> temp(n, -1); // temp[i] represents the index of the recently seen value which is considered as the part of the LDS ending at that ith index
         
-        // Find the length of the LDS ending at each index
-        for(int index = 0; index < n; ++index) {
-            temp[index] = index;
-            for(int prevIndex = 0; prevIndex < index; ++prevIndex) {
-                if(nums[index] % nums[prevIndex] == 0) {
-                    if(1 + dp[prevIndex] > dp[index]) {
-                        dp[index]   = 1 + dp[prevIndex];
-                        temp[index] = prevIndex;
+        // Find the length of the (LDS) longest divisible subset ending at index i
+        for(int i = 0; i < n; ++i) {
+            temp[i] = i;
+            for(int j = 0; j < i; ++j) {
+                if(nums[i] % nums[j] == 0) {
+                    if(1 + LDS[j] > LDS[i]) {
+                        LDS[i]  = 1 + LDS[j];
+                        temp[i] = j;
                     }
                 }
             }
         }
         
-        int resultIndex = -1; // Stores the index of the value which has to be taken (result value)
-        int lengthLDS   = -1; // Stores the length of the LDS
+        int maxLenLDS = -1;
+        int maxLenIdx = -1;
         
-        // Find the length of the LDS
-        for(int index = 0; index < n; ++index) {
-            if(dp[index] > lengthLDS) {
-                lengthLDS = dp[index];
-                resultIndex = index;
+        for(int i = 0; i < n; ++i) { // Find the length of the longest divisible subset
+            if(LDS[i] > maxLenLDS) {
+                maxLenLDS = LDS[i];
+                maxLenIdx = i;
             }
         }
             
-        // Stores the result values
         vector<int> LDS;
-
-        // Iterate and store the result values
-        while(resultIndex != temp[resultIndex]) {
-            LDS.push_back(nums[resultIndex]);
-            resultIndex = temp[resultIndex];
+        while(maxLenIdx != temp[maxLenIdx]) { // Store the result values
+            LDS.push_back(nums[maxLenIdx]);
+            maxLenIdx = temp[maxLenIdx];
         }
-        LDS.push_back(nums[resultIndex]);
+        LDS.push_back(nums[maxLenIdx]);
         
-        // Reverse the result array to get the actual order
-        reverse(begin(LDS), end(LDS));
-
-         // Return the result array
+        reverse(begin(LDS), end(LDS)); // Reverse the result array to get the actual order
         return LDS;
+    }
+    
+public:
+    // Method to find the largest divisible subset, using tabulation :-
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        return solveBy1DTable(nums);
     }
 };
 
