@@ -9,8 +9,8 @@ class BottomUp {
         int n = nums.size();
         int maxLenLDS = 0;
         
-        vector<int> LDS(n, 1);
-        vector<vector<int>> divSubset(n);
+        vector<int> LDS(n, 1);            // LDS[i] represents the length of the LDS ending at that ith index 
+        vector<vector<int>> divSubset(n); // divSubset[i] stores the values of the longest divisible subset ending at that ith index
 
         for(int j = 0; j < n; ++j) { // Find the length of longest divisible subset and the values of it
             divSubset[j].push_back(nums[j]);
