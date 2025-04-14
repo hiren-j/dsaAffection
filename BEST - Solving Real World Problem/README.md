@@ -10,9 +10,7 @@
 
 😊 **Final Note:** Practice brings progress. Stay consistent, keep trying, and unlock your potential! Let this inspire you to dive into the world of programming.  
 
-#LeetCode #GFG
-#ProblemSolving #DSA  
-#RubikPyramidChallenge 🧩  
-#ProgrammingSkills 🔥  
-#Backtracking #Permutation  
-#CodingJourney 🚀  
+#LeetCode #GFG #ThanksToLeetCode
+#ProblemSolving #DSA 
+#RubikPyramidChallenge #ProgrammingSkills 
+#Backtracking #Permutation #CodingJourney
