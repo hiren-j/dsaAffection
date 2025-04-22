@@ -5,6 +5,7 @@
 class DynamicProgramming {
     vector<vector<pair<int, int>>> adjList;
 
+    // O(K^N) & O(N*K) : Where N = total flights or total nodes, M = total edges.
     int solveWithoutMemo(int src, int dst, int k) {
         if(src == dst)
             return (k >= 0) ? 0 : INT_MAX; // If reached destination within k stops then return 0 as an indication
@@ -24,6 +25,7 @@ class DynamicProgramming {
         return minPrice;
     }
 
+    // O(N*N*K) & O(N*K) : Where N = total flights or total nodes, M = total edges.
     int solveWithMemo(vector<vector<int>>& dp, int src, int dst, int k) {
         if(src == dst)
             return (k >= 0) ? 0 : INT_MAX; // If reached destination within k stops then return 0 as an indication
@@ -58,7 +60,7 @@ public:
         }
 
         vector<vector<int>> dp(n, vector<int>(k + 2, -1));
-        int minPrice = solveWithoutMemo(src, dst, k + 1);
+        int minPrice = solveWithMemo(dp, src, dst, k + 1);
 
         return (minPrice == INT_MAX) ? -1 : minPrice;
     }
