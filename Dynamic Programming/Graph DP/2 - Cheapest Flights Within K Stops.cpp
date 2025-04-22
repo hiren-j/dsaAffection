@@ -5,7 +5,7 @@
 class DynamicProgramming {
     vector<vector<pair<int, int>>> adjList;
 
-    // O(K^N) & O(K) : Where N = total flights or total nodes, M = total edges.
+    // O(N^K) & O(K) : Where N = total flights or total nodes, M = total edges.
     int solveWithoutMemo(int src, int dst, int k) {
         if(src == dst)
             return (k >= 0) ? 0 : INT_MAX; // If reached destination within k stops then return 0 as an indication
