@@ -25,7 +25,7 @@ class DynamicProgramming {
         return minPrice;
     }
 
-    // O(N*N*K) & O(N*K) : Where N = total flights or total nodes.
+    // O(N*K) & O(N*K) : Where N = total flights or total nodes.
     int solveWithMemo(vector<vector<int>>& dp, int src, int dst, int k) {
         if(src == dst)
             return (k >= 0) ? 0 : INT_MAX; // If reached destination within k stops then return 0 as an indication
