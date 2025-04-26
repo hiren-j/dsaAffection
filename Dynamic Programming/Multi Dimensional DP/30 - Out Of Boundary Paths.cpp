@@ -7,7 +7,7 @@ class TopDown {
     const int MOD = 1e9+7;
     int M, N;
 
-    // O(4^maxMove) & O(M+N)
+    // O(4^maxMove) & O(maxMove)
     int solveWithoutMemo(int maxMove, int R, int C) {
         // Edge case: If the ball moves out of the grid boundary then you've one valid way
         if(R < 0 || C < 0 || R == M || C == N)
@@ -31,7 +31,7 @@ class TopDown {
         return numPaths % MOD;
     }
 
-    // O(4 * maxMove*M*N) & O(maxMove*M*N + M+N)
+    // O(4 * maxMove*M*N) & O(maxMove*M*N + maxMove)
     int solveWithMemo(vector<vector<vector<int>>>& memory, int maxMove, int R, int C) {
         // Edge case: If the ball moves out of the grid boundary then you've one valid way
         if(R < 0 || C < 0 || R == M || C == N)
