@@ -97,7 +97,7 @@ public:
     int fib(int n) {
         if(n < 2)
             return n;
-        return solveWith1DTable(n);
+        return solveWithoutTable(n);
     }
 };
 
