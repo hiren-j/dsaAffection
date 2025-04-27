@@ -76,7 +76,7 @@ class BottomUp {
             dp[i] = prevNum1 + prevNum2;
         }
 
-        return dp[n]; 
+        return dp[n]; // Its the conversion of the first call that we made in recursive DP, [return solveWithMemo(dp, n)], simply remove the function name (dp, n) remains, now do this, dp[n];
     }
 
     // O(N) & O(1)
