@@ -16,7 +16,7 @@
 /*
     DON'T IGNORE MUST READ: The bottom-up solutions is the direct conversions of the memoized solution (recursive DP). 
                             This conversion technique helps to create Bottom-up solution very easily and fast, this helps to reduce time and avoid the need for pen and paper as it takes in intuitive bottom-up, So this makes the process more efficient. 
-                            As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side. 
+                            As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side, now give your time and try to observe that what's happening, how things are relating in the memoized and bottom-up solution. 
                             This will help you see how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
                             With practice, you’ll be able to create bottom-up solutions within minutes or even seconds, as I have developed the habit of doing. 
                             This conversion technique will be applied to the all the Bottom-up solutions of the remaining problems across all DP patterns.
