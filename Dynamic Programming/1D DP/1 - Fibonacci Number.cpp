@@ -67,10 +67,10 @@ class BottomUp {
         vector<int> dp(n + 1, -1);
 
         // Initiailze the edge case of (n < 2) 
-        dp[0] = 0; // (n == 0) return 0
-        dp[1] = 1; // (n == 1) return 1
+        dp[0] = 0; // n == 0 then return 0
+        dp[1] = 1; // n == 1 then return 1
 
-        for(int i = 2; i <= n; ++i) { 
+        for(int i = 2; i <= n; ++i) { // In recursion we are moving from n to edge case, in bottom up just move from one step ahead of edge case to n
             int prevNum1 = dp[i - 1];
             int prevNum2 = dp[i - 2];
             dp[i] = prevNum1 + prevNum2;
