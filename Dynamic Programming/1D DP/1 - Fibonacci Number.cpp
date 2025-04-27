@@ -48,7 +48,7 @@ class TopDown {
         int prevNum1 = solveWithMemo(dp, n - 1);
         int prevNum2 = solveWithMemo(dp, n - 2);
 
-        // Store the result value to the memoization table and then return it
+        // Store the sum to the memoization table and then return it
         return dp[n] = (prevNum1 + prevNum2); 
     }
 
