@@ -66,9 +66,9 @@ class BottomUp {
     int solveWith1DTable(int n) {
         vector<int> dp(n + 1, -1);
 
-        // Initiailze the edge case
-        dp[0] = 0;
-        dp[1] = 1;
+        // Initiailze the edge case of (n < 2) 
+        dp[0] = 0; // (n == 0) return 0
+        dp[1] = 1; // (n == 1) return 1
 
         for(int i = 2; i <= n; ++i) { 
             int prevNum1 = dp[i - 1];
