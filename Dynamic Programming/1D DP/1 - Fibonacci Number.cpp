@@ -82,7 +82,7 @@ class BottomUp {
     }
     // Note: For calculating the result of any ith number we are dependent on the previous two values, which is constant, so we could simply maintain two variables instead of using the dp array  
 
-    // O(N) & O(1)
+    // O(1*N) & O(1)
     int solveWithoutTable(int n) {
         int prevNum1 = 1, prevNum2 = 0;
         int currNum  = 0;
