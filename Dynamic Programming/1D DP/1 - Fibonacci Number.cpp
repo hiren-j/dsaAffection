@@ -7,14 +7,14 @@
                             Now, For the Top-Down DP approach in the series, each problem will feature two solutions: `solveWithoutMemo` and `solveWithMemo`. 
                             You must start with `solveWithoutMemo`, which demonstrates the recursive solution without memoization (without DP) and which is expected to run into TLE (Time Limit Exceeded, but its not necessary its because acceptance is dependent on the constraints, haven't got it? its okay). 
                             After understanding the non-optimized approach, move to `solveWithMemo` for the memoized solution (DP in recursion), and after understanding the Top-Down DP (memoization approach), 
-                            now you could move to the Bottom-Up DP (tabulation approach) and in this always follow this order. Start from the space consuming tabulation then move to the optimized one as ordered. 
+                            now you could move to the Bottom-Up DP (tabulation approach) and in this always follow this order, Start from the space consuming tabulation then move to the optimized one as ordered. 
                             So, Follow this order of solving problems for all the questions of the DP series.
 */
     
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 /*
-    DON'T IGNORE MUST READ: The bottom-up solutions is the direct conversions of the memoized solution (recurive DP). 
+    DON'T IGNORE MUST READ: The bottom-up solutions is the direct conversions of the memoized solution (recursive DP). 
                             This conversion technique helps to create Bottom-up solution very easily and fast, this helps to reduce time and avoid the need for pen and paper as it takes in intuitive bottom-up, So this makes the process more efficient. 
                             As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side. 
                             This will help you see how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
@@ -60,6 +60,7 @@ public:
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
 class BottomUp {
     // O(N) & O(N)
     int solveWith1DTable(int n) {
