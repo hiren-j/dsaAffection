@@ -70,13 +70,13 @@ class BottomUp {
         dp[0] = 0; // n == 0 then return 0
         dp[1] = 1; // n == 1 then return 1
 
-        for(int i = 2; i <= n; ++i) { // In recursion we are moving from n to edge case, in bottom up just move from one step ahead of edge case to n
+        for(int i = 2; i <= n; ++i) { // In recursion we are moving from n to edge case, in Bottom-up just move the reverse way, move from edge case to n
             int prevNum1 = dp[i - 1];
             int prevNum2 = dp[i - 2];
             dp[i] = prevNum1 + prevNum2;
         }
 
-        return dp[n]; // Its the conversion of the first call that we made in recursive DP, [return solveWithMemo(dp, n)], simply remove the function name (dp, n) remains, now do this, dp[n];
+        return dp[n]; // Its the conversion of the first call that we made in recursive DP, [return solveWithMemo(dp, n)], simply remove the function name (dp, n) remains, now do this, dp[n]
     }
 
     // O(N) & O(1)
