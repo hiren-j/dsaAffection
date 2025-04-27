@@ -56,7 +56,7 @@ class TopDown {
     }
 
 public:
-    int fib(int n) {
+    int nthFibonacci(int n) {
         vector<int> dp(n + 1, -1);
         return solveWithMemo(dp, n);
     }
@@ -98,7 +98,7 @@ class BottomUp {
     }
 
 public:
-    int fib(int n) {
+    int nthFibonacci(int n) {
         if(n < 2)
             return n;
         return solveWithoutTable(n);
