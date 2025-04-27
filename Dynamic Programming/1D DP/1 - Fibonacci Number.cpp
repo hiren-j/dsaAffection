@@ -1,25 +1,28 @@
 // Code to find the nth number of the fibonacci sequence ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-    DON'T IGNORE MUST READ: In the first 9 problems of this 1D Dynamic Programming pattern, the focus is on developing intuitive bottom-up solutions, not just straightforward conversions from memoized code.
-                            This approach is designed to help you grasp the principles of Dynamic Programming from the ground up.
-                            Although this process might be time-consuming and sometimes frustrating, it is essential for building a strong foundation.
-                            Don't hesitate to use a pen and paper as you work through these problems.
-                            Even if the bottom-up solutions look like direct conversions, they are made with intuitive thinking to help you learn better.
-                            Reminder: After these 9 problems, all remaining bottom-up solutions of the series will be direct conversions.
-*/
-    
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*   
-    DON'T IGNORE MUST READ: For the Top-Down DP problems in the series, each problem will feature two solutions: `solveWithoutMemo` and `solveWithMemo`. 
-                            You must start with `solveWithoutMemo`, which demonstrates the recursive solution without memoization (without DP) and which is expected to run into TLE (Time Limit Exceeded). 
-                            After understanding the non-optimized approach, move to `solveWithMemo` for the memoized solution. Follow this order for all Top-Down DP solutions in the DP series.
+    DON'T IGNORE MUST READ: Hey! Welcome to my series. I am assuming you know the basic theory of DP, like there are two ways to do DP (TopDown and BottomUp), meaning of memoization, meaning of tabulation, why DP is required? I know you want this so I'll be adding this theory soon. 
+                            Now, For the Top-Down DP approach in the series, each problem will feature two solutions: `solveWithoutMemo` and `solveWithMemo`. 
+                            You must start with `solveWithoutMemo`, which demonstrates the recursive solution without memoization (without DP) and which is expected to run into TLE (Time Limit Exceeded, but its not necessary its because acceptance is dependent on the constraints, haven't got it? its okay). 
+                            After understanding the non-optimized approach, move to `solveWithMemo` for the memoized solution (DP in recursion), and after understanding the Top-Down DP (memoization approach), 
+                            now you could move to the Bottom-Up DP (tabulation approach) and in this always follow this order. Start from the space consuming tabulation then move to the optimized one as ordered. 
+                            So, Follow this order of solving problems for all the questions of the DP series.
 */
     
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+/*
+    DON'T IGNORE MUST READ: The bottom-up solutions is the direct conversions of the memoized solution (recurive DP). 
+                            This conversion technique helps to create Bottom-up solution very easily and fast, this helps to reduce time and avoid the need for pen and paper as it takes in intuitive bottom-up, So this makes the process more efficient. 
+                            As you work through the bottom-up solutions, switch tabs to view the memoized solution side-by-side. 
+                            This will help you see how the values passed as parameters in the memoized solution correspond to what we calculate and store in the bottom-up approach. 
+                            With practice, you’ll be able to create bottom-up solutions within minutes or even seconds, as I have developed the habit of doing. 
+                            This conversion technique will be applied to the all the Bottom-up solutions of the remaining problems across all DP patterns.
+*/   
+    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
     // O(2^N) & O(N)
@@ -56,8 +59,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class BottomUp {
     // O(N) & O(N)
     int solveWith1DTable(int n) {
@@ -98,7 +100,7 @@ public:
     }
 };
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Maths | Dynamic Programming | Recursion | Memoization
 Link  : https://leetcode.com/problems/fibonacci-number/
