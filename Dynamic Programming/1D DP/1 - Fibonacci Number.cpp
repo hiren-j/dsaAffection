@@ -1,4 +1,4 @@
-// Code to find the Nth number of the fibonacci sequence ~ coded by Hiren
+// Code to find the nth number of the fibonacci sequence ~ coded by Hiren
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -15,88 +15,86 @@
 
 /*   
     DON'T IGNORE MUST READ: For the Top-Down DP problems in the series, each problem will feature two solutions: `solveWithoutMemo` and `solveWithMemo`. 
-                            You must start with `solveWithoutMemo`, which demonstrates the recursive solution without memoization and which is expected to run into TLE (Time Limit Exceeded). 
+                            You must start with `solveWithoutMemo`, which demonstrates the recursive solution without memoization (without DP) and which is expected to run into TLE (Time Limit Exceeded). 
                             After understanding the non-optimized approach, move to `solveWithMemo` for the memoized solution. Follow this order for all Top-Down DP solutions in the DP series.
 */
     
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-// Class to implement the Top-down approach:
 class TopDown {
-public:
-    // Method to find the Nth number of the fibonacci sequence, using recursion with memoization - O(N) & O(N)
-    int getNthFibonacci(int N) {
-        vector<int> memory(N+1, -1);
-        return solveWithMemo(N, memory);
+    // O(2^N) & O(N)
+    int solveWithoutMemo(int n) {
+        if(n < 2)
+            return n;
+
+        int prevNum1 = solveWithoutMemo(n - 1);
+        int prevNum2 = solveWithoutMemo(n - 2);
+
+        return prevNum1 + prevNum2;
     }
 
-private:
-    // O(2*N) & O(N+N)
-    int solveWithMemo(int N, vector<int>& memory) {
-        // Edge case: When the value of N is less than 2 then return the same value
-        if(N < 2)
-            return N;
+    // O(2*N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, int n) {
+        if(n < 2)
+            return n;
 
         // Memoization table: If the current state is already computed then return the computed value
-        if(memory[N] != -1)
-            return memory[N];
+        if(dp[n] != -1) 
+            return dp[n];
+
+        int prevNum1 = solveWithMemo(dp, n - 1);
+        int prevNum2 = solveWithMemo(dp, n - 2);
 
         // Store the result value to the memoization table and then return it
-        return memory[N] = solveWithMemo(N-1, memory) + solveWithMemo(N-2, memory);
+        return dp[n] = (prevNum1 + prevNum2); 
     }
 
-    // O(2^N) & O(N)
-    int solveWithoutMemo(int N) {
-        // Edge case: When the value of N is less than 2 then return the same value
-        if(N < 2)
-            return N;
-            
-        // Recursively compute and return the sum of the two preceding values of N
-        return solveWithoutMemo(N-1) + solveWithoutMemo(N-2);
-    };
+public:
+    int fib(int n) {
+        vector<int> dp(n + 1, -1);
+        return solveWithMemo(dp, n);
+    }
 };
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
-public:
-    // #1 Method to find the Nth number of the fibonacci sequence, using 1D tabulation - O(N) & O(N)
-    int getNthFibonacci_V1(int N) {
-        // Edge case: When the value of N is less than 2 then return the same value
-        if(N < 2)
-            return N;   
+    // O(N) & O(N)
+    int solveWith1DTable(int n) {
+        vector<int> dp(n + 1, -1);
 
-        // 1D table: dp[J] stores the Jth number of the fibonacci sequence
-        vector<int> dp(N+1, 0); 
+        // Initiailze the edge case
+        dp[0] = 0;
         dp[1] = 1;
 
-        // Iterate and store the sum of the two preceding values
-        for(int J=2; J<=N; J++)
-            dp[J] = dp[J-1] + dp[J-2];
-
-        // Return the Nth number of the sequence
-        return dp[N];
-    }
-
-    // #2 Method to find the Nth number of the fibonacci sequence, using constant auxiliary space - O(N) & O(1)
-    int getNthFibonacci_V2(int N) {
-        // Edge case: When the value of N is less than 2 then return the same value
-        if(N < 2)
-            return N;
-
-        int prevPrevNum = 0, prevNum = 1;
-        int currNum;
-
-        // Iterate and store the sum of the two preceding values
-        for(int J=2; J<=N; J++) {
-            currNum     = prevPrevNum + prevNum;
-            prevPrevNum = prevNum;
-            prevNum     = currNum;
+        for(int i = 2; i <= n; ++i) { 
+            int prevNum1 = dp[i - 1];
+            int prevNum2 = dp[i - 2];
+            dp[i] = prevNum1 + prevNum2;
         }
 
-        // Return the Nth number of the sequence
+        return dp[n]; 
+    }
+
+    // O(N) & O(1)
+    int solveWithoutTable(int n) {
+        int prevNum1 = 1, prevNum2 = 0;
+        int currNum  = 0;
+
+        for(int i = 2; i <= n; ++i) {
+            currNum  = prevNum1 + prevNum2;
+            prevNum2 = prevNum1;
+            prevNum1 = currNum;
+        }
+
         return currNum;
+    }
+
+public:
+    int fib(int n) {
+        if(n < 2)
+            return n;
+        return solveWith1DTable(n);
     }
 };
 
