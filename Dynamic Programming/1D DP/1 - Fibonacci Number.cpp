@@ -78,6 +78,7 @@ class BottomUp {
 
         return dp[n]; // Its the conversion of the first call that we made in recursive DP, [return solveWithMemo(dp, n)], simply remove the function name (dp, n) remains, now do this, dp[n]
     }
+    // Note: For calculating the result of any ith number we are dependent on the previous two values, which is constant, so we could simply maintain two variables instead of using the dp array  
 
     // O(N) & O(1)
     int solveWithoutTable(int n) {
