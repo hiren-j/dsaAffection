@@ -7,84 +7,75 @@ NOTE: This problem is totally same as the first one (Fibonacci Number). The edge
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    typedef long long ll;
-    const int MOD = 1e9+7;
+    // O(2^N) & O(N)
+    int solveWithoutMemo(int n) {
+        if(n < 3)
+            return n;
+
+        int prevNum1 = solveWithoutMemo(n - 1);
+        int prevNum2 = solveWithoutMemo(n - 2);
+
+        return prevNum1 + prevNum2;
+    }
+
+    // O(2*N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, int n) {
+        if(n < 3)
+            return n;
+
+        if(dp[n] != -1) 
+            return dp[n];
+
+        int prevNum1 = solveWithMemo(dp, n - 1);
+        int prevNum2 = solveWithMemo(dp, n - 2);
+
+        return dp[n] = (prevNum1 + prevNum2); 
+    }
 
 public:
-    // Method to count all the possible distinct binary strings of length N such that there are no consecutive 1’s, using recursion with memoization - O(N) & O(N)
-    ll countStrings(int N) {
-	vector<ll> memory(N + 1, -1);
-	return solveWithMemo(memory, N);
-    }
-
-private:
-    // O(2*N) & O(N+N)
-    ll solveWithMemo(vector<ll>& memory, int N) {
-    	// Edge case: When the value of N is less than 2 then return it by adding one to it
-	if(N < 2)
-	    return N + 1;
-    
-    	// Memoization table: If the current state is already computed then return the computed value
-	if(memory[N] != -1)
-	    return memory[N];
-    
-    	// Recursively find the two preceding values of N
-	ll count1 = solveWithMemo(memory, N - 1);
-	ll count2 = solveWithMemo(memory, N - 2);
-    
-    	// Store the result value to the memoizationt table and then return it
-	return memory[N] = (count1 + count2) % MOD;
-    }
-
-    // O(2^N) & O(N)
-    ll solveWithoutMemo(int N) {
-    	// Edge case: When the value of N is less than 2 then return it by adding one to it
-	if(N < 2)
-	    return N + 1;
-
-    	// Recursively find the two preceding values of N
-	ll count1 = solveWithoutMemo(N - 1);
-	ll count2 = solveWithoutMemo(N - 2);
-    
-    	// Add the values and then return it
-	return (count1 + count2) % MOD;
+    int countStrings(int n) {
+        vector<int> dp(n + 2, -1);
+        return solveWithMemo(dp, n + 1);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    typedef long long ll;
-    const int MOD = 1e9+7;
-
-public:
-    // #1 Method to count all the possible distinct binary strings of length N such that there are no consecutive 1’s, using 1D tabulation - O(N) & O(N)
-    ll countStrings_V1(int N) {
-	vector<ll> dp(N + 1, -1);
-	dp[0] = 1;
-	dp[1] = 2;
-    
-	for(int num = 2; num <= N; ++num) {
-	    ll count1 = dp[num - 1];
-	    ll count2 = dp[num - 2];
-	    dp[num]   = (count1 + count2) % MOD;
-	}
-    
-	return dp[N];
+    // O(1*N) & O(1*N)
+    int solveWith1DTable(int n) {
+        vector<int> dp(n + 2, -1);
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        
+        for(int i = 3; i <= n+1; ++i) {
+            int prevNum1 = dp[i - 1];
+            int prevNum2 = dp[i - 2];
+            dp[i] = (prevNum1 + prevNum2); 
+        }
+        
+        return dp[n + 1];
     }
-
-    // #2 Method to count all the possible distinct binary strings of length N such that there are no consecutive 1’s, using constant auxiliary space - O(N) & O(1)
-    ll countStrings_V2(int N) {
-	ll count1 = 1, count2 = 2;
-	ll resultCount = count2;
     
-	for(int num = 2; num <= N; ++num) {
-	    resultCount = (count1 + count2) % MOD;
-	    count1      = count2;
-	    count2      = resultCount;
-	} 
-	    
-	return resultCount;
+    // O(1*N) & O(1)
+    int solveWithoutTable(int n) {
+        int prevNum1 = 2;
+        int prevNum2 = 1;
+        int currNum  = (n == 1) ? 2 : 3; // Handle when n = 1 and n = 2, as the loop is not going to work for them
+
+        for(int i = 3; i <= n+1; ++i) {
+            currNum  = prevNum1 + prevNum2;
+            prevNum2 = prevNum1;
+            prevNum1 = currNum;
+        }
+
+        return currNum;
+    }
+    
+public:
+    int countStrings(int n) {
+        return solveWithoutTable(n);
     }
 };
 
