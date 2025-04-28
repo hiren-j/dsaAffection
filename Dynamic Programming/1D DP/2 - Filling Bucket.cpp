@@ -1,4 +1,4 @@
-// Code to find in how many ways we could fill the given bucket. Given a Bucket having a capacity of N litres and the task is to determine that by how many ways you can fill it using two bottles of capacity of 1 Litre and 2 Litre only. Find the answer modulo 10e8 ~ coded by Hiren
+// Code to find in how many ways we could fill the given bucket. Given a Bucket having a capacity of N litres and the task is to determine that by how many ways you can fill it using two bottles of capacity of 1 Litre and 2 Litre only. Find the answer using modulo 1e8 ~ coded by Hiren
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ class TopDown {
         if(dp[N] != -1)
             return dp[N];
             
-        // There are always two possibilities to perform at each step
+        // There are always two possibilities to perform 
         int fill1Litre = solveWithMemo(dp, N - 1); // Is to fill bucket with 1 litre
         int fill2Litre = solveWithMemo(dp, N - 2); // Is to fill bucket with 2 litre
             
@@ -39,7 +39,7 @@ class TopDown {
     }
     
 public:
-    int fillingBucket(int N) {
+    int numWaysToFillBucket(int N) {
         vector<int> dp(N + 1, -1);
         return solveWithMemo(dp, N);
     }
@@ -50,36 +50,38 @@ public:
 class BottomUp {
     const int MOD = 1e8;
     
-public:
-    // O(N) & O(N)
-    int fillingBucket_V1(int N) {
+    // O(1*N) & O(1*N)
+    int solveWith1DTable(int N) {
         vector<int> dp(N + 1, 0);
         dp[0] = 1; // Initialize the edge case
         
         for(int capacity = 1; capacity <= N; ++capacity) {
             int fill1Litre = (capacity - 1 >= 0) ? dp[capacity - 1] : 0;
             int fill2Litre = (capacity - 2 >= 0) ? dp[capacity - 2] : 0;
-            dp[capacity] = (fill1Litre + fill2Litre) % MOD;
+            dp[capacity]   = (fill1Litre + fill2Litre) % MOD;
         }
         
         return dp[N];
     }
 
-    // O(N) & O(1)
-    int fillingBucket_V2(int N) {
-        int prev_1 = 1; 
-        int prev_2 = 0;
-        int curr   = 1;
-        
+    // O(1*N) & O(1)
+    int solveWithoutTable(int N) {
+        int fill1Litre = 1;
+        int fill2Litre = 0;
+        int numWays    = 0;
+
         for(int capacity = 1; capacity <= N; ++capacity) {
-            int fill1Litre = (capacity - 1 >= 0) ? prev_1 : 0;
-            int fill2Litre = (capacity - 2 >= 0) ? prev_2 : 0;
-            curr = (fill1Litre + fill2Litre) % MOD;
-            prev_2 = prev_1;
-            prev_1 = curr;
+            numWays    = (fill1Litre + fill2Litre) % MOD;
+            fill2Litre = fill1Litre;
+            fill1Litre = numWays;
         }
-        
-        return curr;
+
+        return numWays;
+    }
+
+public:
+    int numWaysToFillBucket(int N) {
+        return solveWithoutTable(N);
     }
 };
 
