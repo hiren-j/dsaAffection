@@ -2,7 +2,7 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
-    NOTE: This problem is totally same as the first one (Fibonacci Number). The edge case in the only change.
+    NOTE: The solution is totally same as the first one (Fibonacci Number). The edge case in the only change.
 */
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
