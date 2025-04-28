@@ -1,9 +1,9 @@
 // Code to count all the possible distinct binary strings of length N such that there are no consecutive 1’s ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-NOTE: This problem is totally same as the first one (Fibonacci Number). The edge case in the only change.
-
+/*
+    NOTE: This problem is totally same as the first one (Fibonacci Number). The edge case in the only change.
+*/
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
