@@ -78,7 +78,7 @@ class BottomUp {
     
 public:
     int numWaysToReachTop(int n) {
-        return solveWith1DTable(n);
+        return solveWithoutTable(n);
     }
 };
 
