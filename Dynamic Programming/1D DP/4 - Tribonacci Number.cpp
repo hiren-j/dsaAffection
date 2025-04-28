@@ -1,4 +1,4 @@
-// Code to find the Nth number of the tribonacci sequence ~ coded by Hiren
+// Code to find the nth number of the tribonacci sequence ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
