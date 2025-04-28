@@ -45,6 +45,8 @@ class BottomUp {
     // O(1*N) & O(1*N)
     int solveWith1DTable(int n) {
         vector<int> dp(n + 2, -1);
+
+        // Initialize the edge case
         dp[0] = 0;
         dp[1] = 1;
         dp[2] = 2;
