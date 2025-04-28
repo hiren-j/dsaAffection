@@ -1,86 +1,84 @@
 // Code to find the Nth number of the tribonacci sequence ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown {
-public:
-    // Method to find the Nth number of the tribonacci sequence, using recursion with memoization - O(N) & O(N)
-    int getNthTribonacci(int N) {
-        vector<int> memory(N+1, -1);
-        return solveWithMemo(N, memory);
-    }
-
-private:
-    // O(3*N) & O(N+N)
-    int solveWithMemo(int N, vector<int>& memory) {
-        // Edge case: When the value of N is less than 3
-        if(N < 3)
-            return (N == 0) ? 0 : 1;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[N] != -1)
-            return memory[N];
-
-        // Store the result value to the memoization table and then return it
-        return memory[N] = solveWithMemo(N-1, memory) + solveWithMemo(N-2, memory) + solveWithMemo(N-3, memory);
-    }
     
+class TopDown {
     // O(3^N) & O(N)
-    int solveWithoutMemo(int N) {
-        // Edge case: When the value of N is less than 3
-        if(N < 3)
-            return (N == 0) ? 0 : 1;
+    int solveWithoutMemo(int n) {
+        if(n < 3)
+            return (n == 0) ? 0 : 1;
 
-        // Recursively compute and return the sum of the three preceding values of N
-        return solveWithoutMemo(N-1) + solveWithoutMemo(N-2) + solveWithoutMemo(N-3);
-    };
+        int prevNum1 = solveWithoutMemo(n - 1);
+        int prevNum2 = solveWithoutMemo(n - 2);
+        int prevNum3 = solveWithoutMemo(n - 3);
+
+        return prevNum1 + prevNum2 + prevNum3;
+    }
+
+    // O(3*N) & O(2*N)
+    int solveWithMemo(vector<int>& memory, int n) {
+        if(n < 3)
+            return (n == 0) ? 0 : 1;
+        
+        if(memory[n] != -1)
+            return memory[n];
+
+        int prevNum1 = solveWithMemo(memory, n - 1);
+        int prevNum2 = solveWithMemo(memory, n - 2);
+        int prevNum3 = solveWithMemo(memory, n - 3);
+
+        return memory[n] = (prevNum1 + prevNum2 + prevNum3);
+    }
+
+public:
+    int nthTribonacci(int n) {
+        vector<int> memory(n + 1, -1);
+        return solveWithMemo(memory, n);
+    }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the Nth number of the sequence, using 1D tabulation - O(N) & O(N)
-    int getNthTribonacci_V1(int N) {
-        // Edge case: When the value of N is less than 3
-        if(N < 3)
-            return (N == 0) ? 0 : 1;
+    // O(1*N) & O(1*N)
+    int solveWith1DTable(int n) {
+        vector<int> dp(n + 1, -1);
+        dp[0] = 0;
+        dp[1] = dp[2] = 1;
 
-        // 1D table: dp[J] stores the Jth number of the tribonacci sequence
-        vector<int> dp(N+1, 0);
-        dp[1] = 1;
-        dp[2] = 1;
-
-        // Iterate and store the sum of the three preceding values
-        for(int J=3; J<=N; J++)
-            dp[J] = dp[J-3] + dp[J-2] + dp[J-1];
-
-        // Return the Nth number of the sequence
-        return dp[N];
-    }
-
-    // #2 Method to find the Nth number of the sequence, using constant auxiliary space - O(N) & O(1)
-    int getNthTribonacci_V2(int N) {
-        // Edge case: When the value of N is less than 3
-        if(N < 3)
-            return (N == 0) ? 0 : 1;
-
-        int prevA = 0, prevB = 1, prevC = 1;
-        int currNum;
-
-        // Iterate and store the sum of the three preceding values
-        for(int J=3; J<=N; J++) {
-            currNum = prevA + prevB + prevC;
-            prevA = prevB;
-            prevB = prevC;
-            prevC = currNum;
+        for(int i = 3; i <= n; ++i) {
+            int prevNum1 = dp[i - 1];
+            int prevNum2 = dp[i - 2];
+            int prevNum3 = dp[i - 3];
+            dp[i] = (prevNum1 + prevNum2 + prevNum3);
         }
 
-        // Return the Nth number of the sequence
+        return dp[n];
+    }   
+
+    // O(1*N) & O(1)
+    int solveWithoutTable(int n) {
+        int prevNum3 = 0;
+        int prevNum2 = 1, prevNum1 = 1;
+        int currNum  = 0;
+
+        for(int i = 3; i <= n; ++i) {
+            currNum  = (prevNum1 + prevNum2 + prevNum3);
+            prevNum3 = prevNum2;
+            prevNum2 = prevNum1;
+            prevNum1 = currNum;
+        }
+
         return currNum;
+    }   
+
+public:
+    int nthTribonacci(int n) {
+        if(n < 3)
+            return (n == 0) ? 0 : 1;
+        return solveWithoutTable(n);
     }
 };
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Dynamic Programming | Math | Memoization
