@@ -33,7 +33,7 @@ class TopDown {
     }
 
 public:
-    int numDistinctBinaryStrs(int n) {
+    int countDistinctBinaryStrs(int n) {
         vector<int> dp(n + 2, -1);
         return solveWithMemo(dp, n + 1); // The main task is to find the n + 1th number of the fibonacci sequence
     }
@@ -74,7 +74,7 @@ class BottomUp {
     }
     
 public:
-    int numDistinctBinaryStrs(int n) {
+    int countDistinctBinaryStrs(int n) {
         return solveWithoutTable(n);
     }
 };
