@@ -82,6 +82,11 @@ public:
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+    NOTE: This same question is also in the Multi-Dimensional DP Folder, but there I solved it using 2D DP approach that came to my mind.
+          Eventually you'll see, just keep doing it.
+*/
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
