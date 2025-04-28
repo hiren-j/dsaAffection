@@ -37,7 +37,7 @@ class TopDown {
 public:
     int numWaysToReachTop(int n) {
         vector<int> memory(n + 1, -1);
-        return solveWithoutMemo(n);
+        return solveWithMemo(memory, n);
     }
 };
 
