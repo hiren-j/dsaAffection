@@ -5,12 +5,13 @@
 class TopDown {
     // O(3^N) & O(N)
     int solveWithoutMemo(int n) {
-        if(n <= 0)
-            return (n == 0);
-        
-        int jump1Step = solveWithoutMemo(n - 1);
-        int jump2Step = solveWithoutMemo(n - 2);
-        int jump3Step = solveWithoutMemo(n - 3);
+        if(n <= 0) 
+            return (n == 0); // Edge case: If n becomes 0 then you've 1 way
+
+        // There are three options to perform at each step
+        int jump1Step = solveWithoutMemo(n - 1); // To make 1 jump from the immediate below step to reach this nth step
+        int jump2Step = solveWithoutMemo(n - 2); // To make 2 jump from the immediate below step to reach this nth step
+        int jump3Step = solveWithoutMemo(n - 3); // To make 3 jump from the immediate below step to reach this nth step
         
         return jump1Step + jump2Step + jump3Step;
     }
@@ -43,7 +44,7 @@ class BottomUp {
     // O(1*N) & O(1*N)
     int solveWith1DTable(int n) {
         vector<int> dp(n + 1, -1);
-        dp[0] = 1; // Init the edge case of (n == 0) then exists 1 way
+        dp[0] = 1; // Init the edge case
         
         for(int i = 1; i <= n; ++i) {
             int jump1Step = dp[i - 1];
