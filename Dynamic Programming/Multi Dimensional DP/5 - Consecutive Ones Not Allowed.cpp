@@ -94,7 +94,7 @@ class BottomUp {
                 int pick0  = prevRow_0;
                 int pick1  = (prevPick != 1) ? prevRow_1 : 0;
                 int result = pick0 + pick1; 
-                (prevPick == 1) ? idealRow_1 = result :  idealRow_0 = result;
+                (prevPick == 1) ? idealRow_1 = result : idealRow_0 = result;
             }
             prevRow_0 = idealRow_0;
             prevRow_1 = idealRow_1;
