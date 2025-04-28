@@ -53,7 +53,7 @@ class BottomUp {
     // O(1*N) & O(1*N)
     int solveWith1DTable(int N) {
         vector<int> dp(N + 1, -1);
-        dp[0] = 1; // Initialize the edge case
+        dp[0] = 1; // Init the first edge case
         
         for(int capacity = 1; capacity <= N; ++capacity) {
             int fill1Litre = (capacity - 1 >= 0) ? dp[capacity - 1] : 0;
