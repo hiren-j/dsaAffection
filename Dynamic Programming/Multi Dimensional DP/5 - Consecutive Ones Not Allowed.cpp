@@ -106,7 +106,7 @@ class BottomUp {
 public:
     // Method to count all distinct binary strings of length n, using tabulation :-
     int countDistinctBinaryStrs(int n) {
-        return solveWith1DTable(n);
+        return solveWithoutTable(n);
     }
 };
 
