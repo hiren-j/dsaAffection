@@ -8,7 +8,7 @@ class TopDown {
         if(n <= 0) 
             return (n == 0); // Edge case: If n becomes 0 then you've 1 way
 
-        // There are three ways to reach this nth step
+        // There are three possibilities to reach this nth step
         int jump1Step = solveWithoutMemo(n - 1); // To make 1 jump from any step below it
         int jump2Step = solveWithoutMemo(n - 2); // To make 2 jump from any step below it
         int jump3Step = solveWithoutMemo(n - 3); // To make 3 jump from any step below it
@@ -25,7 +25,7 @@ class TopDown {
         if(memory[n] != -1)
             return memory[n];
         
-        // There are three ways to reach this nth step
+        // There are three possibilities to reach this nth step
         int jump1Step = solveWithMemo(memory, n - 1); // To make 1 jump from any step below it
         int jump2Step = solveWithMemo(memory, n - 2); // To make 2 jump from any step below it
         int jump3Step = solveWithMemo(memory, n - 3); // To make 3 jump from any step below it
