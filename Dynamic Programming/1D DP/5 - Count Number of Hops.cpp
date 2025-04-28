@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
+    // O(3^N) & O(N)
     int solveWithoutMemo(int n) {
         if(n <= 0)
             return (n == 0);
@@ -14,6 +15,7 @@ class TopDown {
         return jump1Step + jump2Step + jump3Step;
     }
     
+    // O(3*N) & O(2*N)
     int solveWithMemo(vector<int>& memory, int n) {
         if(n <= 0)
             return (n == 0);
@@ -38,6 +40,7 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+    // O(1*N) & O(1*N)
     int solveWith1DTable(int n) {
         vector<int> dp(n + 1, -1);
         dp[0] = 1; // Init the edge case of (n == 0) then exists 1 way
@@ -52,6 +55,7 @@ class BottomUp {
         return dp[n];
     }
     
+    // O(1*N) & O(1)
     int solveWithoutTable(int n) {
         int jump1Step = 1;
         int jump2Step = 0;
@@ -69,7 +73,7 @@ class BottomUp {
     }
     
 public:
-    int countWays(int n) {
+    int numWaysToReachTop(int n) {
         return solveWith1DTable(n);
     }
 };
