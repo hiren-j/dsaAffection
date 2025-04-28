@@ -1,4 +1,4 @@
-// Code to count all the possible distinct binary strings of length N such that there are no consecutive 1’s ~ coded by Hiren
+// Code to count all the possible distinct binary strings of length n such that there are no consecutive 1’s ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
