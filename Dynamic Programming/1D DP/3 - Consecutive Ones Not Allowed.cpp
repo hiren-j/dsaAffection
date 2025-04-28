@@ -35,7 +35,7 @@ class TopDown {
 public:
     int countStrings(int n) {
         vector<int> dp(n + 2, -1);
-        return solveWithMemo(dp, n + 1);
+        return solveWithMemo(dp, n + 1); // The main task is to find the n + 1th number of the fibonacci sequence
     }
 };
 
