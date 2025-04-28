@@ -1,6 +1,6 @@
-#include <iostream>
-#include <vectoR>
-using namespace std;
+// Code to count all the possible distinct binary strings of length n such that there are no consecutive 1’s ~ coded by Hiren
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     // O(2^N) & O(N)
@@ -39,6 +39,8 @@ public:
         return solveWithMemo(dp, n, 0);
     }
 };
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     // O(N*2) & O(N*2)
@@ -107,3 +109,12 @@ public:
         return solveWith1DTable(n);
     }
 };
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+    NOTE: This same question is also in the 1D-Dimensional DP Folder, but there I solved it using 1D DP approach that came to my mind.
+*/
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Array | Dynamic Programming
+Link  : https://www.geeksforgeeks.org/problems/consecutive-1s-not-allowed1912/1
