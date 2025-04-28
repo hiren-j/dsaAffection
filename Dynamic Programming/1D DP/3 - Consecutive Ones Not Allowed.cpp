@@ -62,9 +62,9 @@ class BottomUp {
     
     // O(1*N) & O(1)
     int solveWithoutTable(int n) {
-        int prevNum1 = 2;
-        int prevNum2 = 1;
         int currNum  = (n == 1) ? 2 : 3; // Handle when n = 1 and n = 2, as the loop is not going to work for them
+        int prevNum2 = 1;
+        int prevNum1 = 2;
 
         for(int i = 3; i <= n+1; ++i) {
             currNum  = prevNum1 + prevNum2;
