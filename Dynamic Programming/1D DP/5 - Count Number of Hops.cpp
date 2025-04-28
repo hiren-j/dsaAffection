@@ -1,4 +1,4 @@
-// Code to find the total number of ways the frog can take to reach the top of the Nth step, a frog can jump either 1, 2, or 3 steps to go to the top ~ coded by Hiren
+// Code to find the total number of ways the frog can take to reach the top of the nth step, a frog can jump either 1, 2, or 3 steps to go to the top ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
