@@ -56,7 +56,7 @@ class BottomUp {
         dp[0] = 1; // Init the first edge case
         
         for(int capacity = 1; capacity <= N; ++capacity) {
-            int fill1Litre = (capacity - 1 >= 0) ? dp[capacity - 1] : 0;
+            int fill1Litre = dp[capacity - 1];
             int fill2Litre = (capacity - 2 >= 0) ? dp[capacity - 2] : 0;
             dp[capacity]   = (fill1Litre + fill2Litre) % MOD;
         }
