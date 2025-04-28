@@ -7,7 +7,7 @@ class TopDown {
     
     // O(2^N) & O(N)
     int solveWithoutMemo(int N) {
-        if(N == 0) // Edge case: If you've filled the whole bucket then you've got 1 way 
+        if(N == 0) // Edge case: If you've filled the whole bucket then you've 1 way 
             return 1;
         
         if(N < 0) // Edge case: If the bucket is overfilled then its not valid
