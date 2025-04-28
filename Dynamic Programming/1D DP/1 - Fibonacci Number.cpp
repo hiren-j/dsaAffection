@@ -85,7 +85,8 @@ class BottomUp {
 
     // O(1*N) & O(1)
     int solveWithoutTable(int n) {
-        int prevNum1 = 1, prevNum2 = 0;
+        int prevNum2 = 0;
+        int prevNum1 = 1;
         int currNum  = 0;
 
         for(int i = 2; i <= n; ++i) {
