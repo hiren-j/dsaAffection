@@ -2,7 +2,7 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class TopDown {
     int solveWithoutMemo(int n) {
         if(n == 1)
             return 0;
@@ -31,7 +31,7 @@ class Solution {
     }
     
 public:
-    int minSteps(int n) {
+    int minStepsToMakeOne(int n) {
         vector<int> dp(n + 1, -1);
         return solveWithMemo(dp, n);
     }
@@ -41,7 +41,7 @@ public:
 
 class BottomUp {
 public:
-    int minSteps(int given_n) {
+    int minStepsToMakeOne(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[1] = 0;
         
@@ -62,4 +62,4 @@ public:
 
 Topics: Array | Dynamic Programming
 Links : https://leetcode.com/discuss/interview-question/538568/google-onsite-min-operations-to-reduce-number-to-1
-        https://www.geeksforgeeks.org/problems/minimum-steps-to-minimize-n-as-per-given-condition0618/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=practice_card
+        https://www.geeksforgeeks.org/problems/minimum-steps-to-minimize-n-as-per-given-condition0618/0
