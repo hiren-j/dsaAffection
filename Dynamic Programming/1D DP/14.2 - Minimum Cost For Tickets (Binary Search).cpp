@@ -1,4 +1,3 @@
-
 // Code to find the minimum number of dollars you need to travel every day in the given list of days ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
