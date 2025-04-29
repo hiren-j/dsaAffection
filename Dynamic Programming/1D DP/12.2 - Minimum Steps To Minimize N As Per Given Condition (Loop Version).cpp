@@ -3,20 +3,6 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    // O(3^N) & O(N)
-    int solveWithoutMemo(int n) {
-        if(n == 1)
-            return 0;
-            
-        int minSteps = solveWithoutMemo(n - 1);
-
-        if(n % 2 == 0) minSteps = min(minSteps, solveWithoutMemo(n / 2));
-        if(n % 3 == 0) minSteps = min(minSteps, solveWithoutMemo(n / 3));
-        
-        return minSteps + 1;
-    }
-    
-    // O(3*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, int n) {
         if(n == 1)
             return 0;
@@ -24,16 +10,17 @@ class TopDown {
         if(dp[n] != -1)
             return dp[n];
             
-        int minSteps = solveWithMemo(dp, n - 1);
+        int minSteps = 1 + solveWithMemo(dp, n - 1);
         
-        if(n % 2 == 0) minSteps = min(minSteps, solveWithMemo(dp, n / 2));
-        if(n % 3 == 0) minSteps = min(minSteps, solveWithMemo(dp, n / 3));
-        
+        for(int divisor = 2; divisor <= 3; ++divisor)
+            if(n % divisor == 0)
+                minSteps = minSteps = min(minSteps, solveWithMemo(dp, n / divisor));
+
         return dp[n] = minSteps + 1;
     }
     
 public:
-    int minStepsToMakeOne(int n) {
+    int minSteps(int n) {
         vector<int> dp(n + 1, -1);
         return solveWithMemo(dp, n);
     }
@@ -43,18 +30,21 @@ public:
 
 class BottomUp {
 public:
-    // O(1*N) & O(1*N) : Where N = given_n
-    int minStepsToMakeOne(int given_n) {
+    int minSteps(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[1] = 0;
         
         for(int n = 2; n <= given_n; ++n) {
-            int minSteps = dp[n - 1];
+            int minSteps = 1 + dp[n - 1];
             
-            if(n % 2 == 0) minSteps = minSteps = min(minSteps, dp[n / 2]);
-            if(n % 3 == 0) minSteps = minSteps = min(minSteps, dp[n / 3]);
-            
-            dp[n] = minSteps + 1;
+            for(int divisor = 2; divisor <= 3; ++divisor) {
+                if(n % divisor == 0) {
+                    int nextSteps = dp[n / divisor];
+                    minSteps = minSteps = min(minSteps, nextSteps + 1);
+                }
+            }
+    
+            dp[n] = minSteps;   
         }
         
         return dp[given_n];
