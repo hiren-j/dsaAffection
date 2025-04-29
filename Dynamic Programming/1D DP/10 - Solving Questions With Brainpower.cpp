@@ -61,6 +61,7 @@ public:
 
         return dp[0];
     }
+    // Note: We can't do space optimization in this, as you could see dp[nextQuestion], the value of `nextQuestion` could be anything, overall its not constant
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
