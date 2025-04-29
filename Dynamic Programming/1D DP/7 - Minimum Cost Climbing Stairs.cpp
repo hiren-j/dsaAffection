@@ -2,9 +2,10 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class TopDown {
     int n;
 
+    // O(2^N) & O(N) : Where N = total steps
     int solveWithoutMemo(vector<int>& cost, int step) {
         if(step >= n)
             return 0;
@@ -15,6 +16,7 @@ class Solution {
         return min(climb1Step, climb2Step) + cost[step];
     }
 
+    // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& memory, vector<int>& cost, int step) {
         if(step >= n)
             return 0;
@@ -29,7 +31,7 @@ class Solution {
     }
 
 public:
-    int minCostClimbingStairs(vector<int>& cost) {
+    int minCostToReachTop(vector<int>& cost) {
         n = cost.size();
 
         vector<int> memory1(n, -1), memory2(n, -1);
@@ -43,9 +45,10 @@ public:
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class BottomUp {
     int n;
 
+    // O(1*N) & O(1*N)
     int solveWith1DTable(vector<int>& cost, int startPoint) {
         vector<int> dp(n + 2, -1);
         dp[n] = 0;
@@ -60,6 +63,7 @@ class Solution {
         return dp[startPoint];
     }
 
+    // O(1*N) & O(1)
     int solveWithoutTable(vector<int>& cost, int startPoint) {
         int climb1Step = 0;
         int climb2Step = 0;
@@ -75,7 +79,7 @@ class Solution {
     }
 
 public:
-    int minCostClimbingStairs(vector<int>& cost) {
+    int minCostToReachTop(vector<int>& cost) {
         n = cost.size();
 
         int startFrom0 = solveWithoutTable(cost, 0);
