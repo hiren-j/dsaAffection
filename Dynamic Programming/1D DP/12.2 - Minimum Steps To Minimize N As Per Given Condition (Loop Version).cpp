@@ -10,7 +10,7 @@ class TopDown {
         if(dp[n] != -1)
             return dp[n];
             
-        int minSteps = 1 + solveWithMemo(dp, n - 1);
+        int minSteps = solveWithMemo(dp, n - 1);
         
         for(int divisor = 2; divisor <= 3; ++divisor)
             if(n % divisor == 0)
@@ -35,16 +35,15 @@ public:
         dp[1] = 0;
         
         for(int n = 2; n <= given_n; ++n) {
-            int minSteps = 1 + dp[n - 1];
+            int minSteps = dp[n - 1];
             
             for(int divisor = 2; divisor <= 3; ++divisor) {
                 if(n % divisor == 0) {
-                    int nextSteps = dp[n / divisor];
-                    minSteps = minSteps = min(minSteps, nextSteps + 1);
+                    minSteps = minSteps = min(minSteps, dp[n / divisor]);
                 }
             }
     
-            dp[n] = minSteps;   
+            dp[n] = minSteps + 1;   
         }
         
         return dp[given_n];
