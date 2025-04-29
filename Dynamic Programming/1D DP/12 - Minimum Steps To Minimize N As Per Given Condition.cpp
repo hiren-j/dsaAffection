@@ -43,7 +43,7 @@ public:
 
 class BottomUp {
 public:
-    // O(1*N) & O(1*N)
+    // O(1*N) & O(1*N) : Where N = given_n
     int minStepsToMakeOne(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[1] = 0;
