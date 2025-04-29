@@ -13,7 +13,7 @@ class TopDown {
         int climb1Step = solveWithoutMemo(cost, step + 1);
         int climb2Step = solveWithoutMemo(cost, step + 2);
 
-        return min(climb1Step, climb2Step) + cost[step];
+        return cost[step] + min(climb1Step, climb2Step);
     }
 
     // O(2*N) & O(2*N)
@@ -27,7 +27,7 @@ class TopDown {
         int climb1Step = solveWithMemo(memory, cost, step + 1);
         int climb2Step = solveWithMemo(memory, cost, step + 2);
 
-        return memory[step] = min(climb1Step, climb2Step) + cost[step];
+        return memory[step] = cost[step] + min(climb1Step, climb2Step);
     }
 
 public:
