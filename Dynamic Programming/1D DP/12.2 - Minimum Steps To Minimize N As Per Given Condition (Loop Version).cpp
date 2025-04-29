@@ -25,6 +25,7 @@ public:
         return solveWithMemo(dp, n);
     }
 };
+// Note: In the previous approach, we're writing the same logic through redundant conditions instead of doing that here I just generalized them into the loop
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
