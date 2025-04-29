@@ -33,6 +33,7 @@ class TopDown {
         if(n < 2)
             return n;
 
+        // In fibonacci sequence any number is the sum of previous two values, hence find those two values
         int prevNum1 = solveWithoutMemo(n - 1);
         int prevNum2 = solveWithoutMemo(n - 2);
 
@@ -48,6 +49,7 @@ class TopDown {
         if(dp[n] != -1) 
             return dp[n];
 
+        // In fibonacci sequence any number is the sum of previous two values, hence find those two values
         int prevNum1 = solveWithMemo(dp, n - 1);
         int prevNum2 = solveWithMemo(dp, n - 2);
 
