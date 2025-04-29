@@ -56,7 +56,7 @@ class BottomUp {
         for(int step = n-1; step >= startPoint; --step) {
             int climb1Step = dp[step + 1];
             int climb2Step = dp[step + 2];
-            dp[step] = min(climb1Step, climb2Step) + cost[step];
+            dp[step] = cost[step] + min(climb1Step, climb2Step);
         }
 
         return dp[startPoint];
@@ -69,7 +69,7 @@ class BottomUp {
         int minCost;
 
         for(int step = n-1; step >= startPoint; --step) {
-            minCost    = min(climb1Step, climb2Step) + cost[step];
+            minCost    = cost[step] + min(climb1Step, climb2Step);
             climb2Step = climb1Step;
             climb1Step = minCost;
         }
