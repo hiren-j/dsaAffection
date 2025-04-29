@@ -3,86 +3,81 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
-public:
-    // Method to find the maximum amount of money you can rob, using recursion with memoization - O(N) & O(N)
-    int getMaxMoney(std::vector<int>& houses) {
-        int N = houses.size();
-        std::vector<int> memory(N+1, -1);
-        return solveWithMemo(memory, houses, N, 0);
-    }
-
-private:
-    // O(2*N) & O(N+N)
-    int solveWithMemo(std::vector<int>& memory, std::vector<int>& houses, int N, int J) {
-        // Edge case: If all the houses are exhausted then it's not possible to rob anymore
-        if(J >= N)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[J] != -1)
-            return memory[J];
-
-        // There are always two possibilities to perform at each house 
-        int currHouseRob  = houses[J] + solveWithMemo(memory, houses, N, J+2); // Is to rob it and then advance two steps ahead from it
-        int currHouseSkip = solveWithMemo(memory, houses, N, J+1);             // Is to skip it and move to the next house
-
-        // Store the result value to the memoization table and then return it
-        return memory[J] = std::max(currHouseRob, currHouseSkip);
-    }
+    int n;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(std::vector<int>& houses, int N, int J) {
-        // Edge case: If all the houses are exhausted, then it's not possible to rob anymore
-        if(J >= N)
+    int solveWithoutMemo(vector<int>& houses, int index) {
+        if(index >= n)
             return 0;
 
-        // There are always two possibilities to perform at each house 
-        int currHouseRob  = houses[J] + solveWithoutMemo(houses, N, J+2); // Is to rob it and then advance two steps ahead from it
-        int currHouseSkip = solveWithoutMemo(houses, N, J+1);             // Is to skip it and move to the next house
+        int robHouse = houses[index] + solveWithoutMemo(houses, index + 2);
+        int skipRob  = solveWithoutMemo(houses, index + 1);
 
-        // As we're striving for the maximum money hence return the maximum value
-        return std::max(currHouseRob, currHouseSkip);
+        return max(robHouse, skipRob);
+    }
+
+    // O(2*N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, vector<int>& houses, int index) {
+        if(index >= n)
+            return 0;
+
+        if(dp[index] != -1)
+            return dp[index];
+
+        int robHouse = houses[index] + solveWithMemo(dp, houses, index + 2);
+        int skipRob  = solveWithMemo(dp, houses, index + 1);
+
+        return dp[index] = max(robHouse, skipRob);
+    }
+
+public:
+    int robMaxMoney(vector<int>& houses) {
+        n = houses.size();
+        vector<int> dp(n, -1);
+        return solveWithMemo(dp, houses, 0);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the maximum amount of money you can rob, using 1D tabulation - O(N) & O(N)
-    int getMaxMoney_V1(std::vector<int>& houses) {
-        int N = houses.size();
+    int n;
 
-        // 1D table: dp[J] represents the maximum money that can be robbed till the Jth house
-        std::vector<int> dp(N+1);
-        
-        dp[0] = 0;         // Initially no house at the beginning hence consider the money as zero
-        dp[1] = houses[0]; // The maximum money for the first house is the money that the house have
+    // O(1*N) & O(1*N)
+    int solveWith1DTable(vector<int>& houses) {
+        vector<int> dp(n + 2, -1);
+        dp[n] = dp[n + 1] = 0;
 
-        // Iterate and find the maximum money that can be robbed till the Jth house
-        for(int J=2; J<=N; J++)
-            dp[J] = std::max(houses[J-1] + dp[J-2], dp[J-1]);
+        for(int index = n-1; index >= 0; --index) {
+            int robHouse = houses[index] + dp[index + 2];
+            int skipRob  = dp[index + 1];
+            dp[index] = max(robHouse, skipRob);
+        }
 
-        // Return the result value
-        return dp[N];
+        return dp[0];
     }
 
-    // #2 Method to find the maximum amount of money we can rob, using constant auxiliary space - O(N) & O(1)
-    int getMaxMoney_V2(std::vector<int>& houses) {
-        int N = houses.size();
-        
-        int prevPrevMoney = 0;          // Initially no house at the beginning hence consider the money as zero
-        int prevMoney     = houses[0];  // The maximum money for the first house is the money that the house have
-        int maxMoney      = prevMoney;  // Stores the overall amount of maximum money that can be robbed
+    // O(1*N) & O(1)
+    int solveWithoutTable(vector<int>& houses) {
+        int dpIndex2 = 0;
+        int dpIndex1 = 0; 
+        int maxMoney;
 
-        // Iterate and find the maximum money that can be robbed till the Jth house
-        for(int J=2; J<=N; J++)
-            maxMoney      = std::max(houses[J-1] + prevPrevMoney, prevMoney),
-            prevPrevMoney = prevMoney,
-            prevMoney     = maxMoney;
+        for(int index = n-1; index >= 0; --index) {
+            int robHouse = houses[index] + dpIndex2;
+            int skipRob  = dpIndex1;
+            maxMoney = max(robHouse, skipRob);
+            dpIndex2 = dpIndex1;
+            dpIndex1 = maxMoney;
+        }
 
-        // Return the result value
         return maxMoney;
+    }
+
+public:
+    int robMaxMoney(vector<int>& houses) {
+        n = houses.size();
+        return solveWithoutTable(houses);
     }
 };
 
@@ -90,5 +85,5 @@ public:
 
 Topics: Array | Dynamic Programming
 Links : https://leetcode.com/problems/house-robber/description/?envType=daily-question&envId=2024-01-21
-        https://www.codingninjas.com/studio/problems/maximum-sum-of-non-adjacent-elements_843261 
+        https://www.naukri.com/code360/problems/loot-houses_630510
         https://www.geeksforgeeks.org/problems/stickler-theif-1587115621/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=bottom_sticky_on_article
