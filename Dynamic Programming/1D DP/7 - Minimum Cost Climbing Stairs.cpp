@@ -51,8 +51,7 @@ class BottomUp {
     // O(1*N) & O(1*N)
     int solveWith1DTable(vector<int>& cost, int startPoint) {
         vector<int> dp(n + 2, -1);
-        dp[n] = 0;
-        dp[n + 1] = 0;
+        dp[n] = dp[n + 1] = 0;
 
         for(int step = n-1; step >= startPoint; --step) {
             int climb1Step = dp[step + 1];
