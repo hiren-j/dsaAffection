@@ -5,7 +5,7 @@
 class TopDown {
     int N, M;
 
-    // O(9^(N*M)) & O(N+M)
+    // O(9^(N*M)) & O(N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C1, int C2) {
         // Edge case: When all the cells are exhausted then its not possible to collect more cherries
         if(C1 < 0 || C2 < 0 || C1 == M || C2 == M || R == N)
@@ -26,7 +26,7 @@ class TopDown {
         return maxFromAll + currCherries;
     }
 
-    // O(9*N*M*M) & O(N*M*M + N+M)
+    // O(9*N*M*M) & O(N*M*M + N)
     int solveWithMemo(vector<vector<vector<int>>>& memory, vector<vector<int>>& grid, int R, int C1, int C2) {
         // Edge case: When all the cells are exhausted then its not possible to collect more cherries
         if(C1 < 0 || C2 < 0 || C1 == M || C2 == M || R == N)
