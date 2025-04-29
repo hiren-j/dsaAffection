@@ -66,7 +66,8 @@ public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         n = days.size();
 
-        vector<int> dp(n + 1, 0);
+        vector<int> dp(n + 1, -1);
+        dp[n] = 0;
 
         for(int idx = n-1; idx >= 0; --idx) {
             int oneDayPass    = costs[0] + dp[getNextStartDay(days, days[idx] + 1, idx + 1)];
