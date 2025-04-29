@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    // O(2^N) & O(N)
     int solveWithoutMemo(int n) {
         if(n <= 0)
             return (n == 0);
@@ -13,6 +14,7 @@ class TopDown {
         return climb1Step + climb2Step;
     }
 
+    // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& memory, int n) {
         if(n <= 0)
             return (n == 0);
@@ -36,19 +38,7 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    int solveWithMemo(vector<int>& memory, int n) {
-        if(n <= 0)
-            return (n == 0);
-
-        if(memory[n] != -1)
-            return memory[n];
-
-        int climb1Step = solveWithMemo(memory, n - 1);
-        int climb2Step = solveWithMemo(memory, n - 2);
-
-        return memory[n] = (climb1Step + climb2Step);
-    }
-
+    // O(1*N) & O(1*N)
     int solveWith1DTable(int n) {
         vector<int> dp(n + 1, -1);
         dp[0] = 1;
@@ -62,6 +52,7 @@ class BottomUp {
         return dp[n];
     }
 
+    // O(1*N) & O(1)
     int solveWithoutTable(int n) {
         int climb1Step = 1;
         int climb2Step = 0;
