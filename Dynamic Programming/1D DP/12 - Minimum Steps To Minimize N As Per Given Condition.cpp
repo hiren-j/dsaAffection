@@ -2,59 +2,38 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
-public:
-    // Method to find the minimum steps required to reduce n to 1, using recursion with memoization - O(N) & O(N)
-    int minStepsToMakeOne(int n) {
-	vector<int> dp(n + 1, -1);
-	return solveWithMemo(dp, n);
-    } 
-	
-private:
-    // O(2*N) & O(N+N)
-    int solveWithMemo(vector<int>& dp, int n) {
-        // Edge case: If n becomes 1 then no more operations are required
+class Solution {
+    int solveWithoutMemo(int n) {
         if(n == 1)
             return 0;
+            
+        int minSteps = solveWithoutMemo(n - 1);
+
+        if(n % 2 == 0) minSteps = min(minSteps, solveWithoutMemo(n / 2));
+        if(n % 3 == 0) minSteps = min(minSteps, solveWithoutMemo(n / 3));
         
-        // Memoization table: If the current state is already computed then return the computed value
+        return minSteps + 1;
+    }
+    
+    int solveWithMemo(vector<int>& dp, int n) {
+        if(n == 1)
+            return 0;
+            
         if(dp[n] != -1)
             return dp[n];
-        
-        // Count the total steps required to reduce n to 1 using decreament operation
-        int minSteps = solveWithMemo(dp, n - 1); 
-        
-        // If n is divisible by 2 then you may reduce n to n/2. Make sure to update the result by the minimum value
-        if(n % 2 == 0) 
-            minSteps = min(minSteps, solveWithMemo(dp, n / 2));
             
-        // If n is divisible by 3 then you may reduce n to n/3. Make sure to update the result by the minimum value
-        if(n % 3 == 0) 
-            minSteps = min(minSteps, solveWithMemo(dp, n / 3));
+        int minSteps = solveWithMemo(dp, n - 1);
         
-        // Store the result value to the memoization table and then return it
-        return dp[n] = 1 + minSteps;
+        if(n % 2 == 0) minSteps = min(minSteps, solveWithMemo(dp, n / 2));
+        if(n % 3 == 0) minSteps = min(minSteps, solveWithMemo(dp, n / 3));
+        
+        return dp[n] = minSteps + 1;
     }
-
-    // O(2^N) & O(N)
-    int solveWithoutMemo(int n) {
-        // Edge case: If n becomes 1 then no more operations are required
-        if(n == 1)
-            return 0;
-        
-        // Count the total steps required to reduce n to 1 using decreament operation
-        int minSteps = solveWithoutMemo(n - 1); 
-        
-        // If n is divisible by 2 then reduce n to n/2. Make sure to update the result by the minimum value
-        if(n % 2 == 0) 
-            minSteps = min(minSteps, solveWithoutMemo(n / 2));
-
-        // If n is divisible by 3 then reduce n to n/3. Make sure to update the result by the minimum value
-        if(n % 3 == 0) 
-            minSteps = min(minSteps, solveWithoutMemo(n / 3));
-        
-        // Return the result value
-        return 1 + minSteps;
+    
+public:
+    int minSteps(int n) {
+        vector<int> dp(n + 1, -1);
+        return solveWithMemo(dp, n);
     }
 };
 
@@ -62,30 +41,21 @@ private:
 
 class BottomUp {
 public:
-    // Method to find the minimum steps required to reduce n to 1, using 1D tabulation - O(N) & O(N)
-    int minStepsToMakeOne(int n) {
-        // 1D DP table: dp[i] represents the minimum steps required to reduce 'i' to 1
-	vector<int> dp(n + 1, -1);
-
-        // Initialize the edge case
-	dp[1] = 0;     
-
-        // Fill the rest of the table
-	for(int num = 2; num <= n; ++num) {
-            int minSteps = dp[num - 1];
-                    
-            if(num % 2 == 0) 
-                minSteps = min(minSteps, dp[num / 2]);
-
-            if(num % 3 == 0) 
-                minSteps = min(minSteps, dp[num / 3]);
+    int minSteps(int given_n) {
+        vector<int> dp(given_n + 1, -1);
+        dp[1] = 0;
+        
+        for(int n = 2; n <= given_n; ++n) {
+            int minSteps = dp[n - 1];
             
-            dp[num] = 1 + minSteps;
-	}
-
-        // Return the result value
-	return dp[n];
-    } 
+            if(n % 2 == 0) minSteps = minSteps = min(minSteps, dp[n / 2]);
+            if(n % 3 == 0) minSteps = minSteps = min(minSteps, dp[n / 3]);
+            
+            dp[n] = minSteps + 1;
+        }
+        
+        return dp[given_n];
+    }
 };
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
