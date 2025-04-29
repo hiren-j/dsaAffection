@@ -12,7 +12,7 @@ class TopDown {
 
         // We have two options at each house
         int robHouse = houses[index] + solveWithoutMemo(houses, index + 2); // Is to rob it and then skip the next house
-        int skipRob  = solveWithoutMemo(houses, index + 1);                 // Is to skip the rob and then move to the next house
+        int skipRob  = solveWithoutMemo(houses, index + 1);                 // Is to skip the rob and move to the next house
 
         return max(robHouse, skipRob);
     }
@@ -27,7 +27,7 @@ class TopDown {
 
         // We have two options at each house
         int robHouse = houses[index] + solveWithMemo(dp, houses, index + 2); // Is to rob it and then skip the next house
-        int skipRob  = solveWithMemo(dp, houses, index + 1);                 // Is to skip the rob and then move to the next house
+        int skipRob  = solveWithMemo(dp, houses, index + 1);                 // Is to skip the rob and move to the next house
 
         return dp[index] = max(robHouse, skipRob);
     }
