@@ -50,15 +50,6 @@ public:
         return (maxCutSegments == INT_MIN) ? 0 : maxCutSegments;
     }
 };
-    
-public:
-    // Method to find the maximum number of cut segments, using recursion with memoization - O(N) & O(N)
-    int maximizeTheCuts(int n, int x, int y, int z) {
-        vector<int> memory(n + 1, -1);
-        int maxCutSegments = solveWithMemo(memory, n, x, y, z);
-        return (maxCutSegments == INT_MIN) ? 0 : maxCutSegments;
-    }
-};
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
