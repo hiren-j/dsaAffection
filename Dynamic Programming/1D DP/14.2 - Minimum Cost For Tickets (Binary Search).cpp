@@ -102,5 +102,5 @@ public:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Topics: Array | Dynamic Programming
+Topics: Array | Binary Search | Dynamic Programming
 Link  : https://leetcode.com/problems/minimum-cost-for-tickets/description/ 
