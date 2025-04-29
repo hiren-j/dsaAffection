@@ -7,25 +7,27 @@ class TopDown {
 
     // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& houses, int index) {
-        if(index >= n)
-            return 0;
+        if(index >= n) // Edge case: If no houses left then you can't get money 
+            return 0; 
 
-        int robHouse = houses[index] + solveWithoutMemo(houses, index + 2);
-        int skipRob  = solveWithoutMemo(houses, index + 1);
+        // We have two options at each house
+        int robHouse = houses[index] + solveWithoutMemo(houses, index + 2); // Is to rob it and then skip the next house
+        int skipRob  = solveWithoutMemo(houses, index + 1);                 // Is to skip the rob and then move to the next house
 
         return max(robHouse, skipRob);
     }
 
     // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& houses, int index) {
-        if(index >= n)
+        if(index >= n) // Edge case: If no houses left then you can't get money
             return 0;
 
         if(dp[index] != -1)
             return dp[index];
 
-        int robHouse = houses[index] + solveWithMemo(dp, houses, index + 2);
-        int skipRob  = solveWithMemo(dp, houses, index + 1);
+        // We have two options at each house
+        int robHouse = houses[index] + solveWithMemo(dp, houses, index + 2); // Is to rob it and then skip the next house
+        int skipRob  = solveWithMemo(dp, houses, index + 1);                 // Is to skip the rob and then move to the next house
 
         return dp[index] = max(robHouse, skipRob);
     }
@@ -46,7 +48,7 @@ class BottomUp {
     // O(1*N) & O(1*N)
     int solveWith1DTable(vector<int>& houses) {
         vector<int> dp(n + 2, -1);
-        dp[n] = dp[n + 1] = 0;
+        dp[n] = dp[n + 1] = 0; // Initialize the edge case
 
         for(int index = n-1; index >= 0; --index) {
             int robHouse = houses[index] + dp[index + 2];
