@@ -43,7 +43,7 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    // O(N*2) & O(N*2)
+    // O(N*2) & O(N*2) : Where N = given_n
     int solveWith2DTable(int given_n) {
         vector<vector<int>> dp(given_n + 1, vector<int>(2, -1));
 
@@ -62,7 +62,7 @@ class BottomUp {
         return dp[given_n][0];
     }
 
-    // O(N*2) & O(2*2)
+    // O(N*2) & O(2*2) : Where N = given_n
     int solveWith1DTable(int given_n) {
         vector<int> prevRow(2, -1), idealRow(2, -1);
 
@@ -82,7 +82,7 @@ class BottomUp {
         return prevRow[0];
     }
 
-    // O(N*2) & O(1)
+    // O(N*2) & O(1) : Where N = given_n
     int solveWithoutTable(int given_n) {
         int prevRow_0  = 1; // Init the edge case
         int prevRow_1  = 1; // Init the edge case
