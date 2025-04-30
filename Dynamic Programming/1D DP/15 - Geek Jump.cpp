@@ -1,10 +1,11 @@
 // Code to find the minimum energy that can be used by the Geek to jump from step 0 to step N-1 ~ coded by Hiren
 
-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
     int n;
     
+    // O(2^N) & O(N)
     int solveWithoutMemo(vector<int>& heights, int idx) {
         if(idx == n-1)
             return 0;
@@ -17,6 +18,7 @@ class TopDown {
         return min(jump1Step, jump2Step);
     }
 
+    // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& heights, int idx) {
         if(idx == n-1)
             return 0;
@@ -40,11 +42,12 @@ public:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     int n;
     
+    // O(1*N) & O(1*N)
     int solveWith1DTable(vector<int>& heights) {
         vector<int> dp(n, -1);
         dp[n - 1] = 0;
@@ -60,7 +63,8 @@ class BottomUp {
         
         return dp[0];
     }
-    
+
+    // O(1*N) & O(1)
     int solveWithoutTable(vector<int>& heights) {
         int dp_idx_1 = 0;
         int dp_idx_2 = 0;
@@ -87,7 +91,7 @@ public:
     }
 };
 
-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 Topics: Array | Dynamic Programming
 Links : https://www.geeksforgeeks.org/problems/geek-jump/1 
