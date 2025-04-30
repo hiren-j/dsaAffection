@@ -10,8 +10,8 @@ class TopDown {
             return true;
 
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump)
-            if(solveWithoutMemo(nums, index + jump))
-                return true;
+            if(solveWithoutMemo(nums, index + jump)) 
+                return true; // Return true if you reach last index from any of the possibility
 
         return false;
     }
@@ -25,7 +25,7 @@ class TopDown {
 
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump)
             if(solveWithMemo(dp, nums, index + jump))
-                return dp[index] = true;
+                return dp[index] = true; // Return true if you reach last index from any of the possibility
 
         return dp[index] = false;
     }
@@ -46,7 +46,7 @@ public:
         int n = nums.size();
 
         vector<bool> dp(n, false);
-        dp[n - 1] = true;
+        dp[n - 1] = true; 
 
         for(int index = n-2; index >= 0; --index) {
             // dp[index] = false; // If you want dp array like this: vector<int> dp(n, -1); Then uncomment this line 
