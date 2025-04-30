@@ -5,7 +5,7 @@
 class TopDown {
     int n;
 
-    // O(N^N) & O(N)
+    // O(2 * N^N) & O(N)
     int solveWithoutMemo(vector<int>& prices, int index) {
         if(index >= n)
             return 0;
