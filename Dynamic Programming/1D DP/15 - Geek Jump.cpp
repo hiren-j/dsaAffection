@@ -2,160 +2,88 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-NOTE REGARDING THE FIRST SOLUTION (TopDown_V1): You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now.
+class TopDown {
+    int n;
     
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// #1 Class to implement the Top-down approach:
-class TopDown_V1 {
-public:
-    // Method to find the minimum energy, using recursion with memoization - O(N * maxElement) & O(N * maxElement)
-    int minimumEnergy(vector<int>& heights, int N) {
-        int maxElement = *max_element(begin(heights), end(heights));
-        vector<vector<int>> memory(N - 1, vector<int>(maxElement + 1, -1));
-        return solveWithMemo(memory, heights, N, 0, heights[0]);
-    }
-    
-private:
-    // O(2*N*maxElement) & O(N*maxElement + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& heights, int N, int step, int prevHeight) {
-        // Edge case: If we reached the last step then return the energy value as a valid indication of it
-        if(step == N-1)
-            return abs(prevHeight - heights[step]);
-            
-        // Edge case: If we're not able to reach the last step then it's not possible to have a valid way
-        if(step >= N)
-            return INT_MAX;
-        
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[step][prevHeight] != -1)
-            return memory[step][prevHeight];
-
-        // There are always two possibilities to perform at each step
-        int climbOneStep = solveWithMemo(memory, heights, N, step + 1, heights[step]); // Is to advance one step ahead from it
-        int climbTwoStep = solveWithMemo(memory, heights, N, step + 2, heights[step]); // Is to advance two steps ahead from it
-            
-        // Store the result value to the memoization table and then return it
-        return memory[step][prevHeight] = abs(prevHeight - heights[step]) + min(climbOneStep, climbTwoStep);
-    }
-    
-    // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& heights, int N, int step, int prevHeight) {
-        // Edge case: If we reached the last step then return the energy value as an valid indication of it
-        if(step == N-1)
-            return abs(prevHeight - heights[step]);
-            
-        // Edge case: If we're not able to reach the last step then it's not possible to have a valid way
-        if(step >= N)
-            return INT_MAX;
-            
-        // There are always two possibilities to perform at each step
-        int climbOneStep = solveWithoutMemo(heights, N, step + 1, heights[step]); // Is to advance one step ahead from it
-        int climbTwoStep = solveWithoutMemo(heights, N, step + 2, heights[step]); // Is to advance two steps ahead from it
-        
-        // As we're striving for the minimum energy hence return the minimum value     
-        return abs(prevHeight - heights[step]) + min(climbOneStep, climbTwoStep);
-    }
-};
-// Note: You can ignore this solution for now. Consider it as a future test when you'll complete Multi-Dimensional DP pattern and please don't worry i just did this thing in this problem only, you won't find this kind of things in any other problem. Actually i created this solution as a brute force and yeah feel free to ignore it for now
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// #2 Class to implement the Top-down approach:
-class TopDown_V2 {
-public:
-    // Method to find the minimum energy, using recursion with memoization - O(N) & O(N)
-    int minimumEnergy(vector<int>& heights, int N) {
-        vector<int> memory(N - 1, -1);
-        return solveWithMemo(memory, heights, N, 0);
-    }
-    
-private:
-    // O(2*N) & O(N+N)
-    int solveWithMemo(vector<int>& memory, vector<int>& heights, int N, int step) {
-        // Edge case: If we reached the last step then we don't have to compute more energy
-        if(step == N-1)
+    int solveWithoutMemo(vector<int>& heights, int idx) {
+        if(idx == n-1)
             return 0;
-            
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[step] != -1)
-            return memory[step];
-            
-        // There are always two possibilities to perform at each step
-        int climbOneStep = abs(heights[step] - heights[step + 1]) + solveWithMemo(memory, heights, N, step + 1); // Is to advance one step ahead from it
-        int climbTwoStep = INT_MAX;                                                                              // Is to advance two steps ahead from it
                     
-        // If it's possible then advance two steps ahead from this step
-        if(step + 2 < N)
-            climbTwoStep = abs(heights[step] - heights[step + 2]) + solveWithMemo(memory, heights, N, step + 2);
-            
-        // Store the result value to the memoization table and then return it
-        return memory[step] = min(climbOneStep, climbTwoStep);
+        int jump1Step = abs(heights[idx + 1] - heights[idx]) + solveWithoutMemo(heights, idx + 1);
+        int jump2Step = (idx + 2 < n)
+                      ? abs(heights[idx + 2] - heights[idx]) + solveWithoutMemo(heights, idx + 2)
+                      : INT_MAX;
+        
+        return min(jump1Step, jump2Step);
     }
 
-    // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& heights, int N, int step) {
-        // Edge case: If we reached the last step then we don't have to compute more energy
-        if(step == N-1)
+    int solveWithMemo(vector<int>& dp, vector<int>& heights, int idx) {
+        if(idx == n-1)
             return 0;
+        
+        if(dp[idx] != -1)
+            return dp[idx];
             
-        // There are always two possibilities to perform at each step
-        int climbOneStep = abs(heights[step] - heights[step + 1]) + solveWithoutMemo(heights, N, step + 1); // Is to advance one step ahead from it
-        int climbTwoStep = INT_MAX;                                                                         // Is to advance two steps ahead from it
-                    
-        // If it's possible then advance two steps ahead from this step
-        if(step + 2 < N)
-            climbTwoStep = abs(heights[step] - heights[step + 2]) + solveWithoutMemo(heights, N, step + 2);
-            
-        // As we're striving for the minimum energy hence return the minimum value
-        return min(climbOneStep, climbTwoStep);
+        int jump1Step = abs(heights[idx + 1] - heights[idx]) + solveWithMemo(dp, heights, idx + 1);
+        int jump2Step = (idx + 2 < n)
+                      ? abs(heights[idx + 2] - heights[idx]) + solveWithMemo(dp, heights, idx + 2)
+                      : INT_MAX;
+        
+        return dp[idx] = min(jump1Step, jump2Step);
+    }
+    
+public:
+    int minCostToReachTop(vector<int>& heights) {
+        n = heights.size();
+        vector<int> dp(n-1, -1);
+        return solveWithMemo(dp, heights, 0);
     }
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {
-public:
-    // #1 Method to find the minimum energy, using 1D tabulation - O(N) & O(N)
-    int minimumEnergy_V1(vector<int>& heights, int N) {
-        // 1D DP table
-        vector<int> dp(N, INT_MAX);
-        
-        // Initialize the edge case: If we reached the last step then we don't have to compute more energy
-        dp[N - 1] = 0;
-        
-        // Fill the rest of the table
-        for(int step = N-2; step >= 0; --step) {
-            int climbOneStep = abs(heights[step] - heights[step + 1]) + dp[step + 1];
-            int climbTwoStep = INT_MAX;                                                                             
-            if(step + 2 < N) {
-                climbTwoStep = abs(heights[step] - heights[step + 2]) + dp[step + 2];
-            }
-            dp[step] = min(climbOneStep, climbTwoStep);
+    int n;
+    
+    int solveWith1DTable(vector<int>& heights) {
+        vector<int> dp(n, -1);
+        dp[n - 1] = 0;
+            
+        for(int idx = n-2; idx >= 0; --idx) {
+            int jump1Step = abs(heights[idx + 1] - heights[idx]) + dp[idx + 1];
+            int jump2Step = (idx + 2 < n) 
+                          ? abs(heights[idx + 2] - heights[idx]) + dp[idx + 2] 
+                          : INT_MAX;
+            
+            dp[idx] = min(jump1Step, jump2Step);
         }
         
-        // Return the result value
         return dp[0];
     }
-    // Note: This bottom-up solution is created from the memoized solution of (TopDown_V2)
-
-    // #2 Method to find the minimum energy, using constant auxiliary space - O(N) & O(1)
-    int minimumEnergy_V2(vector<int>& heights, int N) {
-        int nextEnergy1 = 0, nextEnergy2 = INT_MAX, minEnergy = 0; 
-        
-        for(int step = N-2; step >= 0; --step) {
-            int climbOneStep = abs(heights[step] - heights[step + 1]) + nextEnergy1;
-            int climbTwoStep = INT_MAX;                                                                             
-            if(step + 2 < N) {
-                climbTwoStep = abs(heights[step] - heights[step + 2]) + nextEnergy2;
-            }
-            minEnergy   = min(climbOneStep, climbTwoStep);
-            nextEnergy2 = nextEnergy1;
-            nextEnergy1 = minEnergy;
+    
+    int solveWithoutTable(vector<int>& heights) {
+        int dp_idx_1 = 0;
+        int dp_idx_2 = 0;
+        int minCost  = 0;
+            
+        for(int idx = n-2; idx >= 0; --idx) {
+            int jump1Step = abs(heights[idx + 1] - heights[idx]) + dp_idx_1;
+            int jump2Step = (idx + 2 < n) 
+                          ? abs(heights[idx + 2] - heights[idx]) + dp_idx_2 
+                          : INT_MAX;
+            
+            minCost  = min(jump1Step, jump2Step);
+            dp_idx_2 = dp_idx_1;
+            dp_idx_1 = minCost; 
         }
-         
-        return minEnergy;
+        
+        return minCost;
+    }
+    
+public:
+    int minCostToReachTop(vector<int>& heights) {
+        n = heights.size();
+        return solveWithoutTable(heights);
     }
 };
 
