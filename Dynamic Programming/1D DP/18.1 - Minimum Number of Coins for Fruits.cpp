@@ -61,8 +61,7 @@ public:
         int n = prices.size();
 
         vector<int> dp(n + 2, -1);
-        dp[n] = 0;
-        dp[n + 1] = 0;
+        dp[n] = dp[n + 1] = 0; // Init the edge case
 
         for(int index = n-1; index >= 0; --index) {
             int minCoins  = INT_MAX;
