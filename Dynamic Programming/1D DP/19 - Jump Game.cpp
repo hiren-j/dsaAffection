@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(M^N) & O(N) : Where M = maximum element of array
     bool solveWithoutMemo(vector<int>& nums, int index) {
         if(index == n-1)
             return true;
@@ -16,6 +17,7 @@ class TopDown {
         return false;
     }
 
+    // O(M*N) & O(2*N) : Where M = maximum element of array
     bool solveWithMemo(vector<int>& dp, vector<int>& nums, int index) {
         if(index == n-1)
             return true;
@@ -42,6 +44,7 @@ public:
 
 class BottomUp {
 public:
+    // O(N*M) & O(N) : Where M = maximum element of array
     bool canReachLastIndex(vector<int>& nums) {
         int n = nums.size();
 
