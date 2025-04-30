@@ -3,111 +3,77 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    int n;
+
+    int solveWithoutMemo(vector<int>& energy, int k, int magician) {
+        if(magician >= n)
+            return 0;
+
+        return energy[magician] + solveWithoutMemo(energy, k, magician + k);
+    }
+
+    int solveWithMemo(vector<int>& dp, vector<int>& energy, int k, int magician) {
+        if(magician >= n)
+            return 0;
+
+        if(dp[magician] != -1)
+            return dp[magician];
+
+        return dp[magician] = energy[magician] + solveWithMemo(dp, energy, k, magician + k);
+    }
+
 public:
-    // Method to find the maximum possible energy you can gain, using recursion with memoization - O(N) & O(N)
-    int maximumEnergy(std::vector<int>& energy, int k) {
-        int n = energy.size(), maxEnergy = INT_MIN;
+    int maximumEnergy(vector<int>& energy, int k) {
+        n = energy.size();
+        
+        vector<int> dp(n, -1);
 
-        // 1D memoization table
-        std::vector<int> memory(n, -1);
-        
-        // Gain the total energy you can get from each magician and update the result by the maximum value
-        for(int magician = 0; magician < n; ++magician)
-            maxEnergy = std::max(maxEnergy, energy[magician] + solveWithMemo(memory, energy, k, n, magician));
-        
-        // Return the maximum possible energy you can gain
+        int maxEnergy = INT_MIN;
+        for(int start = 0; start < n; ++start) 
+            maxEnergy = max(maxEnergy, solveWithMemo(dp, energy, k, start));
+
         return maxEnergy;
-    }
-    
-private:
-    // O(N) & O(N+N)
-    int solveWithMemo(std::vector<int>& memory, std::vector<int>& energy, int k, int n, int magician) {    
-        // Edge case: If all the magicians are visited then you can't gain any more energy
-        if(magician >= n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[magician] != -1)
-            return memory[magician];
-        
-        // Stores the energy you can gain for the current magician
-        int currEnergy = 0;
-        
-        // If it's possible to teleport to the kth magician then take the energy of the current magician and teleport to the kth magician
-        if(magician + k < n)
-            currEnergy += energy[magician + k] + solveWithMemo(memory, energy, k, n, magician + k);
-        
-        // Stores the result value to the memoization table and then return it
-        return memory[magician] = currEnergy;
-    }
-    
-    // O(N*N) & O(N)
-    int solveWithoutMemo(std::vector<int>& energy, int k, int n, int magician) {    
-        // Edge case: If all the magicians are visited then you can't gain any more energy
-        if(magician >= n)
-            return 0;
-        
-        // Stores the energy you can gain for the current magician
-        int currEnergy = 0;
-        
-        // If it's possible to teleport to the kth magician then take the energy of the current magician and teleport to the kth magician
-        if(magician + k < n)
-            currEnergy += energy[magician + k] + solveWithoutMemo(energy, k, n, magician + k);
-        
-        // Return the result value
-        return currEnergy;
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V1 {
-public:
-    // Method to find the maximum possible energy you can gain, using 1D tabulation - O(N) & O(N) 
-    int maximumEnergy(std::vector<int>& energy, int k) {
-        int n = energy.size();
+class BottomUp {
+    int n;
 
-        // 1D table: dp[magician] represents the maximum possible energy you can gain for the individual magician
-        std::vector<int> dp(n+1, 0);
-
-        // Fill the table
+    int solveWith1DTable(vector<int>& energy, int k) {
+        vector<int> dp(n, -1);
         for(int magician = n-1; magician >= 0; --magician) {
-            int currEnergy = 0;
-
-            if(magician + k < n)
-                currEnergy += energy[magician + k];
-            if(magician + k <= n)
-                currEnergy += dp[magician + k];
-
-            dp[magician] = currEnergy;
+            int nextAbsorptions = (magician + k < n) ? dp[magician + k] : 0;
+            dp[magician] = energy[magician] + nextAbsorptions;
         }
 
-        // Stores the result value
         int maxEnergy = INT_MIN;
+        for(int start = 0; start < n; ++start) 
+            maxEnergy = max(maxEnergy, dp[start]);
 
-        // Iterate and update the result by the maximum value
-        for(int magician = 0; magician < n; ++magician)
-            maxEnergy = std::max(maxEnergy, energy[magician] + dp[magician]);
-        
-        // Return the result value
         return maxEnergy;
     }
-};
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUp_V2 {
-public:
-    // Method to find the maximum possible energy you can gain, using constant auxiliary space - O(N) & O(1)
-    int maximumEnergy(std::vector<int>& energy, int k) {
+    int solveWith1DEnhanced(vector<int>& energy, int k) {
         int n = energy.size();
+        int maxEnergy = INT_MIN;
 
-        // Gain the total energy you can get for each magician from their corresponding kth magician
-        for(int magician = n-k-1; magician >= 0; --magician)
-            energy[magician] += energy[magician + k];
+        vector<int> dp(n, -1);
 
-        // Return the maximum possible energy you can gain
-        return *max_element(begin(energy), end(energy));
+        for(int magician = n-1; magician >= 0; --magician) {
+            int nextAbsorptions = (magician + k < n) ? dp[magician + k] : 0;
+            dp[magician] = energy[magician] + nextAbsorptions;
+            maxEnergy = max(maxEnergy, dp[magician]);
+        }
+
+        return maxEnergy;
+    }
+
+public:
+    int maximumEnergy(vector<int>& energy, int k) {
+        n = energy.size();
+        return solveWith1DEnhanced(energy, k);
     }
 };
 
