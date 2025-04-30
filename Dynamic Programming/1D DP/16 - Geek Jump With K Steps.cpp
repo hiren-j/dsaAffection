@@ -1,56 +1,50 @@
-// Code to find the minimum possible total cost incurred before the Geek reaches the Nth stone, the Geek can jump to any one of the following, stone + 1, stone + 2, ... stone + K stone and cost will be [hi - hj] is incurred, where jump is the stone to land on ~ coded by Hiren
+// Code to find the minimum possible total cost incurred before the Geek reaches the nth stone, the Geek can jump to any one of the following, stone + 1, stone + 2, ... stone + K stone and cost will be [hi - hj] is incurred, where jump is the stone to land on ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to find the minimum possible total cost, using recursion with memoization - O(N*K) & O(N)
-    int minimizeCost(vector<int>& height, int N, int K) {
-        vector<int> memory(N-1, -1);
-        return solveWithMemo(memory, height, N, K, 0);
-    }
-    
-private:
-    // O(K*N) & O(N+N)
-    int solveWithMemo(vector<int>& memory, vector<int>& height, int N, int K, int startStone) {
-        // Edge case: If Geek reached the last stone then there's no need to compute more cost
-        if(startStone == N-1)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startStone] != -1)
-            return memory[startStone];
-        
-        // Stores the result value 
-        int minCost = INT_MAX;
-        
-        // Try each possible jump from the current stone and look for the minimum cost
-        for(int jump = 1; (jump <= K && startStone + jump < N); jump++) {
-            int nextCost = solveWithMemo(memory, height, N, K, startStone + jump);
-            minCost      = min(minCost, nextCost + abs(height[startStone] - height[startStone + jump]));
-        }
-        
-        // Store the result value to the memoization table and then return it
-        return memory[startStone] = minCost;
-    }
+    int n;
 
     // O(K^N) & O(N)
-    int solveWithoutMemo(vector<int>& height, int N, int K, int startStone) {
-        // Edge case: If Geek reached the last stone then there's no need to compute more cost
-        if(startStone == N-1)
+    int solveWithoutMemo(vector<int>& nums, int k, int index) {
+        if(index == n-1)
             return 0;
-
-        // Stores the result value 
+        
         int minCost = INT_MAX;
         
-        // Try each possible jump from the current stone and look for the minimum cost
-        for(int jump = 1; (jump <= K && startStone + jump < N); jump++) {
-            int nextCost = solveWithoutMemo(height, N, K, startStone + jump);
-            minCost      = min(minCost, nextCost + abs(height[startStone] - height[startStone + jump]));
+        for(int jump = 1; (jump <= k && index + jump < n); ++jump) { // Try each possible jump from the index
+            int jumpCost = abs(nums[index + jump] - nums[index]);
+            int nextCost = solveWithoutMemo(nums, k, index + jump);
+            minCost = min(minCost, jumpCost + nextCost);
         }
         
-        // Return the result value            
         return minCost;
+    }
+    
+    // O(K*N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, vector<int>& nums, int k, int index) {
+        if(index == n-1)
+            return 0;
+            
+        if(dp[index] != -1)
+            return dp[index];
+        
+        int minCost = INT_MAX;
+        
+        for(int jump = 1; (jump <= k && index + jump < n); ++jump) { // Try each possible jump from the index
+            int jumpCost = abs(nums[index + jump] - nums[index]);
+            int nextCost = solveWithMemo(dp, nums, k, index + jump);
+            minCost = min(minCost, jumpCost + nextCost);
+        }
+        
+        return dp[index] = minCost;
+    }
+    
+public:
+    int minimizeCost(int k, vector<int>& nums) {
+        n = nums.size();
+        vector<int> dp(n-1, -1);
+        return solveWithMemo(dp, nums, k, 0);
     }
 };
 
@@ -58,25 +52,25 @@ private:
 
 class BottomUp {
 public:
-    // Method to find the minimum possible total cost, using 1D tabulation - O(N*K) & O(N)
-    int minimizeCost(vector<int>& height, int N, int K) {
-        // 1D table: dp[stone] represents the minimum cost required to reach the individual stone
-        vector<int> dp(N, INT_MAX); 
-
-        // Initialize the edge case: If Geek reached the last stone then there's no need to compute more cost
-        dp[N - 1] = 0;                 
-
-        // Fill the rest of the table
-        for(int startStone = N-2; startStone >= 0; --startStone) {  
+    // O(N*K) & O(N)
+    int minimizeCost(int k, vector<int>& nums) {
+        int n = nums.size();
+        
+        vector<int> dp(n, -1);
+        dp[n - 1] = 0; // Init the edge case
+        
+        for(int index = n-2; index >= 0; --index) {
             int minCost = INT_MAX;
-            for(int jump = 1; (jump <= K && startStone + jump < N); jump++) {
-                int nextCost = dp[startStone + jump];
-                minCost      = min(minCost, nextCost + abs(height[startStone] - height[startStone + jump]));
+            
+            for(int jump = 1; (jump <= k && index + jump < n); ++jump) {
+                int jumpCost = abs(nums[index + jump] - nums[index]);
+                int nextCost = dp[index + jump];
+                minCost = min(minCost, jumpCost + nextCost);
             }
-            dp[startStone] = minCost; 
+            
+            dp[index] = minCost;
         }
-
-        // Return the result value
+        
         return dp[0];
     }
 };
