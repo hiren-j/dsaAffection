@@ -17,9 +17,9 @@ class TopDown {
         // There are three cut operations to perform
         int cutInLenX = solveWithoutMemo(n - x, x, y, z); // Is to cut line segment in length x
         int cutInLenY = solveWithoutMemo(n - y, x, y, z); // Is to cut line segment in length y
-        int cutInLenX = solveWithoutMemo(n - z, x, y, z); // Is to cut line segment in length z
+        int cutInLenZ = solveWithoutMemo(n - z, x, y, z); // Is to cut line segment in length z
 
-        int maxCuts = max({cutInLenX, cutInLenY, cutInLenX});                
+        int maxCuts = max({cutInLenX, cutInLenY, cutInLenZ});                
         return (maxCuts != INT_MIN) ? maxCuts + 1 : INT_MIN;
     }
 
@@ -37,9 +37,9 @@ class TopDown {
         // There are three cut operations to perform
         int cutInLenX = solveWithMemo(memory, n - x, x, y, z); // Is to cut line segment in length x
         int cutInLenY = solveWithMemo(memory, n - y, x, y, z); // Is to cut line segment in length y
-        int cutInLenX = solveWithMemo(memory, n - z, x, y, z); // Is to cut line segment in length z
+        int cutInLenZ = solveWithMemo(memory, n - z, x, y, z); // Is to cut line segment in length z
 
-        int maxCuts = max({cutInLenX, cutInLenY, cutInLenX});                
+        int maxCuts = max({cutInLenX, cutInLenY, cutInLenZ});                
         return memory[n] = (maxCuts != INT_MIN) ? maxCuts + 1 : INT_MIN;
     }
 
