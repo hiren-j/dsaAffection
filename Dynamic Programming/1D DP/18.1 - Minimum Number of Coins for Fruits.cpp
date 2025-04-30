@@ -23,7 +23,7 @@ class TopDown {
         return minCoins;
     }
 
-    // O(N*2*N) & O(2*N)
+    // O(2*N*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& prices, int index) {
         if(index >= n)
             return 0;
