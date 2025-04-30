@@ -13,6 +13,7 @@ class TopDown {
 
         return energy[magician] + solveWithoutMemo(energy, k, magician + k);
     }
+    // Note: In the time complexity of `solveWithoutMemo()`, the first term in O(N*N) is O(N) and its considered for the loop through which we're calling this function
 
     // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& energy, int k, int magician) {
@@ -24,7 +25,8 @@ class TopDown {
 
         return dp[magician] = energy[magician] + solveWithMemo(dp, energy, k, magician + k);
     }
-
+    // Note: In the time complexity of `solveWithMemo()`, the first term in O(2*N) is O(1*N) and its considered for the loop through which we're calling this function
+    
 public:
     int maximumEnergy(vector<int>& energy, int k) {
         n = energy.size();
