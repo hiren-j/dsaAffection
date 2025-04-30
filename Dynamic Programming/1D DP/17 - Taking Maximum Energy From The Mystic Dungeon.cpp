@@ -27,7 +27,7 @@ public:
         n = energy.size();
         
         vector<int> dp(n, -1);
-
+        
         int maxEnergy = INT_MIN;
         for(int start = 0; start < n; ++start) 
             maxEnergy = max(maxEnergy, solveWithMemo(dp, energy, k, start));
@@ -56,11 +56,9 @@ class BottomUp {
     }
 
     int solveWith1DEnhanced(vector<int>& energy, int k) {
-        int n = energy.size();
-        int maxEnergy = INT_MIN;
-
         vector<int> dp(n, -1);
 
+        int maxEnergy = INT_MIN;
         for(int magician = n-1; magician >= 0; --magician) {
             int nextAbsorptions = (magician + k < n) ? dp[magician + k] : 0;
             dp[magician] = energy[magician] + nextAbsorptions;
