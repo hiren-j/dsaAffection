@@ -1,10 +1,12 @@
 // Code to find the maximum possible energy you can gain by performing the specified teleportation ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     int n;
 
+    // O(N*N) & O(N)
     int solveWithoutMemo(vector<int>& energy, int k, int magician) {
         if(magician >= n)
             return 0;
@@ -12,6 +14,7 @@ class TopDown {
         return energy[magician] + solveWithoutMemo(energy, k, magician + k);
     }
 
+    // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& energy, int k, int magician) {
         if(magician >= n)
             return 0;
@@ -41,6 +44,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(2*N) & O(1*N)
     int solveWith1DTable(vector<int>& energy, int k) {
         vector<int> dp(n, -1);
         for(int magician = n-1; magician >= 0; --magician) {
@@ -55,6 +59,7 @@ class BottomUp {
         return maxEnergy;
     }
 
+    // O(1*N) & O(1*N)
     int solveWith1DEnhanced(vector<int>& energy, int k) {
         vector<int> dp(n, -1);
 
