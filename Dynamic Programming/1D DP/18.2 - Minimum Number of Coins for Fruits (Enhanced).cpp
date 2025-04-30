@@ -14,7 +14,7 @@ class TopDown {
         int minCoins  = solveWithoutMemo(prices, index + jumpLimit + 1); // We know the total free fruits, hence consider skiping them all 
 
         for(int jump = 1; (jump <= jumpLimit && index + jump <= n); ++jump) {
-            int nextBuy = solveWithoutMemo(prices, index + jump); // Now consider buying the next fruit, hence move to that start point
+            int nextBuy = solveWithoutMemo(prices, index + jump); // Now consider purchasing the next fruit, hence move to that start point
             minCoins = min(minCoins, nextBuy);
         }
     
@@ -30,10 +30,10 @@ class TopDown {
             return dp[index];
 
         int jumpLimit = index + 1;
-        int minCoins  = solveWithMemo(dp, prices, index + jumpLimit + 1);
+        int minCoins  = solveWithMemo(dp, prices, index + jumpLimit + 1); // We know the total free fruits, hence consider skiping them all 
 
         for(int jump = 1; (jump <= jumpLimit && index + jump <= n); ++jump) {
-            int nextBuy = solveWithMemo(dp, prices, index + jump);
+            int nextBuy = solveWithMemo(dp, prices, index + jump); // Now consider purchasing the next fruit, hence move to that start point
             minCoins = min(minCoins, nextBuy);
         }
     
