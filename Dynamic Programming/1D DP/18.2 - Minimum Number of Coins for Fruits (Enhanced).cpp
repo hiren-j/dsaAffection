@@ -57,7 +57,7 @@ public:
         int n = prices.size();
 
         vector<int> dp(n + 1, -1);
-        dp[n] = 0; // Init the edge case
+        dp[n] = 0; 
 
         for(int index = n-1; index >= 0; --index) {
             int jumpLimit = index + 1;
