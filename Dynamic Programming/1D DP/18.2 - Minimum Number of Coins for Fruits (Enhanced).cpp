@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(N + N^N) & O(N)
     int solveWithoutMemo(vector<int>& prices, int index) {
         if(index >= n)
             return 0;
@@ -19,7 +20,8 @@ class TopDown {
     
         return minCoins + prices[index];
     }
-
+    
+    // O(N + N*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& prices, int index) {
         if(index >= n)
             return 0;
@@ -50,6 +52,7 @@ public:
 
 class BottomUp {
 public:
+    // O(N*N) & O(1*N)
     int minimumCoins(vector<int>& prices) {
         int n = prices.size();
 
