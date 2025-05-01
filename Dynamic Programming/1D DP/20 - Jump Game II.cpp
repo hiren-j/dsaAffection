@@ -3,8 +3,9 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
-    int n;
+    int n;    
 
+    // O(M^N) & O(N) : Where M = maximum element of array
     int solveWithoutMemo(vector<int>& nums, int index) {
         if(index == n-1)
             return 0;
@@ -13,14 +14,15 @@ class TopDown {
 
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
             int nextJumps = solveWithoutMemo(nums, index + jump);
-            if(nextJumps != INT_MAX) {
-                minJumps = min(minJumps, nextJumps + 1);
+            if(nextJumps != INT_MAX) { 
+                minJumps = min(minJumps, nextJumps + 1); // Update result if you reached the last index
             }
         }
 
         return minJumps;
     }
 
+    // O(M*N) & O(2*N) : Where M = maximum element of array
     int solveWithMemo(vector<int>& dp, vector<int>& nums, int index) {
         if(index == n-1)
             return 0;
@@ -33,7 +35,7 @@ class TopDown {
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
             int nextJumps = solveWithMemo(dp, nums, index + jump);
             if(nextJumps != INT_MAX) {
-                minJumps = min(minJumps, nextJumps + 1);
+                minJumps = min(minJumps, nextJumps + 1); // Update result if you reached the last index
             }
         }
 
@@ -52,6 +54,7 @@ public:
     
 class BottomUp {
 public:
+    // O(N*M) & O(N) : Where M = maximum element of array
     int minJumpsToLastIndex(vector<int>& nums) {
         int n = nums.size();
         
