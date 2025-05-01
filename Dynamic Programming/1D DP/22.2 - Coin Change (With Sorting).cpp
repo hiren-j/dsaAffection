@@ -1,10 +1,6 @@
 // Code to find the fewest number of coins that you need to make up the amount. If that amount of money cannot be made up by any combination of the coins then return -1. You may assume that you have an infinite number of each kind of coin ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-    NOTE: If the given array is always sorted then the solutions of 22.2 are slower comparted to 22.1   
-*/
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     int n;
