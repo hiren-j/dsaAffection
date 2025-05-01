@@ -47,7 +47,7 @@ public:
 
 class BottomUp {
 public:
-    // O(sqrt(N)*N) & O(1*N) : Where N = given_n
+    // O(N*sqrt(N)) & O(1*N) : Where N = given_n
     int numSquares(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[0] = 0;
