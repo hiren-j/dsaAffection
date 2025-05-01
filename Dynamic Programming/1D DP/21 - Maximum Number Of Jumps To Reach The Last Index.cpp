@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(N^N) & O(N)
     int solveWithoutMemo(vector<int>& nums, int target, int start) {
         if(start == n-1)
             return 0;
@@ -25,6 +26,7 @@ class TopDown {
         return maxJumps;
     }
 
+    // O(N*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& nums, int target, int start) {
         if(start == n-1)
             return 0;
@@ -61,6 +63,7 @@ public:
     
 class BottomUp {
 public:
+    // O(N*N) & O(1*N)
     int maxJumpsToLastIndex(vector<int>& nums, int target) {
         int n = nums.size();
         
