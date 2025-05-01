@@ -3,50 +3,43 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    // O(sqrt(N) ^ N) & O(N)
+    int solveWithoutMemo(int n) {
+        if(n == 0)
+            return 0;
+
+        int minSquares = INT_MAX;
+
+        for(int i = 1; i*i <= n; ++i) {
+            int nextSquares = solveWithoutMemo(n - i*i);
+            minSquares = min(minSquares, nextSquares + 1);
+        }
+
+        return minSquares;
+    }
+
+    // O(sqrt(N) * N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, int n) {
+        if(n == 0)
+            return 0;
+
+        if(dp[n] != -1)
+            return dp[n];
+
+        int minSquares = INT_MAX;
+
+        for(int i = 1; i*i <= n; ++i) {
+            int nextSquares = solveWithMemo(dp, n - i*i);
+            minSquares = min(minSquares, nextSquares + 1);
+        }
+
+        return dp[n] = minSquares;
+    }
+
 public:
-    // Method to find the least number of perfect square numbers that sums to N, using recursion with memoization - O(N*sqrt(N)) & O(N)
-    int numSquares(int N) {
-        vector<int> memory(N+1, -1);
-        return solveWithMemo(N, memory);
-    }
-
-private:
-    // O(sqrt(N)*N) & O(N+N)
-    int solveWithMemo(int N, vector<int>& memory) {
-        // Edge case: If N is equal to 0 then its not possible to get any perfect square number
-        if(N == 0)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[N] != -1)
-            return memory[N];
-
-        // Stores the result value
-        int minCount = INT_MAX;
-
-        // Explore all the possibilities which can sum to N and update the result by the minimum value
-        for(int J = 1; J*J <= N; ++J) 
-            minCount = min(minCount, 1 + solveWithMemo(N - J*J, memory));
-
-        // Store the result value to the memoization table and then return it
-        return memory[N] = minCount;
-    }
-
-    // O(sqrt(N)^N) & O(N)
-    int solveWithoutMemo(int N) {
-        // Edge case: If N is equal to 0 then its not possible to get any perfect square number
-        if(N == 0)
-            return 0;
-
-        // Stores the result value
-        int minCount = INT_MAX;
-
-        // Explore all the possibilities which can sum to N and update the result by the minimum value
-        for(int J = 1; J*J <= N; ++J) 
-            minCount = min(minCount, 1 + solveWithoutMemo(N - J*J));
-
-        // Return the result value
-        return minCount;
+    int numSquares(int n) {
+        vector<int> dp(n + 1, -1);
+        return solveWithMemo(dp, n);  
     }
 };
 
@@ -54,25 +47,23 @@ private:
 
 class BottomUp {
 public:
-    // Method to find the least number of perfect square numbers that sums to N, using 1D tabulation - O(N*sqrt(N)) & O(N)
-    int numSquares(int N) {
-        // 1D table: dp[num] stores the least number of perfect square numbers which can sum to num
-        vector<int> dp(N+1, INT_MAX);
-
-        // Initialize the edge case: If N is equal to 0 then its not possible to get any perfect square number
+    // O(sqrt(N) * N) & O(1*N) : Where N = given_n
+    int numSquares(int given_n) {
+        vector<int> dp(given_n + 1, -1);
         dp[0] = 0;
 
-        // Fill the rest of the table
-        for(int num = 1; num <= N; ++num) {
-            int minCount = INT_MAX;
-            for(int J = 1; J*J <= num; ++J) {
-                minCount = min(minCount, 1 + dp[num - J*J]);
+        for(int n = 1; n <= given_n; ++n) {
+            int minSquares = INT_MAX;
+
+            for(int i = 1; i*i <= n; ++i) {
+                int nextSquares = dp[n - i*i];
+                minSquares = min(minSquares, nextSquares + 1);
             }
-            dp[num] = minCount;
+
+            dp[n] = minSquares;
         }
-        
-        // Return the result value
-        return dp[N];
+            
+        return dp[given_n];      
     }
 };
 
