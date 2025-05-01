@@ -3,59 +3,48 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
-public:
-    // Method to find the minimum number of jumps, using recursion with memoization - O(N*N) & O(N)
-    int minJumpsToReachLastIndex(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> memory(n-1, -1);
-        return solveWithMemo(memory, nums, n, 0);
-    }
+    int n;
 
-private:
-    // O(N*N) & O(N+N)
-    int solveWithMemo(vector<int>& memory, vector<int>& nums, int n, int index) {
-        // Edge case: If you reached the last index then return 0 as a valid indication of it
+    int solveWithoutMemo(vector<int>& nums, int index) {
         if(index == n-1)
             return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index] != -1)
-            return memory[index];
-
-        // Stores the result value
-        int minJumps = INT_MAX;
-
-        // Explore all the possibilities of jumping from the current index and update the result by the minimum value
-        for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
-            int nextJumps = solveWithMemo(memory, nums, n, index + jump);
-            if(nextJumps != INT_MAX) {
-                minJumps = min(minJumps, 1 + nextJumps);
-            }
-        }
         
-        // Store the result value to the memoization table and then return it
-        return memory[index] = minJumps;
-    }
-
-    // O(N^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, int n, int index) {
-        // Edge case: If you reached the last index then return 0 as a valid indication of it
-        if(index == n-1)
-            return 0;
-
-        // Stores the result value
         int minJumps = INT_MAX;
 
-        // Explore all the possibilities of jumping from the current index and update the result by the minimum value
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
-            int nextJumps = solveWithoutMemo(nums, n, index + jump);
+            int nextJumps = solveWithoutMemo(nums, index + jump);
             if(nextJumps != INT_MAX) {
-                minJumps = min(minJumps, 1 + nextJumps);
+                minJumps = min(minJumps, nextJumps + 1);
             }
         }
 
-        // Return the result value 
         return minJumps;
+    }
+
+    int solveWithMemo(vector<int>& dp, vector<int>& nums, int index) {
+        if(index == n-1)
+            return 0;
+
+        if(dp[index] != -1)
+            return dp[index];
+        
+        int minJumps = INT_MAX;
+
+        for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
+            int nextJumps = solveWithMemo(dp, nums, index + jump);
+            if(nextJumps != INT_MAX) {
+                minJumps = min(minJumps, nextJumps + 1);
+            }
+        }
+
+        return dp[index] = minJumps;
+    }
+
+public:
+    int minJumpsToLastIndex(vector<int>& nums) {
+        n = nums.size();
+        vector<int> dp(n-1, -1);
+        return solveWithMemo(dp, nums, 0);
     }
 };
 
@@ -63,31 +52,25 @@ private:
     
 class BottomUp {
 public:
-    // Method to find the minimum number of jumps, using 1D tabulation - O(N*N) & O(N)
-    int minJumpsToReachLastIndex(vector<int>& nums) {
+    int minJumpsTpLastIndex(vector<int>& nums) {
         int n = nums.size();
+        
+        vector<int> dp(n, -1);
+        dp[n - 1] = 0;
 
-        // 1D table: dp[index] represents the minimum number of jumps required to reach the individual index
-        vector<int> dp(n, INT_MAX);
-
-        // Initialize the edge case: If you reached the last index then return 0 as a valid indication of it
-        dp[n-1] = 0;
-
-        // Fill the rest of the table
-        for(int index = n-2; index >= 0; --index) {     
+        for(int index = n-2; index >= 0; --index) {
             int minJumps = INT_MAX;
 
             for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
                 int nextJumps = dp[index + jump];
                 if(nextJumps != INT_MAX) {
-                    minJumps = min(minJumps, 1 + nextJumps);
+                    minJumps = min(minJumps, nextJumps + 1);
                 }
             }
 
-            dp[index] = minJumps;
+            dp[index] = minJumps; 
         }
 
-        // Return the result value
         return dp[0];
     }
 };
