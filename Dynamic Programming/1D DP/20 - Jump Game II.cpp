@@ -52,7 +52,7 @@ public:
     
 class BottomUp {
 public:
-    int minJumpsTpLastIndex(vector<int>& nums) {
+    int minJumpsToLastIndex(vector<int>& nums) {
         int n = nums.size();
         
         vector<int> dp(n, -1);
