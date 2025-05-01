@@ -44,7 +44,7 @@ public:
 
 class BottomUp {
 public:
-    // O(N*M) & O(N) : Where M = maximum element of array
+    // O(N*M) & O(1*N) : Where M = maximum element of array
     bool canReachLastIndex(vector<int>& nums) {
         int n = nums.size();
 
