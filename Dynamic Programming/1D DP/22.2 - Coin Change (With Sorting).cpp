@@ -15,9 +15,7 @@ class TopDown {
             
         int minCoins = INT_MAX;
 
-        for(int i = 0; i < n; ++i) {
-            if(coins[i] > amount) 
-                continue;
+        for(int i = 0; (i < n && coins[i] <= amount); ++i) {
             int nextCoins = solveWithoutMemo(coins, amount - coins[i]);
             if(nextCoins != INT_MAX) minCoins = min(minCoins, nextCoins + 1);
         }
@@ -34,9 +32,7 @@ class TopDown {
 
         int minCoins = INT_MAX;
 
-        for(int i = 0; i < n; ++i) {
-            if(coins[i] > amount) 
-                continue;
+        for(int i = 0; (i < n && coins[i] <= amount); ++i) {
             int nextCoins = solveWithMemo(dp, coins, amount - coins[i]);
             if(nextCoins != INT_MAX) minCoins = min(minCoins, nextCoins + 1);
         }
@@ -47,6 +43,7 @@ class TopDown {
 public:
     int minCoinsToMakeAmount(vector<int>& coins, int amount) {
         n = coins.size();
+        sort(begin(coins), end(coins));
         vector<int> dp(amount + 1, -1);
         int minCoins = solveWithMemo(dp, coins, amount);
         return (minCoins == INT_MAX) ? -1 : minCoins;
@@ -59,16 +56,15 @@ class BottomUp {
 public:
     int minCoinsToMakeAmount(vector<int>& coins, int givenAmount) {
         int n = coins.size();
-        
+        sort(begin(nums), end(nums));
+
         vector<int> dp(givenAmount + 1, -1);
         dp[0] = 0;
 
         for(int amount = 1; amount <= givenAmount; ++amount) {
             int minCoins = INT_MAX;
 
-            for(int i = 0; i < n; ++i) {
-                if(coins[i] > amount) 
-                    continue;
+            for(int i = 0; (i < n && coins[i] <= amount); ++i) {
                 int nextCoins = dp[amount - coins[i]];
                 if(nextCoins != INT_MAX) minCoins = min(minCoins, nextCoins + 1);
             }
