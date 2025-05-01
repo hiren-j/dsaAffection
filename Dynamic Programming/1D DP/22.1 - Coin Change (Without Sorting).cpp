@@ -1,6 +1,10 @@
 // Code to find the fewest number of coins that you need to make up the amount. If that amount of money cannot be made up by any combination of the coins then return -1. You may assume that you have an infinite number of each kind of coin ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+    NOTE: The below solutions are efficient if the given array is not sorted.    
+*/
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     int n;
@@ -41,7 +45,7 @@ class TopDown {
     }
 
 public:
-    int coinChange(vector<int>& coins, int amount) {
+    int minCoinsToMakeAmount(vector<int>& coins, int amount) {
         n = coins.size();
         vector<int> dp(amount + 1, -1);
         int minCoins = solveWithMemo(dp, coins, amount);
@@ -53,7 +57,7 @@ public:
 
 class BottomUp {
 public:
-    int coinChange(vector<int>& coins, int givenAmount) {
+    int minCoinsToMakeAmount(vector<int>& coins, int givenAmount) {
         int n = coins.size();
         
         vector<int> dp(givenAmount + 1, -1);
