@@ -3,7 +3,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    // O(sqrt(N) ^ N) & O(N)
+    // O(sqrt(N)^N) & O(N)
     int solveWithoutMemo(int n) {
         if(n == 0)
             return 0;
@@ -18,7 +18,7 @@ class TopDown {
         return minSquares;
     }
 
-    // O(sqrt(N) * N) & O(2*N)
+    // O(sqrt(N)*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, int n) {
         if(n == 0)
             return 0;
@@ -47,7 +47,7 @@ public:
 
 class BottomUp {
 public:
-    // O(sqrt(N) * N) & O(1*N) : Where N = given_n
+    // O(sqrt(N)*N) & O(1*N) : Where N = given_n
     int numSquares(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[0] = 0;
