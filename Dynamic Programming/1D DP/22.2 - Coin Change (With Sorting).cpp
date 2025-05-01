@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(N^A) & O(A) : Where A = amount
     int solveWithoutMemo(vector<int>& coins, int amount) {
         if(amount == 0)
             return 0;
@@ -19,6 +20,7 @@ class TopDown {
         return minCoins;
     }
 
+    // O(N*A) & O(2*A) : Where A = amount
     int solveWithMemo(vector<int>& dp, vector<int>& coins, int amount) {
         if(amount == 0)
             return 0;
@@ -50,6 +52,7 @@ public:
 
 class BottomUp {
 public:
+    // O(A*N) & O(1*A) : Where A = givenAmount
     int minCoinsToMakeAmount(vector<int>& coins, int givenAmount) {
         int n = coins.size();
         sort(begin(coins), end(coins));
