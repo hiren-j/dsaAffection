@@ -2,7 +2,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
-    NOTE: The below solutions are efficient if the given array is sorted.    
+    NOTE: The below solutions are efficient if the given array is not sorted.    
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ class BottomUp {
 public:
     int minCoinsToMakeAmount(vector<int>& coins, int givenAmount) {
         int n = coins.size();
-        sort(begin(nums), end(nums));
+        sort(begin(coins), end(coins));
 
         vector<int> dp(givenAmount + 1, -1);
         dp[0] = 0;
