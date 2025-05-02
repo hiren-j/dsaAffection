@@ -1,4 +1,4 @@
-// Code to count the total steps required to make the given number equal to 0. On each step, you may subtract one of the digits from the number ~ coded by Hiren
+// Code to find the minimum steps required to make the given number equal to 0. On each step, you may subtract one of the digits from the number ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
