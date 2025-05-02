@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    // O(LogN^N) & O(N)
     int solveWithoutMemo(int n) {
         if(n == 0)
             return 0;
@@ -21,6 +22,7 @@ class TopDown {
         return minSteps;
     }
 
+    // O(LogN*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, int n) {
         if(n == 0)
             return 0;
@@ -53,6 +55,7 @@ public:
 
 class BottomUp {
 public:
+    // O(NLogN) & O(1*N) : Where N = given_n 
     int minStepsToMakeZero(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[0] = 0;
