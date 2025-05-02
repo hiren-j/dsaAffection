@@ -3,73 +3,66 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to count the total number of ways to construct sum n, using recursion with memoization - O(N) & O(N)
-    int countWays(int n) {
-        vector<int> memory(n + 1, -1);
-        return solveWithMemo(memory, n);
-    }
-
-private:
-    // O(6*N) & O(N+N)
-    int solveWithMemo(vector<int>& memory, int n) {
-        // Edge case: If n is 0, then there is only one way to construct n
-        if(n == 0)
-            return 1;
-
-        // Memoization table: If the current state is already copmuted then return the computed value
-        if(memory[n] != -1)
-            return memory[n];
-
-        int count = 0;
-
-        // Explore all possible outcomes and count the number of ways to construct n
-        for(int outcome = 1; (outcome <= 6 && n - outcome >= 0); ++outcome)
-            count = (count + solveWithMemo(memory, n - outcome)) % MOD;
-
-        // Store the result value to the memoization table and then return it
-        return memory[n] = count % MOD;
-    }
+    const int MOD = 1e9+7;
 
     // O(6^N) & O(N)
     int solveWithoutMemo(int n) {
-        // Edge case: If n is 0, then there is only one way to construct n
         if(n == 0)
             return 1;
-
+        
         int count = 0;
-
-        // Explore all possible outcomes and count the number of ways to construct n
-        for(int outcome = 1; (outcome <= 6 && n - outcome >= 0); ++outcome)
+ 
+        for(int outcome = 1; (outcome <= 6 && outcome <= n); ++outcome) 
             count = (count + solveWithoutMemo(n - outcome)) % MOD;
-
-        return count % MOD;
+ 
+        return count;
+    }
+ 
+    // O(6*N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, int n) {
+        if(n == 0)
+            return 1;
+ 
+        if(dp[n] != -1)
+            return dp[n];    
+    
+        int count = 0;
+ 
+        for(int outcome = 1; (outcome <= 6 && outcome <= n); ++outcome) 
+            count = (count + solveWithMemo(dp, n - outcome)) % MOD;
+ 
+        return dp[n] = count;
+    }
+ 
+public:
+    int numWays(int n) {
+        vector<int> dp(n + 1, -1);
+        return solveWithMemo(dp, n);
     }
 };
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+    const int MOD = 1e9+7;
+ 
 public:
-    // Method to count the total number of ways to construct sum n, using 1D tabulation - O(N) & O(N)
-    int countWays(int n) {
-        // 1D DP table: dp[i] represents the number of ways to construct sum i
-        vector<int> dp(n + 1, 0);
-
-        // Initialize the edge case
+    // O(N*6) & O(1*N) : Where N = given_n
+    int numWays(int given_n) {
+        vector<int> dp(given_n + 1, -1);
         dp[0] = 1;
-
-        // Fill the rest of the table
-        for(int step = 1; step <= n; ++step) {
+ 
+        for(int n = 1; n <= given_n; ++n) {
             int count = 0;
-            for(int outcome = 1; (outcome <= 6 && step - outcome >= 0); ++outcome) {
-                count = (count + dp[step - outcome]) % MOD;
-            }
-            dp[step] = count % MOD;
-        }
 
-        // Return the result value
-        return dp[n];
+            for(int outcome = 1; (outcome <= 6 && outcome <= n); ++outcome) {
+                count = (count + dp[n - outcome]) % MOD;
+            }
+ 
+            dp[n] = count;
+        }
+ 
+        return dp[given_n];
     }
 };
 
