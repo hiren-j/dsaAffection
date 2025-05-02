@@ -39,7 +39,7 @@ public:
         n = nums.size();
         sort(begin(nums), end(nums));
         vector<int> dp(target + 1, -1);
-        return solveWithoutMemo(nums, target);
+        return solveWithMemo(dp, nums, target);
     }
 };
 
