@@ -3,8 +3,6 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
-    int n;
-
     // O(N^T) & O(T) : Where T = target
     int solveWithoutMemo(vector<int>& nums, int target) {
         if(target == 0)
@@ -38,7 +36,6 @@ class TopDown {
 
 public:
     int numWaysToSumTarget(vector<int>& nums, int givenTarget) {
-        n = nums.size();
         vector<int> dp(target + 1, -1);
         return solveWithMemo(dp, nums, target);
     }
@@ -50,8 +47,6 @@ class BottomUp {
 public:
     // O(T*N) & O(1*T) : Where T = givenTarget
     int numWaysToSumTarget(vector<int>& nums, int givenTarget) {
-        int n = nums.size();
-
         vector<int> dp(givenTarget + 1, -1);
         dp[0] = 1;
 
