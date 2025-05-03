@@ -28,7 +28,7 @@ class TopDown {
             return dp[index];
 
         // If you're here then the character could be within '1' to '9' or it could be a '*' which can be decoded hence consider it and move to the next character. Remember when it's a '*' then suppose we're considering it for the digit '1' only
-        int numWays = solveWithMemo(dp, s, index + 1) % MOD;
+        int numWays = solveWithMemo(dp, s, index + 1);
 
         // If it's confirmly a '*' then consider it for the rest of the digits from '2' to '9'
         if(s[index] == '*') {
@@ -67,7 +67,7 @@ class TopDown {
             }
         }
 
-        return dp[index] = numWays % MOD;
+        return dp[index] = numWays;
     }
     // Note: Creating the `solveWithoutMemo()` is easy, simply remove the dp part, I haven't included because it will increase the line of code
 
@@ -94,6 +94,7 @@ class BottomUp {
         return 0;
     }
 
+    // O(1*N) & O(1*N)
     int solveWith1DTable(const string& s) {
         vector<int> dp(n + 1, 0);
         dp[n] = 1; // Init first edge case
@@ -102,7 +103,7 @@ class BottomUp {
             if(s[index] == '0') // Handle second edge case
                 continue;
 
-            int numWays = dp[index + 1] % MOD;
+            int numWays = dp[index + 1];
 
             if(s[index] == '*') {
                 for(int digit = 2; digit <= 9; ++digit) {
@@ -135,12 +136,13 @@ class BottomUp {
                 }
             }
     
-            dp[index] = numWays % MOD;
+            dp[index] = numWays;
         }
 
         return dp[0];
     }
 
+    // O(1*N) & O(1)
     int solveWithoutTable(const string& s) {
         int dpIndex1 = 1; // Init first edge case
         int dpIndex2 = 0;
@@ -154,7 +156,7 @@ class BottomUp {
                 continue;
             }
 
-            int numWays = dpIndex1 % MOD;
+            int numWays = dpIndex1;
 
             if(s[index] == '*') {
                 for(int digit = 2; digit <= 9; ++digit) {
