@@ -83,8 +83,8 @@ class BottomUp {
 
     // O(1*N) & O(1)
     int solveWithoutTable(const string& s) {
-        int dp_index_1 = 1; // Init first edge case
-        int dp_index_2 = 0; 
+        int dpIndex1 = 1; // Init first edge case
+        int dpIndex2 = 0; 
         int result = 0;
 
         for(int index = n-1; index >= 0; --index) {
@@ -92,14 +92,14 @@ class BottomUp {
                 result = 0;
             }
             else {
-                int numWays = dp_index_1;
+                int numWays = dpIndex1;
                 if(index + 1 < n && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
-                    numWays += dp_index_2;
+                    numWays += dpIndex2;
                 }
                 result = numWays;
             }
-            dp_index_2 = dp_index_1;
-            dp_index_1 = result;
+            dpIndex2 = dpIndex1;
+            dpIndex1 = result;
         }
 
         return result;
