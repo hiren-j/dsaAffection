@@ -61,6 +61,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(1*N) & O(1*N)
     int solveWith1DTable(const string& s) {
         vector<int> dp(n + 1, -1);
         dp[n] = 1; // Init first edge case
@@ -81,6 +82,7 @@ class BottomUp {
         return dp[0];
     }
 
+    // O(1*N) & O(1)
     int solveWithoutTable(const string& s) {
         int dp_index_1 = 1; // Init first edge case
         int dp_index_2 = 0; 
@@ -107,6 +109,7 @@ class BottomUp {
 public:
     int numDecodings(string& s) {
         n = s.size();
+        return solveWithoutTable(s);
     }
 };
 
