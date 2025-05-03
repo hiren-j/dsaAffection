@@ -14,7 +14,7 @@ class TopDown {
         return 0;
     }
 
-    // O(9*N + 9*N + 6*N) & O(2*N)
+    // O(24*N) & O(2*N)
     int solveWithMemo(vector<int>& memory, const string& s, int index) {
         // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
         if(index == n)
