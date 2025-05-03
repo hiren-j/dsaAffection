@@ -71,7 +71,7 @@ class BottomUp {
             }
             else {
                 int numWays = dp[index + 1];
-                if(index + 1< n && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
+                if(index + 1 < n && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
                     numWays += dp[index + 2];
                 }
                 dp[index] = numWays;
