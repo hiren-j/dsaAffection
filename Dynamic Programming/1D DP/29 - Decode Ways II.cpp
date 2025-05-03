@@ -71,7 +71,7 @@ class TopDown {
         // Store the result value to the memoization table and then return it
         return memory[index] = numWays % MOD;
     }
-    // Note: Creating the `solveWithoutMemo()` is easy, simply remove the dp part, I haven't included it because the line of code will increase
+    // Note: Creating the `solveWithoutMemo()` is easy, simply remove the dp part, I haven't included because it will increase the line of code
 
 public: 
     // Method to find the total number of ways to decode the given string in the specified way, using recursion with memoization - O(N) & O(N)
