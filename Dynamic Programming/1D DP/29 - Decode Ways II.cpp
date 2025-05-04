@@ -96,12 +96,14 @@ class BottomUp {
 
     // O(1*N) & O(1*N)
     int solveWith1DTable(const string& s) {
-        vector<int> dp(n + 1, 0);
+        vector<int> dp(n + 1, -1);
         dp[n] = 1; // Init first edge case
 
         for(int index = n-1; index >= 0; --index) {
-            if(s[index] == '0') // Handle second edge case
+            if(s[index] == '0') { // Handle second edge case
+                dp[index] = 0;
                 continue;
+            }
 
             int numWays = dp[index + 1];
 
