@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class TopDown {
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& pascal, int R, int C) {
         if(C == 0 || C == R)
             return 1;
@@ -34,7 +34,7 @@ public:
     
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class BottomUp {
     vector<vector<int>> solveWith2DTable(int N, vector<vector<int>>& pascal) {
         vector<vector<int>> dp(N, vector<int>(N, -1));
 
@@ -82,7 +82,7 @@ public:
     
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class BottomUpEasy {
 public:
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
@@ -99,7 +99,7 @@ public:
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class BottomUpEnhanced {
 public:
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
