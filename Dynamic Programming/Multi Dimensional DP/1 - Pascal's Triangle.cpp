@@ -56,9 +56,10 @@ class BottomUp {
 
         return pascal;        
     }
-
+    // Note: We can do space optimization in this one, to find any cell value we are only dependent on the previous row of the current row, hence instead of taking the dp matrix, we could use two 1D arrays
+    
     vector<vector<int>> solveWith1DTable(int N, vector<vector<int>>& pascal) {
-        vector<int> prevRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: prevRow[0] = prevRow[R] = 1;
+        vector<int> prevRow(N, 1); // Consider it represents R = 1, its because below the loop is starting from R = 2
 
         for(int R = 2; R < N; ++R) {
             vector<int> currRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: currRow[0] = currRow[R] = 1;
