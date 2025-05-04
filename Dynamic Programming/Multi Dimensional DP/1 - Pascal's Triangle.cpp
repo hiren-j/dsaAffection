@@ -11,9 +11,9 @@ class TopDown {
             return dp[R][C];
 
         int moveUp     = solveWithMemo(dp, pascal, R-1, C);
-        int movePrevUp = solveWithMemo(dp, pascal, R-1, C-1);
+        int moveUpPrev = solveWithMemo(dp, pascal, R-1, C-1);
 
-        return dp[R][C] = pascal[R][C] = moveUp + movePrevUp;
+        return dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
     }
 
 public:
@@ -45,8 +45,8 @@ class BottomUp {
         for(int R = 2; R < N; ++R) {
             for(int C = 1; C < R; ++C) {
                 int moveUp     = dp[R-1][C];
-                int movePrevUp = dp[R-1][C-1];
-                dp[R][C] = pascal[R][C] = moveUp + movePrevUp;
+                int moveUpPrev = dp[R-1][C-1];
+                dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
             }
         }
 
@@ -60,8 +60,8 @@ class BottomUp {
             vector<int> idealRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: idealRow[0] = idealRow[R] = 1;
             for(int C = 1; C < R; ++C) {
                 int moveUp     = prevRow[C];
-                int movePrevUp = prevRow[C-1];
-                idealRow[C] = pascal[R][C] = moveUp + movePrevUp;
+                int moveUpPrev = prevRow[C-1];
+                idealRow[C] = pascal[R][C] = moveUp + moveUpPrev;
             }
             prevRow = idealRow;
         }
