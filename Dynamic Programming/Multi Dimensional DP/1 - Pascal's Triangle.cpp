@@ -1,8 +1,22 @@
 // Code to find the first N rows of Pascal's triangle ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    // O(2^(N*N)) & O(N)
+    int solveWithoutMemo(vector<vector<int>>& pascal, int R, int C) {
+        // Base case: In pascal's triangle, cells of first column and last column of any row always have value 1
+        if(C == 0 || C == R)
+            return 1;
+        
+        // In pascal's triangle, here cell value is the sum of two values, the coordinates of those values are
+        int moveUp     = solveWithoutMemo(pascal, R-1, C);
+        int moveUpPrev = solveWithoutMemo(pascal, R-1, C-1);
+        
+        return pascal[R][C] = moveUp + moveUpPrev;
+    }
+
+    // O(2*N*N) & O(N*N + N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& pascal, int R, int C) {
         // Base case: In pascal's triangle, cells of first column and last column of any row always have value 1
         if(C == 0 || C == R)
@@ -18,7 +32,8 @@ class TopDown {
         return dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
     }
 
-public:
+public: 
+    // Method to find first N rows of pascal triangle, using recursion with memoization - O(N^2) & O(N^2)
     vector<vector<int>> generate(int N) {
         // Create rows of pascal's triangle, if we consider R for rows with 0-based indexing then if we're at Rth row, then total values on that row will be R+1
         vector<vector<int>> pascal;
@@ -36,9 +51,10 @@ public:
     }
 };
     
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+    // O(N^2) & O(N^2)
     vector<vector<int>> solveWith2DTable(int N, vector<vector<int>>& pascal) {
         vector<vector<int>> dp(N, vector<int>(N, -1));
 
@@ -58,6 +74,7 @@ class BottomUp {
     }
     // Note: We can do space optimization in this one, to find any cell value we are only dependent on the previous row of the current row, hence instead of taking the dp matrix, we could only use two 1D arrays
     
+    // O(N^2) & O(2*N)
     vector<vector<int>> solveWith1DTable(int N, vector<vector<int>>& pascal) {
         vector<int> prevRow(N, 1); // Consider it represents R = 1, its because the below loop is starting from R = 2
 
@@ -75,6 +92,7 @@ class BottomUp {
     }
 
 public:
+    // Method to find first N rows of pascal triangle, using tabulation :-
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R) {
@@ -85,10 +103,11 @@ public:
     }
 };
     
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUpEasy {
 public:
+    // Method to find first N rows of pascal triangle, using tabulation - O(N^2) & O(N^2)
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R)
@@ -101,11 +120,13 @@ public:
         return pascal;
     }
 };    
+// Note: The auxiliary space is considered because even if its not the user's demand but still we have to create the pascal table to get the values
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUpEnhanced {
 public:
+    // Method to find first N rows of pascal triangle, using tabulation - O(N^2) & O(N^2)
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
 
@@ -120,9 +141,8 @@ public:
         return pascal;
     }
 };    
-// Note: The auxiliary space is considered because even if its not the user's demand but still we have to create the pascal table to get the output
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Link  : https://leetcode.com/problems/pascals-triangle/description/
