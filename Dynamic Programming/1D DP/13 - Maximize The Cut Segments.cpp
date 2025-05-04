@@ -20,7 +20,7 @@ class TopDown {
         int cutInLenZ = solveWithoutMemo(n - z, x, y, z); // Is to cut line segment in length z
 
         int maxCuts = max({cutInLenX, cutInLenY, cutInLenZ});                
-        return (maxCuts != INT_MIN) ? maxCuts + 1 : INT_MIN;
+        return (maxCuts == INT_MIN) ? INT_MIN : maxCuts + 1;
     }
 
     // O(3*N) & O(2*N)
@@ -40,7 +40,7 @@ class TopDown {
         int cutInLenZ = solveWithMemo(memory, n - z, x, y, z); // Is to cut line segment in length z
 
         int maxCuts = max({cutInLenX, cutInLenY, cutInLenZ});                
-        return memory[n] = (maxCuts != INT_MIN) ? maxCuts + 1 : INT_MIN;
+        return memory[n] = (maxCuts == INT_MIN) ? INT_MIN : maxCuts + 1;
     }
 
 public:
