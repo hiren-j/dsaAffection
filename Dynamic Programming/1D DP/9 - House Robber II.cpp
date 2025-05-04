@@ -66,8 +66,8 @@ class BottomUp {
 
     // O(1*N) & O(1)
     int solveWithoutTable(vector<int>& houses, int start, int end) {
-        int dpIndex2 = 0;
         int dpIndex1 = 0;
+        int dpIndex2 = 0;
         int maxMoney;
 
         for(int index = end; index >= start; --index) {
