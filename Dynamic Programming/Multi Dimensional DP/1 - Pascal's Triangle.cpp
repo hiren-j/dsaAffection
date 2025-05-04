@@ -17,15 +17,15 @@ class TopDown {
     }
 
 public:
-    vector<vector<int>> generate(int numRows) {
+    vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
-        for(int R = 0; R < numRows; ++R) {
+        for(int R = 0; R < N; ++R) {
             pascal.push_back(vector<int>(R+1, 1));
         }   
 
-        vector<vector<int>> dp(numRows, vector<int>(numRows, -1));
-        for(int C = 1; C <= numRows-2; ++C) {
-            solveWithMemo(dp, pascal, numRows-1, C);
+        vector<vector<int>> dp(N, vector<int>(N, -1));
+        for(int C = 1; C <= N-2; ++C) {
+            solveWithMemo(dp, pascal, N-1, C);
         }
 
         return pascal;
