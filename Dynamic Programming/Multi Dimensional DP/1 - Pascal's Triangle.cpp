@@ -4,25 +4,29 @@
 
 class TopDown {
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& pascal, int R, int C) {
+        // Base case: In pascal's triangle, cells of first column and last column of any row always have value 1
         if(C == 0 || C == R)
             return 1;
         
         if(dp[R][C] != -1)
             return dp[R][C];
 
+        // In pascal's triangle, here cell value is the sum of two values, the coordinates of those values are
         int moveUp     = solveWithMemo(dp, pascal, R-1, C);
         int moveUpPrev = solveWithMemo(dp, pascal, R-1, C-1);
-
+        
         return dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
     }
 
 public:
     vector<vector<int>> generate(int N) {
+        // 
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R) {
             pascal.push_back(vector<int>(R+1, 1));
         }   
 
+        // 
         vector<vector<int>> dp(N, vector<int>(N, -1));
         for(int C = 1; C <= N-2; ++C) {
             solveWithMemo(dp, pascal, N-1, C);
@@ -38,7 +42,7 @@ class BottomUp {
     vector<vector<int>> solveWith2DTable(int N, vector<vector<int>>& pascal) {
         vector<vector<int>> dp(N, vector<int>(N, -1));
 
-        for(int R = 0; R < N; ++R) {
+        for(int R = 0; R < N; ++R) { // Initialize the base case
             dp[R][0] = dp[R][R] = 1;
         }
 
@@ -54,16 +58,16 @@ class BottomUp {
     }
 
     vector<vector<int>> solveWith1DTable(int N, vector<vector<int>>& pascal) {
-        vector<int> prevRow(N, 1);
+        vector<int> prevRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: prevRow[0] = prevRow[R] = 1;
 
         for(int R = 2; R < N; ++R) {
-            vector<int> idealRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: idealRow[0] = idealRow[R] = 1;
+            vector<int> currRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: currRow[0] = currRow[R] = 1;
             for(int C = 1; C < R; ++C) {
                 int moveUp     = prevRow[C];
                 int moveUpPrev = prevRow[C-1];
-                idealRow[C] = pascal[R][C] = moveUp + moveUpPrev;
+                currRow[C] = pascal[R][C] = moveUp + moveUpPrev;
             }
-            prevRow = idealRow;
+            prevRow = currRow;
         }
 
         return pascal;        
