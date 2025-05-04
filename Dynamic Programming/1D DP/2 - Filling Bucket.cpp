@@ -66,7 +66,7 @@ class BottomUp {
 
     // O(1*N) & O(1)
     int solveWithoutTable(int N) {
-        int fill1Litre = 1;
+        int fill1Litre = 1; // Init the first edge case
         int fill2Litre = 0;
         int numWays    = 0;
 
