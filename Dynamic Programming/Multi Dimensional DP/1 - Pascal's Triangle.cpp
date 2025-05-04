@@ -1,26 +1,121 @@
-// Code to find the first "numRows" of Pascal's triangle ~ coded by Hiren
+// Code to find the first N rows of Pascal's triangle ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp {
-public:
-    // Method to find the first "numRows" of pascal's triangle, using 2D tabulation - O(numRows^2) & O(numRows^2) 
-    vector<vector<int>> generateTable(int numRows) {
-        // Stores the values of the pascal's triangle
-        vector<vector<int>> pascalTable;
+class Solution {
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& pascal, int R, int C) {
+        if(C == 0 || C == R)
+            return 1;
+        
+        if(dp[R][C] != -1)
+            return dp[R][C];
 
-        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
-        for(int R = 0; R < numRows; R++) {
-            pascalTable.emplace_back(vector<int>(R + 1, 1));
-            for(int C = 1; C < R; C++) {
-                pascalTable[R][C] = pascalTable[R - 1][C] + pascalTable[R - 1][C - 1];
-            }
+        int moveUp     = solveWithMemo(dp, pascal, R-1, C);
+        int moveUpPrev = solveWithMemo(dp, pascal, R-1, C-1);
+
+        return dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
+    }
+
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> pascal;
+        for(int R = 0; R < numRows; ++R) {
+            pascal.push_back(vector<int>(R+1, 1));
         }   
 
-        return pascalTable;
+        vector<vector<int>> dp(numRows, vector<int>(numRows, -1));
+        for(int C = 1; C <= numRows-2; ++C) {
+            solveWithMemo(dp, pascal, numRows-1, C);
+        }
+
+        return pascal;
     }
 };
-// Note: The auxiliary space is considered because even if its not the user's demand but still we have to create the pascalTable to get the output
+    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    vector<vector<int>> solveWith2DTable(int N, vector<vector<int>>& pascal) {
+        vector<vector<int>> dp(N, vector<int>(N, -1));
+
+        for(int R = 0; R < N; ++R) {
+            dp[R][0] = dp[R][R] = 1;
+        }
+
+        for(int R = 2; R < N; ++R) {
+            for(int C = 1; C < R; ++C) {
+                int moveUp     = dp[R-1][C];
+                int moveUpPrev = dp[R-1][C-1];
+                dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
+            }
+        }
+
+        return pascal;        
+    }
+
+    vector<vector<int>> solveWith1DTable(int N, vector<vector<int>>& pascal) {
+        vector<int> prevRow(N, 1);
+
+        for(int R = 2; R < N; ++R) {
+            vector<int> idealRow(N, 1); // Setting to 1 also initializes our base case, but to do explicitly then write: idealRow[0] = idealRow[R] = 1;
+            for(int C = 1; C < R; ++C) {
+                int moveUp     = prevRow[C];
+                int moveUpPrev = prevRow[C-1];
+                idealRow[C] = pascal[R][C] = moveUp + moveUpPrev;
+            }
+            prevRow = idealRow;
+        }
+
+        return pascal;        
+    }
+
+public:
+    vector<vector<int>> generate(int N) {
+        vector<vector<int>> pascal;
+        for(int R = 0; R < N; ++R) {
+            pascal.push_back(vector<int>(R+1, 1));
+        }   
+
+        return solveWith1DTable(N, pascal);
+    }
+};
+    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+public:
+    vector<vector<int>> generate(int N) {
+        vector<vector<int>> pascal;
+        for(int R = 0; R < N; ++R)
+            pascal.push_back(vector<int>(R+1, 1));
+
+        for(int R = 2; R < N; ++R)
+            for(int C = 1; C < R; ++C)
+                pascal[R][C] = pascal[R-1][C] + pascal[R-1][C-1];
+
+        return pascal;
+    }
+};    
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+public:
+    vector<vector<int>> generate(int N) {
+        vector<vector<int>> pascal;
+
+        for(int R = 0; R < N; ++R) {
+            pascal.push_back(vector<int>(R+1, 1));
+            
+            for(int C = 1; C < R; ++C) {
+                pascal[R][C] = pascal[R-1][C] + pascal[R-1][C-1];
+            }
+        }
+
+        return pascal;
+    }
+};    
+// Note: The auxiliary space is considered because even if its not the user's demand but still we have to create the pascal table to get the output
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
