@@ -20,13 +20,13 @@ class TopDown {
 
 public:
     vector<vector<int>> generate(int N) {
-        // 
+        // Create rows of pascal's triangle, if we consider R for rows and in 0-based indexing then if we're at Rth row, then total values on that row will be R+1
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R) {
             pascal.push_back(vector<int>(R+1, 1));
         }   
 
-        // 
+        // Start from the last row of pascal's triangle and then find the value of each cell
         vector<vector<int>> dp(N, vector<int>(N, -1));
         for(int C = 1; C <= N-2; ++C) {
             solveWithMemo(dp, pascal, N-1, C);
@@ -46,7 +46,7 @@ class BottomUp {
             dp[R][0] = dp[R][R] = 1;
         }
 
-        for(int R = 2; R < N; ++R) { // Based on TopDown, we could start R from 0, it will also work but that's not needed, as no column iterations will be made for R = 0, 1
+        for(int R = 2; R < N; ++R) { // Based on TopDown, we could start R from 0, it will also work but that's not needed, as no column iterations will be made for R = 0,1
             for(int C = 1; C < R; ++C) {
                 int moveUp     = dp[R-1][C];
                 int moveUpPrev = dp[R-1][C-1];
@@ -68,7 +68,7 @@ class BottomUp {
                 int moveUpPrev = prevRow[C-1];
                 currRow[C] = pascal[R][C] = moveUp + moveUpPrev;
             }
-            prevRow = currRow;
+            prevRow = currRow; // Update previous row for upcoming row
         }
 
         return pascal;        
