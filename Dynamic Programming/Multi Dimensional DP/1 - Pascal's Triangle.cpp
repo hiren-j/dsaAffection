@@ -20,7 +20,7 @@ class TopDown {
 
 public:
     vector<vector<int>> generate(int N) {
-        // Create rows of pascal's triangle, if we consider R for rows and in 0-based indexing then if we're at Rth row, then total values on that row will be R+1
+        // Create rows of pascal's triangle, if we consider R for rows with 0-based indexing then if we're at Rth row, then total values on that row will be R+1
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R) {
             pascal.push_back(vector<int>(R+1, 1));
