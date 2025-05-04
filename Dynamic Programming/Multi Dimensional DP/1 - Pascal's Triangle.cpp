@@ -107,7 +107,7 @@ public:
 
 class BottomUpEasy {
 public:
-    // Method to find first N rows of pascal triangle, using tabulation - O(N^2) & O(N^2)
+    // O(N^2) & O(N^2)
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R)
@@ -126,7 +126,7 @@ public:
 
 class BottomUpEnhanced {
 public:
-    // Method to find first N rows of pascal triangle, using tabulation - O(N^2) & O(N^2)
+    // O(N^2) & O(N^2)
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
 
