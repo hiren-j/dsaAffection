@@ -42,7 +42,7 @@ class BottomUp {
             dp[R][0] = dp[R][R] = 1;
         }
 
-        for(int R = 2; R < N; ++R) {
+        for(int R = 2; R < N; ++R) { // Based on TopDown, we could start R from 0, it will also work but that's not needed, as no column iterations will be made for R = 0, 1
             for(int C = 1; C < R; ++C) {
                 int moveUp     = dp[R-1][C];
                 int moveUpPrev = dp[R-1][C-1];
