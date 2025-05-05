@@ -1,4 +1,4 @@
-// Code to return the rowIndexth (0-indexed) result of the Pascal's triangle ~ coded by Hiren
+// Code to return the rowIndexth (0-indexed) row of the Pascal's triangle ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
