@@ -9,7 +9,7 @@ class TopDown {
         if(C == 0 || C == R)
             return 1;
         
-        // In pascal's triangle, here cell value is the sum of two values, the coordinates of those values are
+        // In pascal's triangle, value of cell (R,C) is the sum of two values, the coordinates of those values are
         int moveUp     = solveWithoutMemo(pascal, R-1, C);
         int moveUpPrev = solveWithoutMemo(pascal, R-1, C-1);
         
@@ -25,7 +25,7 @@ class TopDown {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        // In pascal's triangle, here cell value is the sum of two values, the coordinates of those values are
+        // In pascal's triangle, value of cell (R,C) is the sum of two values, the coordinates of those values are
         int moveUp     = solveWithMemo(dp, pascal, R-1, C);
         int moveUpPrev = solveWithMemo(dp, pascal, R-1, C-1);
         
@@ -72,7 +72,7 @@ class BottomUp {
 
         return pascal;        
     }
-    // Note: We can do space optimization in this one, to find any cell value we are only dependent on the previous row of the current row, hence instead of taking the dp matrix, we could only use two 1D arrays
+    // Note: We can do space optimization in this one, to find any cell value we are only dependent on the previous row of the current row, so instead of taking the dp matrix, we could only use two 1D arrays
     
     // O(N^2) & O(2*N)
     vector<vector<int>> solveWith1DTable(int N, vector<vector<int>>& pascal) {
