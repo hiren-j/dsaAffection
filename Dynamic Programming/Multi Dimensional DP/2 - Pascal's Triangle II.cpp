@@ -1,45 +1,132 @@
-// Code to find the "rowIndex" row of the Pascal's triangle ~ coded by Hiren
+// Code to return the rowIndexth (0-indexed) result of the Pascal's triangle ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class TopDown {
+    int N;
+
+    int solveWithoutMemo(vector<int>& result, int R, int C) {
+        if(C == 0 || C == R || C == N)
+            return 1;
     
-class BottomUp {
-public:
-    // #1 Method to find the "rowIndex" row of the pascal's triangle, using 2D tabulation - O(rowIndex^2) & O(rowIndex^2) 
-    vector<int> getRow_V1(int rowIndex) {
-        // Stores the values of the pascal's triangle
-        vector<vector<int>> pascalTable;
+        int moveUp     = solveWithoutMemo(result, R-1, C);
+        int moveUpPrev = solveWithoutMemo(result, R-1, C-1);
 
-        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
-        for(int row = 0; row <= rowIndex; row++) {
-            pascalTable.emplace_back(vector<int>(row + 1, 1));
-            for(int col = 1; col < row; col++) {
-                pascalTable[row][col] = pascalTable[row - 1][col] + pascalTable[row - 1][col - 1];
-            }
-        }   
+        if(R == N-1)
+            solveWithoutMemo(result, R, C+1);
 
-        // Return the result row
-        return pascalTable[rowIndex];
+        return result[C] = moveUp + moveUpPrev;
     }
 
-    // #2 Method to find the "rowIndex" row of the pascal's triangle, using 1D tabulation - O(rowIndex^2) & O(rowIndex) 
-    vector<int> getRow_V2(int rowIndex) {
-        vector<int> prevRow;
+    int solveWithMemo(vector<vector<int>>& dp, vector<int>& result, int R, int C) {
+        if(C == 0 || C == R || C == N)
+            return 1;
+        
+        if(dp[R][C] != -1)
+            return dp[R][C];
 
-        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
-        for(int row = 0; row <= rowIndex; row++) {
-            vector<int> currRow(row + 1, 1);
-            for(int col = 1; col < row; col++) {
-                currRow[col] = prevRow[col] + prevRow[col - 1];
-            }
-            prevRow = currRow;
-        }   
+        int moveUp     = solveWithMemo(dp, result, R-1, C);
+        int moveUpPrev = solveWithMemo(dp, result, R-1, C-1);
 
-        // Return the result row
-        return prevRow;
+        if(R == N-1)
+            solveWithMemo(dp, result, R, C+1);
+
+        return dp[R][C] = result[C] = moveUp + moveUpPrev;
+    }
+
+public:
+    vector<int> getRow(int rowIndex) {
+        N = rowIndex + 1;
+        vector<vector<int>> dp(N, vector<int>(M, -1));
+        vector<int> result(N, 1);
+        solveWithMemo(dp, result, N-1, 1);
+        return result;
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+    int N;
+
+    vector<int> solveWith2DTable() {
+        vector<vector<int>> dp(N, vector<int>(N+1, -1));
+        vector<int> result(N, 1);
+
+        for(int R = 0; R < N; ++R)
+            dp[R][0] = dp[R][R] = dp[R][N] = 1;
+
+        for(int R = 2; R < N; ++R) {
+            for(int C = 1; C < R; ++C) {
+                int moveUp     = dp[R-1][C];
+                int moveUpPrev = dp[R-1][C-1];
+                dp[R][C] = result[C] = moveUp + moveUpPrev; 
+            }
+        }
+
+        return result;
+    }
+
+    vector<int> solveWith1DTable() {
+        vector<int> prevRow(N + 1, 1), result(N, 1);
+
+        for(int R = 2; R < N; ++R) {
+            vector<int> currRow(N + 1, 1);
+            for(int C = 1; C < R; ++C) {
+                int moveUp     = prevRow[C]; 
+                int moveUpPrev = prevRow[C-1]; 
+                currRow[C] = result[C] = moveUp + moveUpPrev;
+            }
+            prevRow = currRow;
+        }
+
+        return result;
+    }
+
+public:
+    vector<int> getRow(int rowIndex) {
+        N = rowIndex + 1;
+        return solveWith1DTable();
+    }
+};
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUpEasy {
+public:
+    vector<int> getRow(int rowIndex) {
+        int N = rowIndex + 1;
+        vector<vector<int>> pascal(N, vector<int>(N, 1));
+
+        for(int R = 2; R < N; ++R)
+            for(int C = 1; C < R; ++C)
+                pascal[R][C] = pascal[R-1][C] + pascal[R-1][C-1];
+
+        return pascal[rowIndex];
+    }
+};
+    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUpEnhanced {
+public:
+    vector<int> getRow(int rowIndex) {
+        int N = rowIndex + 1;
+        vector<int> prevRow(N, 1);
+
+        for(int R = 2; R < N; ++R) {
+            vector<int> currRow(N, 1);
+            for(int C = 1; C < R; ++C) {
+                currRow[C] = prevRow[C] + prevRow[C-1];
+            }
+            prevRow = currRow;
+        }
+
+        return prevRow;
+    }
+};
+    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
-Link  : https://leetcode.com/problems/pascals-triangle-ii/
+Link  : https://leetcode.com/problems/pascals-triangle/description/
