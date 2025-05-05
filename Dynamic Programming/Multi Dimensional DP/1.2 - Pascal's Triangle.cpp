@@ -56,7 +56,9 @@ public:
             pascal.push_back(vector<int>(R+1, 1));
         }   
 
-        solveWith1DTable(pascal);
+        // Start from the last row of pascal's triangle and then find the value of each cell
+        vector<vector<int>> dp(N, vector<int>(N, -1));
+        solveWithMemo(dp, pascal, N-1, 1);
         return pascal;
     }
 };
