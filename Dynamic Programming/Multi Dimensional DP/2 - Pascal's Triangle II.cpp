@@ -37,6 +37,7 @@ class TopDown {
     }
 
 public:
+    // Method to return rowIndexth row of pascal triangle, using recursion with memoization - O(N^2) & O(N^2)
     vector<int> getRow(int rowIndex) {
         N = rowIndex + 1;
         vector<vector<int>> dp(N, vector<int>(N, -1));
@@ -86,6 +87,7 @@ class BottomUp {
     }
 
 public:
+    // Method to return rowIndexth row of pascal triangle, using tabulation :- 
     vector<int> getRow(int rowIndex) {
         N = rowIndex + 1;
         return solveWith1DTable();
