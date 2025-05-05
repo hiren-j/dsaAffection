@@ -52,6 +52,7 @@ public:
 class BottomUp {
     int N;
 
+    // O(N^2) & O(N^2)
     vector<int> solveWith2DTable() {
         vector<vector<int>> dp(N, vector<int>(N+1, -1));
         vector<int> result(N, 1);
@@ -70,6 +71,7 @@ class BottomUp {
         return result;
     }
 
+    // O(N^2) & O(2*N)
     vector<int> solveWith1DTable() {
         vector<int> prevRow(N+1, 1), result(N, 1);
 
@@ -98,6 +100,7 @@ public:
 
 class BottomUpEasy {
 public:
+    // O(N^2) & O(N^2)
     vector<int> getRow(int rowIndex) {
         int N = rowIndex + 1;
         vector<vector<int>> pascal(N, vector<int>(N, 1));
@@ -114,6 +117,7 @@ public:
 
 class BottomUpEnhanced {
 public:
+    // O(N^2) & O(2*N)
     vector<int> getRow(int rowIndex) {
         int N = rowIndex + 1;
         vector<int> prevRow(N, 1);
