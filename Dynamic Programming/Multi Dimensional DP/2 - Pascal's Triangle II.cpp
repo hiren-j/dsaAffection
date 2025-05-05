@@ -37,7 +37,7 @@ class TopDown {
 public:
     vector<int> getRow(int rowIndex) {
         N = rowIndex + 1;
-        vector<vector<int>> dp(N, vector<int>(M, -1));
+        vector<vector<int>> dp(N, vector<int>(N, -1));
         vector<int> result(N, 1);
         solveWithMemo(dp, result, N-1, 1);
         return result;
@@ -68,10 +68,10 @@ class BottomUp {
     }
 
     vector<int> solveWith1DTable() {
-        vector<int> prevRow(N + 1, 1), result(N, 1);
+        vector<int> prevRow(N+1, 1), result(N, 1);
 
         for(int R = 2; R < N; ++R) {
-            vector<int> currRow(N + 1, 1);
+            vector<int> currRow(N+1, 1);
             for(int C = 1; C < R; ++C) {
                 int moveUp     = prevRow[C]; 
                 int moveUpPrev = prevRow[C-1]; 
