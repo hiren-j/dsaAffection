@@ -71,7 +71,7 @@ class BottomUp {
         return result;
     }
 
-    // O(N^2) & O(2*N)
+    // O(N^2) & O(3*N)
     vector<int> solveWith1DTable() {
         vector<int> prevRow(N+1, 1), result(N, 1);
 
