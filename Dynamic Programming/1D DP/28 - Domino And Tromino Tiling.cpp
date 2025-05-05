@@ -1,4 +1,4 @@
-// Code to find the number of ways to tile an 2 x n board. Since the answer may be very large, return it modulo 109 + 7 ~ coded by Hiren
+// Code to find the number of ways to tile an 2 x n board. Since the answer may be very large, return it modulo 10^9 + 7 ~ coded by Hiren
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -72,6 +72,7 @@ class BottomUp {
 
         return dp[n];
     }
+    // Note: For getting the result of any ith value, we are dependent on the i-1th and i-3th value, which is constant, so instead of taking the dp array, we could maintain 3 variables to keep track of previous 3 values
 
     // O(1*N) & O(1)
     int solveWithoutTable(int n) {
