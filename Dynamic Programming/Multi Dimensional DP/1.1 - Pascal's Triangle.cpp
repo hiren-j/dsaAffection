@@ -31,7 +31,7 @@ class TopDown {
         
         return dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
     }
-    // Note: the dp array is not actually required, we could simply use the same pascal array as dp array, but still I am doing it just so you could learn bottom up, we could also bottom up with that pascal array too, but you could find it easy direclty, that's why I am going with this one
+    // Note: the dp array is not actually required, we could simply use the same pascal array as dp array, but still I am doing it just so you could learn bottom up, we can also do bottom up with that pascal array too but you that would be easy, that's why I am going with this one
 
 public: 
     // Method to find first N rows of pascal triangle, using recursion with memoization - O(N^2) & O(N^2)
