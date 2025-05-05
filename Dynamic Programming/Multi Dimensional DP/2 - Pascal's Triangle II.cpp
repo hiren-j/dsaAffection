@@ -5,6 +5,7 @@
 class TopDown {
     int N;
 
+    // O(2^(N*N)) & O(2*N)
     int solveWithoutMemo(vector<int>& result, int R, int C) {
         if(C == 0 || C == R || C == N)
             return 1;
@@ -18,6 +19,7 @@ class TopDown {
         return result[C] = moveUp + moveUpPrev;
     }
 
+    // O(2*N*N) & O(N*N + 2*N)
     int solveWithMemo(vector<vector<int>>& dp, vector<int>& result, int R, int C) {
         if(C == 0 || C == R || C == N)
             return 1;
