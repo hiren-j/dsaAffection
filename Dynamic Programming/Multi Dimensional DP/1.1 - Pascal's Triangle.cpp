@@ -3,7 +3,7 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    // O(2^(N*N)) & O(N)
+    // O(2^(N*N)) & O(N*N + N)
     int solveWithoutMemo(vector<vector<int>>& pascal, int R, int C) {
         // Base case: In pascal's triangle, cells of first column and last column of any row always have value 1
         if(C == 0 || C == R)
@@ -16,7 +16,7 @@ class TopDown {
         return pascal[R][C] = moveUp + moveUpPrev;
     }
 
-    // O(2*N*N) & O(N*N + N)
+    // O(2*N*N) & O(2*N*N + N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& pascal, int R, int C) {
         // Base case: In pascal's triangle, cells of first column and last column of any row always have value 1
         if(C == 0 || C == R)
