@@ -14,28 +14,28 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N)
-    LL solveWithoutMemo(vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
+    LL solveWithoutMemo(vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickA) {
         if(i >= n)
             return 0;
 
-        LL drinkAndMove   = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 1, (pickDrinkA ? true : false));
-        LL drinkAndSwitch = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 2, (pickDrinkA ? false : true));
+        LL drinkAndMove   = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 1, (pickA ? true : false));
+        LL drinkAndSwitch = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 2, (pickA ? false : true));
 
-        return (pickDrinkA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
+        return (pickA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
     }
 
     // O(2*N*2) & O(N*2+N)
-    LL solveWithMemo(vector<vector<LL>>& dp, vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
+    LL solveWithMemo(vector<vector<LL>>& dp, vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickA) {
         if(i >= n)
             return 0;
 
-        if(dp[i][pickDrinkA] != -1)
-            return dp[i][pickDrinkA];
+        if(dp[i][pickA] != -1)
+            return dp[i][pickA];
 
-        LL drinkAndMove   = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 1, (pickDrinkA ? true : false));
-        LL drinkAndSwitch = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 2, (pickDrinkA ? false : true));
+        LL drinkAndMove   = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 1, (pickA ? true : false));
+        LL drinkAndSwitch = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 2, (pickA ? false : true));
 
-        return dp[i][pickDrinkA] = (pickDrinkA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
+        return dp[i][pickA] = (pickA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
     }
 
 public:
@@ -55,7 +55,7 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    typedef long long LL;
+    using LL = long long;
     int n;
 
     // O(N*2) & O(N*2)
@@ -65,17 +65,10 @@ class BottomUp {
         dp[n][1] = 0;
 
         for(int i = n-1; i >= 0; --i) {
-            for(int pickDrinkA = !startFromA; (startFromA ? pickDrinkA <= 1 : pickDrinkA >= 0); (startFromA ? ++pickDrinkA : --pickDrinkA)) {
-                if(pickDrinkA) {
-                    LL drinkAndMove   = dp[i + 1][true];
-                    LL drinkAndSwitch = (i + 2 <= n) ? dp[i + 2][false] : 0;
-                    dp[i][pickDrinkA] = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
-                }
-                else {
-                    LL drinkAndMove   = dp[i + 1][false]; 
-                    LL drinkAndSwitch = (i + 2 <= n) ? dp[i + 2][true] : 0; 
-                    dp[i][pickDrinkA] = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
-                }
+            for(int pickA = !startFromA; (startFromA ? pickA <= 1 : pickA >= 0); (startFromA ? ++pickA : --pickA)) {
+                LL drinkAndMove   = dp[i + 1][pickA ? true : false];
+                LL drinkAndSwitch = (i + 2 <= n) ? dp[i + 2][pickA ? false : true] : 0;
+                dp[i][pickA] = (pickA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
             }
         }
 
@@ -91,17 +84,10 @@ class BottomUp {
         for(int i = n-1; i >= 0; --i) {
             vector<LL> currRow(2, -1);
 
-            for(int pickDrinkA = !startFromA; (startFromA ? pickDrinkA <= 1 : pickDrinkA >= 0); (startFromA ? ++pickDrinkA : --pickDrinkA)) {
-                if(pickDrinkA) {
-                    LL drinkAndMove   = prevRow[true];
-                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow[false] : 0;
-                    currRow[pickDrinkA] = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
-                }
-                else {
-                    LL drinkAndMove   = prevRow[false]; 
-                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow[true] : 0; 
-                    currRow[pickDrinkA] = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
-                }
+            for(int pickA = !startFromA; (startFromA ? pickA <= 1 : pickA >= 0); (startFromA ? ++pickA : --pickA)) {
+                LL drinkAndMove   = prevRow[pickA ? true : false];
+                LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow[pickA ? false : true] : 0;
+                currRow[pickA] = (pickA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
             }
 
             prevPrevRow = prevRow;
@@ -122,17 +108,11 @@ class BottomUp {
             LL currRow_0 = -1;
             LL currRow_1 = -1;
 
-            for(int pickDrinkA = !startFromA; (startFromA ? pickDrinkA <= 1 : pickDrinkA >= 0); (startFromA ? ++pickDrinkA : --pickDrinkA)) {
-                if(pickDrinkA) {
-                    LL drinkAndMove   = prevRow_1;
-                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow_0 : 0;
-                    currRow_1 = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
-                }
-                else {
-                    LL drinkAndMove   = prevRow_0; 
-                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow_1 : 0; 
-                    currRow_0 = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
-                }
+            for(int pickA = !startFromA; (startFromA ? pickA <= 1 : pickA >= 0); (startFromA ? ++pickA : --pickA)) {
+                LL drinkAndMove   = (pickA ? prevRow_1 : prevRow_0);
+                LL drinkAndSwitch = (i + 2 <= n ? (pickA ? prevPrevRow_0 : prevPrevRow_1) : 0);
+                LL maxEnergy = (pickA ? energyDrinkA[i] : energyDrinkB[i]) + max(drinkAndMove, drinkAndSwitch);
+                (pickA) ? currRow_1 = maxEnergy : currRow_0 = maxEnergy;
             }
 
             prevPrevRow_0 = prevRow_0;
