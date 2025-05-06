@@ -60,11 +60,11 @@ class BottomUp {
     }
     
     // O(N*N) & O(2*N) : Where N = given_N
-    int solveWith1DTable(int N, int R) {
-        vector<int> prevRow(N, 1);
+    int solveWith1DTable(int given_N, int given_R) {
+        vector<int> prevRow(given_N, 1);
         // prevRow[0] = 1; // If yow want array like this: vector<int> prevRow(N, -1); then uncomment this line
     
-        for(int R = 1; R <= N; ++R) {
+        for(int R = 1; R <= given_N; ++R) {
             vector<int> currRow(R+1, 1); // Setting to 1 also initializes the base case, but if you want array like: vector<int> currRow(R+1, -1); then do this: currRow[0] = currRow[R] = 1;
             for(int C = 1; C < R; ++C) {
                 int moveUp     = prevRow[C];
@@ -74,7 +74,7 @@ class BottomUp {
             prevRow = currRow;
         }
         
-        return prevRow[R];
+        return prevRow[given_R];
     }
     
 public:
