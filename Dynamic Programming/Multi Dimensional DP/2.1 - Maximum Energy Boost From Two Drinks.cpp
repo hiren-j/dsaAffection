@@ -6,6 +6,7 @@ class TopDown {
     typedef long long LL;
     int n;
 
+    // O(2^N) & O(N)
     LL solveWithoutMemo(vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
         if(i >= n)
             return 0;
@@ -22,6 +23,7 @@ class TopDown {
         }
     }
 
+    // O(2*N*2) & O(N*2 + N)
     LL solveWithMemo(vector<vector<LL>>& dp, vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
         if(i >= n)
             return 0;
@@ -44,9 +46,11 @@ class TopDown {
 public:
     LL maxEnergyBoost(vector<int>& energyDrinkA, vector<int>& energyDrinkB) {
         n = energyDrinkA.size();
-    
-        LL maxEnergyA = solveWithoutTable(energyDrinkA, energyDrinkB, true);
-        LL maxEnergyB = solveWithoutTable(energyDrinkA, energyDrinkB, false);
+        
+        vector<vector<LL>> dp1(n, vector<LL>(2, -1)), dp2(n, vector<LL>(2, -1));
+
+        LL maxEnergyA = solveWithMemo(dp1, energyDrinkA, energyDrinkB, 0, true);
+        LL maxEnergyB = solveWithMemo(dp2, energyDrinkA, energyDrinkB, 0, false);
 
         return max(maxEnergyA, maxEnergyB);
     }
@@ -58,6 +62,7 @@ class BottomUp {
     typedef long long LL;
     int n;
 
+    // O(N*2) & O(N*2)
     LL solveWith2DTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
         vector<vector<LL>> dp(n + 1, vector<LL>(2, -1));
         dp[n][0] = 0;
@@ -81,6 +86,7 @@ class BottomUp {
         return dp[0][startFromA];
     }
 
+    // O(N*2) & O(2*2)
     LL solveWith1DTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
         vector<LL> prevRow(2, -1), prevPrevRow(2, -1);
         prevRow[0] = 0;
@@ -109,6 +115,7 @@ class BottomUp {
         return prevRow[startFromA];
     }
 
+    // O(N*2) & O(1)
     LL solveWithoutTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
         LL prevRow_0 = 0;
         LL prevRow_1 = 0;
