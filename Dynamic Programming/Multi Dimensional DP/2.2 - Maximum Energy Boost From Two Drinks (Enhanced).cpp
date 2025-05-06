@@ -3,8 +3,8 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
-  NOTE: In the previous solution, we're using the same redundant code in both if and else block, here I just removed that redundancy, 
-        so I could say approach remains the same but the code looks more shorter now.
+    NOTE: In the previous solution, we're using the same redundant code in both if and else block, here I just removed that redundancy, 
+          so I could say approach remains the same but the code looks more shorter now.
 */  
   
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
