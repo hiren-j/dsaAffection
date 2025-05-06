@@ -57,7 +57,7 @@ class BottomUp {
     // O(N^2) & O(N^2)
     vector<vector<int>> solveWith2DTable(int N, vector<vector<int>>& pascal) {
     /*
-        for(int R = 0; R < N; ++R) { // Initialize the base case, but its required as pascal array already contains 1 in each cell, but this is to ensure how to fill values for base case
+        for(int R = 0; R < N; ++R) { // Initialize the base case, but its not required as pascal array already contains 1 in each cell, but this is to ensure how to fill values for base case
             pascal[R][0] = pascal[R][R] = 1;
         }
     */
