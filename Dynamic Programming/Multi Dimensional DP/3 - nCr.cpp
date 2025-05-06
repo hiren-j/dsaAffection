@@ -3,6 +3,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    // O(2^(N*R)) & O(N)
     int solveWithoutMemo(int R, int C) {
         if(C == 0 || C == R)
             return 1;
@@ -13,6 +14,7 @@ class TopDown {
         return moveUp + moveUpPrev;
     }
 
+    // O(2*N*R) & O(N*R + N)
     int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
         if(C == 0 || C == R)
             return 1;
@@ -27,6 +29,7 @@ class TopDown {
     }
     
 public:
+    // Method to find value of nCr, using recursion with memoization - O(N*R) & O(N*R)
     int nCr(int N, int R) {
         if(R > N) 
             return 0;
@@ -38,13 +41,14 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    int solveWith2DTable(int N, int R) {
-        vector<vector<int>> dp(N+1, vector<int>(N+1, -1));
+    // O(N*N) & O(N*N) : Where N = given_N
+    int solveWith2DTable(int given_N, int given_R) {
+        vector<vector<int>> dp(given_N+1, vector<int>(given_N+1, -1));
         
-        for(int R = 0; R <= N; ++R)
+        for(int R = 0; R <= given_N; ++R)
             dp[R][0] = dp[R][R] = 1;
         
-        for(int R = 1; R <= N; ++R) {
+        for(int R = 1; R <= given_N; ++R) {
             for(int C = 1; C < R; ++C) {
                 int moveUp     = dp[R-1][C];
                 int moveUpPrev = dp[R-1][C-1];
@@ -52,9 +56,10 @@ class BottomUp {
             }
         }
         
-        return dp[N][R];
+        return dp[given_N][given_R];
     }
     
+    // O(N*N) & O(2*N) : Where N = given_N
     int solveWith1DTable(int N, int R) {
         vector<int> prevRow(N, 1);
         // prevRow[0] = 1; // If yow want array like this: vector<int> prevRow(N, -1); then uncomment this line
@@ -73,6 +78,7 @@ class BottomUp {
     }
     
 public:
+    // Method to find value of nCr, using tabulation :-
     int nCr(int N, int R) {
         if(R > N) 
             return 0;
