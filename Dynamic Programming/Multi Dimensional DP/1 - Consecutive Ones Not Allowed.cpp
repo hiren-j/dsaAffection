@@ -61,6 +61,7 @@ class BottomUp {
         
         return dp[given_n][0];
     }
+    // Note: For finding the result of any cell: dp[n][prevPick], we're dependent on two cells of previous row: dp[n-1][0] and dp[n-1][1], so instead of taking the 2D dp array, we could just maintain two 1D arrays
 
     // O(N*2) & O(2*2) : Where N = given_n
     int solveWith1DTable(int given_n) {
@@ -81,6 +82,7 @@ class BottomUp {
         
         return prevRow[0];
     }
+    // Note: Any previous row and current row will contain 2 values, in total we just have 4 values to take care, so instead of taking the 1D arrays, we could just maintain four variables
 
     // O(N*2) & O(1) : Where N = given_n
     int solveWithoutTable(int given_n) {
