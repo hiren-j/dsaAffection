@@ -2,48 +2,59 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp {
-    const int MOD = 1e9+7;
-    
-public:
-    // #1 Method to find the nCr of given two integers, using 2D tabulation - O(N^2) & O(N^2) 
-    int nCr_V1(int N, int R) {
-        if(R > N)
-            return 0;
+class Solution {
+    int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
+        if(C == 0 || C == R)
+            return 1;
+            
+        if(dp[R][C] != -1)
+            return dp[R][C];
+            
+        int moveUp     = solveWithMemo(dp, R-1, C);
+        int moveUpPrev = solveWithMemo(dp, R-1, C-1);
         
-        // Stores the values of the pascal's triangle
-        vector<vector<int>> pascalTable;
-
-        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
-        for(int row = 0; row <= N; row++) {
-            pascalTable.emplace_back(vector<int>(row + 1, 1));
-            for(int col = 1; col < row; col++) {
-                pascalTable[row][col] = (pascalTable[row - 1][col] + pascalTable[row - 1][col - 1]) % MOD;
-            }
-        }   
-
-        // Return the result row
-        return pascalTable[N][R] % MOD;
+        return dp[R][C] = moveUp + moveUpPrev;
     }
-
-    // #2 Method to find the nCr of given two integers, using 1D tabulation - O(N^2) & O(N) 
-    int nCr_V2(int N, int R) {
-        if(R > N)
-            return 0;
+    
+    int solveWith2DTable(int N, int R) {
+        vector<vector<int>> dp(N+1, vector<int>(N+1, -1));
         
-        vector<int> prevRow;
-
-        // In pascal's triangle suppose you're on the 0th row then it will contain 1 column, if on the 1th row then it will contain 2 columns and so on for the rest of the rows
-        for(int row = 0; row <= N; row++) {
-            vector<int> currRow(row + 1, 1);
-            for(int col = 1; col < row; col++) {
-                currRow[col] = (prevRow[col] + prevRow[col - 1]) % MOD;
+        for(int R = 0; R <= N; ++R)
+            dp[R][0] = dp[R][R] = 1;
+        
+        for(int R = 1; R <= N; ++R) {
+            for(int C = 1; C < R; ++C) {
+                int moveUp     = dp[R-1][C];
+                int moveUpPrev = dp[R-1][C-1];
+                dp[R][C] = moveUp + moveUpPrev;
+            }
+        }
+        
+        return dp[N][R];
+    }
+    
+    int solveWith1DTable(int N, int R) {
+        vector<int> prevRow(N, 1);
+        // prevRow[0] = 1; // If yow want array like this: vector<int> prevRow(N, -1); then uncomment this line
+    
+        for(int R = 1; R <= N; ++R) {
+            vector<int> currRow(R+1, 1); // Setting to 1 also initializes the base case, but if you want array like: vector<int> currRow(R+1, -1); then do this: currRow[0] = currRow[R] = 1;
+            for(int C = 1; C < R; ++C) {
+                int moveUp     = prevRow[C];
+                int moveUpPrev = prevRow[C-1];
+                currRow[C] = moveUp + moveUpPrev;
             }
             prevRow = currRow;
-        }   
-
-        // Return the result row
+        }
+        
         return prevRow[R];
+    }
+    
+public:
+    int nCr(int N, int R) {
+        if(R > N) 
+            return 0;
+        return solveWith1DTable(N, R);
     }
 };
 
