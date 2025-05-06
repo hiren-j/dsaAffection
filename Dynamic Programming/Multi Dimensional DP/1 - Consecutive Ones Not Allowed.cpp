@@ -64,7 +64,7 @@ class BottomUp {
 
     // O(N*2) & O(2*2) : Where N = given_n
     int solveWith1DTable(int given_n) {
-        vector<int> prevRow(2, -1), idealRow(2, -1);
+        vector<int> prevRow(2, -1), currRow(2, -1);
 
         // Init the edge case
         prevRow[0] = 1;
@@ -74,9 +74,9 @@ class BottomUp {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 int pick0 = prevRow[0];
                 int pick1 = (prevPick != 1) ? prevRow[1] : 0;
-                idealRow[prevPick] = (pick0 + pick1);   
+                currRow[prevPick] = (pick0 + pick1);   
             }
-            prevRow = idealRow;
+            prevRow = currRow;
         }
         
         return prevRow[0];
@@ -84,20 +84,21 @@ class BottomUp {
 
     // O(N*2) & O(1) : Where N = given_n
     int solveWithoutTable(int given_n) {
-        int prevRow_0  = 1; // Init the edge case
-        int prevRow_1  = 1; // Init the edge case
-        int idealRow_0 = 0;
-        int idealRow_1 = 0;
+        // Init the edge case
+        int prevRow_0 = 1; 
+        int prevRow_1 = 1; 
 
         for(int n = 1; n <= given_n; ++n) {
+            int currRow_0 = 0;
+            int currRow_1 = 0;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 int pick0  = prevRow_0;
                 int pick1  = (prevPick != 1) ? prevRow_1 : 0;
                 int result = pick0 + pick1; 
-                (prevPick == 1) ? idealRow_1 = result : idealRow_0 = result;
+                (prevPick == 1) ? currRow_1 = result : currRow_0 = result;
             }
-            prevRow_0 = idealRow_0;
-            prevRow_1 = idealRow_1;
+            prevRow_0 = currRow_0;
+            prevRow_1 = currRow_1;
         }
         
         return prevRow_0;
