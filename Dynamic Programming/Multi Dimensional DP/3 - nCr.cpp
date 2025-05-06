@@ -1,8 +1,18 @@
 // Code to find the nCr of given two integers ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class TopDown {
+    int solveWithoutMemo(int R, int C) {
+        if(C == 0 || C == R)
+            return 1;
+                        
+        int moveUp     = solveWithoutMemo(R-1, C);
+        int moveUpPrev = solveWithoutMemo(R-1, C-1);
+        
+        return moveUp + moveUpPrev;
+    }
+
     int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
         if(C == 0 || C == R)
             return 1;
@@ -16,6 +26,17 @@ class Solution {
         return dp[R][C] = moveUp + moveUpPrev;
     }
     
+public:
+    int nCr(int N, int R) {
+        if(R > N) 
+            return 0;
+        return solveWith1DTable(N, R); // To find nCr, just find the value of pascal[N][C], where (N,C) are 0-based indexing and pascal represents the 2D array storing values of pascal triangle
+    }
+};
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
     int solveWith2DTable(int N, int R) {
         vector<vector<int>> dp(N+1, vector<int>(N+1, -1));
         
@@ -58,7 +79,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Links : https://www.geeksforgeeks.org/problems/ncr1019/1
