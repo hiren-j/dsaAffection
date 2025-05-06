@@ -2,138 +2,120 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
+class Solution {
     typedef long long LL;
     int n;
 
-    // O(2^N) & O(N)
-    LL solveWithoutMemo(vector<int>& arr1, vector<int>& arr2, int idx, int useArr1) {
-        // Edge case: If you've exhausted all the energy boosts then you can't gain more energy
-        if(idx == n)
+    LL solveWithMemo(vector<vector<LL>>& dp, vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
+        if(i >= n)
             return 0;
 
-        LL maxEnergy = 0;
-        
-        // If its time to consume energyDrink A, then you've two options to perform on the energy boosts of it
-        if(useArr1) {
-            maxEnergy = arr1[idx] + solveWithoutMemo(arr1, arr2, idx + 1, 1);     // Is to drink it and then drink the next boost of energyDrink A
-            maxEnergy = max(maxEnergy, solveWithoutMemo(arr1, arr2, idx + 1, 0)); // Is to make a switch to the next boost of energyDrink B
-        }
-        // Else, if its time to consume energyDrink B, then you've two options to perform on the energy boosts of it
-        else {
-            maxEnergy = arr2[idx] + solveWithoutMemo(arr1, arr2, idx + 1, 0);     // Is to drink it and then drink the next boost of energyDrink B
-            maxEnergy = max(maxEnergy, solveWithoutMemo(arr1, arr2, idx + 1, 1)); // Is to make a switch to the next boost of energyDrink A
-        }
+        if(dp[i][pickDrinkA] != -1)
+            return dp[i][pickDrinkA];
 
-        return maxEnergy;
+        if(pickDrinkA) {
+            LL drinkAndMove   = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 1, true);
+            LL drinkAndSwitch = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 2, false);
+            return dp[i][pickDrinkA] = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
+        }
+        else {
+            LL drinkAndMove   = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 1, false); 
+            LL drinkAndSwitch = solveWithMemo(dp, energyDrinkA, energyDrinkB, i + 2, true); 
+            return dp[i][pickDrinkA] = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
+        }
     }
 
-    // O(2 * N*2) & O(N*2 + N)
-    LL solveWithMemo(vector<vector<LL>>& memory, vector<int>& arr1, vector<int>& arr2, int idx, int useArr1) {
-        // Edge case: If you've exhausted all the energy boosts then you can't gain more energy
-        if(idx == n)
-            return 0;
+    LL solveWith2DTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
+        vector<vector<LL>> dp(n + 1, vector<LL>(2, -1));
+        dp[n][0] = 0;
+        dp[n][1] = 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[idx][useArr1] != -1)
-            return memory[idx][useArr1];
-
-        LL maxEnergy = 0;
-        
-        // If its time to consume energyDrink A, then you've two options to perform on the energy boosts of it
-        if(useArr1) {
-            maxEnergy = arr1[idx] + solveWithMemo(memory, arr1, arr2, idx + 1, 1);     // Is to drink it and then drink the next boost of energyDrink A
-            maxEnergy = max(maxEnergy, solveWithMemo(memory, arr1, arr2, idx + 1, 0)); // Is to make a switch to the next boost of energyDrink B
-        }
-        // Else, if its time to consume energyDrink B, then you've two options to perform on the energy boosts of it
-        else {
-            maxEnergy = arr2[idx] + solveWithMemo(memory, arr1, arr2, idx + 1, 0);     // Is to drink it and then drink the next boost of energyDrink B
-            maxEnergy = max(maxEnergy, solveWithMemo(memory, arr1, arr2, idx + 1, 1)); // Is to make a switch to the next boost of energyDrink A
+        for(int i = n-1; i >= 0; --i) {
+            for(int pickDrinkA = !startFromA; (startFromA ? pickDrinkA <= 1 : pickDrinkA >= 0); (startFromA ? ++pickDrinkA : --pickDrinkA)) {
+                if(pickDrinkA) {
+                    LL drinkAndMove   = dp[i + 1][true];
+                    LL drinkAndSwitch = (i + 2 <= n) ? dp[i + 2][false] : 0;
+                    dp[i][pickDrinkA] = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
+                }
+                else {
+                    LL drinkAndMove   = dp[i + 1][false]; 
+                    LL drinkAndSwitch = (i + 2 <= n) ? dp[i + 2][true] : 0; 
+                    dp[i][pickDrinkA] = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
+                }
+            }
         }
 
-        // Store the result value to the memoization table and then return it
-        return memory[idx][useArr1] = maxEnergy;
+        return dp[0][startFromA];
+    }
+
+    LL solveWith1DTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
+        vector<LL> prevRow(2, -1), prevPrevRow(2, -1);
+        prevRow[0] = 0;
+        prevRow[0] = 0;
+
+        for(int i = n-1; i >= 0; --i) {
+            vector<LL> currRow(2, -1);
+
+            for(int pickDrinkA = !startFromA; (startFromA ? pickDrinkA <= 1 : pickDrinkA >= 0); (startFromA ? ++pickDrinkA : --pickDrinkA)) {
+                if(pickDrinkA) {
+                    LL drinkAndMove   = prevRow[true];
+                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow[false] : 0;
+                    currRow[pickDrinkA] = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
+                }
+                else {
+                    LL drinkAndMove   = prevRow[false]; 
+                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow[true] : 0; 
+                    currRow[pickDrinkA] = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
+                }
+            }
+
+            prevPrevRow = prevRow;
+            prevRow = currRow;
+        }
+
+        return prevRow[startFromA];
+    }
+
+    LL solveWithoutTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
+        LL prevRow_0 = 0;
+        LL prevRow_1 = 0;
+        LL prevPrevRow_0 = -1;
+        LL prevPrevRow_1 = -1;
+
+        for(int i = n-1; i >= 0; --i) {
+            LL currRow_0 = -1;
+            LL currRow_1 = -1;
+
+            for(int pickDrinkA = !startFromA; (startFromA ? pickDrinkA <= 1 : pickDrinkA >= 0); (startFromA ? ++pickDrinkA : --pickDrinkA)) {
+                if(pickDrinkA) {
+                    LL drinkAndMove   = prevRow_1;
+                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow_0 : 0;
+                    currRow_1 = energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
+                }
+                else {
+                    LL drinkAndMove   = prevRow_0; 
+                    LL drinkAndSwitch = (i + 2 <= n) ? prevPrevRow_1 : 0; 
+                    currRow_0 = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
+                }
+            }
+
+            prevPrevRow_0 = prevRow_0;
+            prevPrevRow_1 = prevRow_1;
+            prevRow_0 = currRow_0;
+            prevRow_1 = currRow_1;
+        }
+
+        return (startFromA) ? prevRow_1 : prevRow_0;
     }
 
 public:
-    // Method to find the maximum total energy boost you can gain, using recursion with memoization - O(N) & O(N)
-    LL maxEnergyBoost(vector<int>& arr1, vector<int>& arr2) {
-        n = arr1.size();
-        vector<vector<LL>> memory1(n, vector<LL>(2, -1)), memory2(n, vector<LL>(2, -1));
-        LL maxEnergy1 = solveWithMemo(memory1, arr1, arr2, 0, 1);
-        LL maxEnergy2 = solveWithMemo(memory2, arr1, arr2, 0, 0);
-        return max(maxEnergy1, maxEnergy2);
-    }
-};
+    LL maxEnergyBoost(vector<int>& energyDrinkA, vector<int>& energyDrinkB) {
+        n = energyDrinkA.size();
+    
+        LL maxEnergyA = solveWithoutTable(energyDrinkA, energyDrinkB, true);
+        LL maxEnergyB = solveWithoutTable(energyDrinkA, energyDrinkB, false);
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUp {
-    typedef long long LL;
-    int n;
-
-    // O(N*2) & O(N*2)
-    LL solveUsing2DTable(vector<int>& arr1, vector<int>& arr2, int idx, int useArr1) {
-        // 2D DP table
-        vector<vector<LL>> dp(n + 1, vector<LL>(2, 0));
-
-        // Fill the table
-        for(int idx = n-1; idx >= 0; --idx) {
-            for(int col = (useArr1 == 1 ? 0 : 1); (useArr1 == 1 ? col <= 1 : col >= 0); (useArr1 == 1 ? col++ : col--)) {   
-                LL maxEnergy = 0;
-
-                if(col) {
-                    maxEnergy = arr1[idx] + dp[idx + 1][1];
-                    maxEnergy = max(maxEnergy, dp[idx + 1][0]);
-                }
-                else {
-                    maxEnergy = arr2[idx] + dp[idx + 1][0];
-                    maxEnergy = max(maxEnergy, dp[idx + 1][1]);
-                }
-
-                dp[idx][col] = maxEnergy;
-            }   
-        }
-
-        // Return the result value
-        return dp[0][useArr1];
-    }
-
-    // O(N*2) & O(1)
-    LL solveUsing1DTable(vector<int>& arr1, vector<int>& arr2, int idx, int useArr1) {
-        // 1D DP tables
-        vector<LL> nextRow(2, 0), currRow(2, 0);
-
-        // Fill the table
-        for(int idx = n-1; idx >= 0; --idx) {
-            for(int col = (useArr1 == 1 ? 0 : 1); (useArr1 == 1 ? col <= 1 : col >= 0); (useArr1 == 1 ? col++ : col--)) {   
-                LL maxEnergy = 0;
-
-                if(col) {
-                    maxEnergy = arr1[idx] + nextRow[1];
-                    maxEnergy = max(maxEnergy, nextRow[0]);
-                }
-                else {
-                    maxEnergy = arr2[idx] + nextRow[0];
-                    maxEnergy = max(maxEnergy, nextRow[1]);
-                }
-
-                currRow[col] = maxEnergy;
-            }   
-            nextRow = currRow;
-        }
-
-        // Return the result value
-        return nextRow[useArr1];
-    }
-
-public:
-    // Method to find the maximum total energy boost you can gain, using tabulation :-
-    LL maxEnergyBoost(vector<int>& arr1, vector<int>& arr2) {
-        n = arr1.size();
-        LL maxEnergy1 = solveUsing1DTable(arr1, arr2, 0, 1);
-        LL maxEnergy2 = solveUsing1DTable(arr1, arr2, 0, 0);
-        return max(maxEnergy1, maxEnergy2);
+        return max(maxEnergyA, maxEnergyB);
     }
 };
 
