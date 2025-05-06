@@ -30,7 +30,7 @@ public:
     int nCr(int N, int R) {
         if(R > N) 
             return 0;
-        vector<vector<int>> dp(N+1, vector<int<(R+1, -1));
+        vector<vector<int>> dp(N+1, vector<int>(R+1, -1));
         return solveWithMemo(dp, N, R); // To find nCr, just find the value of pascal[N][R], where (N,R) are 0-based indexing and pascal represents the 2D array storing values of pascal triangle
     }
 };
