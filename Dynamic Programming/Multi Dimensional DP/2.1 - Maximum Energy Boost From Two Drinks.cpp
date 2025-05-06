@@ -23,7 +23,7 @@ class TopDown {
         }
     }
 
-    // O(2*N*2) & O(N*2 + N)
+    // O(2*N*2) & O(N*2+N)
     LL solveWithMemo(vector<vector<LL>>& dp, vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
         if(i >= n)
             return 0;
