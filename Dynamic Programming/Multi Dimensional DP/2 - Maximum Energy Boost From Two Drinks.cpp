@@ -2,9 +2,25 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class TopDown {
     typedef long long LL;
     int n;
+
+    LL solveWithoutMemo(vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
+        if(i >= n)
+            return 0;
+
+        if(pickDrinkA) {
+            LL drinkAndMove   = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 1, true);
+            LL drinkAndSwitch = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 2, false);
+            return energyDrinkA[i] + max(drinkAndMove, drinkAndSwitch);
+        }
+        else {
+            LL drinkAndMove   = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 1, false); 
+            LL drinkAndSwitch = solveWithoutMemo(energyDrinkA, energyDrinkB, i + 2, true); 
+            return energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
+        }
+    }
 
     LL solveWithMemo(vector<vector<LL>>& dp, vector<int>& energyDrinkA, vector<int>& energyDrinkB, int i, bool pickDrinkA) {
         if(i >= n)
@@ -24,6 +40,23 @@ class Solution {
             return dp[i][pickDrinkA] = energyDrinkB[i] + max(drinkAndMove, drinkAndSwitch);
         }
     }
+
+public:
+    LL maxEnergyBoost(vector<int>& energyDrinkA, vector<int>& energyDrinkB) {
+        n = energyDrinkA.size();
+    
+        LL maxEnergyA = solveWithoutTable(energyDrinkA, energyDrinkB, true);
+        LL maxEnergyB = solveWithoutTable(energyDrinkA, energyDrinkB, false);
+
+        return max(maxEnergyA, maxEnergyB);
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+    typedef long long LL;
+    int n;
 
     LL solveWith2DTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
         vector<vector<LL>> dp(n + 1, vector<LL>(2, -1));
