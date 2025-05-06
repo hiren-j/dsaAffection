@@ -16,22 +16,22 @@ class TopDown {
         return pascal[R][C] = moveUp + moveUpPrev;
     }
 
-    // O(2*N*N) & O(2*N*N + N)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& pascal, int R, int C) {
+    // O(2*N*N) & O(N*N + N)
+    int solveWithMemo(vector<vector<int>>& pascal, int R, int C) {
         // Base case: In pascal's triangle, cells of first column and last column of any row always have value 1
         if(C == 0 || C == R)
             return 1;
         
-        if(dp[R][C] != -1)
-            return dp[R][C];
+        if(pascal[R][C] > 1)
+            return pascal[R][C];
 
         // In pascal's triangle, value of cell (R,C) is the sum of two values, the coordinates of those values are
-        int moveUp     = solveWithMemo(dp, pascal, R-1, C);
-        int moveUpPrev = solveWithMemo(dp, pascal, R-1, C-1);
+        int moveUp     = solveWithMemo(pascal, R-1, C);
+        int moveUpPrev = solveWithMemo(pascal, R-1, C-1);
         
-        return dp[R][C] = pascal[R][C] = moveUp + moveUpPrev;
+        return pascal[R][C] = moveUp + moveUpPrev;
     }
-    // Note: the dp array is not actually required, we could simply use the same pascal array as dp array, but still I am doing it just so you could learn bottom up, we can also do bottom up with that pascal array too, but that would be easy for you, that's why I am going with this one
+    // Note: We could simply use the same pascal array as dp array, therefore its not required to create an additional dp array 
 
 public: 
     // Method to find first N rows of pascal triangle, using recursion with memoization - O(N^2) & O(N^2)
@@ -43,9 +43,8 @@ public:
         }   
 
         // Start from the last row of pascal's triangle and then find the value of each cell
-        vector<vector<int>> dp(N, vector<int>(N, -1));
         for(int C = 1; C <= N-2; ++C) {
-            solveWithMemo(dp, pascal, N-1, C);
+            solveWithMemo(pascal, N-1, C);
         }
 
         return pascal;
