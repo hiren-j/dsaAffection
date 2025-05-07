@@ -92,8 +92,8 @@ class BottomUp {
         int prevRow_1 = 1; 
 
         for(int n = 1; n <= given_n; ++n) {
-            int currRow_0 = 0;
-            int currRow_1 = 0;
+            int currRow_0 = -1;
+            int currRow_1 = -1;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 int pick0  = prevRow_0;
                 int pick1  = (prevPick != 1) ? prevRow_1 : 0;
@@ -108,7 +108,6 @@ class BottomUp {
     }
 
 public:
-    // Method to count all distinct binary strings of length n, using tabulation :-
     int countDistinctBinaryStrs(int n) {
         return solveWithoutTable(n);
     }
