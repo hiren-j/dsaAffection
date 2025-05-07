@@ -78,11 +78,10 @@ class BottomUp {
     }
     
 public:
-    // Method to find value of nCr, using tabulation :-
     int nCr(int N, int R) {
         if(R > N) 
             return 0;
-        return solveWith1DTable(N, R); // To find nCr, just find the value of pascal[N][R], where (N,R) are 0-based indexing and pascal represents the 2D array storing values of pascal triangle
+        return solveWith1DTable(N, R); 
     }
 };
 
