@@ -109,8 +109,8 @@ class BottomUpIntuitive {
 
         for(int R = 1; R <= X; ++R) {
             for(int C = 1; C <= Y; ++C) {
-                int moveUp   = dp[R-1][C];  
                 int moveLeft = dp[R][C-1];  
+                int moveUp   = dp[R-1][C];  
                 dp[R][C]  = (moveUp + moveLeft) % MOD;
             }
         }
@@ -134,9 +134,10 @@ class BottomUpIntuitive {
     }
 
     int solveWith1DTable(int X, int Y) {
-        vector<int> prevRow(Y+1, 1), currRow(Y+1, 1);
+        vector<int> prevRow(Y+1, 1);
 
         for(int R = 1; R <= X; ++R) {
+            vector<int> currRow(Y+1, 1);
             for(int C = 1; C <= Y; ++C) {
                 int moveLeft = currRow[C-1];  
                 int moveUp   = prevRow[C];  
