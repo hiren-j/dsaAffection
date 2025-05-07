@@ -65,13 +65,14 @@ class BottomUp {
 
     // O(N*2) & O(2*2) : Where N = given_n
     int solveWith1DTable(int given_n) {
-        vector<int> prevRow(2, -1), currRow(2, -1);
-
+        vector<int> prevRow(2, -1);
+        
         // Init the edge case
         prevRow[0] = 1;
         prevRow[1] = 1;
         
         for(int n = 1; n <= given_n; ++n) {
+            vector<int> currRow(2, -1);
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 int pick0 = prevRow[0];
                 int pick1 = (prevPick != 1) ? prevRow[1] : 0;
