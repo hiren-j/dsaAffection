@@ -2,105 +2,102 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
+class Solution {
+    int M, N;
+
+    int solveWithoutMemo(int R, int C) {
+        if(R == M || C == N)    
+            return 0;
+        
+        if(R == M-1 && C == N-1)
+            return 1;
+
+        int moveRight = solveWithoutMemo(R, C+1);
+        int moveDown  = solveWithoutMemo(R+1, C);
+
+        return moveRight + moveDown;
+    }
+
+    int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
+        if(R == M || C == N)    
+            return 0;
+        
+        if(R == M-1 && C == N-1)
+            return 1;
+
+        if(dp[R][C] != -1)
+            return dp[R][C];
+
+        int moveRight = solveWithMemo(dp, R, C+1);
+        int moveDown  = solveWithMemo(dp, R+1, C);
+
+        return dp[R][C] = moveRight + moveDown;
+    }
+
 public:
-    // Method to find the number of possible unique paths, using recursion with memoization - O(M*N) & O(M*N)
-    int uniquePaths(int M, int N) {
-        vector<vector<int>> memory(M, vector<int>(N, -1));
-        return solveWithMemo(memory, M, N, 0, 0);
-    }
-
-private:
-    // O(2*M*N) & O(M*N + M+N)
-    int solveWithMemo(vector<vector<int>>& memory, int M, int N, int R, int C) {
-        // Edge case: If reached the bottom up corner then you've one valid way
-        if(R == M-1 && C == N-1)
-            return 1;
-
-        // Edge case: If all the cells are exhausted then you've no valid way
-        if(R == M || C == N)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value 
-        if(memory[R][C] != -1)
-            return memory[R][C];
-
-        // There are always two possibilities to perform at each cell
-        int moveRight = solveWithMemo(memory, M, N, R, C+1); // Is to move right
-        int moveDown  = solveWithMemo(memory, M, N, R+1, C); // Is to move down
-
-        // Store the result value to the memoization table and then return it
-        return memory[R][C] = moveDown + moveRight;
-    }
-    
-    // O(2^(M*N)) & O(M+N)
-    int solveWithoutMemo(int M, int N, int R, int C) {
-        // Edge case: If reached the bottom up corner then you've one valid way
-        if(R == M-1 && C == N-1)
-            return 1;
-
-        // Edge case: If all the cells are exhausted then you've no valid way
-        if(R == M || C == N)
-            return 0;
-
-        // There are always two possibilities to perform at each cell
-        int moveRight = solveWithoutMemo(M, N, R, C+1); // Is to move right
-        int moveDown  = solveWithoutMemo(M, N, R+1, C); // Is to move down
-
-        // Return the result value
-        return moveDown + moveRight;
+    int uniquePaths(int m, int n) {
+        M = m, N = n;
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp {
-public:
-    // #1 Method to find the number of possible unique paths, using 2D tabulation - O(M*N) & O(M*N)
-    int uniquePaths_V1(int M, int N) {
-        // 2D DP table
-        vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
-
-        // Initialize the edge case: If reached the bottom up corner then you've one valid way
+class Solution {
+    int solveWith2DTable(int M, int N) {
+        vector<vector<int>> dp(M, vector<int>(N, -1));
         dp[M-1][N-1] = 1;
-
-        // Fill the rest of the table
+        
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
-                if(R == M-1 && C == N-1) 
+                if(R == M-1 && C == N-1)    
                     continue;
-                int moveRight = dp[R][C+1]; 
-                int moveDown  = dp[R+1][C]; 
-                dp[R][C] = moveDown + moveRight;
+                int moveRight = (C+1 < N) ? dp[R][C+1] : 0;
+                int moveDown  = (R+1 < M) ? dp[R+1][C] : 0;
+                dp[R][C] = moveRight + moveDown;
             }
         }
 
-        // Return the result value
         return dp[0][0];
     }
 
-    // #2 Method to find the number of possible unique paths, using 1D tabulation - O(M*N) & O(N)
-    int uniquePaths_V2(int M, int N) {
-        // 1D DP tables
-        vector<int> nextRow(N+1, 0), currRow(N+1, 0);
+    int solveWith2DEnhanced(int M, int N) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
+        dp[M-1][N-1] = 1;
+        
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)    
+                    continue;
+                int moveRight = dp[R][C+1];
+                int moveDown  = dp[R+1][C];
+                dp[R][C] = moveRight + moveDown;
+            }
+        }
 
-        // Initialize the edge case: If reached the bottom up corner then you've one valid way
-        currRow[N-1] = 1;
+        return dp[0][0];
+    }
 
-        // Fill the rest of the table 
+    int solveWith1DTable(int M, int N) {
+        vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
+        idealRow[N-1] = 1;
+
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
                 if(R == M-1 && C == N-1)
                     continue;
-                int moveRight = currRow[C+1]; 
+                int moveRight = idealRow[C+1]; 
                 int moveDown  = nextRow[C]; 
-                currRow[C] = moveDown + moveRight;
+                idealRow[C] = moveDown + moveRight;
             }
-            nextRow = currRow;
+            nextRow = idealRow;
         }
 
-        // Return the result value
-        return currRow[0];
+        return idealRow[0];
+    }
+
+public:
+    int uniquePaths(int M, int N) {
+        return solveWith1DTable(M, N);
     }
 };
 
