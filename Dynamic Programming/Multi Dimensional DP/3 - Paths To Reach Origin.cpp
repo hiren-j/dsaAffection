@@ -4,7 +4,8 @@
 
 class TopDown {
     const int MOD = 1e9+7;
-    
+
+    // O(2^(X*Y)) & O(X+Y)
     int solveWithoutMemo(int X, int Y) {
         if(X == 0 && Y == 0)
             return 1;
@@ -18,6 +19,7 @@ class TopDown {
         return (moveLeft + moveUp) % MOD;
     }
     
+    // O(2*X*Y) & O(X*Y + X+Y)
     int solveWithMemo(vector<vector<int>>& dp, int X, int Y) {
         if(X == 0 && Y == 0)
             return 1;
@@ -35,6 +37,7 @@ class TopDown {
     }
     
 public:
+    // Method to count total ways to reach the origin point, using recursion with mwmoization - O(X*Y) & O(X*Y)
     int waysToReachOrigin(int X, int Y) {
         return solveWithoutMemo(X, Y);
     }
@@ -45,6 +48,7 @@ public:
 class BottomUp {
     const int MOD = 1e9+7;
 
+    // O(X*Y) & O(X*Y)
     int solveWith2DTable(int X, int Y) {
         vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
         dp[0][0] = 1;
@@ -62,6 +66,7 @@ class BottomUp {
         return dp[X][Y];
     }
     
+    // O(X*Y) & O(2*Y)
     int solveWith1DTable(int X, int Y) {
         vector<int> prevRow(Y+1, -1);
 
@@ -96,6 +101,7 @@ public:
 class BottomUpIntuitive {
     const int MOD = 1e9+7;
 
+    // O(X*Y) & O(X*Y)
     int solveWith2DTable(int X, int Y) {
         vector<vector<int>> dp(X+1, vector<int>(Y+1, 0));
 
@@ -118,6 +124,7 @@ class BottomUpIntuitive {
         return dp[X][Y];
     }
 
+    // O(X*Y) & O(X*Y)
     int solveWith2DEnhanced(int X, int Y) {
         //  Suppose you're on a cell and that cell is also a destination cell then you've only 1 path it's because you're already on the cell. So, initially fill all the cells by value 1
         vector<vector<int>> dp(X+1, vector<int>(Y+1, 1));
@@ -133,6 +140,7 @@ class BottomUpIntuitive {
         return dp[X][Y];
     }
 
+    // O(X*Y) & O(2*Y)
     int solveWith1DTable(int X, int Y) {
         vector<int> prevRow(Y+1, 1);
 
