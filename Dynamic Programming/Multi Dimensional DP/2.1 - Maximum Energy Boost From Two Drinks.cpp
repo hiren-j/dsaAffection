@@ -91,7 +91,7 @@ class BottomUp {
     LL solveWith1DTable(vector<int>& energyDrinkA, vector<int>& energyDrinkB, bool startFromA) {
         vector<LL> prevRow(2, -1), prevPrevRow(2, -1);
         prevRow[0] = 0;
-        prevRow[0] = 0;
+        prevRow[1] = 0;
 
         for(int i = n-1; i >= 0; --i) {
             vector<LL> currRow(2, -1);
