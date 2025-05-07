@@ -96,65 +96,61 @@ public:
 class BottomUpIntuitive {
     const int MOD = 1e9+7;
 
-public:
-    // #1 Method to find the total number of paths from points to the origin, using 2D tabulation - O(X*Y) & O(X*Y)
-    int numPaths_V1(int X, int Y) {
-        // 2D DP table
+    int solveWith2DTable(int X, int Y) {
         vector<vector<int>> dp(X + 1, vector<int>(Y + 1, 0));
 
-        // Logically when the value of X is zero then for any value of Y you've only one valid path
-        for(int stepY = 0; stepY <= Y; ++stepY)
-            dp[0][stepY] = 1;
+        // Logically when the value of X is 0 then for any value of Y you can reach point 0
+        for(int C = 0; C <= Y; ++C)
+            dp[0][C] = 1;
 
-        // Logically when the value of Y is zero then for any value of X you've only one valid path
-        for(int stepX = 0; stepX <= X; ++stepX)
-            dp[stepX][0] = 1;
+        // Logically when the value of Y is 0 then for any value of X you can reach point 0
+        for(int R = 0; R <= X; ++R)
+            dp[R][0] = 1;
 
-        // Fill the rest of the table
-        for(int stepX = 1; stepX <= X; ++stepX) {
-            for(int stepY = 1; stepY <= Y; ++stepY) {
-                int numPathsFromX = dp[stepX - 1][stepY];  
-                int numPathsFromY = dp[stepX][stepY - 1];  
-                dp[stepX][stepY]  = (numPathsFromX + numPathsFromY) % MOD;
+        for(int R = 1; R <= X; ++R) {
+            for(int C = 1; C <= Y; ++C) {
+                int moveUp   = dp[R-1][C];  
+                int moveLeft = dp[R][C-1];  
+                dp[R][C]  = (moveUp + moveLeft) % MOD;
             }
         }
 
-        // Return the result value
         return dp[X][Y];
     }
 
-    // #2 Method to find the total number of paths from points to the origin, using 2D tabulation - O(X*Y) & O(X*Y)
-    int numPaths_V2(int X, int Y) {
-        // 2D DP table: Suppose you're on a cell and that cell is also a destination cell then you've only one valid path it's because you're already on the cell. So, initially fill all the cells by value one
-        vector<vector<int>> dp(X + 1, vector<int>(Y + 1, 1));
+    int solveWith2DEnhanced(int X, int Y) {
+        //  Suppose you're on a cell and that cell is also a destination cell then you've only 1 path it's because you're already on the cell. So, initially fill all the cells by value 1
+        vector<vector<int>> dp(X+1, vector<int>(Y+1, 1));
 
-        // Fill the rest of the table
-        for(int stepX = 1; stepX <= X; ++stepX) {
-            for(int stepY = 1; stepY <= Y; ++stepY) {
-                int numPathsFromX = dp[stepX - 1][stepY];  
-                int numPathsFromY = dp[stepX][stepY - 1];  
-                dp[stepX][stepY]  = (numPathsFromX + numPathsFromY) % MOD;
+        for(int R = 1; R <= X; ++R) {
+            for(int C = 1; C <= Y; ++C) {
+                int moveLeft = dp[R][C-1];  
+                int moveUp   = dp[R-1][C];  
+                dp[R][C]  = (moveUp + moveLeft) % MOD;
             }
         }
 
-        // Return the result value
         return dp[X][Y];
     }
 
-    // #3 Method to find the total number of paths from points to the origin, using 1D tabulation - O(X*Y) & O(Y)
-    int numPaths_V3(int X, int Y) {
-        vector<int> prevRow(Y + 1, 1), currRow(Y + 1, 1);
+    int solveWith1DTable(int X, int Y) {
+        vector<int> prevRow(Y+1, 1), currRow(Y+1, 1);
 
-        for(int stepX = 1; stepX <= X; ++stepX) {
-            for(int stepY = 1; stepY <= Y; ++stepY) {
-                int numPathsFromX = prevRow[stepY];  
-                int numPathsFromY = currRow[stepY - 1];  
-                currRow[stepY] = (numPathsFromX + numPathsFromY) % MOD;
+        for(int R = 1; R <= X; ++R) {
+            for(int C = 1; C <= Y; ++C) {
+                int moveLeft = currRow[C-1];  
+                int moveUp   = prevRow[C];  
+                currRow[C] = (moveUp + moveLeft) % MOD;
             }
             prevRow = currRow;
         }
 
         return currRow[Y];
+    }
+
+public:
+    int waysToReachOrigin(int X, int Y) {
+        return solveWith1DTable(X, Y);
     }
 };
 
