@@ -97,7 +97,7 @@ class BottomUpIntuitive {
     const int MOD = 1e9+7;
 
     int solveWith2DTable(int X, int Y) {
-        vector<vector<int>> dp(X + 1, vector<int>(Y + 1, 0));
+        vector<vector<int>> dp(X+1, vector<int>(Y+1, 0));
 
         // Logically when the value of X is 0 then for any value of Y you can reach point 0
         for(int C = 0; C <= Y; ++C)
