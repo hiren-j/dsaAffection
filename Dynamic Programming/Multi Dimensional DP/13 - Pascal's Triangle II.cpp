@@ -89,7 +89,6 @@ class BottomUp {
     }
 
 public:
-    // Method to return rowIndexth row of pascal triangle, using tabulation :- 
     vector<int> getRow(int rowIndex) {
         N = rowIndex + 1;
         return solveWith1DTable();
