@@ -39,7 +39,8 @@ class TopDown {
 public:
     // Method to count total ways to reach the origin point, using recursion with mwmoization - O(X*Y) & O(X*Y)
     int waysToReachOrigin(int X, int Y) {
-        return solveWithoutMemo(X, Y);
+        vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
+        return solveWithMemo(dp, X, Y);
     }
 };
 
@@ -75,8 +76,7 @@ class BottomUp {
             
             for(int C = 0; C <= Y; ++C) {
                 if(R == 0 && C == 0) {
-                    currRow[0] = 1; 
-                    continue;
+                    currRow[0] = 1; continue;
                 }
                 int moveLeft = (C-1 >= 0) ? currRow[C-1] : 0;
                 int moveUp   = (R-1 >= 0) ? prevRow[C] : 0;
@@ -91,8 +91,7 @@ class BottomUp {
     
 public:
     int waysToReachOrigin(int X, int Y) {
-        vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
-        return solveWithMemo(dp, X, Y);
+        return solveWith1DTable(X, Y);
     }
 };
     
