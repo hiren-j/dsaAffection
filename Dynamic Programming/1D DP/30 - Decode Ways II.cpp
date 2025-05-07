@@ -199,7 +199,6 @@ class BottomUp {
     }
 
 public: 
-    // Method to find the total number of ways to decode the string, using tabulation :-
     int numDecodings(string& s) {
         n = s.size();
         return solveWithoutTable(s);
