@@ -4,59 +4,96 @@
 
 class TopDown {
     const int MOD = 1e9+7;
-
-public:
-    // Method to find the total number of paths from points to the origin, using recursion with memoization - O(X*Y) & O(X*Y)
-    int numPaths(int X, int Y) {
-        vector<vector<int>> memory(X + 1, vector<int>(Y + 1, -1));
-        return solveWithMemo(memory, X, Y);
-    }
-
-private:    
-    // O(2*X*Y) & O(X*Y + X+Y)
-    int solveWithMemo(vector<vector<int>>& memory, int X, int Y) {
-        // Edge case: If the points reaches the origin (0, 0) then you've one valid path
+    
+    int solveWithoutMemo(int X, int Y) {
         if(X == 0 && Y == 0)
             return 1;
         
-        // Edge case: If any of the point becomes negative then you've no valid path
         if(X < 0 || Y < 0)
             return 0;
+            
+        int moveLeft = solveWithoutMemo(X, Y-1);
+        int moveUp   = solveWithoutMemo(X-1, Y);
         
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[X][Y] != -1)
-            return memory[X][Y];
-
-        // There are always two possibilites to perform at each step
-        int numPathsFromX = solveWithMemo(memory, X - 1, Y); // Is to move one-step to the up-side 
-        int numPathsFromY = solveWithMemo(memory, X, Y - 1); // Is to move one-step to the left-side 
-
-        // Store the result value to the memoization table and then return it
-        return memory[X][Y] = (numPathsFromX + numPathsFromY) % MOD;
+        return (moveLeft + moveUp) % MOD;
     }
     
-    // O(2^(X*Y)) & O(X+Y)
-    int solveWithoutMemo(int X, int Y) {
-        // Edge case: If the points reaches the origin (0, 0) then you've one valid path
+    int solveWithMemo(vector<vector<int>>& dp, int X, int Y) {
         if(X == 0 && Y == 0)
             return 1;
         
-        // Edge case: If any of the point becomes negative then you've no valid path
         if(X < 0 || Y < 0)
             return 0;
-
-        // There are always two possibilites to perform at each step
-        int numPathsFromX = solveWithoutMemo(X - 1, Y); // Is to move one-step to the up-side 
-        int numPathsFromY = solveWithoutMemo(X, Y - 1); // Is to move one-step to the left-side 
-
-        // Return the result value
-        return (numPathsFromX + numPathsFromY) % MOD;
+            
+        if(dp[X][Y] != -1)
+            return dp[X][Y];
+            
+        int moveLeft = solveWithMemo(dp, X, Y-1);
+        int moveUp   = solveWithMemo(dp, X-1, Y);
+        
+        return dp[X][Y] = (moveLeft + moveUp) % MOD;
+    }
+    
+public:
+    int waysToReachOrigin(int X, int Y) {
+        return solveWithoutMemo(X, Y);
     }
 };
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
+
 class BottomUp {
+    const int MOD = 1e9+7;
+
+    int solveWith2DTable(int X, int Y) {
+        vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
+        dp[0][0] = 1;
+        
+        for(int R = 0; R <= X; ++R) {
+            for(int C = 0; C <= Y; ++C) {
+                if(R == 0 && C == 0)
+                    continue;
+                int moveLeft = (C-1 >= 0) ? dp[R][C-1] : 0;
+                int moveUp   = (R-1 >= 0) ? dp[R-1][C] : 0;
+                dp[R][C] = (moveLeft + moveUp) % MOD;
+            }
+        }
+        
+        return dp[X][Y];
+    }
+    
+    int solveWith1DTable(int X, int Y) {
+        vector<int> prevRow(Y+1, -1);
+
+        for(int R = 0; R <= X; ++R) {
+            vector<int> currRow(Y+1, -1);
+            
+            for(int C = 0; C <= Y; ++C) {
+                if(R == 0 && C == 0) {
+                    currRow[0] = 1; 
+                    continue;
+                }
+                int moveLeft = (C-1 >= 0) ? currRow[C-1] : 0;
+                int moveUp   = (R-1 >= 0) ? prevRow[C] : 0;
+                currRow[C] = (moveLeft + moveUp) % MOD;
+            }
+            
+            prevRow = currRow;
+        }
+        
+        return prevRow[Y];
+    }
+    
+public:
+    int waysToReachOrigin(int X, int Y) {
+        vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
+        return solveWithMemo(dp, X, Y);
+    }
+};
+    
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+class BottomUpIntuitive {
     const int MOD = 1e9+7;
 
 public:
