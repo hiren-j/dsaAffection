@@ -50,10 +50,8 @@ public:
         
         for(int n = 2; n <= given_n; ++n) {
             int minSteps = dp[n - 1];
-            
             if(n % 2 == 0) minSteps = minSteps = min(minSteps, dp[n / 2]);
             if(n % 3 == 0) minSteps = minSteps = min(minSteps, dp[n / 3]);
-            
             dp[n] = minSteps + 1;
         }
         
