@@ -2,9 +2,10 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class TopDown {
     int M, N;
 
+    // O(2^(M*N)) & O(M+N)
     int solveWithoutMemo(int R, int C) {
         if(R == M || C == N)    
             return 0;
@@ -18,31 +19,36 @@ class Solution {
         return moveRight + moveDown;
     }
 
-    int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
+    // O(2*M*N) & O(M*N + M+N)
+    int solveWithMemo(vector<vector<int>>& memory, int R, int C) {
         if(R == M || C == N)    
             return 0;
         
         if(R == M-1 && C == N-1)
             return 1;
 
-        if(dp[R][C] != -1)
-            return dp[R][C];
+        if(memory[R][C] != -1)
+            return memory[R][C];
 
-        int moveRight = solveWithMemo(dp, R, C+1);
-        int moveDown  = solveWithMemo(dp, R+1, C);
+        int moveRight = solveWithMemo(memory, R, C+1);
+        int moveDown  = solveWithMemo(memory, R+1, C);
 
-        return dp[R][C] = moveRight + moveDown;
+        return memory[R][C] = moveRight + moveDown;
     }
 
 public:
+    // Method to count total ways to reach the bottom right corner, using recursion with memoization - O(M*N) & O(M*N)
     int uniquePaths(int m, int n) {
         M = m, N = n;
+        vector<vector<int>> memory(M, vector<int>(N, -1));
+        return solveWithMemo(memory, 0, 0);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class BottomUp {
+    // O(M*N) & O(M*N)
     int solveWith2DTable(int M, int N) {
         vector<vector<int>> dp(M, vector<int>(N, -1));
         dp[M-1][N-1] = 1;
@@ -60,6 +66,7 @@ class Solution {
         return dp[0][0];
     }
 
+    // O(M*N) & O(M*N)
     int solveWith2DEnhanced(int M, int N) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
         dp[M-1][N-1] = 1;
@@ -77,6 +84,7 @@ class Solution {
         return dp[0][0];
     }
 
+    // O(M*N) & O(2*N)
     int solveWith1DTable(int M, int N) {
         vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
         idealRow[N-1] = 1;
