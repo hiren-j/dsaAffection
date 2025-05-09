@@ -36,9 +36,9 @@ class TopDown {
 
 public:
     int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
         if(grid[0][0] == 1 || grid[M-1][N-1])
             return 0;
-        M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(N, -1));
         return solveWithMemo(dp, grid, 0, 0);
     }
@@ -113,9 +113,9 @@ class BottomUp {
 
 public:
     int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
         if(grid[0][0] == 1 || grid[M-1][N-1]) 
             return 0;
-        M = grid.size(), N = grid[0].size();
         return solveWith2DTable(grid);
     }
 };
