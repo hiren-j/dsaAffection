@@ -116,7 +116,7 @@ public:
         M = grid.size(), N = grid[0].size();
         if(grid[0][0] == 1 || grid[M-1][N-1]) 
             return 0;
-        return solveWith2DTable(grid);
+        return solveWith1DTable(grid);
     }
 };
 
