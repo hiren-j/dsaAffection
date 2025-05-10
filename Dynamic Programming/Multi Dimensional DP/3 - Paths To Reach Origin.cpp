@@ -153,7 +153,7 @@ class BottomUpIntuitive {
             prevRow = currRow;
         }
 
-        return currRow[Y];
+        return prevRow[Y];
     }
 
 public:
