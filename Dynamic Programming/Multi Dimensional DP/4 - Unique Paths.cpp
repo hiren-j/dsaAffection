@@ -100,7 +100,7 @@ class BottomUp {
             nextRow = idealRow;
         }
 
-        return idealRow[0];
+        return nextRow[0]; // Return idealRow[0] will also work
     }
 
 public:
