@@ -2,132 +2,151 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class TopDown {
-public:
-    // Method to find the path having the minimized sum to reach the bottom-right cell, using recursion with memoization - O(N*M) & O(N*M)
-    int minPathSum(vector<vector<int>>& grid) {
-        int N = grid.size(), M = grid[0].size();
-        vector<vector<int>> memory(N, vector<int>(M, -1));
-        return solveWithMemo(memory, grid, N, M, 0, 0);
-    }
+    int M, N;
 
-private:
-    // O(2*N*M) & O(N*M + N+M)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int N, int M, int R, int C) {
-        // Edge case: If all the cells are exhausted then you can't reach the bottom-right corner hence return INT_MAX as a indication of it
-        if(R == N || C == M)
+    int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
+        if(R == M || C == N)
             return INT_MAX;
-
-        // Edge case: If reached the bottom-right corner then return the value of the cell as a valid indication of it
-        if(R == N-1 && C == M-1)
+        
+        if(R == M-1 && C == N-1)
             return grid[R][C];
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[R][C] != -1)
-            return memory[R][C];
-
-        // There are always two possibilities to perform at each cell
-        int moveDown  = solveWithMemo(memory, grid, N, M, R+1, C); // Is to go down from it
-        int moveRight = solveWithMemo(memory, grid, N, M, R, C+1); // Is to go right from it
-
-        // As we're striving for the minimum sum thus store the minimum element from both the possibilities
-        int minElement = min(moveDown, moveRight);
-
-        // Store the result value to the memoization table and then return it
-        return memory[R][C] = (minElement != INT_MAX) ? minElement + grid[R][C] : INT_MAX; 
+        int moveRight = solveWithoutMemo(grid, R, C+1);
+        int moveDown  = solveWithoutMemo(grid, R+1, C);
+        
+        return min(moveRight, moveDown) + grid[R][C];
     }
 
-    // O(2^(N*M)) & O(N+M)
-    int solveWithoutMemo(vector<vector<int>>& grid, int N, int M, int R, int C) {
-        // Edge case: If all the cells are exhausted then you can't reach the bottom-right corner hence return INT_MAX as a indication of it
-        if(R == N || C == M)
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
+        if(R == M || C == N)
             return INT_MAX;
-
-        // Edge case: If reached the bottom-right corner then return the value of the cell as a valid indication of it
-        if(R == N-1 && C == M-1)
+        
+        if(R == M-1 && C == N-1)
             return grid[R][C];
 
-        // There are always two possibilities to perform at each cell
-        int moveDown  = solveWithoutMemo(grid, N, M, R+1, C); // Is to go down from it
-        int moveRight = solveWithoutMemo(grid, N, M, R, C+1); // Is to go right from it
+        if(dp[R][C] != -1)
+            return dp[R][C];
 
-        // As we're striving for the minimum sum thus store the minimum element from both the possibilities
-        int minElement = min(moveDown, moveRight);
-
-        // Return the result value
-        return (minElement != INT_MAX) ? minElement + grid[R][C] : INT_MAX; 
+        int moveRight = solveWithMemo(dp, grid, R, C+1);
+        int moveDown  = solveWithMemo(dp, grid, R+1, C);
+        
+        return dp[R][C] = min(moveRight, moveDown) + grid[R][C];
     }
-};
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    int solveWith2DTable(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M, vector<int>(N, -1));
+        dp[M-1][N-1] = grid[M-1][N-1];
 
-// #1 Class to implement the Bottom-up approach:
-class BottomUp_V1 {
-public:
-    // #1 Method to find the path having the minimized sum to reach the bottom-right cell, using 2D tabulation - O(N*M) & O(N*M)
-    int minPathSum_V1(vector<vector<int>>& grid) {
-        int N = grid.size(), M = grid[0].size();
-
-        // 2D DP table
-        vector<vector<int>> dp(N+1, vector<int>(M+1, INT_MAX));
-
-        // Initialize the edge case: If reached the bottom-right corner then return the value of the cell as a valid indication of it
-        dp[N-1][M-1] = grid[N-1][M-1];
-
-        // Fill the rest of the table
-        for(int R = N-1; R >= 0; --R) {
-            for(int C = M-1; C >= 0; --C) {
-                int moveDown   = dp[R+1][C]; 
-                int moveRight  = dp[R][C+1]; 
-                int minElement = min(moveDown, moveRight);                
-                dp[R][C] = (minElement != INT_MAX) ? minElement + grid[R][C] : dp[R][C]; 
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)    
+                    continue;
+                int moveRight = (C+1 < N) ? dp[R][C+1] : INT_MAX;
+                int moveDown  = (R+1 < M) ? dp[R+1][C] : INT_MAX;
+                dp[R][C] = min(moveRight, moveDown) + grid[R][C];
             }
         }
 
-        // Return the result value
         return dp[0][0];
     }
 
-    // #2 Method to find the path having the minimized sum to reach the bottom-right cell, using 1D tabulation - O(N*M) & O(M)
-    int minPathSum_V2(vector<vector<int>>& grid) {
-        int N = grid.size(), M = grid[0].size();
-
-        // 1D DP tables
-        vector<int> nextRow(M+1, INT_MAX), currRow(M+1, INT_MAX);
-
-        // Initialize the edge case: If reached the bottom-right corner then return the value of the cell as a valid indication of it
-        currRow[M-1] = grid[N-1][M-1];
-
-        // Fill the rest of the table
-        for(int R = N-1; R >= 0; --R) {
-            for(int C = M-1; C >= 0; --C) {
-                int moveDown   = nextRow[C]; 
-                int moveRight  = currRow[C+1]; 
-                int minElement = min(moveDown, moveRight);                
-                currRow[C] = (minElement != INT_MAX) ? minElement + grid[R][C] : currRow[C]; 
-            }
-            nextRow = currRow;
-        }
-
-        // Return the result value
-        return currRow[0];
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+        vector<vector<int>> dp(M, vector<int>(N, -1));
+        return solveWithMemo(dp, grid, 0, 0);
     }
 };
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// #2 Class to implement the Bottom-up approach:
-class BottomUp_V2 {
-    // Method to find the path having the minimized sum to reach the bottom-right cell, using constant auxiliary space - O(N*M) & O(1)
+class BottomUp {
+    int M, N;
+
+    int solveWith2DTable(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M, vector<int>(N, -1));
+        dp[M-1][N-1] = grid[M-1][N-1];
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)    
+                    continue;
+                int moveRight = (C+1 < N) ? dp[R][C+1] : INT_MAX;
+                int moveDown  = (R+1 < M) ? dp[R+1][C] : INT_MAX;
+                dp[R][C] = min(moveRight, moveDown) + grid[R][C];
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    int solveWith2DEnhanced(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, INT_MAX));
+        dp[M-1][N-1] = grid[M-1][N-1];
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)    
+                    continue;
+                int moveRight = dp[R][C+1];
+                int moveDown  = dp[R+1][C];
+                dp[R][C] = min(moveRight, moveDown) + grid[R][C];
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    int solveWith1DTable(vector<vector<int>>& grid) {
+        vector<int> nextRow(N+1, INT_MAX), idealRow(N+1, INT_MAX);
+        idealRow[N-1] = grid[M-1][N-1];
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)    
+                    continue;
+                int moveRight = idealRow[C+1];
+                int moveDown  = nextRow[C];
+                idealRow[C] = min(moveRight, moveDown) + grid[R][C];
+            }
+            nextRow = idealRow;
+        }
+
+        return nextRow[0];
+    }
+
+    int solveWithoutTable(vector<vector<int>>& grid) {
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)    
+                    continue;
+                int moveRight = (C+1 < N) ? grid[R][C+1] : INT_MAX;
+                int moveDown  = (R+1 < M) ? grid[R+1][C] : INT_MAX;
+                grid[R][C] += min(moveRight, moveDown);
+            }
+        }
+
+        return grid[0][0];
+    }
+
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+        return solveWithoutTable(grid);
+    }
+};
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUpIntuitive {
+    // O(N*M) & O(1)
     int minPathSum(vector<vector<int>>& grid) {
         int N = grid.size(), M = grid[0].size();
 
-        // When there's only one column in the grid then you can reach any cell through it's previous row only
+        // When there's only one column in grid then you can reach any cell through it's previous row only
         for(int R = 1; R < N; ++R) 
             grid[R][0] += grid[R-1][0];
 
-        // When there's only one row in the grid then you can reach any cell through it's previous column only
+        // When there's only one row in the then you can reach any cell through it's previous column only
         for(int C = 1; C < M; ++C) 
             grid[0][C] += grid[0][C-1];
 
@@ -140,7 +159,6 @@ class BottomUp_V2 {
             }
         }
 
-        // Return the result value
         return grid[N-1][M-1];
     }
 };
