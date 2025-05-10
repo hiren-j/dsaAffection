@@ -140,7 +140,7 @@ class BottomUpIntuitive {
             for(int C = 1; C < N; ++C) {
                 int comeFromUp   = grid[R-1][C]; 
                 int comeFromLeft = grid[R][C-1]; 
-                grid[R][C] += min(moveDown, moveRight);
+                grid[R][C] += min(comeFromUp, comeFromLeft);
             }
         }
 
