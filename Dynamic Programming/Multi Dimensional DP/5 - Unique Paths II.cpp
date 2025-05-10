@@ -5,6 +5,7 @@
 class TopDown {
     int M, N;
 
+    // O(2^(M*N)) & O(M+N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         if(R == M || C == N || grid[R][C] == 1)
             return 0;
@@ -18,6 +19,7 @@ class TopDown {
         return moveRight + moveDown;
     }
 
+    // O(2*M*N) & O(M*N + M+N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(R == M || C == N || grid[R][C] == 1)
             return 0;
@@ -34,7 +36,8 @@ class TopDown {
         return dp[R][C] = moveRight + moveDown;
     }
 
-public:
+public:    
+    // Method to count total ways to reach bottom right corner, using recursion with memoization - O(M*N) & O(M*N)
     int uniquePathsWithObstacles(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
         if(grid[0][0] == 1 || grid[M-1][N-1])
@@ -49,6 +52,7 @@ public:
 class BottomUp {
     int M, N;
 
+    // O(M*N) & O(M*N)
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(M, vector<int>(N, -1));
         dp[M-1][N-1] = 1;
@@ -70,6 +74,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(M*N) & O(M*N)
     int solveWith2DEnhanced(vector<vector<int>>& grid) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
         dp[M-1][N-1] = 1;
@@ -87,6 +92,7 @@ class BottomUp {
         return dp[0][0];
     }
     
+    // O(M*N) & O(2*N)
     int solveWith1DTable(vector<vector<int>>& grid) {
         vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
         idealRow[N-1] = 1;
