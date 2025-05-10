@@ -5,6 +5,7 @@
 class TopDown {
     int N;
 
+    // O(2^(N*N)) & O(2*N)
     bool solveWithoutMemo(vector<vector<int>>& maze, int R, int C, int key) {
         if(R == N || C == N || key < 0)
             return false;
@@ -18,6 +19,7 @@ class TopDown {
         return moveRight || moveDown;
     }
 
+    // O(2*N*N) & O(N*N + 2*N)
     bool solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<int>>& maze, int R, int C, int key) {
         if(R == N || C == N || key < 0)
             return false;
@@ -35,6 +37,7 @@ class TopDown {
     }
 
 public:
+    // Method to check if its possible to reach bottom right corner with 1 key, using recursion with memoization - O(N*N) & O(N*N)
     bool canReachCornerWith1Key(vector<vector<int>>& maze, int n) {
         N = n;
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(N, vector<int>(2, -1)));
@@ -47,6 +50,7 @@ public:
 class BottomUp {
     int N;
 
+    // O(N*N*2) & O(N*N*2)
     bool solveWith3DTable(vector<vector<int>>& maze) {
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(N, vector<int>(2, -1)));
         dp[N-1][N-1][0] = (0 - maze[N-1][N-1] >= 0); // Init second edge case
@@ -67,6 +71,7 @@ class BottomUp {
         return dp[0][0][1];
     }
 
+    // O(N*N*2) & O(N*N*2)
     bool solveWith3DEnhanced(vector<vector<int>>& maze) {
         vector<vector<vector<bool>>> dp(N+1, vector<vector<bool>>(N+1, vector<bool>(2, false)));
         dp[N-1][N-1][0] = (maze[N-1][N-1] == 0); // 0 - maze[N-1][N-1] >= 0;
@@ -87,6 +92,7 @@ class BottomUp {
         return dp[0][0][1];
     }
 
+    // O(N*N*2) & O(2*N*2)
     bool solveWith2DTable(vector<vector<int>>& maze) {
         vector<vector<bool>> nextRow(N+1, vector<bool>(2, false)), idealRow(N+1, vector<bool>(2, false));
         idealRow[N-1][0] = (maze[N-1][N-1] == 0); // 0 - maze[N-1][N-1] >= 0;
