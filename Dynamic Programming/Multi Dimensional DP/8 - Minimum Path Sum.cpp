@@ -135,11 +135,11 @@ class BottomUpIntuitive {
         for(int C = 1; C < N; ++C) 
             grid[0][C] += grid[0][C-1];
 
-        // When there are multiple rows and columns in the grid then you can reach any cell through it's previous row and previous column
+        // When there are multiple rows and columns in the grid then you can reach any cell through it's upper row and left column
         for(int R = 1; R < M; ++R) {
             for(int C = 1; C < N; ++C) {
-                int moveDown  = grid[R-1][C]; 
-                int moveRight = grid[R][C-1]; 
+                int moveUp   = grid[R-1][C]; 
+                int moveLeft = grid[R][C-1]; 
                 grid[R][C] += min(moveDown, moveRight);
             }
         }
