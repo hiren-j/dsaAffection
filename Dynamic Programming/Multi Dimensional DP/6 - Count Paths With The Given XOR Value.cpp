@@ -38,7 +38,8 @@ class TopDown {
 public:
     int countPathsWithXorValue(vector<vector<int>>& grid, int k) {
         M = grid.size(), N = grid[0].size(), K = k;
-        return solveWith2DTable(grid);
+        vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(16, -1)));
+        return solveWithMemo(dp, grid, 0, 0, 0);
     }
 };
 
