@@ -76,7 +76,8 @@ class BottomUp {
             
             for(int C = 0; C <= Y; ++C) {
                 if(R == 0 && C == 0) {
-                    currRow[0] = 1; continue;
+                    currRow[0] = 1; 
+                    continue;
                 }
                 int moveLeft = (C-1 >= 0) ? currRow[C-1] : 0;
                 int moveUp   = (R-1 >= 0) ? prevRow[C] : 0;
