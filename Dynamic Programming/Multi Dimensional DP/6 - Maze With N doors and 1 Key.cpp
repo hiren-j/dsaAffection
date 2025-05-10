@@ -49,8 +49,8 @@ class BottomUp {
 
     bool solveWith3DTable(vector<vector<int>>& maze) {
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(N, vector<int>(2, -1)));
-        dp[N-1][N-1][0] = (0 - maze[N-1][N-1] >= 0);
-        dp[N-1][N-1][1] = (1 - maze[N-1][N-1] >= 0);
+        dp[N-1][N-1][0] = (0 - maze[N-1][N-1] >= 0); // Init second edge case
+        dp[N-1][N-1][1] = (1 - maze[N-1][N-1] >= 0); // Init second edge case
 
         for(int R = N-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
