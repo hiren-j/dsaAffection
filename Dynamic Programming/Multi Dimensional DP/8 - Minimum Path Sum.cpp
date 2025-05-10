@@ -123,28 +123,28 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUpIntuitive {
-    // O(N*M) & O(1)
+    // O(M*N) & O(1)
     int minPathSum(vector<vector<int>>& grid) {
-        int N = grid.size(), M = grid[0].size();
+        int M = grid.size(), N = grid[0].size();
 
         // When there's only one column in grid then you can reach any cell through it's previous row only
-        for(int R = 1; R < N; ++R) 
+        for(int R = 1; R < M; ++R) 
             grid[R][0] += grid[R-1][0];
 
         // When there's only one row in the then you can reach any cell through it's previous column only
-        for(int C = 1; C < M; ++C) 
+        for(int C = 1; C < N; ++C) 
             grid[0][C] += grid[0][C-1];
 
         // When there are multiple rows and columns in the grid then you can reach any cell through it's previous row and previous column
-        for(int R = 1; R < N; ++R) {
-            for(int C = 1; C < M; ++C) {
+        for(int R = 1; R < M; ++R) {
+            for(int C = 1; C < N; ++C) {
                 int moveDown  = grid[R-1][C]; 
                 int moveRight = grid[R][C-1]; 
                 grid[R][C] += min(moveDown, moveRight);
             }
         }
 
-        return grid[N-1][M-1];
+        return grid[M-1][N-1];
     }
 };
 
