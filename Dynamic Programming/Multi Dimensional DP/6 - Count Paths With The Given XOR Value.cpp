@@ -6,6 +6,7 @@ class TopDown {
     const int MOD = 1e9+7;
     int M, N, K;
 
+    // O(2^(M*N)) & O(M+N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C, int pathXor) {
         if(R == M || C == N)
             return 0;
@@ -19,6 +20,7 @@ class TopDown {
         return (moveRight + moveDown) % MOD;
     }
 
+    // O(2*M*N*16) & O(M*N*16 + M+N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<int>>& grid, int R, int C, int pathXor) {
         if(R == M || C == N)
             return 0;
@@ -36,6 +38,7 @@ class TopDown {
     }
 
 public:
+    // Method to count paths whose XOR is divisible by k after reaching bottom right corner, using recursion with memoization - O(M*N) & O(M*N)
     int countPathsWithXorValue(vector<vector<int>>& grid, int k) {
         M = grid.size(), N = grid[0].size(), K = k;
         vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(16, -1)));
@@ -49,6 +52,7 @@ class BottomUp {
     const int MOD = 1e9+7;
     int M, N, K;
 
+    // O(M*N*16) & O(M*N*16)
     int solveWith3DTable(vector<vector<int>>& grid) {
         vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(16, -1)));
         
@@ -70,6 +74,7 @@ class BottomUp {
         return dp[0][0][0];
     }
 
+    // O(M*N*16) & O(M*N*16)
     int solveWith3DEnhanced(vector<vector<int>>& grid) {
         vector<vector<vector<int>>> dp(M+1, vector<vector<int>>(N+1, vector<int>(16, 0)));
         
@@ -91,6 +96,7 @@ class BottomUp {
         return dp[0][0][0];
     }
 
+    // O(M*N*16) & O(2*N*16)
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> nextRow(N+1, vector<int>(16, 0)), idealRow(N+1, vector<int>(16, 0));
 
