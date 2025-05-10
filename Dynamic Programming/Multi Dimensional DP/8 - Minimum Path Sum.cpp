@@ -34,23 +34,6 @@ class TopDown {
         return dp[R][C] = min(moveRight, moveDown) + grid[R][C];
     }
 
-    int solveWith2DTable(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(M, vector<int>(N, -1));
-        dp[M-1][N-1] = grid[M-1][N-1];
-
-        for(int R = M-1; R >= 0; --R) {
-            for(int C = N-1; C >= 0; --C) {
-                if(R == M-1 && C == N-1)    
-                    continue;
-                int moveRight = (C+1 < N) ? dp[R][C+1] : INT_MAX;
-                int moveDown  = (R+1 < M) ? dp[R+1][C] : INT_MAX;
-                dp[R][C] = min(moveRight, moveDown) + grid[R][C];
-            }
-        }
-
-        return dp[0][0];
-    }
-
 public:
     int minPathSum(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
