@@ -37,7 +37,7 @@ class TopDown {
     }
 
 public:
-    // Method to find minimum sum of a falling path, using recursion with memoization - O(M*N) & O(M*N)
+    // Method to find minimum sum of a path to bottom right corner, using recursion with memoization - O(M*N) & O(M*N)
     int minPathSum(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(N, -1));
