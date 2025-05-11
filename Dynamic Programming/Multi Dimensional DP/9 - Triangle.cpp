@@ -5,6 +5,7 @@
 class TopDown {
     int N;
 
+    // O(2^(N*N)) & O(N)
     int solveWithoutMemo(vector<vector<int>>& triangle, int R, int C) {
         if(R == N)
             return 0;
@@ -15,6 +16,7 @@ class TopDown {
         return min(moveToSameCol, moveToNextCol) + triangle[R][C];
     }
 
+    // O(2*N*N) & O(N*N + N)
     int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& triangle, int R, int C) {
         if(R == N)
             return 0;
@@ -29,6 +31,7 @@ class TopDown {
     }
 
 public:
+    // Method to find minimum path sum from top to bottom, using recursion with memoization - O(N*N) & O(N*N)
     int minimumTotal(vector<vector<int>>& triangle) {
         N = triangle.size();
         vector<vector<int>> memory(N, vector<int>(N, -1));
@@ -41,6 +44,7 @@ public:
 class BottomUp {
     int N;
 
+    // O(N*N) & O(N*N)
     int solveWith2DTable(vector<vector<int>>& triangle) {
         vector<vector<int>> dp(N, vector<int>(N, -1));
 
@@ -55,6 +59,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(N*N) & O(N*N)
     int solveWith2DEnhanced(vector<vector<int>>& triangle) {
         vector<vector<int>> dp(N+1, vector<int>(N+1, 0));
 
@@ -69,6 +74,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(N*N) & O(2*N)
     int solveWith1DTable(vector<vector<int>>& triangle) {
         vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
 
@@ -84,6 +90,7 @@ class BottomUp {
         return nextRow[0];
     }
 
+    // O(N*N) & O(N*N)
     int solveWith2DLessBlocks(vector<vector<int>>& triangle) {
         vector<vector<int>> dp(N);
 
@@ -99,6 +106,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(N*N) & O(2*N)
     int solveWith1DLessBlocks(vector<vector<int>>& triangle) {
         vector<int> nextRow(N+1, 0);
 
@@ -115,6 +123,7 @@ class BottomUp {
         return nextRow[0];
     }
 
+    // O(N*N) & O(1)
     int solveWithoutTable(vector<vector<int>>& triangle) {
         for(int R = N-2; R >= 0; --R) {
             for(int C = R; C >= 0; --C) {
