@@ -3,134 +3,104 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to find the minimum path sum from top to bottom, using recursion with memoization - O(N*N) & O(N*N)
-    int minimumTotal(vector<vector<int>>& triangle) {
-        int N = triangle.size();
-        vector<vector<int>> memory(N-1, vector<int>(N-1, -1));
-        return solveWithMemo(memory, triangle, N, 0, 0);
+    int N;
+
+    int solveWithoutMemo(vector<vector<int>>& triangle, int R, int C) {
+        if(R == N)
+            return 0;
+        
+        int moveToSameCol = solveWithoutMemo(triangle, R+1, C);
+        int moveToNextCol = solveWithoutMemo(triangle, R+1, C+1);
+
+        return min(moveToSameCol, moveToNextCol) + triangle[R][C];
     }
 
-private:
-    // O(2*N*N) & O(N*N + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& triangle, int N, int R, int C) {
-        // Edge case: If you reached the last row then return the value of the cell you are on
-        if(R == N-1)
-            return triangle[R][C];
+    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& triangle, int R, int C) {
+        if(R == N)
+            return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
         if(memory[R][C] != -1)
             return memory[R][C];
+        
+        int moveToSameCol = solveWithMemo(memory, triangle, R+1, C);
+        int moveToNextCol = solveWithMemo(memory, triangle, R+1, C+1);
 
-        // There are always two possibilities to perform at each cell
-        int moveToSameColumn = solveWithMemo(memory, triangle, N, R+1, C);   // Is to move to the same column in the next row
-        int moveToNextColumn = solveWithMemo(memory, triangle, N, R+1, C+1); // Is to move to the next column in the next row
-
-        // Store the result value to the memoization table and then return it
-        return memory[R][C] = triangle[R][C] + min(moveToSameColumn, moveToNextColumn);
+        return memory[R][C] = min(moveToSameCol, moveToNextCol) + triangle[R][C];
     }
-    
-    // O(2^(N*N)) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& triangle, int N, int R, int C) {
-        // Edge case: If you reached the last row then return the value of the cell you are on
-        if(R == N-1)
-            return triangle[R][C];
 
-        // There are always two possibilities to perform at each cell
-        int moveToSameColumn = solveWithoutMemo(triangle, N, R+1, C);   // Is to move to the same column in the next row
-        int moveToNextColumn = solveWithoutMemo(triangle, N, R+1, C+1); // Is to move to the next column in the next row
-
-        // As we're striving for the minimum sum thus add the minimum element from both the possibilities
-        return triangle[R][C] + min(moveToSameColumn, moveToNextColumn);
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        N = triangle.size();
+        vector<vector<int>> memory(N, vector<int>(N, -1));
+        return solveWithMemo(memory, triangle, 0, 0);
     }
-};  
+};
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class BottomUp {
+    int N;
+
+    int solveWith2DTable(vector<vector<int>>& triangle) {
+        vector<vector<int>> dp(N, vector<int>(N, -1));
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = R; C >= 0; --C) {
+                int moveToSameCol = (R+1 < N) ? dp[R+1][C]   : 0;
+                int moveToNextCol = (R+1 < N) ? dp[R+1][C+1] : 0;
+                dp[R][C] = min(moveToSameCol, moveToNextCol) + triangle[R][C];  
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    int solveWith2DEnhanced(vector<vector<int>>& triangle) {
+        vector<vector<int>> dp(N+1, vector<int>(N+1, 0));
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = R; C >= 0; --C) {
+                int moveToSameCol = dp[R+1][C];
+                int moveToNextCol = dp[R+1][C+1];
+                dp[R][C] = min(moveToSameCol, moveToNextCol) + triangle[R][C];  
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    int solveWith1DTable(vector<vector<int>>& triangle) {
+        vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = R; C >= 0; --C) {
+                int moveToSameCol = nextRow[C];
+                int moveToNextCol = nextRow[C+1];
+                idealRow[C] = min(moveToSameCol, moveToNextCol) + triangle[R][C];  
+            }
+            nextRow = idealRow;
+        }
+
+        return nextRow[0];
+    }
+
+    int solveWithoutTable(vector<vector<int>>& triangle) {
+        for(int R = N-2; R >= 0; --R) {
+            for(int C = R; C >= 0; --C) {
+                int moveToSameCol = triangle[R+1][C];
+                int moveToNextCol = triangle[R+1][C+1];
+                triangle[R][C] += min(moveToSameCol, moveToNextCol);  
+            }
+        }
+
+        return triangle[0][0];
+    }
+
 public:
-    // #1 Method to find the minimum path sum from top to bottom, using 2D tabulation - O(N*N) & O(N*N)
-    int minimumTotal_V1(vector<vector<int>>& triangle) {
-        int N = triangle.size();
-
-        // 2D DP table
-        vector<vector<int>> dp(N, vector<int>(N, 0));
-
-        // Initialize the edge case: If you reached the last row then return the value of the cell you are on
-        for(int C = 0; C < N; ++C)
-            dp[N-1][C] = triangle[N-1][C];
-
-        // Fill the rest of the table
-        for(int R = N-2; R >= 0; --R) {
-            for(int C = R; C >= 0; --C) {
-                int moveToSameColumn = dp[R+1][C];   
-                int moveToNextColumn = dp[R+1][C+1]; 
-                dp[R][C] = triangle[R][C] + min(moveToSameColumn, moveToNextColumn);
-            }
-        }
-
-        // Return the result value
-        return dp[0][0];    
-    }
-    // Note: This solution is using additional memory blocks which results in a memory waste
-
-    // #2 Method to find the minimum path sum from top to bottom, using 2D tabulation - O(N*N) & O(N*N)
-    int minimumTotal_V2(vector<vector<int>>& triangle) {
-        int N = triangle.size();
-
-        // 2D DP table
-        vector<vector<int>> dp(N); 
-
-        // Initialize the last row
-        dp[N-1] = triangle[N-1];
-
-        // Fill the rest of the table
-        for(int R = N-2; R >= 0; --R) {
-            dp[R].resize(R+1);
-            for(int C = R; C >= 0; --C) {
-                int moveToSameColumn = dp[R+1][C];   
-                int moveToNextColumn = dp[R+1][C+1]; 
-                dp[R][C] = triangle[R][C] + min(moveToSameColumn, moveToNextColumn);
-            }
-        }
-
-        // Return the result value
-        return dp[0][0];    
-    }
-
-    // #3 Method to find the minimum path sum from top to bottom, using 1D tabulation - O(N*N) & O(N)
-    int minimumTotal_V3(vector<vector<int>>& triangle) {
-        int N = triangle.size();
-
-        vector<int> nextRow(N, 0);
-        nextRow = triangle[N-1];
-
-        for(int R = N-2; R >= 0; --R) {
-            vector<int> currRow(R+1);
-            for(int C = R; C >= 0; --C) {
-                int moveToSameColumn = nextRow[C];   
-                int moveToNextColumn = nextRow[C+1]; 
-                currRow[C] = triangle[R][C] + min(moveToSameColumn, moveToNextColumn);
-            }
-            nextRow = currRow;
-        }
-
-        return nextRow[0];    
-    }
-
-    // #4 Method to find the minimum path sum from top to bottom, using constant auxiliary space - O(N*N) & O(1)
-    int minimumTotal_V4(vector<vector<int>>& triangle) {
-        int N = triangle.size();
-
-        for(int R = N-2; R >= 0; --R) {
-            for(int C = R; C >= 0; --C) {
-                int moveToSameColumn = triangle[R+1][C];   
-                int moveToNextColumn = triangle[R+1][C+1]; 
-                triangle[R][C] += min(moveToSameColumn, moveToNextColumn);
-            }
-        }
-
-        return triangle[0][0];    
+    int minimumTotal(vector<vector<int>>& triangle) {
+        N = triangle.size();
+        vector<vector<int>> memory(N, vector<int>(N, -1));
+        return solveWithMemo(memory, triangle, 0, 0);
     }
 };
 
