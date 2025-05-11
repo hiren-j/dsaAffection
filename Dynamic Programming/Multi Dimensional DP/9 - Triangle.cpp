@@ -84,6 +84,37 @@ class BottomUp {
         return nextRow[0];
     }
 
+    int solveWith2DSpaceOptimized(vector<vector<int>>& triangle) {
+        vector<vector<int>> dp(N);
+
+        for(int R = N-1; R >= 0; --R) {
+            dp[R] = vector<int>(R+1, 0);
+            for(int C = R; C >= 0; --C) {
+                int moveToSameCol = (R+1 < N) ? dp[R+1][C]   : 0;
+                int moveToNextCol = (R+1 < N) ? dp[R+1][C+1] : 0;
+                dp[R][C] = min(moveToSameCol, moveToNextCol) + triangle[R][C];  
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    int solveWith1DEnhanced(vector<vector<int>>& triangle) {
+        vector<int> nextRow(N+1, 0);
+
+        for(int R = N-1; R >= 0; --R) {
+            vector<int> idealRow(R+1, 0);
+            for(int C = R; C >= 0; --C) {
+                int moveToSameCol = nextRow[C];
+                int moveToNextCol = nextRow[C+1];
+                idealRow[C] = min(moveToSameCol, moveToNextCol) + triangle[R][C];  
+            }
+            nextRow = idealRow;
+        }
+
+        return nextRow[0];
+    }
+
     int solveWithoutTable(vector<vector<int>>& triangle) {
         for(int R = N-2; R >= 0; --R) {
             for(int C = R; C >= 0; --C) {
