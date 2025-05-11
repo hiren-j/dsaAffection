@@ -84,7 +84,7 @@ class BottomUp {
         return nextRow[0];
     }
 
-    int solveWith2DSpaceOptimized(vector<vector<int>>& triangle) {
+    int solveWith2DLessBlocks(vector<vector<int>>& triangle) {
         vector<vector<int>> dp(N);
 
         for(int R = N-1; R >= 0; --R) {
@@ -99,7 +99,7 @@ class BottomUp {
         return dp[0][0];
     }
 
-    int solveWith1DEnhanced(vector<vector<int>>& triangle) {
+    int solveWith1DLessBlocks(vector<vector<int>>& triangle) {
         vector<int> nextRow(N+1, 0);
 
         for(int R = N-1; R >= 0; --R) {
