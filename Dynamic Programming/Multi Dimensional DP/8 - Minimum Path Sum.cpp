@@ -5,6 +5,7 @@
 class TopDown {
     int M, N;
 
+    // O(2^(M*N)) & O(M+N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         if(R == M || C == N)
             return INT_MAX;
@@ -18,6 +19,7 @@ class TopDown {
         return min(moveRight, moveDown) + grid[R][C];
     }
 
+    // O(2*M*N) & O(M*N + M+N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(R == M || C == N)
             return INT_MAX;
@@ -35,6 +37,7 @@ class TopDown {
     }
 
 public:
+    // Method to find minimum sum of a falling path, using recursion with memoization - O(M*N) & O(M*N)
     int minPathSum(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(N, -1));
@@ -47,6 +50,7 @@ public:
 class BottomUp {
     int M, N;
 
+    // O(M*N) & O(M*N)
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(M, vector<int>(N, -1));
         dp[M-1][N-1] = grid[M-1][N-1];
@@ -64,6 +68,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(M*N) & O(M*N)
     int solveWith2DEnhanced(vector<vector<int>>& grid) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, INT_MAX));
         dp[M-1][N-1] = grid[M-1][N-1];
@@ -81,6 +86,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(M*N) & O(2*N)
     int solveWith1DTable(vector<vector<int>>& grid) {
         vector<int> nextRow(N+1, INT_MAX), idealRow(N+1, INT_MAX);
         idealRow[N-1] = grid[M-1][N-1];
@@ -99,6 +105,7 @@ class BottomUp {
         return nextRow[0];
     }
 
+    // O(M*N) & O(1)
     int solveWithoutTable(vector<vector<int>>& grid) {
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
