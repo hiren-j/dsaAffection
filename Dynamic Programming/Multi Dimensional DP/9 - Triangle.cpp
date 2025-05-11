@@ -99,8 +99,7 @@ class BottomUp {
 public:
     int minimumTotal(vector<vector<int>>& triangle) {
         N = triangle.size();
-        vector<vector<int>> memory(N, vector<int>(N, -1));
-        return solveWithMemo(memory, triangle, 0, 0);
+        return solveWithoutTable(triangle);
     }
 };
 
