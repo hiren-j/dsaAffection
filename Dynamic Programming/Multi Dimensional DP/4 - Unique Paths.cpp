@@ -110,6 +110,40 @@ public:
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUpIntuitve {
+    // O(M*N) & O(M*N)
+    int solveWith2DTable(int M, int N) {
+        vector<vector<int>> dp(M, vector<int>(N, 1));
+
+        for(int R = 1; R < M; ++R)
+            for(int C = 1; C < N; ++C)
+                dp[R][C] = dp[R-1][C] + dp[R][C-1];
+
+        return dp[M-1][N-1];
+    }
+
+    // O(M*N) & O(2*N)
+    int solveWith1DTable(int M, int N) {
+        vector<int> prevRow(N, 1), idealRow(N, 1);
+
+        for(int R = 1; R < M; ++R) {
+            for(int C = 1; C < N; ++C) {
+                idealRow[C] = prevRow[C] + idealRow[C-1];
+            }
+            prevRow = idealRow;
+        }
+
+        return prevRow[N-1];
+    }
+
+public:
+    int uniquePaths(int M, int N) {
+        return solveWith1DTable(M, N);
+    }
+};
+    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 Topics: Maths | Dynamic Programming | Combinatorics
 Link  : https://leetcode.com/problems/unique-paths/description/
