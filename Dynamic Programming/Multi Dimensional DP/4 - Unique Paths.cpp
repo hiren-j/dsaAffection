@@ -114,7 +114,7 @@ public:
 class BottomUpIntuitve {
     // O(M*N) & O(M*N)
     int solveWith2DTable(int M, int N) {
-        //  Suppose you're on a cell and that cell is also a destination cell then you've only 1 path it's because you're already on the cell. So, initially fill all the cells by value 1
+        //  Suppose you're on a cell and that cell is also a destination cell then you've only 1 way it's because you're already on the cell. So, initially fill all the cells by value 1
         vector<vector<int>> dp(M, vector<int>(N, 1));
 
         for(int R = 1; R < M; ++R)
