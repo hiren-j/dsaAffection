@@ -1,90 +1,109 @@
 // Code to check whether there exists a valid parentheses string path in the grid or not ~ coded by Hiren
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a bottom-up solution provided. 
-                        This is one of the two problems in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
-                        The issue wasn't with time limits but with incorrect results. So, I've only included the top-down (memoized) solution for this problem. 
-                        There are only two problems in the entire DP series without bottom-up solutions. These three lies in this folder.
-    
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    int N, M;
+    int M, N, maxStackLen;
 
-    // O(2^(N*M)) & O(N+M)
-    bool solveWithoutMemo(vector<vector<char>>& grid, int R, int C, int stackLength) {
-        // Edge case: If all the rows or columns are exhausted then you can't find any path
-        if(R == N || C == M)
+    bool solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<char>>& grid, int R, int C, int stackLen) {
+        if(R == M || C == N)
             return false;
 
-        // Edge case: If it's a closing parentheses then we've found a valid pair of parentheses hence reduce the stack length by 1
-        if(grid[R][C] == ')')
-            stackLength--;
+        (grid[R][C] == '(') ? stackLen++ : stackLen--;
 
-        // Edge case: If the stack length becomes negative then there doesn't exist a valid path
-        if(stackLength < 0)
-            return false;
-            
-        // Edge case: If you reached the bottom right corner and the stack becomes empty then we've found a valid path
-        if(R == N-1 && C == M-1)
-            return stackLength == 0;
-        
-        // Edge case: If it's a opening parentheses then assume we're pushing it to the stack hence increase the stack length by 1 
-        if(grid[R][C] == '(')
-            stackLength++;
-
-        // There are always two possibilities to perform at each cell
-        bool moveRight = solveWithoutMemo(grid, R, C+1, stackLength); // Is to move right
-        bool moveDown  = solveWithoutMemo(grid, R+1, C, stackLength); // Is to move down
-
-        // Return true if you've found the valid path from any possibility
-        return (moveRight || moveDown);
-    }
-
-    // O(2*N*M*N+M) & O(N*M*N+M + N+M)
-    bool solveWithMemo(vector<vector<vector<int>>>& memory, vector<vector<char>>& grid, int R, int C, int stackLength) {
-        // Edge case: If all the rows or columns are exhausted then you can't find any path
-        if(R == N || C == M)
+        if(stackLen < 0)
             return false;
 
-        // Edge case: If it's a closing parentheses then we've found a valid pair of parentheses hence reduce the stack length by 1
-        if(grid[R][C] == ')')
-            stackLength--;
+        if(R == M-1 && C == N-1)
+            return stackLen == 0;
 
-        // Edge case: If the stack length becomes negative then there doesn't exist a valid path
-        if(stackLength < 0)
-            return false;
-            
-        // Edge case: If you reached the bottom right corner and the stack becomes empty then we've found a valid path
-        if(R == N-1 && C == M-1)
-            return stackLength == 0;
-        
-        // Edge case: If it's a opening parentheses then assume we're pushing it to the stack hence increase the stack length by 1 
-        if(grid[R][C] == '(')
-            stackLength++;
+        if(dp[R][C][stackLen] != -1)
+            return dp[R][C][stackLen];
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[R][C][stackLength] != -1)
-            return memory[R][C][stackLength];
+        bool moveRight = solveWithMemo(dp, grid, R, C+1, stackLen);
+        bool moveDown  = solveWithMemo(dp, grid, R+1, C, stackLen);
 
-        // There are always two possibilities to perform at each cell
-        bool moveRight = solveWithMemo(memory, grid, R, C+1, stackLength); // Is to move right
-        bool moveDown  = solveWithMemo(memory, grid, R+1, C, stackLength); // Is to move down
-
-        // Store the result value to the memoization table and then return it
-        return memory[R][C][stackLength] = (moveRight || moveDown);
+        return dp[R][C][stackLen] = moveRight || moveDown;
     }
 
 public:
-    // Method to check whether there exists a valid parentheses string path or not, using recursion with memoization :-
     bool hasValidPath(vector<vector<char>>& grid) {
-        N = grid.size(), M = grid[0].size();
-        if(N == 1 && M == 1) return false;
-        vector<vector<vector<int>>> memory(N, vector<vector<int>>(M, vector<int>(N+M, -1)));
-        return solveWithMemo(memory, grid, 0, 0, 0);
+        M = grid.size(), N = grid[0].size(), maxStackLen = M+N;     
+        if(grid[M-1][N-1] == '(') 
+            return false;
+        vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(maxStackLen, -1)));
+        return solveWithMemo(dp, grid, 0, 0, 0);
     }
 };
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+    int solveWith3DTable(vector<vector<char>>& grid) {
+        vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(maxStackLen, false)));
+
+        for(int stackLen = 0; stackLen < M+N; ++stackLen) {
+            int newLen = (grid[M-1][N-1] == '(' ? stackLen + 1 : stackLen - 1);
+            dp[M-1][N-1][stackLen] = (newLen == 0);
+        }
+
+        // Only valid if we have exactly 1 opening before
+        // dp[M-1][N-1][1] = true;
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1) 
+                    continue;
+                for(int stackLen = maxStackLen-1; stackLen >= 0; --stackLen) {
+                    int newLen = (grid[R][C] == '(') ? stackLen + 1 : stackLen - 1; 
+                    if(newLen >= 0 && newLen < maxStackLen) {
+                        bool moveRight = dp[R][C+1][newLen];
+                        bool moveDown  = dp[R+1][C][newLen];
+                        dp[R][C][stackLen] = moveRight || moveDown;
+                    }
+                }
+            }
+        }
+
+        return dp[0][0][0];
+    }
+
+    int solveWith2DTable(vector<vector<char>>& grid) {
+        vector<vector<bool>> nextRow(N+1, vector<bool>(maxStackLen, false));
+        vector<vector<bool>> idealRow(N+1, vector<bool>(maxStackLen, false));
+
+        // Only valid if we have exactly 1 opening before
+        idealRow[N-1][1] = true;
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1) 
+                    continue;
+                for(int stackLen = maxStackLen-1; stackLen >= 0; --stackLen) {
+                    int newLen = (grid[R][C] == '(') ? stackLen + 1 : stackLen - 1; 
+                    if(newLen >= 0 && newLen < maxStackLen) {
+                        bool moveRight = idealRow[C+1][newLen];
+                        bool moveDown  = nextRow[C][newLen];
+                        idealRow[C][stackLen] = moveRight || moveDown;
+                    } else {
+                        idealRow[C][stackLen] = false;
+                    }
+                }
+            }
+            nextRow = idealRow;
+        }
+
+        return nextRow[0][0];
+    }
+
+public:
+    bool hasValidPath(vector<vector<char>>& grid) {
+        M = grid.size(), N = grid[0].size(), maxStackLen = M+N;     
+        if(grid[M-1][N-1] == '(') 
+            return false;
+        return solveWith3DTable(grid);
+    }
+};  
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
