@@ -1,4 +1,4 @@
-// Code to check whether there exists a valid parentheses string path in the grid or not ~ coded by Hiren
+// Code to check whether there exists a valid parentheses string path to the bottom right corner of the grid or not ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -9,11 +9,14 @@ class TopDown {
         if(R == M || C == N)
             return false;
 
+        // If it's a opening parentheses then assume we're pushing it to the stack hence increase the stack length by 1, else assuming poping from stack so reduce length by 1 
         (grid[R][C] == '(') ? stackLen++ : stackLen--;
 
+        // Edge case: If the stack length becomes negative then there doesn't exist a valid path
         if(stackLen < 0)
             return false;
 
+        // Edge case: If you reached the bottom right corner and the stack becomes empty then we've found a valid path
         if(R == M-1 && C == N-1)
             return stackLen == 0;
 
@@ -27,6 +30,7 @@ class TopDown {
     }
 
 public:
+    // Method to check whether there exists a valid parentheses string path, using recursion with memoization - O() & O()
     bool hasValidPath(vector<vector<char>>& grid) {
         M = grid.size(), N = grid[0].size(), maxStackLen = M+N;     
         if(grid[M-1][N-1] == '(') 
@@ -42,13 +46,8 @@ class BottomUp {
     int solveWith3DTable(vector<vector<char>>& grid) {
         vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(maxStackLen, false)));
 
-        for(int stackLen = 0; stackLen < M+N; ++stackLen) {
-            int newLen = (grid[M-1][N-1] == '(' ? stackLen + 1 : stackLen - 1);
-            dp[M-1][N-1][stackLen] = (newLen == 0);
-        }
-
-        // Only valid if we have exactly 1 opening before
-        // dp[M-1][N-1][1] = true;
+        // Init third edge case: Only valid if we have exactly 1 opening before
+        dp[M-1][N-1][1] = true;
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
@@ -72,7 +71,7 @@ class BottomUp {
         vector<vector<bool>> nextRow(N+1, vector<bool>(maxStackLen, false));
         vector<vector<bool>> idealRow(N+1, vector<bool>(maxStackLen, false));
 
-        // Only valid if we have exactly 1 opening before
+        // Init third edge case: Only valid if we have exactly 1 opening before
         idealRow[N-1][1] = true;
 
         for(int R = M-1; R >= 0; --R) {
