@@ -66,11 +66,11 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    // O(M*N*MSL) & O(M*N*MSL)
+    // O(M*N*MSL) & O(M*N*MSL) : Where M = maxStackLen
     int solveWith3DTable(vector<vector<char>>& grid) {
         vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(maxStackLen, false)));
 
-        // Init third edge case: Only valid if we have exactly 1 opening before
+        // Init third edge case: Only valid if we have exactly 1 opening parentheses before
         dp[M-1][N-1][1] = true;
 
         for(int R = M-1; R >= 0; --R) {
@@ -91,12 +91,12 @@ class BottomUp {
         return dp[0][0][0];
     }
 
-    // O(M*N*MSL) & O(2*N*MSL)
+    // O(M*N*MSL) & O(2*N*MSL) : Where M = maxStackLen
     int solveWith2DTable(vector<vector<char>>& grid) {
         vector<vector<bool>> nextRow(N+1, vector<bool>(maxStackLen, false));
         vector<vector<bool>> idealRow(N+1, vector<bool>(maxStackLen, false));
 
-        // Init third edge case: Only valid if we have exactly 1 opening before
+        // Init third edge case: Only valid if we have exactly 1 opening parentheses before
         idealRow[N-1][1] = true;
 
         for(int R = M-1; R >= 0; --R) {
