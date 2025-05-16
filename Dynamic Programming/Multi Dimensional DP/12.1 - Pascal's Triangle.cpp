@@ -92,7 +92,6 @@ class BottomUp {
     }
 
 public:
-    // Method to find first N rows of pascal triangle, using tabulation :-
     vector<vector<int>> generate(int N) {
         vector<vector<int>> pascal;
         for(int R = 0; R < N; ++R) {
