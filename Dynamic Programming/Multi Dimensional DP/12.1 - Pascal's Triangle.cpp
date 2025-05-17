@@ -4,7 +4,7 @@
 /*
     DON'T IGNORE MUST READ (NOTE ON TIME COMPLEXITY CALCULATION):
     
-    As you’ve noticed, for this problem, the time complexity of the solveWithMemo function is O(N + 3*N*M) I want to clarify that the N comes from the loop that calls the recursive function, it's not from the function's auxiliary time. Specifically:
+    As you’ve noticed, for this problem, the time complexity of the solveWithMemo function is O(N + 2*N*M) I want to clarify that the N comes from the loop that calls the recursive function, it's not from the function's auxiliary time. Specifically:
 
         For solveWithMemo, in O(N + 2*N*M), the term 2*N*M represents the auxiliary time of the function itself, while N reflects the time from the loop that invokes the function.
         For solveWithoutMemo, in O(N * 2^(N*M)), the term 2^(N*M) represents the auxiliary time of the function itself, while N indicates the number of times the loop calls the function.
