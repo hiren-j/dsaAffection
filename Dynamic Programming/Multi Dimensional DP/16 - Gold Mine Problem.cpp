@@ -45,8 +45,7 @@ class TopDown {
 
 public:
     int collectMaxGold(vector<vector<int>>& grid) {
-        N = grid.size(), M = grid[0].size();
-        return solveWithoutTableConcise(grid);   
+        N = grid.size(), M = grid[0].size(); 
     }
 };
 
