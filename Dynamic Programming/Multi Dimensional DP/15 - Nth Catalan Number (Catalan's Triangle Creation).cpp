@@ -5,16 +5,35 @@
 class TopDown {
     int N;
     
-    int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
+    int solveWithoutMemo(int R, int C) {
+        // Base case: 0th column and 1th row always contains value 1
         if(C == 0 || R == 1)
             return 1;
             
-        if(C == R)
+        // Base case: last column value of any row is the same as previous one
+        if(C == R) 
+            return dp[R][C] = solveWithoutMemo(dp, R, C-1);
+            
+        // Value of any cell (R, C) is the sum of two values, the coordinates of those values are: 
+        int moveUp   = solveWithoutMemo(R-1, C); 
+        int movePrev = solveWithoutMemo(R, C-1);
+  
+        return moveUp + movePrev;
+    }
+
+    int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
+        // Base case: 0th column and 1th row always contains value 1
+        if(C == 0 || R == 1)
+            return 1;
+            
+        // Base case: last column value of any row is the same as previous one
+        if(C == R) 
             return dp[R][C] = solveWithMemo(dp, R, C-1);
             
         if(dp[R][C] != -1)
             return dp[R][C];
-            
+        
+        // Value of any cell (R, C) is the sum of two values, the coordinates of those values are: 
         int moveUp   = solveWithMemo(dp, R-1, C); 
         int movePrev = solveWithMemo(dp, R, C-1);
   
@@ -154,10 +173,14 @@ class BottomUpIntuitive {
     }
     
 public:
-    int findCatalan(int N) {
+    int nthCatalanNumber(int N) {
         return solveWith1DTable(N);
     }
 };    
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// NOTE: If you want to print the Catalan's Triangle then print the values of dp matrix 
     
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
