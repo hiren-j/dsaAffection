@@ -2,60 +2,60 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUP {
-    const int MOD = 1e9+7;
 
-public:
-    // #1 Method to find the Nth catalan number, using 2D tabulation - O(N^2) & O(N^2)
-    int getNthCatalan_V1(int N) {
-        // Stores the values of the catalan's triangle
-        vector<vector<int>> dp;
-        
-        for(int R = 0; R <= N; ++R) {
-            dp.emplace_back(R + 1, 0);
-            for(int C = 0; C <= R; ++C) {
-                // If its the first column then fill it by 1 
-                if(C == 0)
-                    dp[R][C] = 1;
-
-                // Else if its the last column then store the value lying at the previous column in the same row
-                else if(C == R)
-                    dp[R][C] = dp[R][C - 1] % MOD;
-
-                // Else then add the value lying at the same column in the previous row with the value lying at the previous column in the same row
-                else
-                    dp[R][C] = (dp[R - 1][C] + dp[R][C - 1]) % MOD;
-            }
-        }
-        
-        // Return the Nth number of the catalan's sequence
-        return dp[N][N] % MOD;
+class Solution {
+    int N;
+    
+    int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
+        if(C == 0 || R == 1)
+            return 1;
+            
+        if(C == R)
+            return dp[R][C] = solveWithMemo(dp, R, C-1);
+            
+        if(dp[R][C] != -1)
+            return dp[R][C];
+            
+        int moveUp   = solveWithMemo(dp, R-1, C); 
+        int movePrev = solveWithMemo(dp, R, C-1);
+  
+        return dp[R][C] = moveUp + movePrev;
     }
-
-    // #2 Method to find the Nth catalan number, using 1D tabulation - O(N^2) & O(N)
-    int getNthCatalan_V2(int N) {
-        vector<int> prevRow;
-        
-        for(int R = 0; R <= N; ++R) {
-            vector<int> currRow(R + 1, 0);
-            for(int C = 0; C <= R; ++C) {
-                // If its the first column then fill it by 1 
-                if(C == 0)
-                    currRow[C] = 1;
-
-                // Else if its the last column then store the value lying at the previous column in the same row
-                else if(C == R)
-                    currRow[C] = currRow[C - 1] % MOD;
-
-                // Else then add the value lying at the same column in the previous row with the value lying at the previous column in the same row
-                else
-                    currRow[C] = (prevRow[C] + currRow[C - 1]) % MOD;
+    
+    int solveWith2DTable(vector<vector<int>>& dp) {
+        /*
+            // If you want row insertions like this: dp.push_back(vector<int>(R+1, -1)); then uncomment the base case initializations
+            for(int R = 0; R <= N; ++R) dp[R][0] = 1; // Init first base case
+            for(int C = 0; C <= 1; ++C) dp[1][C] = 1; // Init first base case
+        */
+    
+        for(int R = 2; R <= N; ++R) {
+            for(int C = 1; C <= R; ++C) {
+                if(C == R) { 
+                    dp[R][C] = dp[R][C-1]; // Handle second base case
+                }
+                else {
+                    int moveUp   = dp[R-1][C]; 
+                    int movePrev = dp[R][C-1];
+                    dp[R][C] = moveUp + movePrev;
+                }
             }
-            prevRow = currRow;
         }
         
-        // Return the Nth number of the catalan's sequence
-        return prevRow[N] % MOD;
+        return dp[N][N];
+    }
+    
+public:
+    int nthCatalanNumber(int n) {
+        N = n;
+        
+        vector<vector<int>> dp;
+        for(int R = 0; R <= N; ++R)
+            dp.push_back(vector<int>(R+1, 1));
+        
+        // return solveWithMemo(dp, N, N); // To find Nth catalan number, then find the value of cell dp[N][N], dp represents the values of catalan's triangle
+        
+        return solveWith2DTable(dp);
     }
 };
 
