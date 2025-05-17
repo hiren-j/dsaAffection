@@ -4,7 +4,8 @@
 
 class TopDown {
     int N;
-    
+
+    // O(2^(N*N)) & O(N*N + 2*N)
     int solveWithoutMemo(int R, int C) {
         // Base case: 0th column and 1th row always contains value 1
         if(C == 0 || R == 1)
@@ -21,6 +22,7 @@ class TopDown {
         return moveUp + movePrev;
     }
 
+    // O(2*N*N) & O(N*N + 2*N)
     int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
         // Base case: 0th column and 1th row always contains value 1
         if(C == 0 || R == 1)
@@ -41,6 +43,7 @@ class TopDown {
     }
 
 public:
+    // Method to find Nth number of Catalan's triangle, using recursion with memoization - O(N*N) & O(N*N)
     int nthCatalanNumber(int n) {
         N = n;
 
@@ -57,7 +60,8 @@ public:
 
 class BottomUp {
     int N;
-    
+
+    // O(N*N) & O(N*N)
     int solveWith2DTable(vector<vector<int>>& dp) {
         /*
             // If you want row insertions like this: dp.push_back(vector<int>(R+1, -1)); then uncomment the base case initializations
@@ -81,6 +85,7 @@ class BottomUp {
         return dp[N][N];
     }
 
+    // O(N*N) & O(2*N)
     int solveWith1DTable(vector<vector<int>>& dp) {
         vector<int> prevRow(N+1, 1);
         
@@ -119,6 +124,7 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUpIntuitive {
+    // O(N*N) & O(N*N)
     int solveWith2DTable(int N) {
         vector<vector<int>> dp;
         
@@ -140,6 +146,7 @@ class BottomUpIntuitive {
         return dp[N][N];
     }
 
+    // O(N*N) & O(N*N)
     int solveWith2DConcise(int N) {
         vector<vector<int>> dp;
         
@@ -155,6 +162,7 @@ class BottomUpIntuitive {
         return dp[N][N];
     }
     
+    // O(N*N) & O(2*N)
     int solveWith1DTable(int N) {
         vector<int> prevRow(N+1, 1);
         
