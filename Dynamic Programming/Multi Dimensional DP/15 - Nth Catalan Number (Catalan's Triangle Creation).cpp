@@ -140,7 +140,7 @@ class BottomUpIntuitive {
         return dp[N][N];
     }
 
-    int solveWith2DConcice(int N) {
+    int solveWith2DConcise(int N) {
         vector<vector<int>> dp;
         
         for(int R = 0; R <= N; ++R) {
