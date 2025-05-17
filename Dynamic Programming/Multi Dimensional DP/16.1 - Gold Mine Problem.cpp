@@ -47,11 +47,11 @@ public:
     int collectMaxGold(vector<vector<int>>& grid) {
         N = grid.size(), M = grid[0].size(); 
 
-        vector<vector<int>> dp(N, vector<int>(M, -1));
+        vector<vector<int>> memory(N, vector<int>(M, -1));
 
         int maximumGold = 0;
         for(int R = 0; R < N; ++R)
-            maximumGold = max(maximumGold, solveWithMemo(dp, grid, R, 0));
+            maximumGold = max(maximumGold, solveWithMemo(memory, grid, R, 0));
         
         return maximumGold;
     }
