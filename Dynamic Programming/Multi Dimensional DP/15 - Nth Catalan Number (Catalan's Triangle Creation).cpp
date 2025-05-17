@@ -12,7 +12,7 @@ class TopDown {
             
         // Base case: last column value of any row is the same as previous one
         if(C == R) 
-            return dp[R][C] = solveWithoutMemo(dp, R, C-1);
+            return solveWithoutMemo(R, C-1);
             
         // Value of any cell (R, C) is the sum of two values, the coordinates of those values are: 
         int moveUp   = solveWithoutMemo(R-1, C); 
@@ -24,13 +24,13 @@ class TopDown {
     int solveWithMemo(vector<vector<int>>& dp, int R, int C) {
         // Base case: 0th column and 1th row always contains value 1
         if(C == 0 || R == 1)
-            return 1;
+            return dp[R][C] = 1;
             
         // Base case: last column value of any row is the same as previous one
         if(C == R) 
             return dp[R][C] = solveWithMemo(dp, R, C-1);
             
-        if(dp[R][C] != -1)
+        if(dp[R][C] > 1)
             return dp[R][C];
         
         // Value of any cell (R, C) is the sum of two values, the coordinates of those values are: 
