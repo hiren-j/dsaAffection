@@ -125,19 +125,19 @@ class BottomUp {
     
     // O(N*M) & O(N*M)
     int solveWith2DConcise(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(N+1, vector<int>(M+1, 0));
+        vector<vector<int>> dp(N+2, vector<int>(M+1, 0));
         int maximumGold = 0;
         
         for(int C = M-1; C >= 0; --C) {
-            for(int R = N-1; R >= 0; --R) {
+            for(int R = N; R >= 1; --R) {
                 int moveRight     = dp[R][C+1]; 
-                int moveUpRight   = (R-1 >= 0) ? dp[R-1][C+1] : 0; 
+                int moveUpRight   = dp[R-1][C+1]; 
                 int moveDownRight = dp[R+1][C+1];
-                dp[R][C] = grid[R][C] + max({moveRight, moveUpRight, moveDownRight});   
+                dp[R][C] = grid[R-1][C] + max({moveRight, moveUpRight, moveDownRight});   
                 maximumGold = max(maximumGold, dp[R][0]);
             }
         }
-        
+       
         return maximumGold;
     }
     
