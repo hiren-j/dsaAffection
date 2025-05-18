@@ -18,6 +18,7 @@
 class TopDown {
     int N, M;
     
+    // O(N * 3^(N*M)) & O(N+M)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         if(R < 0 || R == N || C == M)
             return 0;
@@ -28,7 +29,8 @@ class TopDown {
         
         return grid[R][C] + max({moveRight, moveUpRight, moveDownRight});
     }
-    
+
+    // O(N + 3*N*M) & O(N*M + N+M)
     int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int R, int C) {
         if(R < 0 || R == N || C == M)
             return 0;
@@ -44,13 +46,14 @@ class TopDown {
     }
 
 public:
+    // Method to find maximum gold the miner can collect, using recursion with memoization - O(N*M) & O(N*M)
     int collectMaxGold(vector<vector<int>>& grid) {
         N = grid.size(), M = grid[0].size(); 
 
         vector<vector<int>> memory(N, vector<int>(M, -1));
 
         int maximumGold = 0;
-        for(int R = 0; R < N; ++R)
+        for(int R = 0; R < N; ++R) // Collect gold from each start point and update maximum gold you can collect
             maximumGold = max(maximumGold, solveWithMemo(memory, grid, R, 0));
         
         return maximumGold;
@@ -61,7 +64,8 @@ public:
 
 class BottomUp {
     int N, M;
-    
+
+    // O(N*M) & O(N*M)
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N, vector<int>(M, -1));
         
@@ -81,6 +85,7 @@ class BottomUp {
         return maximumGold;
     }
     
+    // O(N*M) & O(N*M)
    int solveWith2DEnhanced(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N+2, vector<int>(M+1, 0));
         
@@ -100,6 +105,7 @@ class BottomUp {
         return maximumGold;
     }
     
+    // O(N*M) & O(1)
     int solveWithoutTable(vector<vector<int>>& grid) {
         for(int C = M-1; C >= 0; --C) {
             for(int R = N-1; R >= 0; --R) {
@@ -117,6 +123,7 @@ class BottomUp {
         return maximumGold;
     }
     
+    // O(N*M) & O(N*M)
     int solveWith2DConcise(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N+1, vector<int>(M+1, 0));
         int maximumGold = 0;
@@ -134,6 +141,7 @@ class BottomUp {
         return maximumGold;
     }
     
+    // O(N*M) & O(1)
     int solveWithoutTableConcise(vector<vector<int>>& grid) {
         int maximumGold = 0;
         
