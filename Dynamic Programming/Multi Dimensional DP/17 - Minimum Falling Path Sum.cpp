@@ -3,128 +3,180 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public: 
-    // Method to find the minimum sum of any falling path, using recursion with memoization - O(N*N) & O(N*N)
-    int minFallingPathSum(vector<vector<int>>& grid) {
-        int N = grid.size();
-
-        // Stores the result value
-        int minPathSum = INT_MAX;
-
-        // 2D memoization table
-        vector<vector<int>> memory(N, vector<int>(N, INT_MIN));
-        
-        // Explore the falling path of minimum sum from each column of the first row
-        for(int C = 0; C < N; ++C) {
-            minPathSum = min(minPathSum, solveWithMemo(memory, grid, N, 0, C));
-        }
-
-        // Return the result value
-        return minPathSum;
-    }
-
-private:
-    // O(N + 3*N*N) & O(N*N + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int N, int R, int C) {
-        // Edge case: If all the cells are exhausted then we have no values left
-        if(C < 0 || C == N || R == N)
-            return INT_MAX;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[R][C] != INT_MIN)
-            return memory[R][C];
-
-        // There are always three possibilities to perform at each cell
-        int moveToSameColumn = solveWithMemo(memory, grid, N, R+1, C);   // Is to move to the same column in the next row
-        int moveToPrevColumn = solveWithMemo(memory, grid, N, R+1, C-1); // Is to move to the left column in the next row
-        int moveToNextColumn = solveWithMemo(memory, grid, N, R+1, C+1); // Is to move to the right column in the next row
-
-        // As we're striving for the minimum sum thus store the minimum element from all the possibilities
-        int minElement = min({moveToSameColumn, moveToPrevColumn, moveToNextColumn});
-
-        // Store the result value to the memoization table and then return it
-        return memory[R][C] = grid[R][C] + (minElement == INT_MAX ? 0 : minElement);
-    }
-
+    int N;
 
     // O(N * 3^(N*N)) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& grid, int N, int R, int C) {
-        // Edge case: If all the cells are exhausted then we have no values left
+    int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         if(C < 0 || C == N || R == N)
             return INT_MAX;
 
-        // There are always three possibilities to perform at each cell
-        int moveToSameColumn = solveWithoutMemo(grid, N, R+1, C);   // Is to move to the same column in the next row
-        int moveToPrevColumn = solveWithoutMemo(grid, N, R+1, C-1); // Is to move to the left column in the next row
-        int moveToNextColumn = solveWithoutMemo(grid, N, R+1, C+1); // Is to move to the right column in the next row
+        int moveToSameCol = solveWithoutMemo(grid, R+1, C);   
+        int moveToPrevCol = solveWithoutMemo(grid, R+1, C-1); 
+        int moveToNextCol = solveWithoutMemo(grid, R+1, C+1); 
 
-        // As we're striving for the minimum sum thus store the minimum element from all the possibilities
-        int minElement = min({moveToSameColumn, moveToPrevColumn, moveToNextColumn});
-        
-        // Return the result value
+        int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+
         return grid[R][C] + (minElement == INT_MAX ? 0 : minElement);
+    }
+
+    // O(N + 3*N*N) & O(N*N + N)
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
+        if(C < 0 || C == N || R == N)
+            return INT_MAX;
+
+        if(dp[R][C] != -101)
+            return dp[R][C];
+
+        int moveToSameCol = solveWithMemo(dp, grid, R+1, C);   
+        int moveToPrevCol = solveWithMemo(dp, grid, R+1, C-1); 
+        int moveToNextCol = solveWithMemo(dp, grid, R+1, C+1); 
+
+        int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+
+        return dp[R][C] = grid[R][C] + (minElement == INT_MAX ? 0 : minElement);
+    }
+
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        N = grid.size();
+        
+        vector<vector<int>> dp(N, vector<int>(N, -101));
+        
+        int minPathSum = INT_MAX;
+        for(int C = 0; C < N; ++C) 
+            minPathSum = min(minPathSum, solveWithMemo(dp, grid, 0, C));
+        
+        return minPathSum;
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V1 {
-public: 
-    // #1 Method to find the minimum sum of any falling path, using 2D tabulation - O(N*N) & O(N*N)
-    int minFallingPathSum_V1(vector<vector<int>>& grid) {
-        int N = grid.size();
+class BottomUp {
+    int N;
 
-        vector<vector<int>> dp(N+1, vector<int>(N+2, INT_MAX));
+    int solveWith2DTable(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N, vector<int>(N, -101));
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                int moveToSameCol = (R+1 < N) ? dp[R+1][C] : INT_MAX; 
+                int moveToPrevCol = (R+1 < N && C-1 >= 0) ? dp[R+1][C-1] : INT_MAX;
+                int moveToNextCol = (R+1 < N && C+1 < N)  ? dp[R+1][C+1] : INT_MAX;
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+                dp[R][C] = grid[R][C] + (minElement == INT_MAX ? 0 : minElement);
+            }
+        }
+
+        int minPathSum = INT_MAX;
+        for(int C = 0; C < N; ++C) 
+            minPathSum = min(minPathSum, dp[0][C]);
         
+        return minPathSum;
+    }
+    
+    int solveWith2DEnhanced(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N+1, vector<int>(N+2, INT_MAX));
+
         for(int R = N-1; R >= 0; --R) {
             for(int C = N; C >= 1; --C) {
-                int moveToSameColumn = dp[R+1][C];   
-                int moveToPrevColumn = dp[R+1][C-1]; 
-                int moveToNextColumn = dp[R+1][C+1]; 
-                int minElement = min({moveToSameColumn, moveToPrevColumn, moveToNextColumn});
+                int moveToSameCol = dp[R+1][C]; 
+                int moveToPrevCol = dp[R+1][C-1];
+                int moveToNextCol = dp[R+1][C+1];
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
                 dp[R][C] = grid[R][C-1] + (minElement == INT_MAX ? 0 : minElement);
             }
         }
 
         int minPathSum = INT_MAX;
-
-        for(int C = 0; C < N; ++C) {
+        for(int C = 0; C < N; ++C) 
             minPathSum = min(minPathSum, dp[0][C+1]);
+        
+        return minPathSum;
+    }
+
+    int solveWithoutTable(vector<vector<int>>& grid) {
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                int moveToSameCol = (R+1 < N) ? grid[R+1][C] : INT_MAX; 
+                int moveToPrevCol = (R+1 < N && C-1 >= 0) ? grid[R+1][C-1] : INT_MAX;
+                int moveToNextCol = (R+1 < N && C+1 < N)  ? grid[R+1][C+1] : INT_MAX;
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+                grid[R][C] += (minElement == INT_MAX ? 0 : minElement);
+            }
+        }
+
+        int minPathSum = INT_MAX;
+        for(int C = 0; C < N; ++C) 
+            minPathSum = min(minPathSum, grid[0][C]);
+        
+        return minPathSum;
+    }
+
+    int solveWith2DConcise(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N+1, vector<int>(N+2, INT_MAX));
+        int minPathSum = INT_MAX;
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = N; C >= 1; --C) {
+                int moveToSameCol = dp[R+1][C]; 
+                int moveToPrevCol = dp[R+1][C-1];
+                int moveToNextCol = dp[R+1][C+1];
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+                dp[R][C] = grid[R][C-1] + (minElement == INT_MAX ? 0 : minElement);
+                if(R == 0) minPathSum = min(minPathSum, dp[0][C]);
+            }
+        }
+        
+        return minPathSum;
+    }
+
+    int solveWith1DTable(vector<vector<int>>& grid) {
+        vector<int> nextRow(N+2, INT_MAX), idealRow(N+2, INT_MAX);
+        int minPathSum = INT_MAX;
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = N; C >= 1; --C) {
+                int moveToSameCol = nextRow[C]; 
+                int moveToPrevCol = nextRow[C-1];
+                int moveToNextCol = nextRow[C+1];
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+                idealRow[C] = grid[R][C-1] + (minElement == INT_MAX ? 0 : minElement);
+                if(R == 0) minPathSum = min(minPathSum, idealRow[C]);
+            }
+            nextRow = idealRow;
+        }
+        
+        return minPathSum;
+    }
+
+    int solveWithoutTableConcise(vector<vector<int>>& grid) {
+        int minPathSum = INT_MAX;
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                int moveToSameCol = (R+1 < N) ? grid[R+1][C] : INT_MAX; 
+                int moveToPrevCol = (R+1 < N && C-1 >= 0) ? grid[R+1][C-1] : INT_MAX;
+                int moveToNextCol = (R+1 < N && C+1 < N)  ? grid[R+1][C+1] : INT_MAX;
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+                grid[R][C] += (minElement == INT_MAX ? 0 : minElement);
+                if(R == 0) minPathSum = min(minPathSum, grid[0][C]);
+            }
         }
 
         return minPathSum;
     }
 
-    // #2 Method to find the minimum sum of any falling path, using 1D tabulation - O(N*N) & O(N)
-    int minFallingPathSum_V2(vector<vector<int>>& grid) {
-        int N = grid.size();
-
-        vector<int> nextRow(N+2, INT_MAX), currRow(N+2, INT_MAX);
-        
-        for(int R = N-1; R >= 0; --R) {
-            for(int C = N; C >= 1; --C) {
-                int moveToSameColumn = nextRow[C];   
-                int moveToPrevColumn = nextRow[C-1]; 
-                int moveToNextColumn = nextRow[C+1]; 
-                int minElement = min({moveToSameColumn, moveToPrevColumn, moveToNextColumn});
-                currRow[C] = grid[R][C-1] + (minElement == INT_MAX ? 0 : minElement);
-            }
-            nextRow = currRow;
-        }
-
-        int minPathSum = INT_MAX;
-
-        for(int C = 0; C < N; ++C) {
-            minPathSum = min(minPathSum, currRow[C+1]);
-        }
-
-        return minPathSum;
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        N = grid.size();
+        return solveWithoutTableConcise(grid);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V2 {
+class BottomUpIntuitive {
 public:
     // Method to find the minimum sum of any falling path, using constant auxiliary space - O(N*N) & O(1)
     int minFallingPathSum(vector<vector<int>>& grid) {
@@ -134,7 +186,7 @@ public:
             for(int C = N-1; C >= 0; --C) {
                 int moveToSameColumn = grid[R+1][C];   
                 int moveToPrevColumn = (C-1 >= 0) ? grid[R+1][C-1] : INT_MAX; 
-                int moveToNextColumn = (C+1 < N) ? grid[R+1][C+1] : INT_MAX; 
+                int moveToNextColumn = (C+1 < N)  ? grid[R+1][C+1] : INT_MAX; 
                 grid[R][C] += min({moveToSameColumn, moveToPrevColumn, moveToNextColumn});
             }
         }
