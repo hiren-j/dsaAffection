@@ -178,16 +178,15 @@ public:
 
 class BottomUpIntuitive {
 public:
-    // Method to find the minimum sum of any falling path, using constant auxiliary space - O(N*N) & O(1)
     int minFallingPathSum(vector<vector<int>>& grid) {
         int N = grid.size();
         
         for(int R = N-2; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
-                int moveToSameColumn = grid[R+1][C];   
-                int moveToPrevColumn = (C-1 >= 0) ? grid[R+1][C-1] : INT_MAX; 
-                int moveToNextColumn = (C+1 < N)  ? grid[R+1][C+1] : INT_MAX; 
-                grid[R][C] += min({moveToSameColumn, moveToPrevColumn, moveToNextColumn});
+                int moveToSameCol = grid[R+1][C];   
+                int moveToPrevCol = (C-1 >= 0) ? grid[R+1][C-1] : INT_MAX; 
+                int moveToNextCol = (C+1 < N)  ? grid[R+1][C+1] : INT_MAX; 
+                grid[R][C] += min({moveToSameCol, moveToPrevCol, moveToNextCol});
             }
         }
 
