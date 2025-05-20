@@ -98,6 +98,28 @@ class BottomUp {
         return minPathSum;
     }
 
+    // O(N*N) & O(2*N)
+    int solveWith1DTable(vector<vector<int>>& grid) {
+        vector<int> nextRow(N+2, INT_MAX), idealRow(N+2, INT_MAX);
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int C = N; C >= 1; --C) {
+                int moveToSameCol = nextRow[C]; 
+                int moveToPrevCol = nextRow[C-1];
+                int moveToNextCol = nextRow[C+1];
+                int minElement = min({moveToSameCol, moveToPrevCol, moveToNextCol});
+                idealRow[C] = grid[R][C-1] + (minElement == INT_MAX ? 0 : minElement);
+            }
+            nextRow = idealRow;
+        }
+
+        int minPathSum = INT_MAX;
+        for(int C = 0; C < N; ++C) 
+            minPathSum = min(minPathSum, nextRow[C+1]);
+        
+        return minPathSum;
+    }
+
     // O(N*N) & O(1)
     int solveWithoutTable(vector<vector<int>>& grid) {
         for(int R = N-1; R >= 0; --R) {
@@ -137,7 +159,7 @@ class BottomUp {
     }
 
     // O(N*N) & O(2*N)
-    int solveWith1DTable(vector<vector<int>>& grid) {
+    int solveWith1DConcise(vector<vector<int>>& grid) {
         vector<int> nextRow(N+2, INT_MAX), idealRow(N+2, INT_MAX);
         int minPathSum = INT_MAX;
 
