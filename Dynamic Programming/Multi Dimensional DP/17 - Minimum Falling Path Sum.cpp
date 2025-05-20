@@ -44,7 +44,7 @@ public:
         vector<vector<int>> dp(N, vector<int>(N, -101));
         
         int minPathSum = INT_MAX;
-        for(int C = 0; C < N; ++C) 
+        for(int C = 0; C < N; ++C) // Collect minimum sum from each start point and update result by minimum among all
             minPathSum = min(minPathSum, solveWithMemo(dp, grid, 0, C));
         
         return minPathSum;
@@ -56,6 +56,7 @@ public:
 class BottomUp {
     int N;
 
+    // O(N*N) & O(N*N)
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N, vector<int>(N, -101));
 
