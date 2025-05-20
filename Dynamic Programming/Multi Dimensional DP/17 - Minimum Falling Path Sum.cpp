@@ -77,6 +77,7 @@ class BottomUp {
         return minPathSum;
     }
     
+    // O(N*N) & O(N*N)
     int solveWith2DEnhanced(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N+1, vector<int>(N+2, INT_MAX));
 
@@ -97,6 +98,7 @@ class BottomUp {
         return minPathSum;
     }
 
+    // O(N*N) & O(1)
     int solveWithoutTable(vector<vector<int>>& grid) {
         for(int R = N-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
@@ -115,6 +117,7 @@ class BottomUp {
         return minPathSum;
     }
 
+    // O(N*N) & O(N*N)
     int solveWith2DConcise(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N+1, vector<int>(N+2, INT_MAX));
         int minPathSum = INT_MAX;
@@ -133,6 +136,7 @@ class BottomUp {
         return minPathSum;
     }
 
+    // O(N*N) & O(2*N)
     int solveWith1DTable(vector<vector<int>>& grid) {
         vector<int> nextRow(N+2, INT_MAX), idealRow(N+2, INT_MAX);
         int minPathSum = INT_MAX;
@@ -152,6 +156,7 @@ class BottomUp {
         return minPathSum;
     }
 
+    // O(N*N) & O(1)
     int solveWithoutTableConcise(vector<vector<int>>& grid) {
         int minPathSum = INT_MAX;
 
@@ -180,6 +185,7 @@ public:
 
 class BottomUpIntuitive {
 public:
+    // O(N*N) & O(N*N)
     int minFallingPathSum(vector<vector<int>>& grid) {
         int N = grid.size();
         
