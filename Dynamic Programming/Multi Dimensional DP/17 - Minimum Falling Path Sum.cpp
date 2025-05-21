@@ -34,7 +34,7 @@ class TopDown {
         if(C < 0 || C == N || R == N)
             return INT_MAX;
 
-        if(dp[R][C] != -101)
+        if(dp[R][C] != INT_MAX)
             return dp[R][C];
 
         int moveToSameCol = solveWithMemo(dp, grid, R+1, C);   
@@ -51,7 +51,7 @@ public:
     int minFallingPathSum(vector<vector<int>>& grid) {
         N = grid.size();
         
-        vector<vector<int>> dp(N, vector<int>(N, -101));
+        vector<vector<int>> dp(N, vector<int>(N, INT_MAX));
         
         int minPathSum = INT_MAX;
         for(int C = 0; C < N; ++C) // Collect minimum sum from each start point and update result by minimum among all
@@ -68,7 +68,7 @@ class BottomUp {
 
     // O(N*N) & O(N*N)
     int solveWith2DTable(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(N, vector<int>(N, -101));
+        vector<vector<int>> dp(N, vector<int>(N, INT_MAX));
 
         for(int R = N-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
