@@ -44,7 +44,7 @@ class TopDown {
             dp[0][pointer] = 0;
 
         for(int moves = 1; moves <= steps; ++moves) {
-            for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+            for(int pointer = arrLen - 1; pointer >= 0; --pointer) {
                 int stayAtSame  = dp[moves - 1][pointer]; 
                 int moveToLeft  = (pointer - 1 >= 0) ? dp[moves - 1][pointer - 1] : 0;
                 int moveToRight = (pointer + 1 < arrLen) ? dp[moves - 1][pointer + 1] : 0;
