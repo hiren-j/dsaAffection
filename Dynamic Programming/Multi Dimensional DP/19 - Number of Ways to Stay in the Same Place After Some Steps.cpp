@@ -5,6 +5,7 @@
 class TopDown {  
     const int MOD = 1e9+7;
 
+    // O(3^steps) & O(steps)
     int solveWithoutMemo(int steps, int pointer, int arrLen) {
         if(pointer < 0 || pointer == arrLen)
             return 0;
@@ -19,6 +20,7 @@ class TopDown {
         return ((moveToLeft + moveToRight) % MOD + stayAtSame) % MOD;
     }
 
+    // O(3*steps*arrLen) & O(steps*arrLen + steps)
     int solveWithMemo(vector<vector<int>>& memory, int steps, int pointer, int arrLen) {
         if(pointer < 0 || pointer == arrLen)
             return 0;
@@ -36,6 +38,7 @@ class TopDown {
         return memory[steps][pointer] = ((moveToLeft + moveToRight) % MOD + stayAtSame) % MOD;
     }
 
+    // O(steps*arrLen) & O(steps*arrLen)
     int solveWith2DTable(int steps, int arrLen) {
         vector<vector<int>> dp(steps + 1, vector<int>(arrLen, -1));
         dp[0][0] = 1;
@@ -71,6 +74,7 @@ class TopDown {
         return dp[steps][1];
     }
 
+    // O(steps*arrLen) & O(2*arrLen)
     int solveWith1DTable(int steps, int arrLen) {
         vector<int> prevRow(arrLen + 2, 0), idealRow(arrLen + 2, 0);
         prevRow[1] = 1;
@@ -157,5 +161,5 @@ public:
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Topics: Dynamic Programming | Matrix
+Topics: Combinatorics | Dynamic Programming | Matrix
 Link  : https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/description/
