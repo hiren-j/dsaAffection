@@ -6,7 +6,7 @@
     DON'T IGNORE MUST READ: As you work on this problem, you'll notice that in Top-Down approach I haven't provided this edge case:
                                 if(k < endPos - startPos) 
                                     return 0; 
-                            It's because I am not handling that edge case in Bottom-Up, I did handled it, the Bottom-Up worked fine, but then more if-conditions has to be introduced to handle out of bound accesses and this could make Bottom-Up look
+                            It's because I am not handling that edge case in Bottom-Up, I did handled it, the Bottom-Up worked fine, but then more if-conditions has to be introduced to avoid out of bound accesses and this could make Bottom-Up look
                             messy and harder to understand, that's why I thought of to avoid it. However If you want to include that edge case in Top-Down then feel free to do it, It will also work, there's no problem with that.
 */
     
