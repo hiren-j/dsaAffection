@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {  
-    const int MOD = 1e9+7;
+    #define MOD 1000000007
 
     // O(3^steps) & O(steps)
     int solveWithoutMemo(int steps, int pointer, int arrLen) {
@@ -49,7 +49,7 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    const int MOD = 1e9+7;
+    #define MOD 1000000007
 
     // O(steps*arrLen) & O(steps*arrLen)
     int solveWith2DTable(int steps, int arrLen) {
