@@ -1,4 +1,4 @@
-// Code to find the number of different ways to reach the position "endPos" starting from "startPos", such that you perform exactly k steps. Initially, you are standing at position "startPos" on an infinite number line. With one step, you can move either one position to the left, or one position to the right. Note that the number line includes negative integers ~ coded by Hiren
+// Code to find the number of different ways to reach the position "endPos" starting from "startPos", such that you perform exactly k steps. Initially, you are standing at position "startPos" on an infinite number line. With one steps, you can move either one position to the left, or one position to the right. Note that the number line includes negative integers ~ coded by Hiren
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -62,31 +62,32 @@ class BottomUp {
     int OFFSET;
 
     // O(k*TOTAL_POS) & O(k*TOTAL_POS)
-    int solveWith2DTable(int given_k, int startPos, int endPos) {
-        vector<vector<int>> dp(given_k + 1, vector<int>(TOTAL_POS, 0));
+    int solveWith2DTable(int k, int startPos, int endPos) {
+        vector<vector<int>> dp(k + 1, vector<int>(TOTAL_POS, 0));
         dp[0][endPos + OFFSET] = 1;
 
-        for(int k = 1; k <= given_k; ++k) {
+        for(int steps = 1; steps <= k; ++steps) {
             for(int start = MIN_POS; start <= MAX_POS; ++start) {
                 int mainIdx = start + OFFSET;
                 if(mainIdx >= TOTAL_POS) 
                     continue;
                 int idx1 = start - 1 + OFFSET;
                 int idx2 = start + 1 + OFFSET;
-                int moveLeft  = (idx1 >= 0) ? dp[k - 1][idx1] : 0;
-                int moveRight = (idx2 < TOTAL_POS) ? dp[k - 1][idx2] : 0;
-                dp[k][mainIdx] = (moveLeft + moveRight) % MOD;
+                int moveLeft  = (idx1 >= 0) ? dp[steps - 1][idx1] : 0;
+                int moveRight = (idx2 < TOTAL_POS) ? dp[steps - 1][idx2] : 0;
+                dp[steps][mainIdx] = (moveLeft + moveRight) % MOD;
             }
         }
 
-        return dp[given_k][startPos + OFFSET];
+        return dp[k][startPos + OFFSET];
     }
 
-    int solveWith1DTable(int given_k, int startPos, int endPos) {
+    // O(k*TOTAL_POS) & O(2*TOTAL_POS)
+    int solveWith1DTable(int k, int startPos, int endPos) {
         vector<int> prevRow(TOTAL_POS, 0), idealRow(TOTAL_POS, 0);
         prevRow[endPos + OFFSET] = 1;
 
-        for(int k = 1; k <= given_k; ++k) {
+        for(int steps = 1; steps <= k; ++steps) {
             for(int start = MIN_POS; start <= MAX_POS; ++start) {
                 int mainIdx = start + OFFSET;
                 if(mainIdx >= TOTAL_POS) 
