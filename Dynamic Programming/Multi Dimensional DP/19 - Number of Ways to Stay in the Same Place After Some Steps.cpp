@@ -37,8 +37,6 @@ class TopDown {
     }
 
     int solveWith2DTable(int steps, int arrLen) {
-        arrLen = min(steps, arrLen); 
-
         vector<vector<int>> dp(steps + 1, vector<int>(arrLen, -1));
         dp[0][0] = 1;
 
@@ -76,8 +74,6 @@ class TopDown {
     }
 
     int solveWith1DTable(int steps, int arrLen) {
-        arrLen = min(steps, arrLen); 
-
         vector<int> prevRow(arrLen + 2, 0), idealRow(arrLen + 2, 0);
         prevRow[1] = 1;
 
