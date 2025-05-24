@@ -11,94 +11,150 @@
     
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-    DON'T IGNORE MUST READ (REGARDING THE INTUITION BEHIND THE LINE): int offset = (startPos - k) + k*2 + 1
-
-    -> Range of Points
-        With startPos = 1 and k = 5, you can move to points from:
-            Furthest Left Point: 1 - 5 = -4
-            Furthest Right Point: 1 + 5 = 6
-        So, the range of points you need to handle is from -4 to 6.
-
-    -> Handling Negative Points
-        To map these points into an array:
-        Calculate Offset: int offset = (startPos - k) + k*2 + 1
-
-        Explanation:
-            (startPos - k): Determines the furthest left point, which could be negative.
-
-            + k*2 = (k+k):
-                    First k: Moves negative points into positive index space.
-                    Second k: Ensures there’s enough space for already existing positive points as well, this excludes the positive indeces of negative points.
-
-            + 1: Adds space for the initial value of k itself.
-
-        Example Calculation:
-            (startPos - k): 1 - 5 = -4
-            Offset: (-4) + (5*2) + 1 = -4 + 10 + 1 = 7
-
-        Convert Points:
-            Add the offset to any point to get a valid array index.
-            For point -4: -4 + 7 = 3
-            For point 6: 6 + 7 = 13
-
-    -> This approach ensures that the array has space for both negative and positive points, including the value of k itself. This way, you can use an array without dealing with negative indices.
-*/
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class TopDown {
     const int MOD = 1e9+7;
+    int MAX_POS, MIN_POS, TOTAL_POS;
+    int OFFSET;
 
     // O(2^k) & O(k)
     int solveWithoutMemo(int k, int startPos, int endPos) {
-        // Edge case: If you reached the end position in exactly k steps then you've one valid way
         if(k == 0)
             return startPos == endPos;
-
-        // Edge case: If the total steps are less such that you can never reach the end position then you've no way
-        if(k < endPos - startPos)
-            return 0;
             
-        // There are always to possibilities to perform at each step
-        int moveLeft  = solveWithoutMemo(k - 1, startPos - 1, endPos) % MOD; // Is to move one position to left
-        int moveRight = solveWithoutMemo(k - 1, startPos + 1, endPos) % MOD; // Is to move one position to right
+        int moveLeft  = solveWithoutMemo(k - 1, startPos - 1, endPos);
+        int moveRight = solveWithoutMemo(k - 1, startPos + 1, endPos);
 
-        // Return the result value
         return (moveLeft + moveRight) % MOD;
     }
 
-    // O(2*k*offset) & O(k*offset + k)
-    int solveWithMemo(vector<vector<int>>& memory, int k, int startPos, int endPos) {
-        // Edge case: If you reached the end position in exactly k steps then you've one valid way
+    // O(2*k*TOTAL_POS) & O(k*TOTAL_POS + k)
+    int solveWithMemo(vector<vector<int>>& dp, int k, int startPos, int endPos) {
         if(k == 0)
             return startPos == endPos;
 
-        // Edge case: If the total steps are less such that you can never reach the end position then you've no way
-        if(k < endPos - startPos)
-            return 0;
+        if(dp[k][startPos + OFFSET] != -1)
+            return dp[k][startPos + OFFSET];
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[k][startPos + k] != -1)
-            return memory[k][startPos + k];
+        int moveLeft  = solveWithMemo(dp, k - 1, startPos - 1, endPos);
+        int moveRight = solveWithMemo(dp, k - 1, startPos + 1, endPos);
 
-        // There are always to possibilities to perform at each step
-        int moveLeft  = solveWithMemo(memory, k - 1, startPos - 1, endPos) % MOD; // Is to move one position to left
-        int moveRight = solveWithMemo(memory, k - 1, startPos + 1, endPos) % MOD; // Is to move one position to right
+        return dp[k][startPos + OFFSET] = (moveLeft + moveRight) % MOD;
+    }
 
-        // Store the result value to the memoization table and then return it
-        return memory[k][startPos + k] = (moveLeft + moveRight) % MOD;
+    int solveWith2DTable(int given_k, int startPos, int endPos) {
+        vector<vector<int>> dp(given_k + 1, vector<int>(TOTAL_POS, 0));
+        dp[0][endPos + OFFSET] = 1;
+
+        for(int k = 1; k <= given_k; ++k) {
+            for(int start = MIN_POS; start <= MAX_POS; ++start) {
+                int mainIdx = start + OFFSET;
+                if(mainIdx >= TOTAL_POS) 
+                    continue;
+                int idx1 = start - 1 + OFFSET;
+                int idx2 = start + 1 + OFFSET;
+                int moveLeft  = (idx1 >= 0) ? dp[k - 1][idx1] : 0;
+                int moveRight = (idx2 < TOTAL_POS) ? dp[k - 1][idx2] : 0;
+                dp[k][mainIdx] = (moveLeft + moveRight) % MOD;
+            }
+        }
+
+        return dp[given_k][startPos + OFFSET];
+    }
+
+    int solveWith1DTable(int given_k, int startPos, int endPos) {
+        vector<int> prevRow(TOTAL_POS, 0), idealRow(TOTAL_POS, 0);
+        prevRow[endPos + OFFSET] = 1;
+
+        for(int k = 1; k <= given_k; ++k) {
+            for(int start = MIN_POS; start <= MAX_POS; ++start) {
+                int mainIdx = start + OFFSET;
+                if(mainIdx >= TOTAL_POS) 
+                    continue;
+                int idx1 = start - 1 + OFFSET;
+                int idx2 = start + 1 + OFFSET;
+                int moveLeft  = (idx1 >= 0) ? prevRow[idx1] : 0;
+                int moveRight = (idx2 < TOTAL_POS) ? prevRow[idx2] : 0;
+                idealRow[mainIdx] = (moveLeft + moveRight) % MOD;
+            }
+            prevRow = idealRow;
+        }
+
+        return prevRow[startPos + OFFSET];
     }
 
 public:
-    // Method to find the number of different ways, using recursion with memoization - O(k * offset) & O(k * offset)
+    // Method to find number of ways to reach end position within k steps, using recursion with memoization - O(k * OFFSET) & O(k * OFFSET)
     int numberOfWays(int startPos, int endPos, int k) {
-        int offset = (startPos - k) + k*2 + 1;
-        vector<vector<int>> memory(k + 1, vector<int>(offset, -1));
-        return solveWithMemo(memory, k, startPos, endPos);
+        MIN_POS   = startPos - k;
+        MAX_POS   = max(startPos, endPos) + k;
+        OFFSET    = abs(MIN_POS);
+        TOTAL_POS = MAX_POS + OFFSET;
+
+        vector<vector<int>> dp(k + 1, vector<int>(TOTAL_POS, -1));
+        return solveWithMemo(dp, k, startPos, endPos);
     }
 };
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    const int MOD = 1e9+7;
+    int MAX_POS, MIN_POS, TOTAL_POS;
+    int OFFSET;
+
+    int solveWith2DTable(int given_k, int startPos, int endPos) {
+        vector<vector<int>> dp(given_k + 1, vector<int>(TOTAL_POS, 0));
+        dp[0][endPos + OFFSET] = 1;
+
+        for(int k = 1; k <= given_k; ++k) {
+            for(int start = MIN_POS; start <= MAX_POS; ++start) {
+                int mainIdx = start + OFFSET;
+                if(mainIdx >= TOTAL_POS) 
+                    continue;
+                int idx1 = start - 1 + OFFSET;
+                int idx2 = start + 1 + OFFSET;
+                int moveLeft  = (idx1 >= 0) ? dp[k - 1][idx1] : 0;
+                int moveRight = (idx2 < TOTAL_POS) ? dp[k - 1][idx2] : 0;
+                dp[k][mainIdx] = (moveLeft + moveRight) % MOD;
+            }
+        }
+
+        return dp[given_k][startPos + OFFSET];
+    }
+
+    int solveWith1DTable(int given_k, int startPos, int endPos) {
+        vector<int> prevRow(TOTAL_POS, 0), idealRow(TOTAL_POS, 0);
+        prevRow[endPos + OFFSET] = 1;
+
+        for(int k = 1; k <= given_k; ++k) {
+            for(int start = MIN_POS; start <= MAX_POS; ++start) {
+                int mainIdx = start + OFFSET;
+                if(mainIdx >= TOTAL_POS) 
+                    continue;
+                int idx1 = start - 1 + OFFSET;
+                int idx2 = start + 1 + OFFSET;
+                int moveLeft  = (idx1 >= 0) ? prevRow[idx1] : 0;
+                int moveRight = (idx2 < TOTAL_POS) ? prevRow[idx2] : 0;
+                idealRow[mainIdx] = (moveLeft + moveRight) % MOD;
+            }
+            prevRow = idealRow;
+        }
+
+        return prevRow[startPos + OFFSET];
+    }
+
+public:
+    int numberOfWays(int startPos, int endPos, int k) {
+        MIN_POS   = startPos - k;
+        MAX_POS   = max(startPos, endPos) + k;
+        OFFSET    = abs(MIN_POS);
+        TOTAL_POS = MAX_POS + OFFSET;
+        
+        vector<vector<int>> dp(k + 1, vector<int>(TOTAL_POS, -1));
+        return solveWith1DTable(k, startPos, endPos);
+    }
+};
+    
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Math | Dynamic Programming | Combinatorics
