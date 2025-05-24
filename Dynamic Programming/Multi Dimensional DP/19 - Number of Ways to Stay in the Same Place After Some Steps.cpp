@@ -56,8 +56,6 @@ class TopDown {
     }
 
     int solveWith2DEnhanced(int steps, int arrLen) {
-        arrLen = min(steps, arrLen); 
-
         vector<vector<int>> dp(steps + 1, vector<int>(arrLen + 2, 0));
         dp[0][1] = 1;
 
