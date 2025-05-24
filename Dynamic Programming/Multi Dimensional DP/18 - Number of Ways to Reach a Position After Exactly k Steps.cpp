@@ -2,10 +2,10 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a bottom-up solution provided. 
-                        This is one of the two problems in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
-                        The issue wasn't with time limits but with incorrect results. So, I've only included the top-down (memoized) solution for this problem. 
-                        There are only two problems in the entire DP series without bottom-up solutions. These three lies in this folder.
+DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a Bottom-Up solution provided. 
+                        Actually I created Bottom-Up of this problem, and it was intuitive, not a direct conversion of the Top-Down. 
+                        So I thought it will be hard for you to understand, hence I decided to change the Top-Down approach a little bit, 
+                        so that I could create a Bottom-Up which could seem a direct conversion of the Top-Down, and I did that and you could find this solutions in 18.2 Version solution of this problem.
     
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
