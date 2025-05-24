@@ -39,6 +39,7 @@ class TopDown {
     }
 
 public:
+    // Method to find such number of ways, using recursion with memoization - O(steps*arrLen) & O(steps*arrLen)
     int numWays(int steps, int arrLen) {
         arrLen = min(steps, arrLen); 
         vector<vector<int>> memory(steps + 1, vector<int>(arrLen, -1));
