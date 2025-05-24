@@ -5,7 +5,7 @@
 DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a Bottom-Up solution provided. 
                         Actually I created Bottom-Up of this problem, and it was intuitive, not a direct conversion of the Top-Down. 
                         So I thought it will be hard for you to understand, hence I decided to change the Top-Down approach a little bit, 
-                        so that I could create a Bottom-Up which could seem a direct conversion of the Top-Down, and I did that and you could find this solutions in 18.2 Version solution of this problem.
+                        so that I could create a Bottom-Up which could seem a direct conversion of the Top-Down, and I did that and you could find this solutions in 18.2 version of this problem.
     
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
