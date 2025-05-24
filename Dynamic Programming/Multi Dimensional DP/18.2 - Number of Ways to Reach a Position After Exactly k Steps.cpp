@@ -69,8 +69,7 @@ class BottomUp {
         for(int steps = 1; steps <= k; ++steps) {
             for(int start = MIN_POS; start <= MAX_POS; ++start) {
                 int mainIdx = start + OFFSET;
-                if(mainIdx >= TOTAL_POS) 
-                    continue;
+                if(mainIdx >= TOTAL_POS) continue;
                 int idx1 = start - 1 + OFFSET;
                 int idx2 = start + 1 + OFFSET;
                 int moveLeft  = (idx1 >= 0) ? dp[steps - 1][idx1] : 0;
@@ -90,8 +89,7 @@ class BottomUp {
         for(int steps = 1; steps <= k; ++steps) {
             for(int start = MIN_POS; start <= MAX_POS; ++start) {
                 int mainIdx = start + OFFSET;
-                if(mainIdx >= TOTAL_POS) 
-                    continue;
+                if(mainIdx >= TOTAL_POS) continue;
                 int idx1 = start - 1 + OFFSET;
                 int idx2 = start + 1 + OFFSET;
                 int moveLeft  = (idx1 >= 0) ? prevRow[idx1] : 0;
