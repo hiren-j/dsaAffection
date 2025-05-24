@@ -41,49 +41,8 @@ class TopDown {
         return dp[k][startPos + OFFSET] = (moveLeft + moveRight) % MOD;
     }
 
-    int solveWith2DTable(int given_k, int startPos, int endPos) {
-        vector<vector<int>> dp(given_k + 1, vector<int>(TOTAL_POS, 0));
-        dp[0][endPos + OFFSET] = 1;
-
-        for(int k = 1; k <= given_k; ++k) {
-            for(int start = MIN_POS; start <= MAX_POS; ++start) {
-                int mainIdx = start + OFFSET;
-                if(mainIdx >= TOTAL_POS) 
-                    continue;
-                int idx1 = start - 1 + OFFSET;
-                int idx2 = start + 1 + OFFSET;
-                int moveLeft  = (idx1 >= 0) ? dp[k - 1][idx1] : 0;
-                int moveRight = (idx2 < TOTAL_POS) ? dp[k - 1][idx2] : 0;
-                dp[k][mainIdx] = (moveLeft + moveRight) % MOD;
-            }
-        }
-
-        return dp[given_k][startPos + OFFSET];
-    }
-
-    int solveWith1DTable(int given_k, int startPos, int endPos) {
-        vector<int> prevRow(TOTAL_POS, 0), idealRow(TOTAL_POS, 0);
-        prevRow[endPos + OFFSET] = 1;
-
-        for(int k = 1; k <= given_k; ++k) {
-            for(int start = MIN_POS; start <= MAX_POS; ++start) {
-                int mainIdx = start + OFFSET;
-                if(mainIdx >= TOTAL_POS) 
-                    continue;
-                int idx1 = start - 1 + OFFSET;
-                int idx2 = start + 1 + OFFSET;
-                int moveLeft  = (idx1 >= 0) ? prevRow[idx1] : 0;
-                int moveRight = (idx2 < TOTAL_POS) ? prevRow[idx2] : 0;
-                idealRow[mainIdx] = (moveLeft + moveRight) % MOD;
-            }
-            prevRow = idealRow;
-        }
-
-        return prevRow[startPos + OFFSET];
-    }
-
 public:
-    // Method to find number of ways to reach end position within k steps, using recursion with memoization - O(k * OFFSET) & O(k * OFFSET)
+    // Method to find number of ways to reach end position within k steps, using recursion with memoization - O(k*TOTAL_POS) & O(k*TOTAL_POS)
     int numberOfWays(int startPos, int endPos, int k) {
         MIN_POS   = startPos - k;
         MAX_POS   = max(startPos, endPos) + k;
@@ -97,11 +56,12 @@ public:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Solution {
+class BottomUp {
     const int MOD = 1e9+7;
     int MAX_POS, MIN_POS, TOTAL_POS;
     int OFFSET;
 
+    // O(k*TOTAL_POS) & O(k*TOTAL_POS)
     int solveWith2DTable(int given_k, int startPos, int endPos) {
         vector<vector<int>> dp(given_k + 1, vector<int>(TOTAL_POS, 0));
         dp[0][endPos + OFFSET] = 1;
