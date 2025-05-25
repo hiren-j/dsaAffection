@@ -4,10 +4,16 @@
 
 /*
     DON'T IGNORE MUST READ: I've initialized the cell values by INT_MAX: [vector<vector<int>> dp(N, vector<int>(N, INT_MAX))]
-                            Why INT_MAX not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -100: [-100 <= matrix[i][j] <= 100]
-                            This means you should not use any value within that constraints range for initialization, Its because those values are contributing in result making.
-                            And if we use any of that value, this will lead our solution to hit TLE. So it's better to avoid any value within that range, 
-                            So you could use -101 or lesser values, 101 or greater values for initialization, just don't use value within that constraints range.
+                            Why INT_MAX? Why not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -100, 
+                            maximum could be 100: 
+                                -100 <= matrix[i][j] <= 100
+                                n == matrix.length == matrix[i].length
+                                1 <= n <= 100
+                            The worst minimum sum could be -100*n = -100*100 = -10000
+                            The worst maximum sum could be  100*n =  100*100 =  10000
+                            This means you should not use any of the value lying in range [-10000, 10000], Its because those values are contributing in result making.
+                            And if we use any of that value in for dp matrix initialization then this will lead our solution to hit TLE. So it's better to avoid any value within that range, 
+                            So I would prefer to use lesser values than -10000, or greater values than 10000 for dp initialization, just don't use value within that range.
 */
     
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
