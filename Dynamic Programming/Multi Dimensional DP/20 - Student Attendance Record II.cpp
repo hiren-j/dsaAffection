@@ -50,41 +50,10 @@ class BottomUp {
     const int MOD = 1e9+7;
     const int maxLate = 3, maxAbsences = 2;
 
-    int solveWithoutMemo(int N, int consecutiveLate, int absences) {
-        if(consecutiveLate == maxLate || absences == maxAbsences)
-            return 0;
-
-        if(N == 0)
-            return 1;
-
-        int P = solveWithoutMemo(N - 1, 0, absences);
-        int A = solveWithoutMemo(N - 1, 0, absences + 1);
-        int L = solveWithoutMemo(N - 1, consecutiveLate + 1, absences);
-
-        return ((P + A) % MOD + L) % MOD;
-    }
-
-    int solveWithMemo(vector<vector<vector<int>>>& memory, int N, int consecutiveLate, int absences) {
-        if(consecutiveLate == maxLate || absences == maxAbsences)
-            return 0;
-
-        if(N == 0)
-            return 1;
-
-        if(memory[N][consecutiveLate][absences] != -1)
-            return memory[N][consecutiveLate][absences];
-
-        int P = solveWithMemo(memory, N - 1, 0, absences);
-        int A = solveWithMemo(memory, N - 1, 0, absences + 1);
-        int L = solveWithMemo(memory, N - 1, consecutiveLate + 1, absences);
-
-        return memory[N][consecutiveLate][absences] = ((P + A) % MOD + L) % MOD;
-    }
-
     int solveWith3DTable(int N) {
         vector<vector<vector<int>>> dp(N + 1, vector<vector<int>>(maxLate, vector<int>(maxAbsences, -1)));
         
-        for(int consecutiveLate = 0; consecutiveLate < maxLate; ++consecutiveLate)
+        for(int consecutiveLate = 0; consecutiveLate < maxLate; ++consecutiveLate) // Init second edge case
             for(int absences = 0; absences < maxAbsences; ++absences)
                 dp[0][consecutiveLate][absences] = 1;
         
