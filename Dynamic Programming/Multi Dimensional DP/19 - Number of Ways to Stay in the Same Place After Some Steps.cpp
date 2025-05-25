@@ -55,10 +55,10 @@ class BottomUp {
     // O(steps*arrLen) & O(steps*arrLen)
     int solveWith2DTable(int steps, int arrLen) {
         vector<vector<int>> dp(steps + 1, vector<int>(arrLen, -1));
-        dp[0][0] = 1;
+        dp[0][0] = 1; // Init second edge case
 
         for(int pointer = 1; pointer < arrLen; ++pointer)
-            dp[0][pointer] = 0;
+            dp[0][pointer] = 0; // Init first edge case
 
         for(int moves = 1; moves <= steps; ++moves) {
             for(int pointer = arrLen - 1; pointer >= 0; --pointer) {
