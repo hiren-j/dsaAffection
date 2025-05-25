@@ -8,14 +8,15 @@ class TopDown {
 
     int solveWithoutMemo(int N, int consecutiveLate, int absences) {
         if(consecutiveLate == maxLate || absences == maxAbsences)
-            return 0;
+            return 0; // Edge case: If the student goes late for consecutively 3 days or absent for 2 days then its not valid
 
         if(N == 0)
-            return 1;
+            return 1; // Edge case: If it's possible to create a valid attendence record of length N then there's one way
 
-        int P = solveWithoutMemo(N - 1, 0, absences);
-        int A = solveWithoutMemo(N - 1, 0, absences + 1);
-        int L = solveWithoutMemo(N - 1, consecutiveLate + 1, absences);
+        // There are three possibilities the student could perform each day
+        int P = solveWithoutMemo(N - 1, 0, absences);                   // Is to present
+        int A = solveWithoutMemo(N - 1, 0, absences + 1);               // Is to go absent
+        int L = solveWithoutMemo(N - 1, consecutiveLate + 1, absences); // Is to go late
 
         return ((P + A) % MOD + L) % MOD;
     }
