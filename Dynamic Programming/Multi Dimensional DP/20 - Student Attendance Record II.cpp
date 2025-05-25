@@ -13,7 +13,7 @@ class TopDown {
         if(N == 0)
             return 1; // Edge case: If it's possible to create a valid attendence record of length N then there's one way
 
-        // There are three possibilities the student could perform each day
+        // There are three possibilities the student can perform each day
         int P = solveWithoutMemo(N - 1, 0, absences);                   // Is to present
         int A = solveWithoutMemo(N - 1, 0, absences + 1);               // Is to go absent
         int L = solveWithoutMemo(N - 1, consecutiveLate + 1, absences); // Is to go late
