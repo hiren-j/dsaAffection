@@ -3,8 +3,8 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
-    DON'T IGNORE MUST READ: I've initialized the cell values by -101: [vector<vector<int>> dp(N, vector<int>(N, -101))]
-                            Why -101? Why not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -100: [-100 <= matrix[i][j] <= 100]
+    DON'T IGNORE MUST READ: I've initialized the cell values by INT_MAX: [vector<vector<int>> dp(N, vector<int>(N, INT_MAX))]
+                            Why INT_MAX not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -100: [-100 <= matrix[i][j] <= 100]
                             This means you should not use any value within that constraints range for initialization, Its because those values are contributing in result making.
                             And if we use any of that value, this will lead our solution to hit TLE. So it's better to avoid any value within that range, 
                             So you could use -101 or lesser values, 101 or greater values for initialization, just don't use value within that constraints range.
