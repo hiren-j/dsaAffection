@@ -12,8 +12,8 @@
                             The worst minimum sum could be -100*n = -100*100 = -10000
                             The worst maximum sum could be  100*n =  100*100 =  10000
                             This means you should not use any of the value lying in range [-10000, 10000], Its because those values are contributing in result making.
-                            And if we use any of that value in for dp matrix initialization then this will lead our solution to hit TLE. So it's better to avoid any value within that range, 
-                            So I would prefer to use lesser values than -10000, or greater values than 10000 for dp initialization, just don't use value within that range.
+                            If we use any of that value for dp matrix initialization then this will lead our solution to hit TLE. So it's better to avoid any value of that range, 
+                            So I would prefer to use lesser values than -10000, or greater values than 10000 for dp initialization, just don't use values within that range.
 */
     
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
