@@ -73,7 +73,7 @@ class BottomUp {
                         vector<vector<int>>(givenR + 1, 
                                 vector<int>(4, -1))));
         
-        for(int prevBall = 0; prevBall < 4; ++prevBall)
+        for(int prevBall = 0; prevBall < 4; ++prevBall) // Init first edge case
             dp[0][0][0][prevBall] = 1;
         
         for(int P = 0; P <= givenP; ++P) {
