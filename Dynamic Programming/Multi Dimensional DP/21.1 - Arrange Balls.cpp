@@ -11,54 +11,29 @@
 
 class TopDown {
     const int MOD = 1e9+7;
-
-    // O(3^(P*Q*R)) & O(P+Q+R)
-    int solveWithoutMemo(int P, int Q, int R, int prevType) {
-        // Edge case: If you've created a valid arrangement by picking all the type of balls then return 1
+    
+    int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, int P, int Q, int R, int prevBall) {
         if(P == 0 && Q == 0 && R == 0)
             return 1;
-
-        // Edge case: If its not possible to pick all type of balls then return 0
+        
         if(P < 0 || Q < 0 || R < 0)
             return 0;
-
-        int count = 0;
-
-        // There are three possibilities to take care before picking any type of ball
-        if(prevType != 1) count = solveWithoutMemo(P-1, Q, R, 1);                 // If previously not picked then pick a ball of type P
-        if(prevType != 2) count = (count + solveWithoutMemo(P, Q-1, R, 2)) % MOD; // If previously not picked then pick a ball of type Q
-        if(prevType != 3) count = (count + solveWithoutMemo(P, Q, R-1, 3)) % MOD; // If previously not picked then pick a ball of type R
-
-        return count;
-    }
-
-    // O(3*P*Q*R*4) & O(P*Q*R*4 + P+Q+R)
-    int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, int P, int Q, int R, int prevType) {
-        // Edge case: If you've created a valid arrangement by picking all the type of balls then return 1
-        if(P == 0 && Q == 0 && R == 0)
-            return 1;
-
-        // Edge case: If its not possible to pick all type of balls then return 0
-        if(P < 0 || Q < 0 || R < 0)
-            return 0;
-
-        if(dp[P][Q][R][prevType] != -1)
-            return dp[P][Q][R][prevType]; 
+            
+        if(dp[P][Q][R][prevBall] != -1)
+            return dp[P][Q][R][prevBall];
             
         int count = 0;
-
-        // There are three possibilities to take care before picking any type of ball
-        if(prevType != 1) count = solveWithMemo(dp, P-1, Q, R, 1);                 // If previously not picked then pick a ball of type P
-        if(prevType != 2) count = (count + solveWithMemo(dp, P, Q-1, R, 2)) % MOD; // If previously not picked then pick a ball of type Q
-        if(prevType != 3) count = (count + solveWithMemo(dp, P, Q, R-1, 3)) % MOD; // If previously not picked then pick a ball of type R
-
-        return dp[P][Q][R][prevType] = count;
+        
+        if(prevBall != 1) count = solveWithMemo(dp, P-1, Q, R, 1);
+        if(prevBall != 2) count = (count + solveWithMemo(dp, P, Q-1, R, 2)) % MOD;
+        if(prevBall != 3) count = (count + solveWithMemo(dp, P, Q, R-1, 3)) % MOD;
+        
+        return dp[P][Q][R][prevBall] = count;
     }
-
+    
 public:
-    // Method to find total number of possible arrangements, using recursion with memoization - O(PQR) & O(PQR)
-    int countTotalArrangements(int P, int Q, int R) {
-        vector<vector<vector<vector<int>>>> dp(P + 1, vector<vector<vector<int>>>(Q + 1, vector<vector<int>>(R + 1, vector<int>(4, -1))));
+    int countTotalArrangement(int P, int Q, int R) {
+        vector<vector<vector<vector<int>>>> dp(P+1, vector<vector<vector<int>>>(Q+1, vector<vector<int>>(R+1, vector<int>(4, -1))));
         return solveWithMemo(dp, P, Q, R, 0);
     }
 };
@@ -68,63 +43,90 @@ public:
 class BottomUp {
     const int MOD = 1e9+7;
     
-public:
-    // #1 Method to find the total number of possible arrangements, using 4D tabulation - O(PQR) & O(PQR)
-    int countTotalArrangements_V1(int given_P, int given_Q, int given_R) {
-        vector<vector<vector<vector<int>>>> dp(given_P + 1, vector<vector<vector<int>>>(given_Q + 1, vector<vector<int>>(given_R + 1, vector<int>(4, 0))));
-
-        // Initialize the first edge case
-        for(int prevType = 0; prevType <= 3; ++prevType)
-            dp[0][0][0][prevType] = 1;
+    int solveWith4DTable(int givenP, int givenQ, int givenR) {
+        vector<vector<vector<vector<int>>>> dp(givenP + 1, vector<vector<vector<int>>>(givenQ + 1, vector<vector<int>>(givenR + 1, vector<int>(4, -1))));
         
-        for(int P = 0; P <= given_P; ++P) {
-            for(int Q = 0; Q <= given_Q; ++Q) {
-                for(int R = 0; R <= given_R; ++R) {
-                    if(P == 0 && Q == 0 && R == 0) // Handle the first edge case
+        for(int prevBall = 0; prevBall < 4; ++prevBall)
+            dp[0][0][0][prevBall] = 1;
+        
+        for(int P = 0; P <= givenP; ++P) {
+            for(int Q = 0; Q <= givenQ; ++Q) {
+                for(int R = 0; R <= givenR; ++R) {
+                    if(P == 0 && Q == 0 && R == 0)
                         continue;
-                    for(int prevType = 3; prevType >= 0; --prevType) {
+                    for(int prevBall = 3; prevBall >= 0; --prevBall) {
                         int count = 0;
-                        if(prevType != 1) count = (P-1 >= 0 ? dp[P-1][Q][R][1] : 0);
-                        if(prevType != 2) count = (count + (Q-1 >= 0 ? dp[P][Q-1][R][2] : 0)) % MOD;
-                        if(prevType != 3) count = (count + (R-1 >= 0 ? dp[P][Q][R-1][3] : 0)) % MOD;
-                        dp[P][Q][R][prevType] = count;                   
+                        if(prevBall != 1) count = (P-1 >= 0 ? dp[P-1][Q][R][1] : 0);
+                        if(prevBall != 2) count = (count + (Q-1 >= 0 ? dp[P][Q-1][R][2] : 0)) % MOD;
+                        if(prevBall != 3) count = (count + (R-1 >= 0 ? dp[P][Q][R-1][3] : 0)) % MOD;
+                        dp[P][Q][R][prevBall] = count;
                     }
                 }
             }
         }
-        
-        return dp[given_P][given_Q][given_R][0];
+            
+        return dp[givenP][givenQ][givenR][0];
     }
-
-    // #2 Method to find the total number of possible arrangements, using 3D tabulation - O(PQR) & O(QR)
-    int countTotalArrangements_V2(int given_P, int given_Q, int given_R) {
-        vector<vector<vector<int>>> prevRow(given_Q + 1, vector<vector<int>>(given_R + 1, vector<int>(4, 0)));
-        vector<vector<vector<int>>> idealRow(given_Q + 1, vector<vector<int>>(given_R + 1, vector<int>(4, 0)));
+    
+    int solveWith4DEnhanced(int givenP, int givenQ, int givenR) {
+        vector<vector<vector<vector<int>>>> dp(givenP + 2, vector<vector<vector<int>>>(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0))));
         
-        for(int P = 0; P <= given_P; ++P) {
-            for(int prevType = 0; prevType <= 3; ++prevType) // Initialize the first edge case
-                idealRow[0][0][prevType] = 1; 
-            for(int Q = 0; Q <= given_Q; ++Q) {
-                for(int R = 0; R <= given_R; ++R) {
-                    if(P == 0 && Q == 0 && R == 0) // Handle the first edge case
+        for(int prevBall = 0; prevBall < 4; ++prevBall)
+            dp[1][1][1][prevBall] = 1;
+        
+        for(int P = 1; P <= givenP + 1; ++P) {
+            for(int Q = 1; Q <= givenQ + 1; ++Q) {
+                for(int R = 1; R <= givenR + 1; ++R) {
+                    if(P == 1 && Q == 1 && R == 1)
                         continue;
-                    for(int prevType = 3; prevType >= 0; --prevType) {
+                    for(int prevBall = 3; prevBall >= 0; --prevBall) {
                         int count = 0;
-                        if(prevType != 1) count = (P-1 >= 0 ? prevRow[Q][R][1] : 0);
-                        if(prevType != 2) count = (count + (Q-1 >= 0 ? idealRow[Q-1][R][2] : 0)) % MOD;
-                        if(prevType != 3) count = (count + (R-1 >= 0 ? idealRow[Q][R-1][3] : 0)) % MOD;
-                        idealRow[Q][R][prevType] = count;                   
+                        if(prevBall != 1) count = dp[P-1][Q][R][1];
+                        if(prevBall != 2) count = (count + dp[P][Q-1][R][2]) % MOD;
+                        if(prevBall != 3) count = (count + dp[P][Q][R-1][3]) % MOD;
+                        dp[P][Q][R][prevBall] = count;
+                    }
+                }
+            }
+        }
+            
+        return dp[givenP + 1][givenQ + 1][givenR + 1][0];
+    }
+    
+    int solveWith3DTable(int givenP, int givenQ, int givenR) {
+        vector<vector<vector<int>>> prevRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
+        vector<vector<vector<int>>> idealRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
+        
+        for(int prevBall = 0; prevBall < 4; ++prevBall)
+            idealRow[1][1][prevBall] = 1;
+        
+        for(int P = 1; P <= givenP + 1; ++P) {
+            for(int Q = 1; Q <= givenQ + 1; ++Q) {
+                for(int R = 1; R <= givenR + 1; ++R) {
+                    if(P == 1 && Q == 1 && R == 1)
+                        continue;
+                    for(int prevBall = 3; prevBall >= 0; --prevBall) {
+                        int count = 0;
+                        if(prevBall != 1) count = prevRow[Q][R][1];
+                        if(prevBall != 2) count = (count + idealRow[Q-1][R][2]) % MOD;
+                        if(prevBall != 3) count = (count + idealRow[Q][R-1][3]) % MOD;
+                        idealRow[Q][R][prevBall] = count;
                     }
                 }
             }
             prevRow = idealRow;
         }
-        
-        return prevRow[given_Q][given_R][0];
+            
+        return idealRow[givenQ + 1][givenR + 1][0];
+    }
+    
+public:
+    int countTotalArrangement(int P, int Q, int R) {
+        return solveWith3DTable(P, Q, R);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
           
-Topics: Dynamic Programming
+Topics: Combinatorics | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/arrange-balls0052/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=practice_card
