@@ -39,7 +39,7 @@ class TopDown {
     }
 
 public:
-    int checkRecord(int N) {
+    int numWaysToBuildRecords(int N) {
         vector<vector<vector<int>>> memory(N + 1, vector<vector<int>>(maxLate, vector<int>(maxAbsences, -1)));
         return solveWithMemo(memory, N, 0, 0);
     }
@@ -116,7 +116,7 @@ class BottomUp {
     }
 
 public:
-    int checkRecord(int N) {
+    int numWaysToBuildRecords(int N) {
         return solveWith2DTable(N);
     }
 };
