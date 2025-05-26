@@ -32,7 +32,7 @@ class TopDown {
     }
     
 public:
-    int countTotalArrangement(int P, int Q, int R) {
+    int countTotalArrangements(int P, int Q, int R) {
         vector<vector<vector<vector<int>>>> dp(P+1, vector<vector<vector<int>>>(Q+1, vector<vector<int>>(R+1, vector<int>(4, -1))));
         return solveWithMemo(dp, P, Q, R, 0);
     }
@@ -44,7 +44,10 @@ class BottomUp {
     const int MOD = 1e9+7;
     
     int solveWith4DTable(int givenP, int givenQ, int givenR) {
-        vector<vector<vector<vector<int>>>> dp(givenP + 1, vector<vector<vector<int>>>(givenQ + 1, vector<vector<int>>(givenR + 1, vector<int>(4, -1))));
+        vector<vector<vector<vector<int>>>> dp(givenP + 1, 
+                vector<vector<vector<int>>>(givenQ + 1, 
+                        vector<vector<int>>(givenR + 1, 
+                                vector<int>(4, -1))));
         
         for(int prevBall = 0; prevBall < 4; ++prevBall)
             dp[0][0][0][prevBall] = 1;
@@ -69,7 +72,10 @@ class BottomUp {
     }
     
     int solveWith4DEnhanced(int givenP, int givenQ, int givenR) {
-        vector<vector<vector<vector<int>>>> dp(givenP + 2, vector<vector<vector<int>>>(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0))));
+        vector<vector<vector<vector<int>>>> dp(givenP + 2, 
+                vector<vector<vector<int>>>(givenQ + 2, 
+                        vector<vector<int>>(givenR + 2, 
+                                vector<int>(4, 0))));
         
         for(int prevBall = 0; prevBall < 4; ++prevBall)
             dp[1][1][1][prevBall] = 1;
@@ -94,8 +100,13 @@ class BottomUp {
     }
     
     int solveWith3DTable(int givenP, int givenQ, int givenR) {
-        vector<vector<vector<int>>> prevRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
-        vector<vector<vector<int>>> idealRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
+        vector<vector<vector<int>>> prevRow(givenQ + 2, 
+                vector<vector<int>>(givenR + 2, 
+                        vector<int>(4, 0)));
+        
+        vector<vector<vector<int>>> idealRow(givenQ + 2, 
+                vector<vector<int>>(givenR + 2, 
+                        vector<int>(4, 0)));
         
         for(int prevBall = 0; prevBall < 4; ++prevBall)
             idealRow[1][1][prevBall] = 1;
@@ -121,7 +132,7 @@ class BottomUp {
     }
     
 public:
-    int countTotalArrangement(int P, int Q, int R) {
+    int countTotalArrangements(int P, int Q, int R) {
         return solveWith3DTable(P, Q, R);
     }
 };
