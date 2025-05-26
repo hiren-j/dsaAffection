@@ -8,7 +8,7 @@
         We'll use 3 to represent the ball of type R
 
     NOTE: In the previous solution, we're using the same redundant code in all if blocks, here I just removed that redundancy, 
-          so I could say approach remains the same.
+          means I've created the loop variant of 21.1 solutions. Well! still I'd prefer the 21.1 solutions as the tabulation in second one seems bigger and it also increases time due to how loops work.
 */
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
