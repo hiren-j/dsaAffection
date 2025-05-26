@@ -42,6 +42,7 @@ public:
         return solveWithMemo(dp, P, Q, R, 0);
     }
 };
+// Note: This solution will lead to TLE
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -76,7 +77,8 @@ class BottomUp {
             
         return dp[givenP + 1][givenQ + 1][givenR + 1][0];
     }
-    
+    // Note: This solution will lead to TLE
+            
     int solveWith3DTable(int givenP, int givenQ, int givenR) {
         vector<vector<vector<int>>> prevRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
         vector<vector<vector<int>>> idealRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
@@ -114,7 +116,7 @@ class BottomUp {
     }
     
 public:
-    int CountWays(int P, int Q, int R) {
+    int countTotalArrangements(int P, int Q, int R) {
         return solveWith3DTable(P, Q, R);
     }
 };
