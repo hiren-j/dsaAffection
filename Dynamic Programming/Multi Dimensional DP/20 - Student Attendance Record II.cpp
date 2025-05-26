@@ -6,6 +6,7 @@ class TopDown {
     const int MOD = 1e9+7;
     const int maxLate = 3, maxAbsences = 2;
 
+    // O(3^N) & O(N)
     int solveWithoutMemo(int N, int consecutiveLate, int absences) {
         if(consecutiveLate == maxLate || absences == maxAbsences)
             return 0; // Edge case: If the student goes late for consecutively 3 days or absent for 2 days then its not valid
@@ -21,6 +22,7 @@ class TopDown {
         return ((P + A) % MOD + L) % MOD;
     }
 
+    // O(3*N*3*2) & O(N*3*2 + N)
     int solveWithMemo(vector<vector<vector<int>>>& memory, int N, int consecutiveLate, int absences) {
         if(consecutiveLate == maxLate || absences == maxAbsences)
             return 0;
@@ -39,6 +41,7 @@ class TopDown {
     }
 
 public:
+    // Method to count total ways to build records of length N, using recursion with memoization - O(N) & O(N)
     int numWaysToBuildRecords(int N) {
         vector<vector<vector<int>>> memory(N + 1, vector<vector<int>>(maxLate, vector<int>(maxAbsences, -1)));
         return solveWithMemo(memory, N, 0, 0);
@@ -51,6 +54,7 @@ class BottomUp {
     const int MOD = 1e9+7;
     const int maxLate = 3, maxAbsences = 2;
 
+    // O(N*3*2) & O(N*3*2)
     int solveWith3DTable(int N) {
         vector<vector<vector<int>>> dp(N + 1, vector<vector<int>>(maxLate, vector<int>(maxAbsences, -1)));
         
@@ -72,6 +76,7 @@ class BottomUp {
         return dp[N][0][0];
     }
 
+    // O(N*3*2) & O(N*3*2)
     int solveWith3DEnhanced(int N) {
         vector<vector<vector<int>>> dp(N + 1, vector<vector<int>>(maxLate + 1, vector<int>(maxAbsences + 1, 0)));
         
@@ -93,6 +98,7 @@ class BottomUp {
         return dp[N][0][0];
     }
 
+    // O(N*3*2) & O(2*3*2)
     int solveWith2DTable(int N) {
         vector<vector<int>> prevRow(maxLate + 1, vector<int>(maxAbsences + 1, 0)), idealRow(maxLate + 1, vector<int>(maxAbsences + 1, 0));
 
