@@ -60,6 +60,7 @@ public:
         return solveWithMemo(dp, P, Q, R, 0);
     }
 };
+// Note: This solution will lead to TLE
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -123,6 +124,7 @@ class BottomUp {
             
         return dp[givenP + 1][givenQ + 1][givenR + 1][0];
     }
+    // Note: This solution will lead to TLE
     
     // O(PQR) & O(2*QR) : Where P = givenP, Q = givenQ, R = givenR
     int solveWith3DTable(int givenP, int givenQ, int givenR) {
