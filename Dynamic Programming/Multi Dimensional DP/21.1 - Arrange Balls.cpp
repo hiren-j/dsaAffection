@@ -66,7 +66,7 @@ public:
 class BottomUp {
     const int MOD = 1e9+7;
     
-    // O(PQR) & O(PQR)
+    // O(PQR) & O(PQR) : Where P = givenP, Q = givenQ, R = givenR
     int solveWith4DTable(int givenP, int givenQ, int givenR) {
         vector<vector<vector<vector<int>>>> dp(givenP + 1, 
                 vector<vector<vector<int>>>(givenQ + 1, 
@@ -95,7 +95,7 @@ class BottomUp {
         return dp[givenP][givenQ][givenR][0];
     }
     
-    // O(PQR) & O(PQR)
+    // O(PQR) & O(PQR) : Where P = givenP, Q = givenQ, R = givenR
     int solveWith4DEnhanced(int givenP, int givenQ, int givenR) {
         vector<vector<vector<vector<int>>>> dp(givenP + 2, 
                 vector<vector<vector<int>>>(givenQ + 2, 
@@ -124,7 +124,7 @@ class BottomUp {
         return dp[givenP + 1][givenQ + 1][givenR + 1][0];
     }
     
-    // O(PQR) & O(2*QR)
+    // O(PQR) & O(2*QR) : Where P = givenP, Q = givenQ, R = givenR
     int solveWith3DTable(int givenP, int givenQ, int givenR) {
         vector<vector<vector<int>>> prevRow(givenQ + 2, 
                 vector<vector<int>>(givenR + 2, 
