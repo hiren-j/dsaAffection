@@ -8,7 +8,7 @@
         We'll use 3 to represent the ball of type R
 
     NOTE: In the previous solution, we're using the same redundant code in all if blocks, here I just removed that redundancy, 
-          means I've created the loop variant of 21.1 solutions. Well! still I'd prefer the 21.1 solutions as the tabulation in second one seems bigger and it also increases time due to how loops work.
+          means I've created the loop variant of 21.1 solutions. Well! still I'd prefer the 21.1 solutions as the tabulation in second one seems bigger and it also increases a bit of time practically due to how loops work.
 */
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -42,7 +42,6 @@ public:
         return solveWithMemo(dp, P, Q, R, 0);
     }
 };
-// Note: This solution will lead to TLE
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +76,6 @@ class BottomUp {
             
         return dp[givenP + 1][givenQ + 1][givenR + 1][0];
     }
-    // Note: This solution will lead to TLE
             
     int solveWith3DTable(int givenP, int givenQ, int givenR) {
         vector<vector<vector<int>>> prevRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
