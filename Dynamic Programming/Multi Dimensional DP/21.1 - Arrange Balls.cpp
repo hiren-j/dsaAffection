@@ -154,7 +154,7 @@ class BottomUp {
             prevRow = idealRow;
         }
             
-        return idealRow[givenQ + 1][givenR + 1][0];
+        return prevRow[givenQ + 1][givenR + 1][0];
     }
     
 public:
