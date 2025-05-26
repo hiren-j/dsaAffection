@@ -13,7 +13,7 @@ class TopDown {
         if(N == 0)
             return 1; // Edge case: If it's possible to create a valid attendence record of length N then there's one way
 
-        // There are three possibilities the student can perform each day
+        // There are three possibilities the student can perform each len
         int P = solveWithoutMemo(N - 1, 0, absences);                   // Is to present
         int A = solveWithoutMemo(N - 1, 0, absences + 1);               // Is to go absent
         int L = solveWithoutMemo(N - 1, consecutiveLate + 1, absences); // Is to go late
@@ -58,13 +58,13 @@ class BottomUp {
             for(int absences = 0; absences < maxAbsences; ++absences)
                 dp[0][consecutiveLate][absences] = 1;
         
-        for(int day = 1; day <= N; ++day) {
+        for(int len = 1; len <= N; ++len) {
             for(int consecutiveLate = maxLate-1; consecutiveLate >= 0; --consecutiveLate) {
                 for(int absences = maxAbsences-1; absences >= 0; --absences) {
-                    int P = dp[day - 1][0][absences];
-                    int A = (absences + 1 < maxAbsences) ? dp[day - 1][0][absences + 1] : 0;
-                    int L = (consecutiveLate + 1 < maxLate) ? dp[day - 1][consecutiveLate + 1][absences] : 0;
-                    dp[day][consecutiveLate][absences] = ((P + A) % MOD + L) % MOD;
+                    int P = dp[len - 1][0][absences];
+                    int A = (absences + 1 < maxAbsences) ? dp[len - 1][0][absences + 1] : 0;
+                    int L = (consecutiveLate + 1 < maxLate) ? dp[len - 1][consecutiveLate + 1][absences] : 0;
+                    dp[len][consecutiveLate][absences] = ((P + A) % MOD + L) % MOD;
                 }
             }
         }
@@ -79,13 +79,13 @@ class BottomUp {
             for(int absences = 0; absences < maxAbsences; ++absences)
                 dp[0][consecutiveLate][absences] = 1;
         
-        for(int day = 1; day <= N; ++day) {
+        for(int len = 1; len <= N; ++len) {
             for(int consecutiveLate = maxLate-1; consecutiveLate >= 0; --consecutiveLate) {
                 for(int absences = maxAbsences-1; absences >= 0; --absences) {
-                    int P = dp[day - 1][0][absences];
-                    int A = dp[day - 1][0][absences + 1];
-                    int L = dp[day - 1][consecutiveLate + 1][absences];
-                    dp[day][consecutiveLate][absences] = ((P + A) % MOD + L) % MOD;
+                    int P = dp[len - 1][0][absences];
+                    int A = dp[len - 1][0][absences + 1];
+                    int L = dp[len - 1][consecutiveLate + 1][absences];
+                    dp[len][consecutiveLate][absences] = ((P + A) % MOD + L) % MOD;
                 }
             }
         }
@@ -100,7 +100,7 @@ class BottomUp {
             for(int absences = 0; absences < maxAbsences; ++absences)
                 prevRow[consecutiveLate][absences] = 1;
         
-        for(int day = 1; day <= N; ++day) {
+        for(int len = 1; len <= N; ++len) {
             for(int consecutiveLate = maxLate-1; consecutiveLate >= 0; --consecutiveLate) {
                 for(int absences = maxAbsences-1; absences >= 0; --absences) {
                     int P = prevRow[0][absences];
