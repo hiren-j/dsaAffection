@@ -6,6 +6,9 @@
         We'll use 1 to represent the ball of type P
         We'll use 2 to represent the ball of type Q
         We'll use 3 to represent the ball of type R
+
+    NOTE: In the previous solution, we're using the same redundant code in all if blocks, here I just removed that redundancy, 
+          so I could say approach remains the same.
 */
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
