@@ -8,12 +8,29 @@
         We'll use 3 to represent the ball of type R
 
     NOTE: In the previous solution, we're using the same redundant code in all if blocks, here I just removed that redundancy, 
-          means I've created the loop variant of 21.1 solutions. Well! still I'd prefer the 21.1 solutions as the tabulation in second one seems bigger and it also increases a bit of time practically due to how loops work.
+          means I've created the loop variant of 21.1 solutions. Well! still I'd prefer the 21.1 solutions as the tabulation in second one seems bigger and it also increases a bit of practical time due to how loops work.
 */
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     const int MOD = 1e9+7;
+    
+    int solveWithoutMemo(int P, int Q, int R, int prevBall) {
+        if(P == 0 && Q == 0 && R == 0)
+            return 1;
+        
+        if(P < 0 || Q < 0 || R < 0)
+            return 0;
+            
+        int count = 0;
+        
+        for(int ball = 1; ball < 4; ++ball)
+            if(ball != prevBall)
+                count = (count + solveWithoutMemo((ball == 1 ? P - 1 : P), 
+                                                  (ball == 2 ? Q - 1 : Q), 
+                                                  (ball == 3 ? R - 1 : R), ball)) % MOD;
+        return count;
+    }
     
     int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, int P, int Q, int R, int prevBall) {
         if(P == 0 && Q == 0 && R == 0)
@@ -31,8 +48,7 @@ class TopDown {
             if(ball != prevBall)
                 count = (count + solveWithMemo(dp, (ball == 1 ? P - 1 : P), 
                                                    (ball == 2 ? Q - 1 : Q), 
-                                                   (ball == 3 ? R - 1 : R), ball)) % MOD;
-                
+                                                   (ball == 3 ? R - 1 : R), ball)) % MOD;  
         return dp[P][Q][R][prevBall] = count;
     }
     
