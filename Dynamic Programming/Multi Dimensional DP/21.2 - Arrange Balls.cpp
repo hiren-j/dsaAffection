@@ -14,7 +14,8 @@
 
 class TopDown {
     const int MOD = 1e9+7;
-    
+
+    // O(2^(P*Q*R)) & O(P+Q+R)
     int solveWithoutMemo(int P, int Q, int R, int prevBall) {
         if(P == 0 && Q == 0 && R == 0)
             return 1;
@@ -31,7 +32,8 @@ class TopDown {
                                                   (ball == 3 ? R - 1 : R), ball)) % MOD;
         return count;
     }
-    
+
+    // O(2*P*Q*R*4) & O(P*Q*R*4 + P+Q+R)
     int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, int P, int Q, int R, int prevBall) {
         if(P == 0 && Q == 0 && R == 0)
             return 1;
@@ -53,6 +55,7 @@ class TopDown {
     }
     
 public:
+    // Method to count total ways to make ball arrangements, using recursion with memoization - O(PQR) & O(PQR) 
     int countTotalArrangements(int P, int Q, int R) {
         vector<vector<vector<vector<int>>>> dp(P + 1, vector<vector<vector<int>>>(Q + 1, vector<vector<int>>(R + 1, vector<int>(4, -1))));
         return solveWithMemo(dp, P, Q, R, 0);
@@ -63,7 +66,8 @@ public:
 
 class BottomUp {
     const int MOD = 1e9+7;
-    
+
+    // O(PQR) & O(PQR) : Where P = givenP, Q = givenQ, R = givenR
     int solveWith4DTable(int givenP, int givenQ, int givenR) {
         vector<vector<vector<vector<int>>>> dp(givenP + 2, vector<vector<vector<int>>>(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0))));
         
@@ -92,7 +96,8 @@ class BottomUp {
             
         return dp[givenP + 1][givenQ + 1][givenR + 1][0];
     }
-            
+
+    // O(PQR) & O(2*QR) : Where P = givenP, Q = givenQ, R = givenR
     int solveWith3DTable(int givenP, int givenQ, int givenR) {
         vector<vector<vector<int>>> prevRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
         vector<vector<vector<int>>> idealRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
