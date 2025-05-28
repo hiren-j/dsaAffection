@@ -6,34 +6,34 @@ class TopDown {
     int N;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& points, int R, int skipColumn) {
+    int solveWithoutMemo(vector<vector<int>>& points, int R, int prevColumn) {
         if(R == N)
             return 0;
         
         int maxPoints = 0;
         
         for(int C = 0; C < 3; ++C)
-            if(C != skipColumn)
+            if(C != prevColumn)
                 maxPoints = max(maxPoints, points[R][C] + solveWithoutMemo(points, R + 1, C));
             
         return maxPoints;
     }
 
     // O(2*N*4) & O(N*4+N)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& points, int R, int skipColumn) {
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& points, int R, int prevColumn) {
         if(R == N)
             return 0;
         
-        if(dp[R][skipColumn] != -1) 
-            return dp[R][skipColumn];
+        if(dp[R][prevColumn] != -1) 
+            return dp[R][prevColumn];
         
         int maxPoints = 0;
         
         for(int C = 0; C < 3; ++C)
-            if(C != skipColumn)
+            if(C != prevColumn)
                 maxPoints = max(maxPoints, points[R][C] + solveWithMemo(dp, points, R + 1, C));
             
-        return dp[R][skipColumn] = maxPoints;
+        return dp[R][prevColumn] = maxPoints;
     }
         
 public:
@@ -55,17 +55,17 @@ class BottomUp {
         vector<vector<int>> dp(N, vector<int>(4, -1));
         
         for(int R = N-1; R >= 0; --R) {
-            for(int skipColumn = 0; skipColumn <= 3; ++skipColumn) {
+            for(int prevColumn = 0; prevColumn <= 3; ++prevColumn) {
                 int maxPoints = 0;
                 
                 for(int C = 0; C < 3; ++C) {
-                    if(C != skipColumn) {
+                    if(C != prevColumn) {
                         int nextPoints = (R + 1 < N) ? dp[R + 1][C] : 0;
                         maxPoints = max(maxPoints, points[R][C] + nextPoints);
                     }
                 }
                 
-                dp[R][skipColumn] = maxPoints;
+                dp[R][prevColumn] = maxPoints;
             }
         }
         
@@ -77,17 +77,17 @@ class BottomUp {
         vector<vector<int>> dp(N + 1, vector<int>(4, 0));
         
         for(int R = N-1; R >= 0; --R) {
-            for(int skipColumn = 0; skipColumn <= 3; ++skipColumn) {
+            for(int prevColumn = 0; prevColumn <= 3; ++prevColumn) {
                 int maxPoints = 0;
                 
                 for(int C = 0; C < 3; ++C) {
-                    if(C != skipColumn) {
+                    if(C != prevColumn) {
                         int nextPoints = dp[R + 1][C];
                         maxPoints = max(maxPoints, points[R][C] + nextPoints);
                     }
                 }
                 
-                dp[R][skipColumn] = maxPoints;
+                dp[R][prevColumn] = maxPoints;
             }
         }
         
@@ -99,17 +99,17 @@ class BottomUp {
         vector<int> nextRow(4, 0), idealRow(4, 0);
         
         for(int R = N-1; R >= 0; --R) {
-            for(int skipColumn = 0; skipColumn <= 3; ++skipColumn) {
+            for(int prevColumn = 0; prevColumn <= 3; ++prevColumn) {
                 int maxPoints = 0;
                 
                 for(int C = 0; C < 3; ++C) {
-                    if(C != skipColumn) {
+                    if(C != prevColumn) {
                         int nextPoints = nextRow[C];
                         maxPoints = max(maxPoints, points[R][C] + nextPoints);
                     }
                 }
                 
-                idealRow[skipColumn] = maxPoints;
+                idealRow[prevColumn] = maxPoints;
             }
             nextRow = idealRow;
         }
@@ -135,10 +135,10 @@ class BottomUpIntuitive {
             for(int C = 0; C < 3; ++C) {
                 int maxPoints = 0; // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
                 
-                for(int skipColumn = 0; skipColumn < 3; ++skipColumn) { 
+                for(int prevColumn = 0; prevColumn < 3; ++prevColumn) { 
 
-                    if(C != skipColumn) { 
-                        maxPoints = max(maxPoints, points[R + 1][skipColumn]); 
+                    if(C != prevColumn) { 
+                        maxPoints = max(maxPoints, points[R + 1][prevColumn]); 
                     }
                 }
                 
