@@ -1,6 +1,6 @@
 // Code to find the maximum points the geek can earn by performing the aforementioned activites ~ coded by Hiren
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     int N;
@@ -42,7 +42,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     int N;
@@ -118,7 +118,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUpIntuitive {
     int N;
@@ -128,9 +128,10 @@ class BottomUpIntuitive {
             for(int C = 0; C < 3; ++C) {
                 int maxPoints = 0;
                 
-                for(int skipColumn = 0; skipColumn < 3; ++skipColumn) {
-                    if(C != skipColumn) {
-                        maxPoints = max(maxPoints, points[R + 1][skipColumn]);
+                for(int skipColumn = 0; skipColumn < 3; ++skipColumn) { 
+
+                    if(C != skipColumn) { // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
+                        maxPoints = max(maxPoints, points[R + 1][skipColumn]); 
                     }
                 }
                 
@@ -142,7 +143,7 @@ class BottomUpIntuitive {
     }
 
     int solveWithoutTable_V2(vector<vector<int>>& points) {
-        // Suppose you're on a cell so to earn the maximum points the only cell which you shouldn't consider is the same cell from the previous row
+        // Suppose you're on a cell so to earn maximum points, get maximum value from from previous row but the only cell which you shouldn't consider is the same cell from the previous row
         for(int R = 1; R < N; ++R) {
             for(int C = 0; C < 3; ++C) {
                 if(C == 0)
@@ -166,7 +167,7 @@ public:
     }
 };
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Matrix | Dynamic Programming
 Links : https://www.geeksforgeeks.org/problems/geeks-training/1
