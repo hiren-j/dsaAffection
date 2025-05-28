@@ -6,31 +6,31 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N) 
-    int solveWithoutMemo(vector<vector<int>>& costs, int house, int skipColor) {
+    int solveWithoutMemo(vector<vector<int>>& costs, int house, int prevColor) {
         if(house == n)
             return 0;
 
         int minCost = INT_MAX;
 
         for(int color = 0; color < 3; ++color)
-            if(color != skipColor)
+            if(color != prevColor)
                 minCost = min(minCost, costs[house][color] + solveWithoutMemo(costs, house + 1, color));
 
         return minCost;
     }
 
     // O(2*N*4) & O(N*4+N) 
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& costs, int house, int skipColor) {
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& costs, int house, int prevColor) {
         if(house == n)
             return 0;
 
-        if(dp[house][skipColor] != -1)
-            return dp[house][skipColor];
+        if(dp[house][prevColor] != -1)
+            return dp[house][prevColor];
 
         int minCost = INT_MAX;
 
         for(int color = 0; color < 3; ++color)
-            if(color != skipColor)
+            if(color != prevColor)
                 minCost = min(minCost, costs[house][color] + solveWithMemo(dp, costs, house + 1, color));
 
         return minCost;
@@ -54,20 +54,20 @@ class BottomUp {
     int solveWith2DTable(vector<vector<int>>& costs) {
         vector<vector<int>> dp(n + 1, vector<int>(4, -1));
 
-        for(int skipColor = 0; skipColor <= 3; ++skipColor) // Init edge case
-            dp[n][skipColor] = 0;
+        for(int prevColor = 0; prevColor <= 3; ++prevColor) // Init edge case
+            dp[n][prevColor] = 0;
 
         for(int house = n-1; house >= 0; --house) {
-            for(int skipColor = 0; skipColor <= 3; ++skipColor) {
+            for(int prevColor = 0; prevColor <= 3; ++prevColor) {
                 int minCost = INT_MAX;
 
                 for(int color = 0; color < 3; ++color) {
-                    if(color != skipColor) {
+                    if(color != prevColor) {
                         minCost = min(minCost, costs[house][color] + dp[house + 1][color]);
                     }
                 }
 
-                dp[house][skipColor] = minCost;
+                dp[house][prevColor] = minCost;
             }
         }
 
@@ -78,20 +78,20 @@ class BottomUp {
     int solveWith1DTable(vector<vector<int>>& costs) {
         vector<int> nextRow(4, -1), idealRow(4, -1);
 
-        for(int skipColor = 0; skipColor <= 3; ++skipColor)
-            nextRow[skipColor] = 0;
+        for(int prevColor = 0; prevColor <= 3; ++prevColor)
+            nextRow[prevColor] = 0;
 
         for(int house = n-1; house >= 0; --house) {
-            for(int skipColor = 0; skipColor <= 3; ++skipColor) {
+            for(int prevColor = 0; prevColor <= 3; ++prevColor) {
                 int minCost = INT_MAX;
 
                 for(int color = 0; color < 3; ++color) {
-                    if(color != skipColor) {
+                    if(color != prevColor) {
                         minCost = min(minCost, costs[house][color] + nextRow[color]);
                     }
                 }
 
-                idealRow[skipColor] = minCost;
+                idealRow[prevColor] = minCost;
             }
             nextRow = idealRow;
         }
@@ -110,4 +110,4 @@ public:
 
 Topics: Array | Dynamic Programming
 Links : https://www.naukri.com/code360/problems/paint-house_1460385
-	https://leetcode.com/problems/paint-house/description/
+        https://leetcode.com/problems/paint-house/description/
