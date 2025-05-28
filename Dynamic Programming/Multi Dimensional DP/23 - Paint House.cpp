@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(2^N) & O(N) 
     int solveWithoutMemo(vector<vector<int>>& costs, int house, int prevColor) {
         if(house == n)
             return 0;
@@ -18,6 +19,7 @@ class TopDown {
         return minCost;
     }
 
+    // O(2*N*4) & O(N*4+N) 
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& costs, int house, int prevColor) {
         if(house == n)
             return 0;
@@ -35,6 +37,7 @@ class TopDown {
     }
 
 public:
+    // Method to find minimum cost to paint all houses, using recursion with memoization - O(N) & O(N) 
     int minCost(vector<vector<int>>& costs) {
         n = costs.size();
         vector<vector<int>> dp(n, vector<int>(4, -1));
@@ -47,10 +50,11 @@ public:
 class BottomUp {
     int n;
 
+    // O(N*4*3) & O(N*4) 
     int solveWith2DTable(vector<vector<int>>& costs) {
         vector<vector<int>> dp(n + 1, vector<int>(4, -1));
 
-        for(int prevColor = 0; prevColor <= 3; ++prevColor)
+        for(int prevColor = 0; prevColor <= 3; ++prevColor) // Init first edge case
             dp[n][prevColor] = 0;
 
         for(int house = n-1; house >= 0; --house) {
@@ -70,6 +74,7 @@ class BottomUp {
         return dp[0][3];
     }
 
+    // O(N*4*3) & O(2*4) 
     int solveWith1DTable(vector<vector<int>>& costs) {
         vector<int> nextRow(4, -1), idealRow(4, -1);
 
