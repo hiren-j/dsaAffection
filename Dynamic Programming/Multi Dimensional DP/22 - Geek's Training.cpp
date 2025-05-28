@@ -126,11 +126,11 @@ class BottomUpIntuitive {
     int solveWithoutTable_V1(vector<vector<int>>& points) {
         for(int R = N-2; R >= 0; --R) {
             for(int C = 0; C < 3; ++C) {
-                int maxPoints = 0;
+                int maxPoints = 0; // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
                 
                 for(int skipColumn = 0; skipColumn < 3; ++skipColumn) { 
 
-                    if(C != skipColumn) { // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
+                    if(C != skipColumn) { 
                         maxPoints = max(maxPoints, points[R + 1][skipColumn]); 
                     }
                 }
