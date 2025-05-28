@@ -54,7 +54,7 @@ class BottomUp {
     int solveWith2DTable(vector<vector<int>>& costs) {
         vector<vector<int>> dp(n + 1, vector<int>(4, -1));
 
-        for(int prevColor = 0; prevColor <= 3; ++prevColor) // Init first edge case
+        for(int prevColor = 0; prevColor <= 3; ++prevColor) // Init edge case
             dp[n][prevColor] = 0;
 
         for(int house = n-1; house >= 0; --house) {
