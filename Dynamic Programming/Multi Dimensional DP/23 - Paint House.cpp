@@ -71,7 +71,7 @@ class BottomUp {
     }
 
     int solveWith1DTable(vector<vector<int>>& costs) {
-        vector<int> nextRow(4, INT_MAX), idealRow(4, INT_MAX);
+        vector<int> nextRow(4, -1), idealRow(4, -1);
 
         for(int prevColor = 0; prevColor <= 3; ++prevColor)
             nextRow[prevColor] = 0;
