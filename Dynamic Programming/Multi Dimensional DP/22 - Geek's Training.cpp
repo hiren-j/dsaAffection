@@ -130,7 +130,7 @@ class BottomUpIntuitive {
     int N;
 
     // O(N*3*3) & O(1)
-    int solveWithoutTable_V1(vector<vector<int>>& points) {
+    int solveWithoutTable(vector<vector<int>>& points) {
         for(int R = N-2; R >= 0; --R) {
             for(int C = 0; C < 3; ++C) {
                 int maxPoints = 0; // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
@@ -150,7 +150,7 @@ class BottomUpIntuitive {
     }
 
     // O(N*3) & O(1)
-    int solveWithoutTable_V2(vector<vector<int>>& points) {
+    int solveWithoutTableEnhanced(vector<vector<int>>& points) {
         // Suppose you're on a cell so to earn maximum points, get maximum value from from previous row but the only cell which you shouldn't consider is the same cell from the previous row
         for(int R = 1; R < N; ++R) {
             for(int C = 0; C < 3; ++C) {
@@ -171,7 +171,7 @@ class BottomUpIntuitive {
 public:
     int gainMaximumPoints(vector<vector<int>>& points) {
         N = points.size();
-        return solveWithoutTable_V2(points);
+        return solveWithoutTableEnhanced(points);
     }
 };
 
