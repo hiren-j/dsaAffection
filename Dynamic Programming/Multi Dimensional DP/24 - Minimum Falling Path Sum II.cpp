@@ -21,33 +21,33 @@
 class TopDown {
     int N;
 
-    int solveWithoutMemo(vector<vector<int>>& grid, int R, int skipColumn) {
+    int solveWithoutMemo(vector<vector<int>>& grid, int R, int prevColumn) {
         if(R == N)
             return 0;
 
         int minPathSum = INT_MAX;
 
         for(int C = 0; C < N; ++C)
-            if(C != skipColumn)
+            if(C != prevColumn)
                 minPathSum = min(minPathSum, grid[R][C] + solveWithoutMemo(grid, R + 1, C)); 
 
         return minPathSum;
     }
 
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int skipColumn) {
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int prevColumn) {
         if(R == N)
             return 0;
 
-        if(dp[R][skipColumn] != INT_MAX)
-            return dp[R][skipColumn];
+        if(dp[R][prevColumn] != INT_MAX)
+            return dp[R][prevColumn];
 
         int minPathSum = INT_MAX;
 
         for(int C = 0; C < N; ++C)
-            if(C != skipColumn)
+            if(C != prevColumn)
                 minPathSum = min(minPathSum, grid[R][C] + solveWithMemo(dp, grid, R + 1, C)); 
 
-        return dp[R][skipColumn] = minPathSum;
+        return dp[R][prevColumn] = minPathSum;
     }
 
 public:
@@ -64,20 +64,20 @@ class BottomUp {
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N + 1, vector<int>(N + 1, INT_MAX));
 
-        for(int skipColumn = 0; skipColumn <= N; ++skipColumn)
-            dp[N][skipColumn] = 0;
+        for(int prevColumn = 0; prevColumn <= N; ++prevColumn)
+            dp[N][prevColumn] = 0;
 
         for(int R = N-1; R >= 0; --R) {
-            for(int skipColumn = 0; skipColumn <= N; ++skipColumn) {
+            for(int prevColumn = 0; prevColumn <= N; ++prevColumn) {
                 int minPathSum = INT_MAX;
 
                 for(int C = 0; C < N; ++C) {
-                    if(C != skipColumn) {
+                    if(C != prevColumn) {
                         minPathSum = min(minPathSum, grid[R][C] + dp[R + 1][C]);
                     }
                 }
 
-                dp[R][skipColumn] = minPathSum;
+                dp[R][prevColumn] = minPathSum;
             }
         }
 
@@ -87,20 +87,20 @@ class BottomUp {
     int solveWith1DTable(vector<vector<int>>& grid) {
         vector<int> nextRow(N + 1, INT_MAX), idealRow(N + 1, INT_MAX);
 
-        for(int skipColumn = 0; skipColumn <= N; ++skipColumn)
-            nextRow[skipColumn] = 0;
+        for(int prevColumn = 0; prevColumn <= N; ++prevColumn)
+            nextRow[prevColumn] = 0;
 
         for(int R = N-1; R >= 0; --R) {
-            for(int skipColumn = 0; skipColumn <= N; ++skipColumn) {
+            for(int prevColumn = 0; prevColumn <= N; ++prevColumn) {
                 int minPathSum = INT_MAX;
 
                 for(int C = 0; C < N; ++C) {
-                    if(C != skipColumn) {
+                    if(C != prevColumn) {
                         minPathSum = min(minPathSum, grid[R][C] + nextRow[C]);
                     }
                 }
 
-                idealRow[skipColumn] = minPathSum;
+                idealRow[prevColumn] = minPathSum;
             }
             nextRow = idealRow;
         }
@@ -126,9 +126,9 @@ public:
             for(int C = 0; C < N; ++C) {
                 int minPathSum = INT_MAX;
 
-                for(int skipColumn = 0; skipColumn < N; ++skipColumn) {
-                    if(C != skipColumn) {
-                        minPathSum = min(minPathSum, grid[R + 1][skipColumn]);
+                for(int prevColumn = 0; prevColumn < N; ++prevColumn) {
+                    if(C != prevColumn) {
+                        minPathSum = min(minPathSum, grid[R + 1][prevColumn]);
                     }
                 }
 
