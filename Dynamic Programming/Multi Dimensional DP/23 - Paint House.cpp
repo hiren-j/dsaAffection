@@ -1,8 +1,3 @@
-// https://codeforces.com/contest/1703/problem/D
-// https://codeforces.com/contest/1703/problem/E
-// https://codeforces.com/contest/1790/problem/B
-// https://codeforces.com/contest/1846/problem/B
-
 // Code to find the minimum cost of painting all the houses such that no adjacent houses are painted with the same color ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
