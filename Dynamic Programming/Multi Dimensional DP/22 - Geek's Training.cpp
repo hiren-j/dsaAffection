@@ -56,7 +56,7 @@ class BottomUp {
                 
                 for(int C = 0; C < 3; ++C) {
                     if(C != skipColumn) {
-                        int nextPoints = (R+1 < N) ? dp[R+1][C] : 0;
+                        int nextPoints = (R + 1 < N) ? dp[R + 1][C] : 0;
                         maxPoints = max(maxPoints, points[R][C] + nextPoints);
                     }
                 }
@@ -77,7 +77,7 @@ class BottomUp {
                 
                 for(int C = 0; C < 3; ++C) {
                     if(C != skipColumn) {
-                        int nextPoints = dp[R+1][C];
+                        int nextPoints = dp[R + 1][C];
                         maxPoints = max(maxPoints, points[R][C] + nextPoints);
                     }
                 }
@@ -130,7 +130,7 @@ class BottomUpIntuitive {
                 
                 for(int skipColumn = 0; skipColumn < 3; ++skipColumn) {
                     if(C != skipColumn) {
-                        maxPoints = max(maxPoints, points[R+1][skipColumn]);
+                        maxPoints = max(maxPoints, points[R + 1][skipColumn]);
                     }
                 }
                 
@@ -146,17 +146,17 @@ class BottomUpIntuitive {
         for(int R = 1; R < N; ++R) {
             for(int C = 0; C < 3; ++C) {
                 if(C == 0)
-                    points[R][C] += max(points[R-1][C+1], points[R-1][C+2]);
+                    points[R][C] += max(points[R - 1][C + 1], points[R - 1][C + 2]);
 
                 else if(C == 1)
-                    points[R][C] += max(points[R-1][C-1], points[R-1][C+1]);
+                    points[R][C] += max(points[R - 1][C - 1], points[R - 1][C + 1]);
 
                 else
-                    points[R][C] += max(points[R-1][C-1], points[R-1][C-2]);
+                    points[R][C] += max(points[R - 1][C - 1], points[R - 1][C - 2]);
             }
         }
 
-        return *max_element(begin(points[N-1]), end(points[N-1]));
+        return *max_element(begin(points[N - 1]), end(points[N - 1]));
     }
 
 public:
