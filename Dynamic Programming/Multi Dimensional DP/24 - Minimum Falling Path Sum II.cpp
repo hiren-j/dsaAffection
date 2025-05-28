@@ -2,150 +2,191 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
-public:
-    // Method to find the minimum sum of a falling path with non zero shifts, using recursion with memoization - O(N^3) & O(N^2)
-    int minFallingPathSum(vector<vector<int>>& grid) {
-        int n = grid.size();
-        vector<vector<int>> memory(n, vector<int>(n + 1, -1));
-        return solveWithMemo(memory, grid, n, 0, -1);
-    }
+class Solution {
+    int N;
 
-private:
-    // O(N*N*N) & O(N*N + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int n, int currRow, int skipColumn) {
-        // Edge case: If all the rows are exhausted then you can't pick more elements
-        if(currRow == n)
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int skipColumn) {
+        if(R == N)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[currRow][skipColumn + 1] != -1)
-            return memory[currRow][skipColumn + 1];
+        if(dp[R][skipColumn] != INT_MAX)
+            return dp[R][skipColumn];
 
-        // Stores the result value
-        int resultSum = INT_MAX;
+        int minPathSum = INT_MAX;
 
-        // Explore all the falling paths of non-zero shifts and update the result by the minimum value 
-        for(int currColumn = 0; currColumn < n; ++currColumn) {
-            if(currColumn != skipColumn) {
-                int pathSum = grid[currRow][currColumn] + solveWithMemo(memory, grid, n, currRow + 1, currColumn);
-                resultSum   = min(resultSum, pathSum);
-            }
-        }
+        for(int C = 0; C < N; ++C)
+            if(C != skipColumn)
+                minPathSum = min(minPathSum, grid[R][C] + solveWithMemo(dp, grid, R + 1, C)); 
 
-        // Store the result value to the memoization table and then return it
-        return memory[currRow][skipColumn + 1] = resultSum;
+        return dp[R][skipColumn] = minPathSum;
     }
 
-    // O(N^(N*N)) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& grid, int n, int currRow, int skipColumn) {
-        // Edge case: If all the rows are exhausted then you can't pick more elements
-        if(currRow == n)
-            return 0;
+    int solveWith2DTable(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N + 1, vector<int>(N + 1, INT_MAX));
 
-        // Stores the result value
-        int resultSum = INT_MAX;
+        for(int skipColumn = 0; skipColumn <= N; ++skipColumn)
+            dp[N][skipColumn] = 0;
 
-        // Explore all the falling paths of non-zero shifts and update the result by the minimum value 
-        for(int currColumn = 0; currColumn < n; ++currColumn) {
-            if(currColumn != skipColumn) {
-                int pathSum = grid[currRow][currColumn] + solveWithoutMemo(grid, n, currRow + 1, currColumn);
-                resultSum   = min(resultSum, pathSum);
-            }
-        }
+        for(int R = N-1; R >= 0; --R) {
+            for(int skipColumn = 0; skipColumn <= N; ++skipColumn) {
+                int minPathSum = INT_MAX;
 
-        // Return the result value
-        return resultSum;
-    }
-};
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUp_V1 {
-public:
-    // #1 Method to find the minimum sum of a falling path with non zero shifts, using 2D tabulation - O(N^3) & O(N^2)
-    int minFallingPathSum_V1(vector<vector<int>>& grid) {
-        int n = grid.size();
-
-        // 2D DP table
-        vector<vector<int>> dp(n + 1, vector<int>(n + 1, INT_MAX));
-
-        // Initialize the edge case: If all the rows are exhausted then you can't pick more elements
-        for(int skipColumn = 0; skipColumn <= n; ++skipColumn)
-            dp[n][skipColumn] = 0;
-
-        // Fill the rest of the table
-        for(int currRow = n-1; currRow >= 0; --currRow) {
-            for(int skipColumn = n-1; skipColumn >= -1; --skipColumn) {
-                int resultSum = INT_MAX;
-                for(int currColumn = 0; currColumn < n; ++currColumn) {
-                    if(currColumn != skipColumn) {
-                        int pathSum = grid[currRow][currColumn] + dp[currRow + 1][currColumn + 1];
-                        resultSum   = min(resultSum, pathSum);
+                for(int C = 0; C < N; ++C) {
+                    if(C != skipColumn) {
+                        minPathSum = min(minPathSum, grid[R][C] + dp[R + 1][C]);
                     }
                 }
-                dp[currRow][skipColumn + 1] = resultSum;
+
+                dp[R][skipColumn] = minPathSum;
             }
         }
 
-        // Return the result value
-        return dp[0][0];
+        return dp[0][N];
     }
 
-    // #2 Method to find the minimum sum of a falling path with non zero shifts, using 1D tabulation - O(N^3) & O(N)
-    int minFallingPathSum_V2(vector<vector<int>>& grid) {
-        int n = grid.size();
+    int solveWith1DTable(vector<vector<int>>& grid) {
+        vector<int> nextRow(N + 1, INT_MAX), idealRow(N + 1, INT_MAX);
 
-        // 1D DP tables
-        vector<int> nextRow(n + 1, INT_MAX), idealRow(n + 1, INT_MAX);
-
-        // Initialize the edge case: If all the rows are exhausted then you can't pick more elements
-        for(int skipColumn = 0; skipColumn <= n; ++skipColumn)
+        for(int skipColumn = 0; skipColumn <= N; ++skipColumn)
             nextRow[skipColumn] = 0;
 
-        // Fill the rest of the table
-        for(int currRow = n-1; currRow >= 0; --currRow) {
-            for(int skipColumn = n-1; skipColumn >= -1; --skipColumn) {
-                int resultSum = INT_MAX;
-                for(int currColumn = 0; currColumn < n; ++currColumn) {
-                    if(currColumn != skipColumn) {
-                        int pathSum = grid[currRow][currColumn] + nextRow[currColumn + 1];
-                        resultSum   = min(resultSum, pathSum);
+        for(int R = N-1; R >= 0; --R) {
+            for(int skipColumn = 0; skipColumn <= N; ++skipColumn) {
+                int minPathSum = INT_MAX;
+
+                for(int C = 0; C < N; ++C) {
+                    if(C != skipColumn) {
+                        minPathSum = min(minPathSum, grid[R][C] + nextRow[C]);
                     }
                 }
-                idealRow[skipColumn + 1] = resultSum;
+
+                idealRow[skipColumn] = minPathSum;
             }
             nextRow = idealRow;
         }
 
-        // Return the result value
-        return nextRow[0];
+        return nextRow[N];
+    }
+
+    int solveWithoutTable(vector<vector<int>>& grid) {
+        for(int R = N-2; R >= 0; --R) {
+            for(int C = 0; C < N; ++C) {
+                int minPathSum = INT_MAX;
+
+                for(int skipColumn = 0; skipColumn < N; ++skipColumn) {
+                    if(C != skipColumn) {
+                        minPathSum = min(minPathSum, grid[R + 1][skipColumn]);
+                    }
+                }
+
+                grid[R][C] += minPathSum;
+            }
+        }
+
+        return *min_element(begin(grid[0]), end(grid[0]));
+    }
+
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        N = grid.size();
+        // vector<vector<int>> dp(N, vector<int>(N + 1, INT_MAX));
+        // return solveWithMemo(dp, grid, 0, N);
+        return solveWithoutTable(grid);
     }
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-class BottomUp_V2 {
-public:
-    // Method to find the minimum sum of a falling path with non zero shifts, using constant auxiliary space - O(N^3) & O(1)
-    int minFallingPathSum(vector<vector<int>>& grid) {
-        int n = grid.size();
+class Solution {
+    int N;
 
-        // Suppose you're on a cell and from it you could move to any non-adjacent cell in the next row. So, i could say that all we need is the minimum element from the non-adjacent columns of the next row
-        for(int currRow = n-2; currRow >= 0; --currRow) {
-            for(int currColumn = 0; currColumn < n; ++currColumn) {
-                int minElement = INT_MAX;
-                for(int index = 0; index < n; ++index) {
-                    if(index != currColumn) {
-                        minElement = min(minElement, grid[currRow + 1][index]);
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int skipColumn) {
+        if(R == N)
+            return 0;
+
+        if(dp[R][skipColumn] != INT_MAX)
+            return dp[R][skipColumn];
+
+        int minPathSum = INT_MAX;
+
+        for(int C = 0; C < N; ++C)
+            if(C != skipColumn)
+                minPathSum = min(minPathSum, grid[R][C] + solveWithMemo(dp, grid, R + 1, C)); 
+
+        return dp[R][skipColumn] = minPathSum;
+    }
+
+    int solveWith2DTable(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N + 1, vector<int>(N + 1, INT_MAX));
+
+        for(int skipColumn = 0; skipColumn <= N; ++skipColumn)
+            dp[N][skipColumn] = 0;
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int skipColumn = 0; skipColumn <= N; ++skipColumn) {
+                int minPathSum = INT_MAX;
+
+                for(int C = 0; C < N; ++C) {
+                    if(C != skipColumn) {
+                        minPathSum = min(minPathSum, grid[R][C] + dp[R + 1][C]);
                     }
                 }
-                grid[currRow][currColumn] += minElement;
+
+                dp[R][skipColumn] = minPathSum;
             }
         }
 
-        // Return the result value
+        return dp[0][N];
+    }
+
+    int solveWith1DTable(vector<vector<int>>& grid) {
+        vector<int> nextRow(N + 1, INT_MAX), idealRow(N + 1, INT_MAX);
+
+        for(int skipColumn = 0; skipColumn <= N; ++skipColumn)
+            nextRow[skipColumn] = 0;
+
+        for(int R = N-1; R >= 0; --R) {
+            for(int skipColumn = 0; skipColumn <= N; ++skipColumn) {
+                int minPathSum = INT_MAX;
+
+                for(int C = 0; C < N; ++C) {
+                    if(C != skipColumn) {
+                        minPathSum = min(minPathSum, grid[R][C] + nextRow[C]);
+                    }
+                }
+
+                idealRow[skipColumn] = minPathSum;
+            }
+            nextRow = idealRow;
+        }
+
+        return nextRow[N];
+    }
+
+    int solveWithoutTable(vector<vector<int>>& grid) {
+        for(int R = N-2; R >= 0; --R) {
+            for(int C = 0; C < N; ++C) {
+                int minPathSum = INT_MAX;
+
+                for(int skipColumn = 0; skipColumn < N; ++skipColumn) {
+                    if(C != skipColumn) {
+                        minPathSum = min(minPathSum, grid[R + 1][skipColumn]);
+                    }
+                }
+
+                grid[R][C] += minPathSum;
+            }
+        }
+
         return *min_element(begin(grid[0]), end(grid[0]));
+    }
+
+public:
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        N = grid.size();
+        // vector<vector<int>> dp(N, vector<int>(N + 1, INT_MAX));
+        // return solveWithMemo(dp, grid, 0, N);
+        return solveWithoutTable(grid);
     }
 };
 
