@@ -1,3 +1,8 @@
+// https://codeforces.com/contest/1703/problem/D
+// https://codeforces.com/contest/1703/problem/E
+// https://codeforces.com/contest/1790/problem/B
+// https://codeforces.com/contest/1846/problem/B
+
 // Code to find the minimum cost of painting all the houses such that no adjacent houses are painted with the same color ~ coded by Hiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -6,31 +11,31 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N) 
-    int solveWithoutMemo(vector<vector<int>>& costs, int house, int prevColor) {
+    int solveWithoutMemo(vector<vector<int>>& costs, int house, int skipColor) {
         if(house == n)
             return 0;
 
         int minCost = INT_MAX;
 
         for(int color = 0; color < 3; ++color)
-            if(color != prevColor)
+            if(color != skipColor)
                 minCost = min(minCost, costs[house][color] + solveWithoutMemo(costs, house + 1, color));
 
         return minCost;
     }
 
     // O(2*N*4) & O(N*4+N) 
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& costs, int house, int prevColor) {
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& costs, int house, int skipColor) {
         if(house == n)
             return 0;
 
-        if(dp[house][prevColor] != -1)
-            return dp[house][prevColor];
+        if(dp[house][skipColor] != -1)
+            return dp[house][skipColor];
 
         int minCost = INT_MAX;
 
         for(int color = 0; color < 3; ++color)
-            if(color != prevColor)
+            if(color != skipColor)
                 minCost = min(minCost, costs[house][color] + solveWithMemo(dp, costs, house + 1, color));
 
         return minCost;
@@ -41,7 +46,7 @@ public:
     int minCost(vector<vector<int>>& costs) {
         n = costs.size();
         vector<vector<int>> dp(n, vector<int>(4, -1));
-        return solveWithMemo(dp, costs, 0, 3);
+        return solveWithMemo(dp, costs, 0, 3); // I passed 3 as skip-color but you can pass any value just avoid the columns indeces 0, 1, 2
     }
 };
 
@@ -54,20 +59,20 @@ class BottomUp {
     int solveWith2DTable(vector<vector<int>>& costs) {
         vector<vector<int>> dp(n + 1, vector<int>(4, -1));
 
-        for(int prevColor = 0; prevColor <= 3; ++prevColor) // Init edge case
-            dp[n][prevColor] = 0;
+        for(int skipColor = 0; skipColor <= 3; ++skipColor) // Init edge case
+            dp[n][skipColor] = 0;
 
         for(int house = n-1; house >= 0; --house) {
-            for(int prevColor = 0; prevColor <= 3; ++prevColor) {
+            for(int skipColor = 0; skipColor <= 3; ++skipColor) {
                 int minCost = INT_MAX;
 
                 for(int color = 0; color < 3; ++color) {
-                    if(color != prevColor) {
+                    if(color != skipColor) {
                         minCost = min(minCost, costs[house][color] + dp[house + 1][color]);
                     }
                 }
 
-                dp[house][prevColor] = minCost;
+                dp[house][skipColor] = minCost;
             }
         }
 
@@ -78,20 +83,20 @@ class BottomUp {
     int solveWith1DTable(vector<vector<int>>& costs) {
         vector<int> nextRow(4, -1), idealRow(4, -1);
 
-        for(int prevColor = 0; prevColor <= 3; ++prevColor)
-            nextRow[prevColor] = 0;
+        for(int skipColor = 0; skipColor <= 3; ++skipColor)
+            nextRow[skipColor] = 0;
 
         for(int house = n-1; house >= 0; --house) {
-            for(int prevColor = 0; prevColor <= 3; ++prevColor) {
+            for(int skipColor = 0; skipColor <= 3; ++skipColor) {
                 int minCost = INT_MAX;
 
                 for(int color = 0; color < 3; ++color) {
-                    if(color != prevColor) {
+                    if(color != skipColor) {
                         minCost = min(minCost, costs[house][color] + nextRow[color]);
                     }
                 }
 
-                idealRow[prevColor] = minCost;
+                idealRow[skipColor] = minCost;
             }
             nextRow = idealRow;
         }
