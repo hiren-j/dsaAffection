@@ -41,7 +41,7 @@ public:
     int minCost(vector<vector<int>>& costs) {
         n = costs.size();
         vector<vector<int>> dp(n, vector<int>(4, -1));
-        return solveWithMemo(dp, costs, 0, 3); // I passed 3 as skip-color but you can pass any value just avoid the columns indeces 0, 1, 2
+        return solveWithMemo(dp, costs, 0, 3); // I passed 3 as previously-chosen-color but you can pass any value just avoid the columns indeces 0, 1, 2
     }
 };
 
