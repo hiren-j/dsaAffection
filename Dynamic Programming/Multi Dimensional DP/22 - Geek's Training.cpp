@@ -38,7 +38,7 @@ public:
     int gainMaximumPoints(vector<vector<int>>& points) {
         N = points.size();
         vector<vector<int>> dp(N, vector<int>(4, -1));
-        return solveWithMemo(dp, points, 0, 3);
+        return solveWithMemo(dp, points, 0, 3); // I passed 3 as skip-column but you can pass any value just avoid the columns indeces 0, 1, 2
     }
 };
 
