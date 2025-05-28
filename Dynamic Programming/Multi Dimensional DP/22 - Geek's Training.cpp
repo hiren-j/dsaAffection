@@ -4,7 +4,8 @@
 
 class TopDown {
     int N;
-    
+
+    // O(2^N) & O(N)
     int solveWithoutMemo(vector<vector<int>>& points, int R, int skipColumn) {
         if(R == N)
             return 0;
@@ -18,6 +19,7 @@ class TopDown {
         return maxPoints;
     }
 
+    // O(2*N*4) & O(N*4+N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& points, int R, int skipColumn) {
         if(R == N)
             return 0;
@@ -35,6 +37,7 @@ class TopDown {
     }
         
 public:
+    // Method to find maximum points geek can earn, using recursion with memoization - O(N) & O(N)
     int gainMaximumPoints(vector<vector<int>>& points) {
         N = points.size();
         vector<vector<int>> dp(N, vector<int>(4, -1));
@@ -47,6 +50,7 @@ public:
 class BottomUp {
     int N;
 
+    // O(N*4*3) & O(N*4)
     int solveWith2DTable(vector<vector<int>>& points) {
         vector<vector<int>> dp(N, vector<int>(4, -1));
         
@@ -68,6 +72,7 @@ class BottomUp {
         return dp[0][3];
     }
     
+    // O(N*4*3) & O(N*4)
     int solveWith2DEnhanced(vector<vector<int>>& points) {
         vector<vector<int>> dp(N + 1, vector<int>(4, 0));
         
@@ -89,6 +94,7 @@ class BottomUp {
         return dp[0][3];
     }
     
+    // O(N*4*3) & O(2*4)
     int solveWith1DTable(vector<vector<int>>& points) {
         vector<int> nextRow(4, 0), idealRow(4, 0);
         
@@ -123,6 +129,7 @@ public:
 class BottomUpIntuitive {
     int N;
 
+    // O(N*3*3) & O(1)
     int solveWithoutTable_V1(vector<vector<int>>& points) {
         for(int R = N-2; R >= 0; --R) {
             for(int C = 0; C < 3; ++C) {
@@ -142,6 +149,7 @@ class BottomUpIntuitive {
         return *max_element(begin(points[0]), end(points[0]));
     }
 
+    // O(N*3) & O(1)
     int solveWithoutTable_V2(vector<vector<int>>& points) {
         // Suppose you're on a cell so to earn maximum points, get maximum value from from previous row but the only cell which you shouldn't consider is the same cell from the previous row
         for(int R = 1; R < N; ++R) {
