@@ -4,8 +4,8 @@
 
 /*
     DON'T IGNORE MUST READ: I've initialized the cell values by INT_MAX: [vector<vector<int>> dp(N, vector<int>(N + 1, INT_MAX))]
-                            Why INT_MAX? Why not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -100, 
-                            maximum could be 100: 
+                            Why INT_MAX? Why not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -200, 
+                            maximum could be 200: 
                                 n == grid.length == grid[i].length
                                 1 <= n <= 200
                                 -99 <= grid[i][j] <= 99
