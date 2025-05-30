@@ -72,7 +72,8 @@ class BottomUp {
 
                 for(int C = 0; C < N; ++C) {
                     int newCol = pathSum + grid[R][C];
-                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? dp[R + 1][newCol] : INT_MAX));
+                    int newSum = (newCol < sumLimit) ? dp[R + 1][newCol] : INT_MAX;
+                    minAbsDiff = min(minAbsDiff, newSum);
                 }
 
                 dp[R][pathSum] = minAbsDiff;
@@ -94,7 +95,8 @@ class BottomUp {
 
                 for(int C = 0; C < N; ++C) {
                     int newCol = pathSum + grid[R][C];
-                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? nextRow[newCol] : INT_MAX));
+                    int newSum = (newCol < sumLimit) ? nextRow[newCol] : INT_MAX;
+                    minAbsDiff = min(minAbsDiff, newSum);
                 }
 
                 idealRow[pathSum] = minAbsDiff;
