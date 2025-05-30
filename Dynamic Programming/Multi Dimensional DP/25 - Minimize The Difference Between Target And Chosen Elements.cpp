@@ -12,123 +12,148 @@ NOTE: So, In the worst case the highest value of pathSum could be 70*70 = 4900.
       So, I measured it through the problem constraints. Hope you've got it!
       
 */
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
       
-NOTE: In the bottom-up approach, the sum iterations start from 2500 and go down to 0. Initially, I started with a larger value, around 4089, and then experimented with different values to avoid extra iterations. 
-      After several adjustments, 2500 emerged as the most fitting value based on my intuition. This adjustment is necessary to ensure we cover all relevant sum values. 
-      Starting from 4089 works, but starting from 4900 or higher can lead to segmentation faults due to out-of-bounds accesses. 
-      Starting from 2500 ensures we cover all possible sums more efficiently and avoids such issues, requiring only 2500 iterations. 
-      This approach helps to effectively explore all possible sums and capture the minimum absolute difference within the problem's context.
-
-*/
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       
 class TopDown {
-    int N, M;
+    const int sumLimit = 4901; 
+    int M, N;
 
-    // O(M^(N*M)) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& grid, int target, int startRow, int pathSum) {
-        // Edge case: If all the rows are exhausted then return the absolute difference of the current path
-        if(startRow == N)
+    int solveWithoutMemo(vector<vector<int>>& grid, int target, int R, int pathSum) {
+        if(R == M)
             return abs(target - pathSum);
 
-        // Stores the result value
         int minAbsDiff = INT_MAX;
-        
-        // Explore all the possible paths of choosing elements from the cell and update the result by the minimum value
-        for(int C = 0; C < M; ++C) 
-            minAbsDiff = min(minAbsDiff, solveWithoutMemo(grid, target, startRow + 1, pathSum + grid[startRow][C]));
 
-        // Return the result vlaue  
+        for(int C = 0; C < N; ++C)
+            minAbsDiff = min(minAbsDiff, solveWithoutMemo(grid, target, R + 1, pathSum + grid[R][C]));
+
         return minAbsDiff;
-    } 
+    }
 
-    // O(M*N*4901) & O(N*4901 + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int target, int startRow, int pathSum) {
-        // Edge case: If all the rows are exhausted then return the absolute difference of the current path
-        if(startRow == N)
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int target, int R, int pathSum) {
+        if(R == M)
             return abs(target - pathSum);
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startRow][pathSum] != -1)
-            return memory[startRow][pathSum];
+        if(dp[R][pathSum] != -1)
+            return dp[R][pathSum];
 
-        // Stores the result value
         int minAbsDiff = INT_MAX;
 
-        // Explore all the possible paths of choosing elements from the cell and update the result by the minimum value
-        for(int C = 0; C < M; ++C) 
-            minAbsDiff = min(minAbsDiff, solveWithMemo(memory, grid, target, startRow + 1, pathSum + grid[startRow][C]));
+        for(int C = 0; C < N; ++C)
+            minAbsDiff = min(minAbsDiff, solveWithMemo(dp, grid, target, R + 1, pathSum + grid[R][C]));
 
-        // Store the result value to the memoization table and then return it
-        return memory[startRow][pathSum] = minAbsDiff;
-    } 
+        return dp[R][pathSum] = minAbsDiff;
+    }
+
+    int solveWith2DTable(vector<vector<int>>& grid, int target) {
+        vector<vector<int>> dp(M + 1, vector<int>(sumLimit, -1));
+
+        for(int pathSum = 0; pathSum < sumLimit; ++pathSum) 
+            dp[M][pathSum] = abs(target - pathSum);
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int pathSum = sumLimit-1; pathSum >= 0; --pathSum) {
+                int minAbsDiff = INT_MAX;
+
+                for(int C = 0; C < N; ++C) {
+                    int newCol = pathSum + grid[R][C];
+                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? dp[R + 1][newCol] : INT_MAX));
+                }
+
+                dp[R][pathSum] = minAbsDiff;
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    int solveWith1DTable(vector<vector<int>>& grid, int target) {
+        vector<int> nextRow(sumLimit, -1), idealRow(sumLimit, -1);
+
+        for(int pathSum = 0; pathSum < sumLimit; ++pathSum) 
+            nextRow[pathSum] = abs(target - pathSum);
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int pathSum = sumLimit-1; pathSum >= 0; --pathSum) {
+                int minAbsDiff = INT_MAX;
+
+                for(int C = 0; C < N; ++C) {
+                    int newCol = pathSum + grid[R][C];
+                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? nextRow[newCol] : INT_MAX));
+                }
+
+                idealRow[pathSum] = minAbsDiff;
+            }
+            nextRow = idealRow;
+        }
+
+        return nextRow[0];
+    }
 
 public:
-    // Method to find the minimum absolute difference, using recursion with memoization :-
     int minimizeTheDifference(vector<vector<int>>& grid, int target) {
-        N = grid.size(), M = grid[0].size();
-        vector<vector<int>> memory(N, vector<int>(4901, -1));
-        return solveWithMemo(memory, grid, target, 0, 0);
+        M = grid.size(), N = grid[0].size();
+        vector<vector<int>> dp(M, vector<int>(sumLimit, -1));
+        return solveWithoutMemo(grid, target, 0, 0);
     }
 };
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // Method to find the minimum absolute difference, using 2D tabulation - O(N*2501*M) & O(N*4901)
-    int minimizeTheDifference_V1(vector<vector<int>>& grid, int target) {
-        int N = grid.size(), M = grid[0].size();
+    const int sumLimit = 4901; 
+    int M, N;
 
-        // 2D DP table
-        vector<vector<int>> dp(N + 1, vector<int>(4901, INT_MAX));
+    int solveWith2DTable(vector<vector<int>>& grid, int target) {
+        vector<vector<int>> dp(M + 1, vector<int>(sumLimit, -1));
 
-        // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
-        for(int pathSum = 0; pathSum <= 2500; ++pathSum)
-            dp[N][pathSum] = abs(target - pathSum);
+        for(int pathSum = 0; pathSum < sumLimit; ++pathSum) 
+            dp[M][pathSum] = abs(target - pathSum);
 
-        // Fill the rest of the table
-        for(int startRow = N-1; startRow >= 0; --startRow) {
-            for(int pathSum = 2500; pathSum >= 0; --pathSum) {
+        for(int R = M-1; R >= 0; --R) {
+            for(int pathSum = sumLimit-1; pathSum >= 0; --pathSum) {
                 int minAbsDiff = INT_MAX;
-                for(int C = 0; C < M; ++C) {
-                    minAbsDiff = min(minAbsDiff, dp[startRow + 1][pathSum + grid[startRow][C]]);
+
+                for(int C = 0; C < N; ++C) {
+                    int newCol = pathSum + grid[R][C];
+                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? dp[R + 1][newCol] : INT_MAX));
                 }
-                dp[startRow][pathSum] = minAbsDiff;            
+
+                dp[R][pathSum] = minAbsDiff;
             }
         }
 
-        // Return the result value
         return dp[0][0];
     }
 
-    // Method to find the minimum absolute difference, using 1D tabulation - O(N*2501*M) & O(2*4901)
-    int minimizeTheDifference_V2(vector<vector<int>>& grid, int target) {
-        int N = grid.size(), M = grid[0].size();
+    int solveWith1DTable(vector<vector<int>>& grid, int target) {
+        vector<int> nextRow(sumLimit, -1), idealRow(sumLimit, -1);
 
-        // 1D DP tables
-        vector<int> nextRow(4901, INT_MAX), currRow(4901, INT_MAX);
-
-        // Initialize the edge case: If all the rows are exhausted then return the absolute difference of the current path
-        for(int pathSum = 0; pathSum <= 2500; ++pathSum)
+        for(int pathSum = 0; pathSum < sumLimit; ++pathSum) 
             nextRow[pathSum] = abs(target - pathSum);
 
-        // Fill the rest of the table
-        for(int startRow = N-1; startRow >= 0; --startRow) {
-            for(int pathSum = 2500; pathSum >= 0; --pathSum) {
+        for(int R = M-1; R >= 0; --R) {
+            for(int pathSum = sumLimit-1; pathSum >= 0; --pathSum) {
                 int minAbsDiff = INT_MAX;
-                for(int C = 0; C < M; ++C) {
-                    minAbsDiff = min(minAbsDiff, nextRow[pathSum + grid[startRow][C]]);
+
+                for(int C = 0; C < N; ++C) {
+                    int newCol = pathSum + grid[R][C];
+                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? nextRow[newCol] : INT_MAX));
                 }
-                currRow[pathSum] = minAbsDiff;            
+
+                idealRow[pathSum] = minAbsDiff;
             }
-            nextRow = currRow;
+            nextRow = idealRow;
         }
 
-        // Return the result value
-        return currRow[0];
+        return nextRow[0];
+    }
+
+public:
+    int minimizeTheDifference(vector<vector<int>>& grid, int target) {
+        M = grid.size(), N = grid[0].size();
+        return solveWith1DTable(grid, target);
     }
 };
 
