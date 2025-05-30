@@ -1,3 +1,8 @@
+    // https://codeforces.com/contest/1703/problem/D
+// https://codeforces.com/contest/1703/problem/E
+// https://codeforces.com/contest/1790/problem/B
+// https://codeforces.com/contest/1846/problem/B
+
 // Code to find the minimum sum of a falling path with non-zero shifts ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,6 +26,7 @@
 class TopDown {
     int N;
 
+    // O(N^N) & O(N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int prevColumn) {
         if(R == N)
             return 0;
@@ -34,6 +40,7 @@ class TopDown {
         return minPathSum;
     }
 
+    // O(N^3) & O(N^2 + N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int prevColumn) {
         if(R == N)
             return 0;
@@ -51,7 +58,7 @@ class TopDown {
     }
 
 public:
-    // Method to find minimum sum of a falling path, using recursion with memoization - O(N*N) & O(N*N)
+    // Method to find minimum sum of a falling path, using recursion with memoization - O(N^3) & O(N^2)
     int minFallingPathSum(vector<vector<int>>& grid) {
         N = grid.size();
         vector<vector<int>> dp(N, vector<int>(N + 1, INT_MAX));
@@ -62,6 +69,7 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+    // O(N^3) & O(N^2)
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N + 1, vector<int>(N + 1, INT_MAX));
 
@@ -85,6 +93,7 @@ class BottomUp {
         return dp[0][N];
     }
 
+    // O(N^3) & O(2*N)
     int solveWith1DTable(vector<vector<int>>& grid) {
         vector<int> nextRow(N + 1, INT_MAX), idealRow(N + 1, INT_MAX);
 
@@ -120,6 +129,7 @@ public:
     
 class BottomUpIntuitive {
 public:
+    // O(N^3) & O(1)
     int minFallingPathSum(vector<vector<int>>& grid) {
         int N = grid.size();
 
