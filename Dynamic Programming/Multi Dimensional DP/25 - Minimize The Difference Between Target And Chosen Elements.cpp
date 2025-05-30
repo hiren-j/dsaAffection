@@ -46,56 +46,11 @@ class TopDown {
         return dp[R][pathSum] = minAbsDiff;
     }
 
-    int solveWith2DTable(vector<vector<int>>& grid, int target) {
-        vector<vector<int>> dp(M + 1, vector<int>(sumLimit, -1));
-
-        for(int pathSum = 0; pathSum < sumLimit; ++pathSum) 
-            dp[M][pathSum] = abs(target - pathSum);
-
-        for(int R = M-1; R >= 0; --R) {
-            for(int pathSum = sumLimit-1; pathSum >= 0; --pathSum) {
-                int minAbsDiff = INT_MAX;
-
-                for(int C = 0; C < N; ++C) {
-                    int newCol = pathSum + grid[R][C];
-                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? dp[R + 1][newCol] : INT_MAX));
-                }
-
-                dp[R][pathSum] = minAbsDiff;
-            }
-        }
-
-        return dp[0][0];
-    }
-
-    int solveWith1DTable(vector<vector<int>>& grid, int target) {
-        vector<int> nextRow(sumLimit, -1), idealRow(sumLimit, -1);
-
-        for(int pathSum = 0; pathSum < sumLimit; ++pathSum) 
-            nextRow[pathSum] = abs(target - pathSum);
-
-        for(int R = M-1; R >= 0; --R) {
-            for(int pathSum = sumLimit-1; pathSum >= 0; --pathSum) {
-                int minAbsDiff = INT_MAX;
-
-                for(int C = 0; C < N; ++C) {
-                    int newCol = pathSum + grid[R][C];
-                    minAbsDiff = min(minAbsDiff, (newCol < sumLimit ? nextRow[newCol] : INT_MAX));
-                }
-
-                idealRow[pathSum] = minAbsDiff;
-            }
-            nextRow = idealRow;
-        }
-
-        return nextRow[0];
-    }
-
 public:
     int minimizeTheDifference(vector<vector<int>>& grid, int target) {
         M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(sumLimit, -1));
-        return solveWithoutMemo(grid, target, 0, 0);
+        return solveWithMemo(dp, grid, target, 0, 0);
     }
 };
 
