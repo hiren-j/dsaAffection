@@ -1,8 +1,3 @@
-    // https://codeforces.com/contest/1703/problem/D
-// https://codeforces.com/contest/1703/problem/E
-// https://codeforces.com/contest/1790/problem/B
-// https://codeforces.com/contest/1846/problem/B
-
 // Code to find the minimum sum of a falling path with non-zero shifts ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -73,7 +68,7 @@ class BottomUp {
     int solveWith2DTable(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N + 1, vector<int>(N + 1, INT_MAX));
 
-        for(int prevColumn = 0; prevColumn <= N; ++prevColumn)
+        for(int prevColumn = 0; prevColumn <= N; ++prevColumn) // Init first edge case
             dp[N][prevColumn] = 0;
 
         for(int R = N-1; R >= 0; --R) {
