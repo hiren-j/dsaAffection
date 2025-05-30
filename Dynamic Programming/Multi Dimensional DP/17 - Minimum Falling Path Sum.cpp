@@ -223,7 +223,7 @@ public:
 
 class BottomUpIntuitive {
 public:
-    // O(N*N) & O(N*N)
+    // O(N*N) & O(1)
     int minFallingPathSum(vector<vector<int>>& grid) {
         int N = grid.size();
         
