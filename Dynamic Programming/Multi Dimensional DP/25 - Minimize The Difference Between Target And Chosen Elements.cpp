@@ -4,12 +4,12 @@
 /*
 
 NOTE: 1 <= grid[i][j] <= 70
-NOTE: 1 <= N, M <= 70
+NOTE: 1 <= M, N <= 70
 NOTE: So, In the worst case the highest value of pathSum could be 70*70 = 4900. 
       Didn't understand? Imagine the worst case when there will be 70 rows and 70 columns and all the cells contains value 70. 
       So, based on my logic you could see we're looking for the result value by moving from the first row to the last row.
       So, If you add the value 70 of the chosen cells across the path then you'll end up having the pathSum of 4900 at max or when you end up reaching all the rows.
-      So, I measured it through the problem constraints. Hope you've got it!
+      So the sumLimit has to be 4901, this ensures we could also store result for 4900 too. So, I measured it through the problem constraints. Hope you've got it!
       
 */
       
