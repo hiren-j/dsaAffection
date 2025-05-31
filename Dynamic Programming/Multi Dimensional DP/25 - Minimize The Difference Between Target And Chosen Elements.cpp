@@ -1,4 +1,4 @@
-// Code to find the minimum absolute difference, The absolute difference between two numbers a and b is the absolute value of a - b. We could Choose one integer from each row in the matrix such that the absolute difference between target and the pathSum of the chosen elements is minimized ~ coded by Hiren
+// Code to find the minimum absolute difference, The absolute difference between two numbers a and b is the absolute value of a - b. We could Choose one integer from each row in the matrix such that the absolute difference between target and the path sum of the chosen elements is minimized ~ coded by Hiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
@@ -18,6 +18,7 @@ class TopDown {
     const int sumLimit = 4901; 
     int M, N;
 
+    // O(N^M) & O(M)
     int solveWithoutMemo(vector<vector<int>>& grid, int target, int R, int pathSum) {
         if(R == M)
             return abs(target - pathSum);
@@ -30,6 +31,7 @@ class TopDown {
         return minAbsDiff;
     }
 
+    // O(N*M*sumLimit) & O(M*sumLimit + M)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int target, int R, int pathSum) {
         if(R == M)
             return abs(target - pathSum);
@@ -46,6 +48,7 @@ class TopDown {
     }
 
 public:
+    // Method to find minimum absolute difference, using recursion with memoization - O(N*M*sumLimit) & O(M*sumLimit)
     int minimizeTheDifference(vector<vector<int>>& grid, int target) {
         M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(sumLimit, -1));
@@ -59,6 +62,7 @@ class BottomUp {
     const int sumLimit = 4901; 
     int M, N;
 
+    // O(M*sumLimit*N) & O(M*sumLimit)      
     int solveWith2DTable(vector<vector<int>>& grid, int target) {
         vector<vector<int>> dp(M + 1, vector<int>(sumLimit, -1));
 
@@ -82,6 +86,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(M*sumLimit*N) & O(2*sumLimit)      
     int solveWith1DTable(vector<vector<int>>& grid, int target) {
         vector<int> nextRow(sumLimit, -1), idealRow(sumLimit, -1);
 
