@@ -4,20 +4,19 @@
 
 class TopDown {
     typedef long long LL;
-    int N, M;
+    int M, N;
 
-    // O(M^(N*M)) & O(N)
+    // O(N^(M*N)) & O(M)
     LL solveWithoutMemo(vector<vector<int>>& points, int R, int prevCol) {
-        // Edge case: If all the rows are exhausted then you can't earn points 
-        if(R == N)
+        if(R == M)
             return 0;
 
         LL maxPoints = 0;
 
-        // Consider each cell as a start point and then find the points you can achieve through it's path, then update the result by the maximum value
-        for(int C = 0; C < M; ++C) {
+        // Consider each cell as a start point and then find the points you can achieve through it's path, then update result by maximum value
+        for(int C = 0; C < N; ++C) {
             LL score = points[R][C] + solveWithoutMemo(points, R+1, C);
-            if(prevCol != -1) {
+            if(prevCol != N) {
                 score -= abs(prevCol - C);
             }
             maxPoints = max(maxPoints, score);
@@ -26,37 +25,34 @@ class TopDown {
         return maxPoints;
     }
 
-    // O(M*N*M) & O(N*M + N)
-    LL solveWithMemo(vector<vector<LL>>& memory, vector<vector<int>>& points, int R, int prevCol) {
-        // Edge case: If all the rows are exhausted then you can't earn points 
-        if(R == N)
+    // O(N*M*N) & O(M*N + M)
+    LL solveWithMemo(vector<vector<LL>>& dp, vector<vector<int>>& points, int R, int prevCol) {
+        if(R == M)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[R][prevCol + 1] != -1)
-            return memory[R][prevCol + 1];
+        if(dp[R][prevCol] != -1)
+            return dp[R][prevCol];
 
         LL maxPoints = 0;
 
-        // Consider each cell as a start point and then find the points you can achieve through it's path, then update the result by the maximum value
-        for(int C = 0; C < M; ++C) {
-            LL score = points[R][C] + solveWithMemo(memory, points, R+1, C);
-            if(prevCol != -1) {
+        // Consider each cell as a start point and then find the points you can achieve through it's path, then update result by maximum value
+        for(int C = 0; C < N; ++C) {
+            LL score = points[R][C] + solveWithMemo(dp, points, R+1, C);
+            if(prevCol != N) {
                 score -= abs(prevCol - C);
             }
             maxPoints = max(maxPoints, score);
         }
 
-        // Store the result value to the memoization table and then return it
-        return memory[R][prevCol + 1] = maxPoints;
+        return dp[R][prevCol] = maxPoints;
     }
 
 public:
-    // Method to find the maximum points you can achieve by performing the specified movements, using recursion with memoization - O(N*M*M) & O(N*M)
+    // Method to find the maximum points you can achieve by performing the specified movements, using recursion with memoization - O(M*N*N) & O(M*N)
     LL maxPoints(vector<vector<int>>& points) {
-        N = points.size(), M = points[0].size();
-        vector<vector<LL>> memory(N, vector<LL>(M+1, -1));
-        return solveWithMemo(memory, points, 0, -1);
+        M = points.size(), N = points[0].size();
+        vector<vector<LL>> dp(M, vector<LL>(N+1, -1));
+        return solveWithMemo(dp, points, 0, N);
     }
 };
 // Note: This solution will lead to time-limit-exceed
