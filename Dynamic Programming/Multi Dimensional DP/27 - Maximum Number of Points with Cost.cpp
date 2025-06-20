@@ -13,7 +13,7 @@ class TopDown {
 
         LL maxPoints = 0;
 
-        // Consider each cell as a start point and then find the points you can achieve through it's path, then update result by maximum value
+        // Consider each cell as a start point and then find the points you can achieve through it's path, then update the result by maximum value
         for(int C = 0; C < N; ++C) {
             LL score = points[R][C] + solveWithoutMemo(points, R+1, C);
             if(prevCol != N) {
@@ -35,7 +35,7 @@ class TopDown {
 
         LL maxPoints = 0;
 
-        // Consider each cell as a start point and then find the points you can achieve through it's path, then update result by maximum value
+        // Consider each cell as a start point and then find the points you can achieve through it's path, then update the result by maximum value
         for(int C = 0; C < N; ++C) {
             LL score = points[R][C] + solveWithMemo(dp, points, R+1, C);
             if(prevCol != N) {
@@ -59,110 +59,127 @@ public:
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V1 {
+class BottomUp {
     typedef long long LL;
+    int M, N;
 
-public:
-    // #1 Method to find the maximum points you can achieve by performing the specified movements, using 2D tabulation - O(N*M*M) & O(N*M)
-    LL maxPoints_V1(vector<vector<int>>& points) {
-        int N = points.size(), M = points[0].size();
+    // O(M*N*N) & O(M*N)
+    LL solveWith2DTable(vector<vector<int>>& points) {
+        vector<vector<LL>> dp(M, vector<LL>(N+1, -1));
 
-        // 2D DP table
-        vector<vector<LL>> dp(N+1, vector<LL>(M+1, 0));
-
-        // Fill the table
-        for(int R = N-1; R >= 0; --R) {
-            for(int prevCol = M-1; prevCol >= -1; --prevCol) {
+        for(int R = M-1; R >= 0; --R) {
+            for(int prevCol = 0; prevCol <= N; ++prevCol) {
                 LL maxPoints = 0;
 
-                for(int C = 0; C < M; ++C) {
-                    LL score = points[R][C] + dp[R+1][C+1];
-                    if(prevCol != -1) {
+                for(int C = 0; C < N; ++C) {
+                    LL score = points[R][C] + (R+1 < M ? dp[R+1][C] : 0);
+                    if(prevCol != N) {
                         score -= abs(prevCol - C);
                     }
                     maxPoints = max(maxPoints, score);
                 }
 
-                dp[R][prevCol + 1] = maxPoints;
+                dp[R][prevCol] = maxPoints;
             }
         }
-        
-        // Return the result value
-        return dp[0][0];
+
+        return dp[0][N];
     }
 
-    // #2 Method to find the maximum points you can achieve by performing the specified movements, using 1D tabulation - O(N*M*M) & O(M)
-    LL maxPoints_V2(vector<vector<int>>& points) {
-        int N = points.size(), M = points[0].size();
+    // O(M*N*N) & O(M*N)
+    LL solveWith2DEnhanced(vector<vector<int>>& points) {
+        vector<vector<LL>> dp(M+1, vector<LL>(N+1, 0));
 
-        // 1D DP tables
-        vector<int> nextRow(M+1, 0), idealRow(M+1, 0);
-
-        // Fill the table
-        for(int R = N-1; R >= 0; --R) {
-            for(int prevCol = M-1; prevCol >= -1; --prevCol) {
+        for(int R = M-1; R >= 0; --R) {
+            for(int prevCol = 0; prevCol <= N; ++prevCol) {
                 LL maxPoints = 0;
 
-                for(int C = 0; C < M; ++C) {
-                    LL score = points[R][C] + nextRow[C+1];
-                    if(prevCol != -1) {
+                for(int C = 0; C < N; ++C) {
+                    LL score = points[R][C] + dp[R+1][C];
+                    if(prevCol != N) {
                         score -= abs(prevCol - C);
                     }
                     maxPoints = max(maxPoints, score);
                 }
-                
-                idealRow[prevCol + 1] = maxPoints;
+
+                dp[R][prevCol] = maxPoints;
+            }
+        }
+
+        return dp[0][N];
+    }
+
+    // O(M*N*N) & O(2*N)
+    LL solveWith1DTable(vector<vector<int>>& points) {
+        vector<LL> nextRow(N+1, 0), idealRow(N+1, 0);
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int prevCol = 0; prevCol <= N; ++prevCol) {
+                LL maxPoints = 0;
+
+                for(int C = 0; C < N; ++C) {
+                    LL score = points[R][C] + nextRow[C];
+                    if(prevCol != N) {
+                        score -= abs(prevCol - C);
+                    }
+                    maxPoints = max(maxPoints, score);
+                }
+
+                idealRow[prevCol] = maxPoints;
             }
             nextRow = idealRow;
         }
 
-        // Return the result value
-        return idealRow[0];
+        return nextRow[N];
+    }
+
+public:
+    LL maxPoints(vector<vector<int>>& points) {
+        M = points.size(), N = points[0].size();
+        return solveWith1DTable(points);
     }
 };
 // Note: This solution will lead to time-limit-exceed
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V2 {
+class BottomUpEnhanced {
     typedef long long LL;
 
 public:
-    // Method to find the maximum points you can achieve by performing the specified movements, using 1D tabulation - O(N*M) & O(M)
+    // O(M*N) & O(2*N)
     LL maxPoints(vector<vector<int>>& points) {
-        int N = points.size(), M = points[0].size();
+        int M = points.size(), N = points[0].size();
 
-        vector<LL> prevRow(M, 0), currRow(M, 0);
+        vector<LL> prevRow(N, 0), currRow(N, 0);
 
-        // Initialize the first row
-        for(int C = 0; C < M; ++C)
+        for(int C = 0; C < N; ++C) {
             prevRow[C] = points[0][C];
+        }
 
-        for(int R = 1; R < N; ++R) {
-            vector<LL> maxPointLeft(M, 0), maxPointRight(M , 0);
+        for(int R = 1; R < M; ++R) {
+            vector<LL> maxPointLeft(N, 0), maxPointRight(N , 0);
             
             // Fill the maximum points you can gain from the left side of each column
             maxPointLeft[0] = prevRow[0];
-            for(int C = 1; C < M; ++C) {
+            for(int C = 1; C < N; ++C) {
                 maxPointLeft[C] = max(maxPointLeft[C-1] - 1, prevRow[C]);
             }
 
             // Fill the maximum points you can gain from the right side of each column
-            maxPointRight[M-1] = prevRow[M-1];
-            for(int C = M-2; C >= 0; --C) {
+            maxPointRight[N-1] = prevRow[N-1];
+            for(int C = N-2; C >= 0; --C) {
                 maxPointRight[C] = max(maxPointRight[C+1] - 1, prevRow[C]);
             }
 
             // Compute the current row's maximum points
-            for(int C = 0; C < M; ++C) {
+            for(int C = 0; C < N; ++C) {
                 currRow[C] = points[R][C] + max(maxPointLeft[C], maxPointRight[C]);
             }
 
-            // Move to the next row
             prevRow = currRow; 
         }  
 
-        // Return the maximum points you can gain from the last row of the matrix
         return *max_element(begin(prevRow), end(prevRow));
     }
 };
