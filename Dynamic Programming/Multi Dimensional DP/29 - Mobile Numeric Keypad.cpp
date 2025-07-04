@@ -58,7 +58,7 @@ class TopDown {
     
 public:
     // Method to count total distinct phone numbers of length N you can dial, using recursion with memoization - O(N) & O(N)
-    int getCount(int N) {
+    int countUniqueSeqsOfLen(int N) {
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, -1)));
         int result = 0;        
         
@@ -85,7 +85,7 @@ class BottomUp {
                                       {-1, 0, -1}};
 public:
     // O(N*4*3*5) & O(N*4*3)
-    int getCount(int N) {
+    int countUniqueSeqsOfLen(int N) {
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, 0)));
 
         // Initialize second edge case
