@@ -85,7 +85,7 @@ class BottomUp {
                                       {-1, 0, -1}};
 public:
     // O(N*4*3*5) & O(N*4*3)
-    int countUniqueSeqsOfLen(int N) {
+    int getCount(int N) {
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, 0)));
 
         // Initialize second edge case
@@ -96,17 +96,17 @@ public:
         for(int len = 1; len < N; ++len) {
             for(int R = rowLimit-1; R >= 0; --R) {
                 for(int C = colLimit-1; C >= 0; --C) {
-                    if(keypad[R][C] != -1) {
-                        int count = 0;
-                        for(auto& dir : directions) {
-                            int newR = R + dir[0];
-                            int newC = C + dir[1];
-                            if(newR >= 0 && newC >= 0 && newR < 4 && newC < 3 && keypad[newR][newC] != -1) {
-                                count += dp[len - 1][newR][newC];
-                            }
+                    int count = 0;
+                    
+                    for(auto& dir : directions) {
+                        int newR = R + dir[0];
+                        int newC = C + dir[1];
+                        if(newR >= 0 && newC >= 0 && newR < rowLimit && newC < colLimit && keypad[newR][newC] != -1) {
+                            count += dp[len - 1][newR][newC];
                         }
-                        dp[len][R][C] = count; 
                     }
+                    
+                    dp[len][R][C] = count; 
                 }
             }
         }
@@ -119,7 +119,6 @@ public:
                 if(keypad[R][C] != -1)
                     result += dp[N - 1][R][C];
 
-        // Return the result value 
         return result;
     }
 };
