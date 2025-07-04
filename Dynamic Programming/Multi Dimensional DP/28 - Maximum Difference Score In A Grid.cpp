@@ -6,22 +6,22 @@ class TopDown {
     int M, N;
 
     // O(N*M*N + M*M*N) & O(M*N + M+N)
-    int getMaxPositiveScore(vector<vector<int>>& dp, vector<vector<int>>& grid, int startR, int startC) {
-        if(dp[startR][startC] != -1)
-            return dp[startR][startC];
+    int getMaxPositiveScore(vector<vector<int>>& dp, vector<vector<int>>& grid, int srR, int srC) {
+        if(dp[srR][srC] != -1)
+            return dp[srR][srC];
 
         int moveRight = 0; 
         int moveDown  = 0; 
 
         // Explore each right cell and get the score you can get from all the possibility and then update the result by the maximum value
-        for(int C = startC+1; C < N; ++C) 
-            moveRight = max(moveRight, grid[startR][C] - grid[startR][startC] + getMaxPositiveScore(dp, grid, startR, C));
+        for(int C = srC+1; C < N; ++C) 
+            moveRight = max(moveRight, grid[srR][C] - grid[srR][srC] + getMaxPositiveScore(dp, grid, srR, C));
         
         // Explore each bottom cell and get the score you can get from all the possibility and then update the result by the maximum value
-        for(int R = startR+1; R < M; ++R) 
-            moveDown = max(moveDown, grid[R][startC] - grid[startR][startC] + getMaxPositiveScore(dp, grid, R, startC));
+        for(int R = srR+1; R < M; ++R) 
+            moveDown = max(moveDown, grid[R][srC] - grid[srR][srC] + getMaxPositiveScore(dp, grid, R, srC));
 
-        return dp[startR][startC] = max(moveRight, moveDown);
+        return dp[srR][srC] = max(moveRight, moveDown);
     }
     // Note: Without memoization the time complexity of this function will be O(N^(M*N) + M^(M*N)) and the auxiliary space will be O(M+N)
 
@@ -130,18 +130,18 @@ public:
         int maxPosScore = 0;
 
         // Find the maximum positive score you can get
-        for(int startR = M-1; startR >= 0; --startR) {
-            for(int startC = N-1; startC >= 0; --startC) {
+        for(int srR = M-1; srR >= 0; --srR) {
+            for(int srC = N-1; srC >= 0; --srC) {
                 int moveRight = 0;
                 int moveDown  = 0;
 
-                for(int C = startC+1; C < N; ++C) 
-                    moveRight = max(moveRight, grid[startR][C] - grid[startR][startC] + dp[startR][C]);        
-                for(int R = startR+1; R < M; ++R) 
-                    moveDown = max(moveDown, grid[R][startC] - grid[startR][startC] + dp[R][startC]);
+                for(int C = srC+1; C < N; ++C) 
+                    moveRight = max(moveRight, grid[srR][C] - grid[srR][srC] + dp[srR][C]);        
+                for(int R = srR+1; R < M; ++R) 
+                    moveDown = max(moveDown, grid[R][srC] - grid[srR][srC] + dp[R][srC]);
                 
-                dp[startR][startC] = max(moveRight, moveDown);
-                maxPosScore = max(maxPosScore, dp[startR][startC]);
+                dp[srR][srC] = max(moveRight, moveDown);
+                maxPosScore = max(maxPosScore, dp[srR][srC]);
             }
         }
 
