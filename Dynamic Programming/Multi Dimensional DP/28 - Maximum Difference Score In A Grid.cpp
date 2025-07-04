@@ -122,7 +122,7 @@ class BottomUp {
     }
 
 public:
-    // Method to find the maximum score you can achieve, using 2D multi tabulation - O(M*N*(N+M)) & O(M*N)
+    // Method to find the maximum score you can achieve, using multi 2D tabulation - O(M*N*(N+M)) & O(M*N)
     int maxScore(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
 
