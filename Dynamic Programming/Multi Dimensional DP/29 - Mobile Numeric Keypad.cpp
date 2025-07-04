@@ -86,7 +86,7 @@ class BottomUp {
 public:
     // O(N*4*3*5) & O(N*4*3)
     int getCount(int N) {
-        vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, 0)));
+        vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, -1)));
 
         // Initialize second edge case
         for(int R = 0; R < rowLimit; ++R)
