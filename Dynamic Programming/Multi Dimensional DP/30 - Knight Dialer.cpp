@@ -65,7 +65,7 @@ public:
         // Start dialing from the cells which doesn't starts from '*' or '#'
         for(int R = 0; R < 4; ++R) 
             for(int C = 0; C < 3; ++C) 
-                if(dialpad[R][C] != -1) 
+                if(phonePad[R][C] != -1) 
                     result = (result + solveWithMemo(dp, N - 1, R, C)) % MOD;
 
         return result;
