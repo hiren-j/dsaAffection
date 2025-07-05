@@ -59,8 +59,8 @@ class TopDown {
 public:
     // Method to find how many distinct phone numbers of length N you can dial, using recursion with memoization - O(N) & O(N)
     int knightDialer(int N) {
-        vector<vector<vector<int>>> dp(N, vector<vector<int>>(4, vector<int>(3, -1)));
         int result = 0;
+        vector<vector<vector<int>>> dp(N, vector<vector<int>>(4, vector<int>(3, -1)));
 
         // Start dialing from the cells which doesn't starts from '*' or '#'
         for(int R = 0; R < 4; ++R) 
