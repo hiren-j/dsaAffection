@@ -4,7 +4,7 @@
 
 class TopDown {
     const int rowLimit = 4, colLimit = 3;
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
 
     vector<vector<int>> directions = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
     vector<vector<int>> phonePad   = {{1, 2, 3},
@@ -60,11 +60,11 @@ public:
     // Method to find how many distinct phone numbers of length N you can dial, using recursion with memoization - O(N) & O(N)
     int knightDialer(int N) {
         int result = 0;
-        vector<vector<vector<int>>> dp(N, vector<vector<int>>(4, vector<int>(3, -1)));
+        vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, -1)));
 
         // Start dialing from the cells which doesn't starts from '*' or '#'
-        for(int R = 0; R < 4; ++R) 
-            for(int C = 0; C < 3; ++C) 
+        for(int R = 0; R < rowLimit; ++R) 
+            for(int C = 0; C < colLimit; ++C) 
                 if(phonePad[R][C] != -1) 
                     result = (result + solveWithMemo(dp, N - 1, R, C)) % MOD;
 
@@ -76,7 +76,7 @@ public:
 
 class BottomUp {
     const int rowLimit = 4, colLimit = 3;
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
 
     vector<vector<int>> directions = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
     vector<vector<int>> phonePad   = {{1, 2, 3},
