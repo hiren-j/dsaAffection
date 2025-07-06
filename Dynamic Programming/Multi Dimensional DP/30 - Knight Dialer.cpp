@@ -116,6 +116,7 @@ public:
 
         int result = 0;
 
+        // Start dialing from the cells which doesn't starts from '*' or '#'
         for(int R = 0; R < rowLimit; ++R)   
             for(int C = 0; C < colLimit; ++C)
                 if(phonePad[R][C] != -1)
