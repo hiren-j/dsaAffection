@@ -18,7 +18,6 @@ class TopDown {
                     
     // O(10 * 5^N) & O(N) 
     int solveWithoutMemo(int N, int R, int C) {
-        // Edge case: If you've correctly dialed a phone number of len N then you've one valid way
         if(N == 0)
             return 1;
                     
@@ -37,7 +36,6 @@ class TopDown {
 
     // O(10 + 5*N*4*3) & O(N*4*3 + N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, int N, int R, int C) { 
-        // Edge case: If you've correctly dialed a phone number of len N then you've one valid way
         if(N == 0)
             return 1;
         
