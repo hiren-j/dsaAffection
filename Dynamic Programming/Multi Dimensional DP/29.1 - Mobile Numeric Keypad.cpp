@@ -6,7 +6,7 @@ class TopDown {
     #define rowLimit 4
     #define colLimit 3
 
-    vector<vector<int>> directions = {{0,0}, {-1,0}, {1,0}, {0,-1}, {0,1}};
+    vector<vector<int>> directions = {{0, 0}, {-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     vector<vector<int>> keypad     = {{1, 2, 3},
                                       {4, 5, 6},
                                       {7, 8, 9},
