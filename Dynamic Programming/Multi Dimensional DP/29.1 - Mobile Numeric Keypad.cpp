@@ -17,7 +17,7 @@ class TopDown {
         if(R < 0 || C < 0 || R == rowLimit || C == colLimit || keypad[R][C] == -1)
             return 0;
             
-        // Edge case: If you've correctly dialed a phone number of len N then you've one valid way
+        // Edge case: If you've correctly dialed a phone number of length N then you've one valid way
         if(N == 0)
             return 1;
                     
@@ -38,7 +38,7 @@ class TopDown {
         if(R < 0 || C < 0 || R == rowLimit || C == colLimit || keypad[R][C] == -1)
             return 0;
             
-        // Edge case: If you've correctly dialed a phone number of len N then you've one valid way
+        // Edge case: If you've correctly dialed a phone number of length N then you've one valid way
         if(N == 0)
             return 1;
         
