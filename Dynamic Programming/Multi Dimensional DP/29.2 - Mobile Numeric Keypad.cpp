@@ -59,7 +59,7 @@ class TopDown {
     
 public:
     // Method to count total distinct phone numbers of length N you can dial, using recursion with memoization - O(N) & O(N)
-    int getCount(int N) {
+    int countUniqueSeqsOfLen(int N) {
         vector<vector<vector<int>>> dp(N, vector<vector<int>>(rowLimit, vector<int>(colLimit, -1)));
         int result = 0;        
         
@@ -84,6 +84,10 @@ class BottomUp {
                                       {4, 5, 6},
                                       {7, 8, 9},
                                       {-1, 0, -1}};
+    bool isValid(int R, int C) {
+        return R >= 0 && C >= 0 && R < rowLimit && C < colLimit && keypad[R][C] != -1;
+    }
+
 public:
     // O(N*4*3*5) & O(N*4*3)
     int countUniqueSeqsOfLen(int N) {
