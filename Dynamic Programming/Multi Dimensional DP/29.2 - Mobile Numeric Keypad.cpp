@@ -105,7 +105,7 @@ public:
                     for(auto& dir : directions) {
                         int newR = R + dir[0];
                         int newC = C + dir[1];
-                        if(isValid(newR, newC) {
+                        if(isValid(newR, newC)) {
                             count += dp[len - 1][newR][newC];
                         }
                     }
