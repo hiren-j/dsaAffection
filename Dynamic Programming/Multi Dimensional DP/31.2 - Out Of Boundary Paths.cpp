@@ -11,6 +11,7 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+    // O(4^maxMove) & O(maxMove)
     int solveWithoutMemo(int maxMove, int R, int C) {
         if(maxMove == 0)
             return 0;
@@ -31,6 +32,7 @@ class TopDown {
         return count;
     }
 
+    // O(4 * maxMove*M*N) & O(maxMove*M*N + maxMove)
     int solveWithMemo(vector<vector<vector<int>>>& dp, int maxMove, int R, int C) {
         if(maxMove == 0)
             return 0;
@@ -55,6 +57,7 @@ class TopDown {
     }
 
 public:
+    // Method to find the number of paths, using recursion with memoization - O(maxMove*M*N) & (maxMove*M*N)
     int findPaths(int m, int n, int maxMove, int startR, int startC) {
         M = m, N = n;
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M, vector<int>(N, -1)));
@@ -73,6 +76,7 @@ class BottomUp {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+    // O(maxMove*M*N) & (maxMove*M*N)
     int solveWith3DTable(int maxMove, int startR, int startC) {
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M, vector<int>(N, 0)));
         
@@ -100,6 +104,7 @@ class BottomUp {
         return dp[maxMove][startR][startC];
     }
 
+    // O(maxMove*M*N) & (2*M*N)
     int solveWith2DTable(int maxMove, int startR, int startC) {
         vector<vector<int>> prevRow(M, vector<int>(N)), idealRow(M, vector<int>(N));
 
