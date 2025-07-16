@@ -67,10 +67,10 @@ public:
 class BottomUp {
     vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
     const int MOD = 1e9+7;
+    int M, N;
 
-public:
-    // O(maxMove*M*N) & O(maxMove*M*N)
-    int findPaths(int M, int N, int maxMove, int startR, int startC) {        
+    // O(maxMove*M*N) & O(maxMove*M*N)    
+    int solveWith3DTable(int maxMove, int startR, int startC) {
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
 
         /*
@@ -80,7 +80,7 @@ public:
             dp[moves][R][N + 1] - we're assuming index N+1 = Nth index 
         */
 
-        // Initialize edge case: (R < 0 || R == M)
+        // Init edge case: (R < 0 || R == M)
         for(int moves = 0; moves <= maxMove; ++moves) {
             for(int C = 0; C <= N+1; ++C) {
                 dp[moves][0][C]     = 1;
@@ -88,7 +88,7 @@ public:
             }
         }
 
-        // Initialize edge case: (C < 0 || C == N)
+        // Init edge case: (C < 0 || C == N)
         for(int moves = 0; moves <= maxMove; ++moves) {
             for(int R = 0; R <= M+1; ++R) {
                 dp[moves][R][0]     = 1;
@@ -113,6 +113,55 @@ public:
         }
 
         return dp[maxMove][startR + 1][startC + 1];
+    }
+
+    // O(maxMove*M*N) & O(2*M*N)
+    int solveWith2DTable(int maxMove, int startR, int startC) {
+        vector<vector<int>> prevRow(M + 2, vector<int>(N + 2, 0)), idealRow(M + 2, vector<int>(N + 2, 0));
+
+        // Init edge case: (R < 0 || R == M) for moves = 0
+        for(int C = 0; C <= N+1; ++C) {
+            prevRow[0][C]     = 1;
+            prevRow[M + 1][C] = 1;
+        }
+
+        // Init edge case: (C < 0 || C == N) for moves = 0
+        for(int R = 0; R <= M+1; ++R) {
+            prevRow[R][0]     = 1;
+            prevRow[R][N + 1] = 1;
+        }
+        
+        for(int moves = 1; moves <= maxMove; ++moves) {
+            for(int R = 1; R <= M; ++R) {
+                // Init edge case: (R < 0 || R == M) for moves
+                idealRow[R][0]     = 1;
+                idealRow[R][N + 1] = 1;
+                for(int C = 1; C <= N; ++C) {
+                    // Init edge case: (C < 0 || C == N) for moves
+                    idealRow[0][C]     = 1; 
+                    idealRow[M + 1][C] = 1; 
+
+                    int count = 0;
+                    for(auto& dir : directions) {
+                        int reachR = R + dir[0];
+                        int reachC = C + dir[1];
+                        if(reachR >= 0 && reachC >= 0 && reachR <= M+1 && reachC <= N+1) {
+                            count = (count + prevRow[reachR][reachC]) % MOD;
+                        }
+                    }
+                    idealRow[R][C] = count % MOD;
+                }
+            }
+            prevRow = idealRow;
+        }
+
+        return prevRow[startR + 1][startC + 1];
+    }
+    
+public:
+    int findPaths(int m, int n, int maxMove, int startR, int startC) {   
+        M = m, N = n;
+        return solveWith3DTable(maxMove, startR, startC);
     }
 };
 
