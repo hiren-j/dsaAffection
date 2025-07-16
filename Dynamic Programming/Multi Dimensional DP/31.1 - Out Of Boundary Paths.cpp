@@ -1,3 +1,4 @@
+
 // Code to find the total number of paths to move the ball out of the grid boundary from the cell (startR, startC) ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,10 +55,10 @@ class TopDown {
 
 public:
     // Method to find the number of paths, using recursion with memoization - O(maxMove*M*N) & (maxMove*M*N)
-    int findPaths(int m, int n, int maxMove, int startR, int startCol) {
+    int findPaths(int m, int n, int maxMove, int startR, int startC) {
         M = m, N = n;
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M, vector<int>(N, -1)));
-        return solveWithMemo(dp, maxMove, startR, startCol);
+        return solveWithMemo(dp, maxMove, startR, startC);
     }
 };
 
@@ -68,34 +69,34 @@ class BottomUp {
     const int MOD = 1e9+7;
 
 public:
-    // Method to find the number of paths, using 3D tabulation - O(maxMove*M*N) & O(maxMove*M*N)
-    int findPaths(int M, int N, int maxMove, int startR, int startCol) {        
+    // O(maxMove*M*N) & O(maxMove*M*N)
+    int findPaths(int M, int N, int maxMove, int startR, int startC) {        
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
 
         /*
-            dp[move][0][C]     - we're assuming index 0 as negative index
-            dp[move][R][0]     - we're assuming index 0 as negative index
-            dp[move][M + 1][C] - we're assuming index M+1 as Mth index 
-            dp[move][R][N + 1] - we're assuming index N+1 as Nth index 
+            dp[moves][0][C]     - we're assuming index 0 = negative index -1
+            dp[moves][R][0]     - we're assuming index 0 = negative index -1
+            dp[moves][M + 1][C] - we're assuming index M+1 = Mth index 
+            dp[moves][R][N + 1] - we're assuming index N+1 = Nth index 
         */
 
         // Initialize edge case: (R < 0 || R == M)
-        for(int move = 0; move <= maxMove; ++move) {
+        for(int moves = 0; moves <= maxMove; ++moves) {
             for(int C = 0; C <= N+1; ++C) {
-                dp[move][0][C]     = 1;
-                dp[move][M + 1][C] = 1;
+                dp[moves][0][C]     = 1;
+                dp[moves][M + 1][C] = 1;
             }
         }
 
         // Initialize edge case: (C < 0 || C == N)
-        for(int move = 0; move <= maxMove; ++move) {
+        for(int moves = 0; moves <= maxMove; ++moves) {
             for(int R = 0; R <= M+1; ++R) {
-                dp[move][R][0]     = 1;
-                dp[move][R][N + 1] = 1;
+                dp[moves][R][0]     = 1;
+                dp[moves][R][N + 1] = 1;
             }
         }
 
-        for(int move = 1; move <= maxMove; ++move) {
+        for(int moves = 1; moves <= maxMove; ++moves) {
             for(int R = 1; R <= M; ++R) {
                 for(int C = 1; C <= N; ++C) {
                     int count = 0;
@@ -103,15 +104,15 @@ public:
                         int reachR = R + dir[0];
                         int reachC = C + dir[1];
                         if(reachR >= 0 && reachC >= 0 && reachR <= M+1 && reachC <= N+1) {
-                            count = (count + dp[move - 1][reachR][reachC]) % MOD;
+                            count = (count + dp[moves - 1][reachR][reachC]) % MOD;
                         }
                     }
-                    dp[move][R][C] = count % MOD;
+                    dp[moves][R][C] = count % MOD;
                 }
             }
         }
 
-        return dp[maxMove][startR + 1][startCol + 1];
+        return dp[maxMove][startR + 1][startC + 1];
     }
 };
 
