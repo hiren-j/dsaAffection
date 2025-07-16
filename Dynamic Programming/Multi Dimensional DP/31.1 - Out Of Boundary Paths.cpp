@@ -133,11 +133,11 @@ class BottomUp {
         
         for(int moves = 1; moves <= maxMove; ++moves) {
             for(int R = 1; R <= M; ++R) {
-                // Init edge case: (R < 0 || R == M) for moves
+                // Init edge case: (C < 0 || C == N) for moves
                 idealRow[R][0]     = 1;
                 idealRow[R][N + 1] = 1;
                 for(int C = 1; C <= N; ++C) {
-                    // Init edge case: (C < 0 || C == N) for moves
+                    // Init edge case: (R < 0 || R == M) for moves
                     idealRow[0][C]     = 1; 
                     idealRow[M + 1][C] = 1; 
 
