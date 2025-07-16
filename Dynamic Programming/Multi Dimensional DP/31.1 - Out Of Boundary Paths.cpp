@@ -1,4 +1,4 @@
-// Code to find the total number of paths to move the ball out of the grid boundary from the cell (startRow, startColumn) ~ coded by Hiren
+// Code to find the total number of paths to move the ball out of the grid boundary from the cell (startR, startC) ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -9,62 +9,55 @@ class TopDown {
 
     // O(4^maxMove) & O(maxMove)
     int solveWithoutMemo(int maxMove, int R, int C) {
-        // Edge case: If the ball moves out of the grid boundary then you've one valid way
+        // Edge case: If the ball moves out of the grid boundary then you've one way
         if(R < 0 || C < 0 || R == M || C == N)
             return 1;
 
-        // Edge case: If all the moves are exhausted then it's not possible to move the ball anymore
+        // Edge case: If all moves are over then it's not possible to move the ball anymore
         if(maxMove == 0)
             return 0;
 
-        // Stores the result value
-        int numPaths = 0;
+        int count = 0;
 
-        // Explore all the 4 directions from the cell and update the result value each time
         for(auto& dir : directions) {
-            int reachRow = R + dir[0];
-            int reachCol = C + dir[1];
-            numPaths     = ((numPaths  % MOD) + solveWithoutMemo(maxMove - 1, reachRow, reachCol) % MOD);
+            int reachR = R + dir[0];
+            int reachC = C + dir[1];
+            count      = (count + solveWithoutMemo(maxMove - 1, reachR, reachC)) % MOD;
         }
 
-        // Return the result value
-        return numPaths % MOD;
+        return count;
     }
 
     // O(4 * maxMove*M*N) & O(maxMove*M*N + maxMove)
-    int solveWithMemo(vector<vector<vector<int>>>& memory, int maxMove, int R, int C) {
-        // Edge case: If the ball moves out of the grid boundary then you've one valid way
+    int solveWithMemo(vector<vector<vector<int>>>& dp, int maxMove, int R, int C) {
+        // Edge case: If the ball moves out of the grid boundary then you've one way
         if(R < 0 || C < 0 || R == M || C == N)
             return 1;
 
-        // Edge case: If all the moves are exhausted then it's not possible to move the ball anymore
+        // Edge case: If all moves are over then it's not possible to move the ball anymore
         if(maxMove == 0)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[maxMove][R][C] != -1)
-            return memory[maxMove][R][C];
+        if(dp[maxMove][R][C] != -1)
+            return dp[maxMove][R][C];
 
-        // Stores the result value
-        int numPaths = 0;
+        int count = 0;
 
-        // Explore all the 4 directions from the cell and update the result value each time
         for(auto& dir : directions) {
-            int reachRow = R + dir[0];
-            int reachCol = C + dir[1];
-            numPaths     = ((numPaths  % MOD) + solveWithMemo(memory, maxMove - 1, reachRow, reachCol) % MOD);
+            int reachR = R + dir[0];
+            int reachC = C + dir[1];
+            count      = (count + solveWithMemo(dp, maxMove - 1, reachR, reachC)) % MOD;
         }
 
-        // Store the result value to the memoization table and then return it
-        return memory[maxMove][R][C] = numPaths % MOD;
+        return dp[maxMove][R][C] = count;
     }
 
 public:
     // Method to find the number of paths, using recursion with memoization - O(maxMove*M*N) & (maxMove*M*N)
-    int findPaths(int m, int n, int maxMove, int startRow, int startCol) {
+    int findPaths(int m, int n, int maxMove, int startR, int startCol) {
         M = m, N = n;
-        vector<vector<vector<int>>> memory(maxMove + 1, vector<vector<int>>(M, vector<int>(N, -1)));
-        return solveWithMemo(memory, maxMove, startRow, startCol);
+        vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M, vector<int>(N, -1)));
+        return solveWithMemo(dp, maxMove, startR, startCol);
     }
 };
 
@@ -76,7 +69,7 @@ class BottomUp {
 
 public:
     // Method to find the number of paths, using 3D tabulation - O(maxMove*M*N) & O(maxMove*M*N)
-    int findPaths(int M, int N, int maxMove, int startRow, int startCol) {
+    int findPaths(int M, int N, int maxMove, int startR, int startCol) {
         // 3D DP table
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
 
@@ -87,7 +80,7 @@ public:
             dp[move][R][N + 1] - we're assuming index N+1 as Nth index 
         */
 
-        // Initialize the edge case: (R < 0 || R == M) If the ball moves out of the grid boundary then you've one valid way
+        // Initialize edge case: (R < 0 || R == M)
         for(int move = 0; move <= maxMove; ++move) {
             for(int C = 0; C <= N+1; ++C) {
                 dp[move][0][C]     = 1;
@@ -95,7 +88,7 @@ public:
             }
         }
 
-        // Initialize the edge case: (C < 0 || C == N) If the ball moves out of the grid boundary then you've one valid way
+        // Initialize edge case: (C < 0 || C == N)
         for(int move = 0; move <= maxMove; ++move) {
             for(int R = 0; R <= M+1; ++R) {
                 dp[move][R][0]     = 1;
@@ -103,25 +96,23 @@ public:
             }
         }
 
-        // Fill the rest of the table
         for(int move = 1; move <= maxMove; ++move) {
             for(int R = 1; R <= M; ++R) {
                 for(int C = 1; C <= N; ++C) {
-                    int numPaths = 0;
+                    int count = 0;
                     for(auto& dir : directions) {
-                        int reachRow = R + dir[0];
-                        int reachCol = C + dir[1];
-                        if(reachRow >= 0 && reachCol >= 0 && reachRow <= M+1 && reachCol <= N+1) {
-                            numPaths = ((numPaths % MOD) + dp[move - 1][reachRow][reachCol] % MOD);
+                        int reachR = R + dir[0];
+                        int reachC = C + dir[1];
+                        if(reachR >= 0 && reachC >= 0 && reachR <= M+1 && reachC <= N+1) {
+                            count = (count + dp[move - 1][reachR][reachC]) % MOD;
                         }
                     }
-                    dp[move][R][C] = numPaths % MOD;
+                    dp[move][R][C] = count % MOD;
                 }
             }
         }
 
-        // Return the result value
-        return dp[maxMove][startRow + 1][startCol + 1];
+        return dp[maxMove][startR + 1][startCol + 1];
     }
 };
 
