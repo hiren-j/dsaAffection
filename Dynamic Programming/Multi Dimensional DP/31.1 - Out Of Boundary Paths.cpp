@@ -69,8 +69,7 @@ class BottomUp {
 
 public:
     // Method to find the number of paths, using 3D tabulation - O(maxMove*M*N) & O(maxMove*M*N)
-    int findPaths(int M, int N, int maxMove, int startR, int startCol) {
-        // 3D DP table
+    int findPaths(int M, int N, int maxMove, int startR, int startCol) {        
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
 
         /*
