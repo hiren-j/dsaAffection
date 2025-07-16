@@ -107,7 +107,7 @@ public:
                             count = (count + dp[moves - 1][reachR][reachC]) % MOD;
                         }
                     }
-                    dp[moves][R][C] = count % MOD;
+                    dp[moves][R][C] = count;
                 }
             }
         }
