@@ -1,4 +1,4 @@
-// Code to find the total number of paths to move the ball out of the grid boundary from the cell (startRow, startColumn) ~ coded by Hiren
+// Code to find the total number of paths to move the ball out of the grid boundary from the cell (startR, startC) ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
