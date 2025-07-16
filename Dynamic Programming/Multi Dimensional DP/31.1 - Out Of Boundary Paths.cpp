@@ -29,7 +29,7 @@ class TopDown {
         return count;
     }
 
-    // O(4 * maxMove*M*N) & O(maxMove*M*N + maxMove)
+    // O(4*maxMove*M*N) & O(maxMove*M*N + maxMove)
     int solveWithMemo(vector<vector<vector<int>>>& dp, int maxMove, int R, int C) {
         // Edge case: If the ball moves out of the grid boundary then you've one way
         if(R < 0 || C < 0 || R == M || C == N)
