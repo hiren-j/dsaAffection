@@ -149,7 +149,7 @@ class BottomUp {
                             count = (count + prevRow[reachR][reachC]) % MOD;
                         }
                     }
-                    idealRow[R][C] = count % MOD;
+                    idealRow[R][C] = count;
                 }
             }
             prevRow = idealRow;
@@ -161,7 +161,7 @@ class BottomUp {
 public:
     int findPaths(int m, int n, int maxMove, int startR, int startC) {   
         M = m, N = n;
-        return solveWith3DTable(maxMove, startR, startC);
+        return solveWith2DTable(maxMove, startR, startC);
     }
 };
 
