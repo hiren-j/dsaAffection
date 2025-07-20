@@ -10,7 +10,7 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(M * 3^(M*N)) & O(max(M,N))
+    // O(M * 3^(M*N)) & O(N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         int maxMoves = 0;
 
@@ -25,7 +25,7 @@ class TopDown {
         return maxMoves;
     }
 
-    // O(M + 3*M*N) & O(M*N + max(M,N))
+    // O(M + 3*M*N) & O(M*N + N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
