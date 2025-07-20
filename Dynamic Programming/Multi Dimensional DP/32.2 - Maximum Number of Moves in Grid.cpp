@@ -10,6 +10,7 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+    // O(M * 3^(M*N)) & O(M+N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         int maxMoves = 0;
 
@@ -22,12 +23,13 @@ class TopDown {
         }
 
         if(C == 0 && isValid(R+1, 0)) {
-            maxMoves = max(maxMoves, solveWithoutMemo(grid, R+1, 0));
+            maxMoves = max(maxMoves, solveWithoutMemo(grid, R+1, 0)); // Move to next row of first column
         }
 
         return maxMoves;
     }
 
+    // O(M + 3^(M*N)) & O(M+N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
@@ -43,14 +45,14 @@ class TopDown {
         }
 
         if(C == 0 && isValid(R+1, 0)) {
-            maxMoves = max(maxMoves, solveWithMemo(dp, grid, R+1, 0));
+            maxMoves = max(maxMoves, solveWithMemo(dp, grid, R+1, 0)); // Move to next row of first column
         }
 
         return dp[R][C] = maxMoves;
     }
 
 public:
-    // Method to find maximum number of moves you can perform in grid, using recursion with memoization - O(N*M) & O(N*M)
+    // Method to find maximum number of moves you can perform in grid, using recursion with memoization - O(M*N) & O(M*N)
     int maxMoves(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(N, -1));
