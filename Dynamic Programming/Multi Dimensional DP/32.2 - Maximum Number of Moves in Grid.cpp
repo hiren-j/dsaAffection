@@ -23,7 +23,7 @@ class TopDown {
         }
 
         if(C == 0 && isValid(R+1, 0)) {
-            maxMoves = max(maxMoves, solveWithoutMemo(grid, R+1, 0)); // Move to next row of first column
+            maxMoves = max(maxMoves, solveWithoutMemo(grid, R+1, 0)); // Move to next row from first column
         }
 
         return maxMoves;
@@ -45,7 +45,7 @@ class TopDown {
         }
 
         if(C == 0 && isValid(R+1, 0)) {
-            maxMoves = max(maxMoves, solveWithMemo(dp, grid, R+1, 0)); // Move to next row of first column
+            maxMoves = max(maxMoves, solveWithMemo(dp, grid, R+1, 0)); // Move to next row from first column
         }
 
         return dp[R][C] = maxMoves;
