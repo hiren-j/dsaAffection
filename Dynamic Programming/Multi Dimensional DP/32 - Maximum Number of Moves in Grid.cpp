@@ -4,62 +4,54 @@
 
 class TopDown {
     vector<vector<int>> directions = {{-1,1}, {0,1}, {1,1}};
-    int N, M;
+    int M, N;
 
     bool isValid(int R, int C) {
-        return R >= 0 && C >= 0 && R < N && C < M; 
+        return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(N * 3^(N*M)) & O(N+M)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         int maxMoves = 0;
 
-        // Explore all the directions one by one and then update the result by the maximum value
         for(auto& dir : directions) {
-            int reachR = R + dir[0];
-            int reachC = C + dir[1];
-            if(isValid(reachR, reachC) && grid[reachR][reachC] > grid[R][C]) {
-                maxMoves = max(maxMoves, 1 + solveWithoutMemo(grid, reachR, reachC));
+            int newR = R + dir[0];
+            int newC = C + dir[1];
+            if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                maxMoves = max(maxMoves, 1 + solveWithoutMemo(grid, newR, newC));
             }
-        }   
+        }
 
         return maxMoves;
     }
 
-    // O(N + 3*N*M) & O(N*M + N+M)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int R, int C) {
-        // Memoization table: If the current state is already computed then return the computed value 
-        if(memory[R][C] != -1)
-            return memory[R][C];
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
+        if(dp[R][C] != -1)
+            return dp[R][C];
 
         int maxMoves = 0;
 
-        // Explore all the directions one by one and then update the result by the maximum value
         for(auto& dir : directions) {
-            int reachR = R + dir[0];
-            int reachC = C + dir[1];
-            if(isValid(reachR, reachC) && grid[reachR][reachC] > grid[R][C]) {
-                maxMoves = max(maxMoves, 1 + solveWithMemo(memory, grid, reachR, reachC));
+            int newR = R + dir[0];
+            int newC = C + dir[1];
+            if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                maxMoves = max(maxMoves, 1 + solveWithMemo(dp, grid, newR, newC));
             }
-        }   
+        }
 
-        // Store the result value to the memoization table and then return it
-        return memory[R][C] = maxMoves;
+        return dp[R][C] = maxMoves;
     }
 
 public:
-    // Method to find the maximum number of moves you can perform in the grid, using recursion with memoization - O(N*M) & O(N*M)
+    // Method to find maximum number of moves you can perform in grid, using recursion with memoization - O(N*M) & O(N*M)
     int maxMoves(vector<vector<int>>& grid) {
-        N = grid.size(), M = grid[0].size();
+        M = grid.size(), N = grid[0].size();
+
+        vector<vector<int>> dp(M, vector<int>(N, -1));
+
         int result = 0;
-
-        // 2D memoization table
-        vector<vector<int>> memory(N, vector<int>(M, -1));
-
-        // Start from the first column of each row and find the maximum moves you can perform from it and then update the result by the maximum value 
-        for(int R = 0; R < N; ++R)
-            result = max(result, solveWithMemo(memory, grid, R, 0));
-
+        for(int R = 0; R < M; ++R) {
+            result = max(result, solveWithMemo(dp, grid, R, 0));
+        }
         return result;
     }
 };
@@ -68,39 +60,66 @@ public:
 
 class BottomUp {
     vector<vector<int>> directions = {{-1,1}, {0,1}, {1,1}};
-    int N, M;
+    int M, N;
 
     bool isValid(int R, int C) {
-        return R >= 0 && C >= 0 && R < N && C < M; 
+        return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-public:
-    // Method to find the maximum number of moves you can perform in the grid, using 2D tabulation - O(N*M) & O(N*M)
-    int maxMoves(vector<vector<int>>& grid) {
-        N = grid.size(), M = grid[0].size();
+    int solveWith2DTable(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M, vector<int>(N, -1));
 
-        vector<vector<int>> dp(N, vector<int>(M, 0));
-
-        for(int C = M-1; C >= 0; --C) {
-            for(int R = N-1; R >= 0; --R) {
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
                 int maxMoves = 0;
+
                 for(auto& dir : directions) {
-                    int reachR = R + dir[0];
-                    int reachC = C + dir[1];
-                    if(isValid(reachR, reachC) && grid[reachR][reachC] > grid[R][C]) {
-                        maxMoves = max(maxMoves, 1 + dp[reachR][reachC]);
+                    int newR = R + dir[0];
+                    int newC = C + dir[1];
+                    if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                        maxMoves = max(maxMoves, 1 + dp[newR][newC]);
                     }
                 }
+
                 dp[R][C] = maxMoves;
             }
         }
 
         int result = 0;
-
-        for(int R = 0; R < N; ++R)
+        for(int R = 0; R < M; ++R) {
             result = max(result, dp[R][0]);
+        }
+        return result;
+    }
+
+    int solveWith2DEnhanced(vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M, vector<int>(N, 0));
+        int result = 0;
+
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int maxMoves = 0;
+
+                for(auto& dir : directions) {
+                    int newR = R + dir[0];
+                    int newC = C + dir[1];
+                    if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                        maxMoves = max(maxMoves, 1 + dp[newR][newC]);
+                    }
+                }
+
+                dp[R][C] = maxMoves;
+                result = max(result, dp[R][0]);
+            }
+        }
 
         return result;
+    }
+
+public:
+    int maxMoves(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+        return solveWith2DEnhanced(grid);
     }
 };
 
