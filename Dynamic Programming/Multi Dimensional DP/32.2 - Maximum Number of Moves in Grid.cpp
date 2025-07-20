@@ -10,7 +10,6 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(M * 3^(M*N)) & O(N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         int maxMoves = 0;
 
@@ -22,10 +21,13 @@ class TopDown {
             }
         }
 
+        if(C == 0 && isValid(R+1, 0)) {
+            maxMoves = max(maxMoves, solveWithoutMemo(grid, R+1, 0));
+        }
+
         return maxMoves;
     }
 
-    // O(M + 3*M*N) & O(M*N + N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
@@ -40,6 +42,10 @@ class TopDown {
             }
         }
 
+        if(C == 0 && isValid(R+1, 0)) {
+            maxMoves = max(maxMoves, solveWithMemo(dp, grid, R+1, 0));
+        }
+
         return dp[R][C] = maxMoves;
     }
 
@@ -47,14 +53,8 @@ public:
     // Method to find maximum number of moves you can perform in grid, using recursion with memoization - O(N*M) & O(N*M)
     int maxMoves(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
-
         vector<vector<int>> dp(M, vector<int>(N, -1));
-
-        int result = 0;
-        for(int R = 0; R < M; ++R) {
-            result = max(result, solveWithMemo(dp, grid, R, 0));
-        }
-        return result;
+        return solveWithMemo(dp, grid, 0, 0);
     }
 };
 
@@ -68,8 +68,11 @@ class BottomUp {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+public:
     // O(M*N) & O(M*N)
-    int solveWith2DTable(vector<vector<int>>& grid) {
+    int maxMoves(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+
         vector<vector<int>> dp(M, vector<int>(N, -1));
 
         for(int C = N-1; C >= 0; --C) {
@@ -84,46 +87,15 @@ class BottomUp {
                     }
                 }
 
-                dp[R][C] = maxMoves;
-            }
-        }
-
-        int result = 0;
-        for(int R = 0; R < M; ++R) {
-            result = max(result, dp[R][0]);
-        }
-        return result;
-    }
-
-    // O(M*N) & O(M*N)
-    int solveWith2DEnhanced(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(M, vector<int>(N, 0));
-        int result = 0;
-
-        for(int C = N-1; C >= 0; --C) {
-            for(int R = M-1; R >= 0; --R) {
-                int maxMoves = 0;
-
-                for(auto& dir : directions) {
-                    int newR = R + dir[0];
-                    int newC = C + dir[1];
-                    if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                        maxMoves = max(maxMoves, 1 + dp[newR][newC]);
-                    }
+                if(C == 0 && isValid(R+1, 0)) {
+                    maxMoves = max(maxMoves, dp[R+1][0]);
                 }
 
                 dp[R][C] = maxMoves;
-                result = max(result, dp[R][0]);
             }
         }
 
-        return result;
-    }
-
-public:
-    int maxMoves(vector<vector<int>>& grid) {
-        M = grid.size(), N = grid[0].size();
-        return solveWith2DEnhanced(grid);
+        return dp[0][0];
     }
 };
 
