@@ -29,7 +29,7 @@ class TopDown {
         return maxMoves;
     }
 
-    // O(M + 3^(M*N)) & O(M+N)
+    // O(M + 3*M*N) & O(M+N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
