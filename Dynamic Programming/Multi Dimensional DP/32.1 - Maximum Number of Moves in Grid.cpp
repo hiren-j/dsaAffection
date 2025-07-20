@@ -44,7 +44,7 @@ class TopDown {
     }
 
 public:
-    // Method to find maximum number of moves you can perform in grid, using recursion with memoization - O(N*M) & O(N*M)
+    // Method to find maximum number of moves you can perform in grid, using recursion with memoization - O(M*N) & O(M*N)
     int maxMoves(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
 
