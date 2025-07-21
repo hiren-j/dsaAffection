@@ -18,7 +18,8 @@ class TopDown {
             int newR = R + dir[0];
             int newC = C + dir[1];
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                maxMoves = max(maxMoves, 1 + solveWithoutMemo(grid, newR, newC));
+                int nextMoves = solveWithoutMemo(grid, newR, newC);
+                maxMoves = max(maxMoves, 1 + nextMoves);
             }
         }
 
@@ -36,7 +37,8 @@ class TopDown {
             int newR = R + dir[0];
             int newC = C + dir[1];
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                maxMoves = max(maxMoves, 1 + solveWithMemo(dp, grid, newR, newC));
+                int nextMoves = solveWithMemo(dp, grid, newR, newC);
+                maxMoves = max(maxMoves, 1 + nextMoves);
             }
         }
 
@@ -80,7 +82,8 @@ class BottomUp {
                     int newR = R + dir[0];
                     int newC = C + dir[1];
                     if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                        maxMoves = max(maxMoves, 1 + dp[newR][newC]);
+                        int nextMoves = dp[newR][newC];
+                        maxMoves = max(maxMoves, 1 + nextMoves);
                     }
                 }
 
@@ -108,7 +111,8 @@ class BottomUp {
                     int newR = R + dir[0];
                     int newC = C + dir[1];
                     if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                        maxMoves = max(maxMoves, 1 + dp[newR][newC]);
+                        int nextMoves = dp[newR][newC];
+                        maxMoves = max(maxMoves, 1 + nextMoves);
                     }
                 }
 
