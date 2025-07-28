@@ -10,7 +10,7 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // 
+    // O(9^(M*N)) & O(M)
     int solveWithoutMemo(vector<vector<int>>& grid, int R1, int C1, int R2, int C2) {
         if(!isValid(R1, C1) || !isValid(R2, C2))
             return 0;
@@ -33,7 +33,7 @@ class TopDown {
         return maxFromAll;
     }
 
-    // 
+    // O(9*M*N*M*N) & O(M*N*M*N + M)
     int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, vector<vector<int>>& grid, int R1, int C1, int R2, int C2) {
         if(!isValid(R1, C1) || !isValid(R2, C2))
             return 0;
@@ -60,7 +60,7 @@ class TopDown {
     }
 
 public:
-    // Method to find maximum cherries can collect, using recursion with memoization - O() & O()
+    // Method to find maximum cherries can collect, using recursion with memoization - O(M*N*M*N) & O(M*N*M*N)
     int cherryPickup(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
         vector<vector<vector<vector<int>>>> dp(M, vector<vector<vector<int>>>(N, vector<vector<int>>(M, vector<int>(N, -1))));
@@ -78,6 +78,7 @@ class BottomUp {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+    // O(M*N*M*N) & O(M*N*M*N)
     int solveWith4DTable(vector<vector<int>>& grid) {
         vector<vector<vector<vector<int>>>> dp(M, vector<vector<vector<int>>>(N, vector<vector<int>>(M, vector<int>(N, -1))));
 
@@ -109,6 +110,7 @@ class BottomUp {
         return dp[0][0][0][N-1];
     }
 
+    // O(M*N*M*N) & O(2*N*M*N)
     int solveWith3DTable(vector<vector<int>>& grid) {
         vector<vector<vector<int>>> nextRow(N, vector<vector<int>>(M, vector<int>(N, -1)));
         vector<vector<vector<int>>> idealRow(N, vector<vector<int>>(M, vector<int>(N, -1)));
@@ -148,6 +150,7 @@ public:
         return solveWith3DTable(grid);
     }
 };
+// Note: This solution will lead to time-limit-exceed
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
