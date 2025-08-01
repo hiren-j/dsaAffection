@@ -11,85 +11,86 @@ DON'T IGNORE MUST READ: Creating a correct bottom-up solution for this problem i
 class TopDown {
     vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
     int M, N;
-    
-    // O(4^(N*M)) & O(N*M + 4*2)
-    bool solveWithoutMemo(vector<vector<int>>& grid, int health, int R, int C) {
+
+    bool isValid(int R, int C) {
+        return R >= 0 && C >= 0 && R < M && C < N;
+    }
+
+    // O(4^(M*N)) & O(M*N)
+    bool solveWithoutMemo(vector<vector<int>>& grid, int R, int C, int health) {            
         // Edge case: If you walk outside of the grid or if the cell is already visited then return false
-        if(R < 0 || C < 0 || R >= M || C >= N || grid[R][C] == -1)
+        if(!isValid(R, C) || grid[R][C] == -1) 
             return false;
 
         // If the cell is unsafe then reduce the health by 1 
         if(grid[R][C] == 1)
             health--;
-
-        // Edge case: If health is less than or equal to 0, then return false
+        
         if(health <= 0)
             return false;
 
         // Edge case: If you can reach the lower-right corner with a health value of 1 or more, then return true
         if(R == M-1 && C == N-1)
-            return health > 0;
-        
-        // Mark the cell (R, C) as visited
-        int currCellValue = grid[R][C];
-        grid[R][C] = -1; 
+            return true;
 
-        // Recursively check all the possible directions and return true if any of the direction return true
-        for(auto& dir : directions) 
-            if(solveWithoutMemo(grid, health, R + dir[0], C + dir[1])) 
+        int val = grid[R][C];
+        grid[R][C] = -1; // Mark cell (R, C) as visited
+
+        // Check all the possible directions and return true if any direction returns true
+        for(auto& dir : directions) { 
+            int newR = R + dir[0];
+            int newC = C + dir[1];
+            if(solveWithoutMemo(grid, newR, newC, health)) {
                 return true;
+            } 
+        }
 
-        // Mark the cell (R, C) as unvisited
-        grid[R][C] = currCellValue;
-
-        // If no direction returns true, then return false
+        grid[R][C] = val; // Mark cell (R, C) as unvisited
         return false;
     }
-    
-    // O(4*N*M*H) & O(N*M*H + N*M + 4*2)
-    bool solveWithMemo(vector<vector<vector<int>>>& memory, vector<vector<int>>& grid, int health, int R, int C) {
+
+    // O(4*M*N*H) & O(M*N*H + M*N)
+    bool solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<int>>& grid, int R, int C, int health) {            
         // Edge case: If you walk outside of the grid or if the cell is already visited then return false
-        if(R < 0 || C < 0 || R >= M || C >= N || grid[R][C] == -1)
+        if(!isValid(R, C) || grid[R][C] == -1) 
             return false;
 
         // If the cell is unsafe then reduce the health by 1 
         if(grid[R][C] == 1)
             health--;
-
-        // Edge case: If health is less than or equal to 0, then return false
+        
         if(health <= 0)
             return false;
 
         // Edge case: If you can reach the lower-right corner with a health value of 1 or more, then return true
         if(R == M-1 && C == N-1)
-            return health > 0;
+            return true;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[R][C][health] != -1)
-            return memory[R][C][health];
-        
-        // Mark the cell (R, C) as visited
-        int currCellValue = grid[R][C];
-        grid[R][C] = -1; 
+        if(dp[R][C][health] != -1)
+            return dp[R][C][health];
 
-        // Recursively check all the possible directions and return true if any of the direction return true
-        for(auto& dir : directions) 
-            if(solveWithMemo(memory, grid, health, R + dir[0], C + dir[1])) 
-                return memory[R][C][health] = true;
+        int val = grid[R][C];
+        grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        // Mark the cell (R, C) as unvisited
-        grid[R][C] = currCellValue;
+        // Check all the possible directions and return true if any direction returns true
+        for(auto& dir : directions) { 
+            int newR = R + dir[0];
+            int newC = C + dir[1];
+            if(solveWithMemo(dp, grid, newR, newC, health)) {
+                return dp[R][C][health] = true;
+            } 
+        }
 
-        // Store the result value to the memoization table and then return it
-        return memory[R][C][health] = false;
+        grid[R][C] = val; // Mark cell (R, C) as unvisited
+        return dp[R][C][health] = false;
     }
 
 public:
-    // Method to check is if you can reach the final cell with a health value of 1 or more, using recursion with memoization - O(N*M*H) & (N*M*H) : Where H let be the health
+    // Method to check if you can reach the final cell with a health value of 1 or more, using recursion with memoization - O(M*N*H) & (M*N*H) : Where H = health
     bool findSafeWalk(vector<vector<int>>& grid, int health) {
         M = grid.size(), N = grid[0].size();
-        vector<vector<vector<int>>> memory(M, vector<vector<int>>(N, vector<int>(health + 1, -1)));
-        return solveWithMemo(memory, grid, health, 0, 0);
+        vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(health + 1, -1)));
+        return solveWithMemo(dp, grid, 0, 0, health);
     }
 };
 
