@@ -38,7 +38,6 @@ class TopDown {
         int val = grid[R][C];
         grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        // Check all the possible directions and return true if any direction returns true
         for(auto& dir : directions) { 
             int newR = R + dir[0];
             int newC = C + dir[1];
@@ -74,7 +73,6 @@ class TopDown {
         int val = grid[R][C];
         grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        // Check all the possible directions and return true if any direction returns true
         for(auto& dir : directions) { 
             int newR = R + dir[0];
             int newC = C + dir[1];
