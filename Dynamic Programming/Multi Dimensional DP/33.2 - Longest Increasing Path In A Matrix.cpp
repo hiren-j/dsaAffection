@@ -4,9 +4,9 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 DON'T IGNORE MUST READ: DON'T IGNORE MUST READ: As you work on this problem, you'll notice that there isn't a bottom-up solution provided. 
-                        This is the only 1 problem in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
+                        This is the only 2 problem in the multi-dimensional folder where I couldn't get the bottom-up approach to pass all the test cases. 
                         The issue wasn't with time limits but with incorrect results. So, I've only included the top-down (memoized) solution for this problem. 
-                        There is only 1 problem in the entire DP series without bottom-up solution and its the current problem. 
+                        There is only 2 problem in the entire DP series without bottom-up solution and its the current problem. 
                         Creating a correct bottom-up solution for this problem is not possible because of how cells are visited and marked during recursion. Even if you convert the memoized (top-down) solution to bottom-up, it won’t work properly. 
                         The issue comes from the fact that, in the recursive solution, cells are marked as "visited" and "unvisited" at different stages, which can't be handled in a bottom-up approach. In many cases, even memoization fails when handling these visited/unvisited states. 
                         However, for this specific problem, memoization works fine, but the bottom-up approach still cannot manage the visited/unvisited states correctly.
@@ -14,85 +14,58 @@ DON'T IGNORE MUST READ: DON'T IGNORE MUST READ: As you work on this problem, you
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-    int N, M;
+    const vector<vector<int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    int M, N;
 
     bool isValid(int R, int C) {
-        return R >= 0 && C >= 0 && R < N && C < M;
+        return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(N*M * 4^(N*M)) & O(N*M + 4*2)
-    int solveWithoutMemo(vector<vector<int>>& matrix, int R, int C) {
-        // Edge case: If you walk outside of the matrix or if you visit the cell which is already been visited in the path then you can't find the increasing path anymore
-        if(!isValid(R, C) || matrix[R][C] == -1)
-            return 0;
+    int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
+        int maxLength = 1;
 
-        int maxLength = 0, currCellValue = matrix[R][C];
-
-        // Mark the cell (R, C) as visited
-        matrix[R][C] = -1;
-
-        // Explore all the four directions and find the length of the increasing path through cell (R, C). Among all the possibilities pick the length which is the maximum one
         for(auto& dir : directions) {
-            int reachRow = R + dir[0];
-            int reachCol = C + dir[1];
-            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > currCellValue) {
-                maxLength = max(maxLength, 1 + solveWithoutMemo(matrix, reachRow, reachCol));
+            int newR = R + dir[0];
+            int newC = C + dir[1];
+            if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                int nextLength = solveWithoutMemo(grid, newR, newC);
+                maxLength = max(maxLength, nextLength + 1);
             }
         }
-
-        // Mark the cell (R, C) as unvisited
-        matrix[R][C] = currCellValue;
 
         return maxLength;
     }
 
-    // O(N*M + 4*N*M) & O(N*M + N*M + 4*2)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& matrix, int R, int C) {
-        // Edge case: If you walk outside of the matrix or if you visit the cell which is already been visited in the path then you can't find the increasing path anymore
-        if(!isValid(R, C) || matrix[R][C] == -1)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
+    int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLength = 0, currCellValue = matrix[R][C];
+        int maxLength = 1;
 
-        // Mark the cell (R, C) as visited
-        matrix[R][C] = -1;
-
-        // Explore all the four directions and find the length of the increasing path through cell (R, C). Among all the possibilities pick the length which is the maximum one
         for(auto& dir : directions) {
-            int reachRow = R + dir[0];
-            int reachCol = C + dir[1];
-            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > currCellValue) {
-                maxLength = max(maxLength, 1 + solveWithMemo(dp, matrix, reachRow, reachCol));
+            int newR = R + dir[0];
+            int newC = C + dir[1];
+            if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                int nextLength = solveWithMemo(dp, grid, newR, newC);
+                maxLength = max(maxLength, nextLength + 1);
             }
         }
 
-        // Mark the cell (R, C) as unvisited
-        matrix[R][C] = currCellValue;
-
-        // Store the result value to the memoization table and then return it
         return dp[R][C] = maxLength;
     }
 
 public:
-    // Method to find the length of the longest increasing path in the matrix, using recursion with memoization - O(N*M) & O(N*M)
-    int longestIncreasingPath(vector<vector<int>>& matrix) {
-        N = matrix.size(), M = matrix[0].size();
-        int maxLength = 0;
+    int longestIncreasingPath(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+        int result = 0;
 
-        // 2D memoization table
-        vector<vector<int>> dp(N, vector<int>(M, -1));
+        vector<vector<int>> dp(M, vector<int>(N, -1));
 
-        // Consider each cell as an unique start point and find the length of the longest increasing path through each of them. Among all the possibilities pick the length which is the maximum one
-        for(int R = 0; R < N; ++R)
-            for(int C = 0; C < M; ++C)
-                maxLength = max(maxLength, solveWithMemo(dp, matrix, R, C));
+        for(int R = 0; R < M; ++R)
+            for(int C = 0; C < N; ++C)
+                result = max(result, solveWithMemo(dp, grid, R, C));
 
-        return 1 + maxLength;
+        return result;
     }
 };
 
