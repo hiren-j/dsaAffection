@@ -28,7 +28,7 @@ class TopDown {
         if(!isValid(R, C) || matrix[R][C] == -1)
             return 0;
 
-        int maxLength = 0, currCellValue = matrix[R][C];
+        int maxLength = 1, currCellValue = matrix[R][C];
 
         // Mark the cell (R, C) as visited
         matrix[R][C] = -1;
@@ -58,7 +58,7 @@ class TopDown {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLength = 0, currCellValue = matrix[R][C];
+        int maxLength = 1, currCellValue = matrix[R][C];
 
         // Mark the cell (R, C) as visited
         matrix[R][C] = -1;
@@ -93,7 +93,7 @@ public:
             for(int C = 0; C < M; ++C)
                 maxLength = max(maxLength, solveWithMemo(dp, matrix, R, C));
 
-        return 1 + maxLength;
+        return maxLength;
     }
 };
 
