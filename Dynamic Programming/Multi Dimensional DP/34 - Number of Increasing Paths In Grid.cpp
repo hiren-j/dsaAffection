@@ -1,3 +1,4 @@
+
 // Code to find the number of strictly increasing paths in the grid such that you can start from any cell and end at any cell ~ coded by Hiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,6 +12,22 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+    // O(M*N * 4^(M*N)) & O(M*N)
+    int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
+        int count = 1;
+
+        for(const auto& D : dirs) {
+            int newR = R + D[0];
+            int newC = C + D[1];
+            if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
+                count = (count + solveWithoutMemo(grid, newR, newC)) % MOD;
+            }
+        }
+
+        return count;
+    }
+
+    // O(M*N + 4*M*N) & O(2*M*N)
     int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
@@ -29,7 +46,7 @@ class TopDown {
     }
 
 public:
-    // O(M*N) & O(M*N)
+    // Method to find number of strictly increasing paths, using recursion with memoization - O(M*N) & O(M*N)
     int countPaths(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
         int count = 0;
