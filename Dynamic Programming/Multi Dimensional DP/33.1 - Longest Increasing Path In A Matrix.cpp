@@ -1,4 +1,4 @@
-// Code to find the length of the longest increasing path in matrix. From each cell, you can either move in four directions: left, right, up, or down. You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed) ~ coded by Hiren
+// Code to find the length of the longest increasing path in grid. From each cell, you can either move in four directions: left, right, up, or down. You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed) ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,88 +17,79 @@
 
 class TopDown {
     vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-    int N, M;
+    int M, N;
 
     bool isValid(int R, int C) {
-        return R >= 0 && C >= 0 && R < N && C < M;
+        return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(N*M * 4^(N*M)) & O(N*M + 4*2)
-    int solveWithoutMemo(vector<vector<int>>& matrix, int R, int C) {
-        // Edge case: If you walk outside of the matrix or if you visit the cell which is already been visited in the path then you can't find the increasing path anymore
-        if(!isValid(R, C) || matrix[R][C] == -1)
+    // O(M*N * 4^(M*N)) & O(M*N + 4*2)
+    int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
+        if(!isValid(R, C) || grid[R][C] == -1)
             return 0;
 
-        int maxLength = 1, currCellValue = matrix[R][C];
+        int maxLength = 1, val = grid[R][C];
 
         // Mark the cell (R, C) as visited
-        matrix[R][C] = -1;
+        grid[R][C] = -1;
 
-        // Explore all the four directions and find the length of the increasing path through cell (R, C). Among all the possibilities pick the length which is the maximum one
         for(auto& dir : directions) {
-            int reachRow = R + dir[0];
-            int reachCol = C + dir[1];
-            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > currCellValue) {
-                maxLength = max(maxLength, 1 + solveWithoutMemo(matrix, reachRow, reachCol));
+            int reachR = R + dir[0];
+            int reachC = C + dir[1];
+            if(isValid(reachR, reachC) && grid[reachR][reachC] > val) {
+                maxLength = max(maxLength, 1 + solveWithoutMemo(grid, reachR, reachC));
             }
         }
 
-        // Mark the cell (R, C) as unvisited
-        matrix[R][C] = currCellValue;
+        grid[R][C] = val;
 
         return maxLength;
     }
 
-    // O(N*M + 4*N*M) & O(N*M + N*M + 4*2)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& matrix, int R, int C) {
-        // Edge case: If you walk outside of the matrix or if you visit the cell which is already been visited in the path then you can't find the increasing path anymore
-        if(!isValid(R, C) || matrix[R][C] == -1)
+    // O(M*N + 4*M*N) & O(M*N + M*N + 4*2)
+    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
+        if(!isValid(R, C) || grid[R][C] == -1)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLength = 1, currCellValue = matrix[R][C];
+        int maxLength = 1, val = grid[R][C];
 
         // Mark the cell (R, C) as visited
-        matrix[R][C] = -1;
+        grid[R][C] = -1;
 
-        // Explore all the four directions and find the length of the increasing path through cell (R, C). Among all the possibilities pick the length which is the maximum one
         for(auto& dir : directions) {
-            int reachRow = R + dir[0];
-            int reachCol = C + dir[1];
-            if(isValid(reachRow, reachCol) && matrix[reachRow][reachCol] > currCellValue) {
-                maxLength = max(maxLength, 1 + solveWithMemo(dp, matrix, reachRow, reachCol));
+            int reachR = R + dir[0];
+            int reachC = C + dir[1];
+            if(isValid(reachR, reachC) && grid[reachR][reachC] > val) {
+                maxLength = max(maxLength, 1 + solveWithMemo(dp, grid, reachR, reachC));
             }
         }
 
         // Mark the cell (R, C) as unvisited
-        matrix[R][C] = currCellValue;
+        grid[R][C] = val;
 
-        // Store the result value to the memoization table and then return it
         return dp[R][C] = maxLength;
     }
 
 public:
-    // Method to find the length of the longest increasing path in the matrix, using recursion with memoization - O(N*M) & O(N*M)
-    int longestIncreasingPath(vector<vector<int>>& matrix) {
-        N = matrix.size(), M = matrix[0].size();
-        int maxLength = 0;
+    // Method to find length of longest increasing path in grid, using recursion with memoization - O(M*N) & O(M*N)
+    int longestIncreasingPath(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+        int result = 0;
 
-        // 2D memoization table
-        vector<vector<int>> dp(N, vector<int>(M, -1));
+        vector<vector<int>> dp(M, vector<int>(N, -1));
 
-        // Consider each cell as an unique start point and find the length of the longest increasing path through each of them. Among all the possibilities pick the length which is the maximum one
-        for(int R = 0; R < N; ++R)
-            for(int C = 0; C < M; ++C)
-                maxLength = max(maxLength, solveWithMemo(dp, matrix, R, C));
+        for(int R = 0; R < M; ++R)
+            for(int C = 0; C < N; ++C)
+                result = max(result, solveWithMemo(dp, grid, R, C));
 
-        return maxLength;
+        return result;
     }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Depth-First Search | Breadth-First Search | Graph | Topological Sort | Memoization | Matrix
-Link  : https://leetcode.com/problems/longest-increasing-path-in-a-matrix/description/
+Link  : https://leetcode.com/problems/longest-increasing-path-in-a-grid/description/
