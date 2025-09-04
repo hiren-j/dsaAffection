@@ -19,6 +19,7 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
+    // O(M*N * 4^(M*N)) & O(M*N)
     int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
         int maxLength = 1;
 
@@ -34,6 +35,7 @@ class TopDown {
         return maxLength;
     }
 
+    // O(M*N + 4*M*N) & O(2*M*N)
     int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
