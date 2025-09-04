@@ -29,20 +29,18 @@ class TopDown {
             return 0;
 
         int maxLength = 1, val = grid[R][C];
-
-        // Mark the cell (R, C) as visited
-        grid[R][C] = -1;
+        grid[R][C] = -1; // Mark cell (R, C) as visited
 
         for(auto& dir : directions) {
             int reachR = R + dir[0];
             int reachC = C + dir[1];
             if(isValid(reachR, reachC) && grid[reachR][reachC] > val) {
-                maxLength = max(maxLength, 1 + solveWithoutMemo(grid, reachR, reachC));
+                int nextLength = solveWithoutMemo(grid, reachR, reachC);
+                maxLength = max(maxLength, nextLength + 1);
             }
         }
 
-        grid[R][C] = val;
-
+        grid[R][C] = val; // Mark cell (R, C) as unvisited
         return maxLength;
     }
 
@@ -55,21 +53,18 @@ class TopDown {
             return dp[R][C];
 
         int maxLength = 1, val = grid[R][C];
-
-        // Mark the cell (R, C) as visited
-        grid[R][C] = -1;
+        grid[R][C] = -1; // Mark cell (R, C) as visited
 
         for(auto& dir : directions) {
             int reachR = R + dir[0];
             int reachC = C + dir[1];
             if(isValid(reachR, reachC) && grid[reachR][reachC] > val) {
-                maxLength = max(maxLength, 1 + solveWithMemo(dp, grid, reachR, reachC));
+                int nextLength = solveWithMemo(dp, grid, reachR, reachC);
+                maxLength = max(maxLength, nextLength + 1);
             }
         }
 
-        // Mark the cell (R, C) as unvisited
-        grid[R][C] = val;
-
+        grid[R][C] = val; // Mark cell (R, C) as unvisited
         return dp[R][C] = maxLength;
     }
 
