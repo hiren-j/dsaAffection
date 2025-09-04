@@ -10,7 +10,7 @@
 
     REGARDING INTUITION OF THE SOLUTION: In the previous solution, we're doing backtracking, In this one we're not doing backtracking. Because If
                                          you notice then It's not required, as we need to consider strictly increasing paths, which means from a cell
-                                         (R, C) we'll only move to cells (newR, newC) which contains strictly greater values, which means we'll never 
+                                         (R, C) we'll only move to cells (newR, newC) which contains strictly greater value, which means we'll never 
                                          end up having a stack-overflow or endless recursion.
 */
     
