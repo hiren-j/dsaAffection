@@ -9,7 +9,8 @@
                             There are only 2 problem in the entire DP series without bottom-up solution. 
                             Creating a correct bottom-up solution for this problem is not possible because of how cells are visited and marked during recursion. Even if you convert the memoized (top-down) solution to bottom-up, it won’t work properly. 
                             The issue comes from the fact that, in the recursive solution, cells are marked as "visited" and "unvisited" at different stages, which can't be handled in a bottom-up approach. In many cases, even memoization fails when handling these visited/unvisited states. 
-                            However, for this specific problem, memoization works fine, but the bottom-up approach still cannot manage the visited/unvisited states correctly.
+                            However, for this specific problem, memoization works fine, but the bottom-up approach still cannot manage the visited/unvisited states correctly, the thing is grid state is also changing each and every time, 
+                            if we try to memoize the grid too the we'll end up using a lot of space, more clearly MLE.
 */
   
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
