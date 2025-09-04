@@ -1,3 +1,7 @@
+// Code to find the number of strictly increasing paths in the grid such that you can start from any cell and end at any cell ~ coded by Hiren
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     const vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     const int MOD = 1e9 + 7;
@@ -39,3 +43,8 @@ public:
         return count;
     }
 };
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Array | Dynamic Programming | Depth-First Search | Breadth-First Search | Graph | Topological Sort | Memoization | Matrix | Weekly Contest 300
+Link  : https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/description/
