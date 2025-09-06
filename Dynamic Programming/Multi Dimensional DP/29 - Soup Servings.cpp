@@ -57,7 +57,7 @@ public:
     double soupServings(int n) {
         if(n >= 6000)
             return 1.0;
-        vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1.0));
         return solveWithMemo(dp, n, n);
     }
 };
