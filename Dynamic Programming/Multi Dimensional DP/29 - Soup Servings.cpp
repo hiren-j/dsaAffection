@@ -66,8 +66,12 @@ public:
 class BottomUp {
     const vector<vector<int>> operations = {{100, 0}, {75, 25}, {50, 50}, {25, 75}};
 
+public:
     // O(N^2) & O(N^2)
-    double solveWith2DTable(int n) {
+    double soupServings(int n) {
+        if(n >= 6000)
+            return 1.0;
+
         vector<vector<double>> dp(n + 1, vector<double>(n + 1, -1.0));
 
         for(int A = 0; A <= n; ++A) {
@@ -88,13 +92,6 @@ class BottomUp {
         }
 
         return dp[n][n];
-    }
-
-public:
-    double soupServings(int n) {
-        if(n >= 6000)
-            return 1.0;
-        return solveWith2DTable(n);
     }
 };
 
