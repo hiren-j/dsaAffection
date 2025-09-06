@@ -8,10 +8,10 @@ class TopDown {
     // O(4^(N+N)) & O(N+N)
     double solveWithoutMemo(int A, int B) {
         if(A <= 0 && B <= 0)
-            return 0.5;
+            return 0.5; // Half the probability of both the soups are used in same turn
 
         if(A <= 0)
-            return 1.0;
+            return 1.0; // Full probability of soup A is used before soup B
 
         if(B <= 0)
             return 0.0;
@@ -30,10 +30,10 @@ class TopDown {
     // O(4*N*N) & O(N*N + N+N)
     double solveWithMemo(vector<vector<double>>& dp, int A, int B) {
         if(A <= 0 && B <= 0)
-            return 0.5;
+            return 0.5; // Half the probability of both the soups are used in same turn
 
         if(A <= 0)
-            return 1.0;
+            return 1.0; // Full probability of soup A is used before soup B
 
         if(B <= 0)
             return 0.0;
