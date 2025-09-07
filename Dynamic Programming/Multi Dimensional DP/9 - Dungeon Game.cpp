@@ -66,6 +66,31 @@ class BottomUp {
 
     // O(M*N) & O(M*N)
     int solveWith2DTable(vector<vector<int>>& dungeon) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, -1));
+
+        // Initialize first edge case
+        for(int C = 0; C <= N; ++C) dp[M][C] = INT_MAX;
+        for(int R = 0; R <= M; ++R) dp[R][N] = INT_MAX;
+    
+        // Initialize second edge case
+        dp[M-1][N-1] = (dungeon[M-1][N-1] <= 0) ? -dungeon[M-1][N-1] + 1 : 1;
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)
+                    continue;
+                int moveRight = dp[R][C+1]; 
+                int moveDown  = dp[R+1][C]; 
+                int minHealthToLive = min(moveRight, moveDown) - dungeon[R][C];
+                dp[R][C] = (minHealthToLive <= 0) ? 1 : minHealthToLive;   
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    // O(M*N) & O(M*N)
+    int solveWith2DEnhanced(vector<vector<int>>& dungeon) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, INT_MAX));
 
         // Initialize second edge case
