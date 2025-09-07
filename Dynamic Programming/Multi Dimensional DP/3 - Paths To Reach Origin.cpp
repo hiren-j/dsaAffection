@@ -52,7 +52,7 @@ class BottomUp {
     // O(X*Y) & O(X*Y)
     int solveWith2DTable(int X, int Y) {
         vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
-        dp[0][0] = 1;
+        dp[0][0] = 1; // Init first edge case
         
         for(int R = 0; R <= X; ++R) {
             for(int C = 0; C <= Y; ++C) {
@@ -76,7 +76,7 @@ class BottomUp {
             
             for(int C = 0; C <= Y; ++C) {
                 if(R == 0 && C == 0) {
-                    currRow[0] = 1; 
+                    currRow[0] = 1; // Init first edge case
                     continue;
                 }
                 int moveLeft = (C-1 >= 0) ? currRow[C-1] : 0;
