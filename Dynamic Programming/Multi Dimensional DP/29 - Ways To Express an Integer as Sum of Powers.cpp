@@ -2,6 +2,15 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+    DON'T FORGET, REGARDING INTUITION BEHIND THE PRECOMPUTATION OF POWERS:
+        : xthPower[i] represents pow(i, x) where i <= n.
+        : Brute forcely we could use pow(i, x) but this will lead to TLE, due to log(x) more increament in time.
+        : So It would be beneficial to precomute the xth power of every possible number (i <= n).
+*/
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     const int MOD = 1e9 + 7;
     vector<int> xthPower;
@@ -14,6 +23,7 @@ class TopDown {
         }
     }
 
+    // O(N^N) & O(N)
     int solveWithoutMemo(int n, int start, int x) {
         if(n == 0)
             return 1;
@@ -27,6 +37,7 @@ class TopDown {
         return count;
     }
 
+    // O(N*N*N) & O(N*N + N)
     int solveWithMemo(vector<vector<int>>& dp, int n, int start, int x) {
         if(n == 0)
             return 1;
@@ -44,6 +55,7 @@ class TopDown {
     }
 
 public:
+    // Method to find number of ways, using recursion with memoization - O(N^3) & O(N^2)
     int numberOfWays(int n, int x) {
         precomputeXthPower(n, x);
         vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
@@ -65,6 +77,7 @@ class BottomUp {
         }
     }
 
+    // O(N^3) & O(N^2)
     int solveWith2DTable(int n, int x) {
         vector<vector<int>> dp(n + 1, vector<int>(n + 2, 0));
 
