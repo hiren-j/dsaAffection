@@ -7,11 +7,11 @@ class TopDown {
 
     // O(2^(M*N)) & O(M+N)
     int solveWithoutMemo(vector<vector<int>>& dungeon, int R, int C) {
-        // Edge case: If all the cells are exhausted then its not possible to play the game anymore
+        // Edge case: If all cells are exhausted then its not possible to play the game anymore
         if(R == M || C == N)
             return INT_MAX; // Requires to handle minimum health correctly
 
-        // Edge case: If reached the bottom-right corner then rescue the princess. Calcuate and return the minimum health required for the knight to defeat the demon of the current room or not a demon then he requires minimum of single health to live
+        // Edge case: If reached bottom-right corner then rescue the princess. Calcuate and return the minimum health required for the knight to defeat the demon of the current room or not a demon then he requires minimum of single health to live
         if(R == M-1 && C == N-1)
             return (dungeon[R][C] <= 0) ? -dungeon[R][C] + 1 : 1;
 
@@ -32,7 +32,7 @@ class TopDown {
         if(R == M || C == N)
             return INT_MAX; // Requires to handle minimum health correctly
 
-        // Edge case: If reached the bottom-right corner then rescue the princess. Calcuate and return the minimum health required for the knight to defeat the demon of the current room or not a demon then he requires minimum of single health to live
+        // Edge case: If reached bottom-right corner then rescue the princess. Calcuate and return the minimum health required for the knight to defeat the demon of the current room or not a demon then he requires minimum of single health to live
         if(R == M-1 && C == N-1)
             return (dungeon[R][C] <= 0) ? -dungeon[R][C] + 1 : 1;
 
