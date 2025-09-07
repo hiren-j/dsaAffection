@@ -23,7 +23,7 @@ class TopDown {
         }
     }
 
-    // O(N^N) & O(N)
+    // O(N^N) & O(2*N)
     int solveWithoutMemo(int n, int start, int x) {
         if(n == 0)
             return 1;
@@ -37,7 +37,7 @@ class TopDown {
         return count;
     }
 
-    // O(N*N*N) & O(N*N + N)
+    // O(N*N*N) & O(N*N + 2*N)
     int solveWithMemo(vector<vector<int>>& dp, int n, int start, int x) {
         if(n == 0)
             return 1;
