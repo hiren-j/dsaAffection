@@ -1,3 +1,7 @@
+// Code to find the number of ways n can be expressed as the sum of the xth power of unique positive integers ~ coded by Hiren
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     const int MOD = 1e9 + 7;
     vector<int> xthPower;
@@ -47,6 +51,8 @@ public:
     }
 };
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
 class BottomUp {
     const int MOD = 1e9 + 7;
     vector<int> xthPower;
@@ -89,3 +95,8 @@ public:
         return solveWith2DTable(n, x);
     }
 };
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Dynamic Programming | Biweekly Contest 109
+Link  : https://leetcode.com/problems/ways-to-express-an-integer-as-sum-of-powers/description/
