@@ -22,7 +22,7 @@ class TopDown {
         for(auto& dir : directions) {
             int reachR = R + dir[0];
             int reachC = C + dir[1];
-            count      = (count + solveWithoutMemo(maxMove - 1, reachR, reachC)) % MOD;
+            count = (count + solveWithoutMemo(maxMove - 1, reachR, reachC)) % MOD;
         }
 
         return count;
@@ -46,7 +46,7 @@ class TopDown {
         for(auto& dir : directions) {
             int reachR = R + dir[0];
             int reachC = C + dir[1];
-            count      = (count + solveWithMemo(dp, maxMove - 1, reachR, reachC)) % MOD;
+            count = (count + solveWithMemo(dp, maxMove - 1, reachR, reachC)) % MOD;
         }
 
         return dp[maxMove][R][C] = count;
