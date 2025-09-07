@@ -52,11 +52,11 @@ public:
 
         vector<vector<int>> memory(N, vector<int>(M, -1));
 
-        int maximumGold = 0;
+        int maxGold = 0;
         for(int R = 0; R < N; ++R) // Collect gold from each start point and update maximum gold you can collect
-            maximumGold = max(maximumGold, solveWithMemo(memory, grid, R, 0));
+            maxGold = max(maxGold, solveWithMemo(memory, grid, R, 0));
         
-        return maximumGold;
+        return maxGold;
     }
 };
 
@@ -78,11 +78,11 @@ class BottomUp {
             }
         }
         
-        int maximumGold = 0;
+        int maxGold = 0;
         for(int R = 0; R < N; ++R)
-            maximumGold = max(maximumGold, dp[R][0]);
+            maxGold = max(maxGold, dp[R][0]);
         
-        return maximumGold;
+        return maxGold;
     }
     
     // O(N*M) & O(N*M)
@@ -98,11 +98,11 @@ class BottomUp {
             }
         }
         
-        int maximumGold = 0;
+        int maxGold = 0;
         for(int R = 0; R < N; ++R)
-            maximumGold = max(maximumGold, dp[R+1][0]);
+            maxGold = max(maxGold, dp[R+1][0]);
             
-        return maximumGold;
+        return maxGold;
     }
     
     // O(N*M) & O(1)
@@ -116,17 +116,17 @@ class BottomUp {
             }
         }
         
-        int maximumGold = 0;
+        int maxGold = 0;
         for(int R = 0; R < N; ++R)
-            maximumGold = max(maximumGold, grid[R][0]);
+            maxGold = max(maxGold, grid[R][0]);
         
-        return maximumGold;
+        return maxGold;
     }
     
     // O(N*M) & O(N*M)
     int solveWith2DConcise(vector<vector<int>>& grid) {
         vector<vector<int>> dp(N+2, vector<int>(M+1, 0));
-        int maximumGold = 0;
+        int maxGold = 0;
         
         for(int C = M-1; C >= 0; --C) {
             for(int R = N; R >= 1; --R) {
@@ -134,16 +134,16 @@ class BottomUp {
                 int moveUpRight   = dp[R-1][C+1]; 
                 int moveDownRight = dp[R+1][C+1];
                 dp[R][C] = grid[R-1][C] + max({moveRight, moveUpRight, moveDownRight});   
-                maximumGold = max(maximumGold, dp[R][0]);
+                maxGold = max(maxGold, dp[R][0]);
             }
         }
        
-        return maximumGold;
+        return maxGold;
     }
     
     // O(N*M) & O(1)
     int solveWithoutTableConcise(vector<vector<int>>& grid) {
-        int maximumGold = 0;
+        int maxGold = 0;
         
         for(int C = M-1; C >= 0; --C) {
             for(int R = N-1; R >= 0; --R) {
@@ -151,11 +151,11 @@ class BottomUp {
                 int moveUpRight   = (R-1 >= 0 && C+1 < M) ? grid[R-1][C+1] : 0; 
                 int moveDownRight = (R+1 < N && C+1 < M)  ? grid[R+1][C+1] : 0;
                 grid[R][C] += max({moveRight, moveUpRight, moveDownRight});
-                maximumGold = max(maximumGold, grid[R][0]);
+                maxGold = max(maxGold, grid[R][0]);
             }
         }
         
-        return maximumGold;
+        return maxGold;
     }
 
 public:
