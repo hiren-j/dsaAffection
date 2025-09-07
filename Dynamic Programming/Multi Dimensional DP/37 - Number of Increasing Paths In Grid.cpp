@@ -5,8 +5,8 @@
 
 /*
     DON'T IGNORE MUST READ: For the bottom-up solution of this problem, I created it and run it but it didn't passed all the testcases.
-                            So I would say there are only 2 problems in the whole series which doesn't contain the bottom-up solution 
-                            due to this reason. These 2 problems lies in this folder (Multi-Dimensional DP Folder).
+                            So I would say there are only 3 problems in the whole series which doesn't contain the bottom-up solution 
+                            due to this reason. These 3 problems lies in this folder (Multi-Dimensional DP Folder).
 */
     
 -------------------------------------------------------------------------------------------------------------------------------------------------------
