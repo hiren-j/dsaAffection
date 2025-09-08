@@ -62,6 +62,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(N*2) & O(N*2)
     int solveWith2DTable(const vector<int>& nums) {
         vector<vector<int>> dp(n + 1, vector<int>(2, -1));
         dp[n][1] = 0;
@@ -85,7 +86,7 @@ class BottomUp {
         return dp[0][false];
     }
 
-    // #2 Method to find the maximum sum of a subarray, using 1D tabulation - O(N*2) & O(2*2)
+    // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
         vector<int> nextRow(2, -1), idealRow(2, -1); 
         nextRow[1] = 0;
@@ -110,6 +111,7 @@ class BottomUp {
         return nextRow[false];
     }
 
+    // O(N*2) & O(1)
     int solveWithoutTable(vector<int>& nums) {
         int nextRow_1 = 0;
         int nextRow_0 = INT_MIN;
