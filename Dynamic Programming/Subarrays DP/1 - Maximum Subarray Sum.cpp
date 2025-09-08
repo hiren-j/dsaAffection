@@ -6,10 +6,10 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, int index, bool prevPick) {
+    int solveWithoutMemo(const vector<int>& nums, int index, bool prevPick) {
         // Edge case: If elements are exhausted and previously if you've picked any subarray then return 0 else INT_MIN 
         if(index == n)
-            return (prevPick) ? 0 : INT_MIN;
+            return prevPick ? 0 : INT_MIN;
 
         // Previously if you've picked any subarray then you've two possibilities on the index 
         if(prevPick) {
@@ -26,13 +26,12 @@ class TopDown {
     }
 
     // O(2*N*2) & O(N*2 + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int index, bool prevPick) {
+    int solveWithMemo(vector<vector<int>>& memory, const vector<int>& nums, int index, bool prevPick) {
         // Edge case: If elements are exhausted and previously if you've picked any subarray then return 0 else INT_MIN 
         if(index == n)
-            return (prevPick) ? 0 : INT_MIN;
+            return prevPick ? 0 : INT_MIN;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][prevPick] != -1)
+        if(memory[index][prevPick] != INT_MAX)
             return memory[index][prevPick];
 
         // Previously if you've picked any subarray then you've two possibilities on the index 
@@ -50,10 +49,10 @@ class TopDown {
     }
 
 public:  
-    // Method to find the maximum sum of a subarray, using recursion with memoization - O(N) & O(N)
+    // Method to find maximum sum of a subarray, using recursion with memoization - O(N) & O(N)
     int maxSubArray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> memory(n, vector<int>(2, -1));
+        vector<vector<int>> memory(n, vector<int>(2, INT_MAX));
         return solveWithMemo(memory, nums, 0, false);
     }
 };
@@ -61,19 +60,13 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the maximum sum of a subarray, using 2D tabulation - O(N*2) & O(N*2)
-    int maxSubArray_V1(vector<int>& nums) {
-        int n = nums.size();
+    int n;
 
-        // 2D DP table
+    int solveWith2DTable(const vector<int>& nums) {
         vector<vector<int>> dp(n + 1, vector<int>(2, -1));
-
-        // Initialize the edge case
         dp[n][1] = 0;
         dp[n][0] = INT_MIN;
 
-        // Fill the rest of the table
         for(int index = n-1; index >= 0; --index) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
@@ -89,22 +82,15 @@ public:
             }
         }
 
-        // Return the result value
         return dp[0][false];
     }
 
     // #2 Method to find the maximum sum of a subarray, using 1D tabulation - O(N*2) & O(2*2)
-    int maxSubArray_V2(vector<int>& nums) {
-        int n = nums.size();
-
-        // 1D DP tables
+    int solveWith1DTable(const vector<int>& nums) {
         vector<int> nextRow(2, -1), idealRow(2, -1); 
-
-        // Initialize the edge case
         nextRow[1] = 0;
         nextRow[0] = INT_MIN;
 
-        // Fill the rest of the table
         for(int index = n-1; index >= 0; --index) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
@@ -118,25 +104,19 @@ public:
                     idealRow[prevPick] = max(startNewFromNext, startNewFromCurr);
                 }
             }
-            nextRow = idealRow;
+            swap(nextRow, idealRow);
         }
 
-        // Return the result value
         return nextRow[false];
     }
 
-    // #3 Method to find the maximum sum of a subarray, using constant auxiliary space - O(N*2) & O(1)
-    int maxSubArray_V3(vector<int>& nums) {
-        int n = nums.size(); 
-
-        // Initialize the edge case
+    int solveWithoutTable(vector<int>& nums) {
         int nextRow_1 = 0;
         int nextRow_0 = INT_MIN;
 
-        // Fill the rest of the table
         for(int index = n-1; index >= 0; --index) {
-            int idealRow_1 = -1;
-            int idealRow_0 = -1;
+            int idealRow_1 = INT_MAX;
+            int idealRow_0 = INT_MAX;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     int pickCurrSubarr = nums[index] + nextRow_1;
@@ -149,12 +129,17 @@ public:
                     idealRow_0 = max(startNewFromNext, startNewFromCurr);
                 }
             }
-            nextRow_1 = idealRow_1;
-            nextRow_0 = idealRow_0;
+            swap(nextRow_1, idealRow_1);
+            swap(nextRow_0, idealRow_0);
         }
-
-        // Return the result value
+        
         return nextRow_0;
+    }
+
+public:
+    int maxSubArray(vector<int>& nums) {
+        n = nums.size();
+        return solveWithoutTable(nums);
     }
 };
 
@@ -162,7 +147,7 @@ public:
 
 class KadaneAlgorithm {
 public: 
-    // Method to find the maximum sum of a subarray - O(N) & O(1)
+    // O(N) & O(1)
     int maxSubArray(vector<int>& nums) {
         int maxEnding = 0; // Represents the maximum sum of a subarray among all the subarrays ending at an index
         int result = INT_MIN;
