@@ -143,7 +143,7 @@ public:
 
 class KadaneAlgorithm {
 public: 
-    // Method to find the maximum sum of a subarray - O(N) & O(1)
+    // O(N) & O(1)
     int minSumSubArray(vector<int>& nums) {
         int minEnding = 0; // Represents the minimum sum of a subarray among all the subarrays ending at an index
         int result = INT_MAX;
