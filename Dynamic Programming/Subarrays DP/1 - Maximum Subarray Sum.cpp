@@ -38,13 +38,13 @@ class TopDown {
         if(prevPick) {
             int pickCurrSubarr = nums[index] + solveWithMemo(memory, nums, index + 1, true); // Pick the index element or current subarray as a part of the previous subarray
             int stopHere = 0;                                                                // Consider the index as an end point for the previous subarray    
-            return memory[index][prevPick] = max(pickCurrSubarr, stopHere);                  // Store the result value to the memoization table and then return it
+            return memory[index][prevPick] = max(pickCurrSubarr, stopHere);                
         }
         // If you haven't picked any subarray till now then you've two possibilities on the index
         else {
             int startNewFromNext = solveWithMemo(memory, nums, index + 1, false);              // Start a new subarray from the next index
             int startNewFromCurr = nums[index] + solveWithMemo(memory, nums, index + 1, true); // Start a new subarray from the current index
-            return memory[index][prevPick] = max(startNewFromNext, startNewFromCurr);          // Store the result value to the memoization table and then return it
+            return memory[index][prevPick] = max(startNewFromNext, startNewFromCurr);          
         }
     }
 
