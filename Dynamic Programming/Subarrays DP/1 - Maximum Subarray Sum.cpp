@@ -64,7 +64,7 @@ class BottomUp {
 
     // O(N*2) & O(N*2)
     int solveWith2DTable(const vector<int>& nums) {
-        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
+        vector<vector<int>> dp(n + 1, vector<int>(2, INT_MAX));
         dp[n][1] = 0;
         dp[n][0] = INT_MIN;
 
@@ -88,7 +88,7 @@ class BottomUp {
 
     // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
-        vector<int> nextRow(2, -1), idealRow(2, -1); 
+        vector<int> nextRow(2, INT_MAX), idealRow(2, INT_MAX); 
         nextRow[1] = 0;
         nextRow[0] = INT_MIN;
 
