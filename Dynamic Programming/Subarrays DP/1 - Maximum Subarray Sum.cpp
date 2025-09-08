@@ -52,7 +52,7 @@ public:
     // Method to find maximum sum of a subarray, using recursion with memoization - O(N) & O(N)
     int maxSubArray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(2, INT_MIN));
+        vector<vector<int>> dp(n, vector<int>(2, INT_MAX));
         return solveWithMemo(dp, nums, 0, false);
     }
 };
