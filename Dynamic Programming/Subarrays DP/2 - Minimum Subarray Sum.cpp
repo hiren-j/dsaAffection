@@ -82,11 +82,12 @@ class BottomUp {
 
     // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
-        vector<int> nextRow(2, -1), idealRow(2, -1); 
+        vector<int> nextRow(2, -1);
         nextRow[1] = 0;
         nextRow[0] = INT_MAX;
 
         for(int i = n-1; i >= 0; --i) {
+            vector<int> idealRow(2, -1);
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     int pickCurr = nums[i] + nextRow[true];
