@@ -114,7 +114,7 @@ class BottomUp {
     // O(N*2) & O(1)
     int solveWithoutTable(vector<int>& nums) {
         int nextRow_1 = 0;
-        int nextRow_0 = -1;
+        int nextRow_0 = INT_MIN;
 
         for(int index = n-1; index >= 0; --index) {
             int idealRow_1 = -1;
