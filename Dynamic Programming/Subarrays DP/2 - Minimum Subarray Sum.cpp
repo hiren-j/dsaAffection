@@ -27,7 +27,7 @@ class TopDown {
         if(i == n)
             return prevPick ? 0 : INT_MAX;
 
-        if(dp[i][prevPick] != INT_MIN)
+        if(dp[i][prevPick] != -1)
             return dp[i][prevPick];
 
         if(prevPick) {
@@ -46,7 +46,7 @@ public:
     // Method to find minimum sum of a subarray, using recursion with memoization - O(N) & O(N)
     int minSumSubarray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(2, INT_MIN));
+        vector<vector<int>> dp(n, vector<int>(2, -1));
         return solveWithMemo(dp, nums, 0, false);
     }
 };
@@ -58,7 +58,7 @@ class BottomUp {
 
     // O(N*2) & O(N*2)
     int solveWith2DTable(const vector<int>& nums) {
-        vector<vector<int>> dp(n + 1, vector<int>(2, INT_MIN));
+        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
         dp[n][1] = 0;
         dp[n][0] = INT_MAX;
 
@@ -82,7 +82,7 @@ class BottomUp {
 
     // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
-        vector<int> nextRow(2, INT_MIN), idealRow(2, INT_MIN); 
+        vector<int> nextRow(2, -1), idealRow(2, -1); 
         nextRow[1] = 0;
         nextRow[0] = INT_MAX;
 
@@ -111,8 +111,8 @@ class BottomUp {
         int nextRow_0 = INT_MAX;
 
         for(int i = n-1; i >= 0; --i) {
-            int idealRow_1 = INT_MIN;
-            int idealRow_0 = INT_MIN;
+            int idealRow_1 = -1;
+            int idealRow_0 = -1;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     int pickCurr = nums[i] + nextRow_1;
