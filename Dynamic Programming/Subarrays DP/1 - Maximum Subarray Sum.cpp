@@ -31,7 +31,7 @@ class TopDown {
         if(index == n)
             return prevPick ? 0 : INT_MIN;
 
-        if(memory[index][prevPick] != INT_MAX)
+        if(memory[index][prevPick] != -1)
             return memory[index][prevPick];
 
         // Previously if you've picked any subarray then you've two possibilities on the index 
@@ -52,7 +52,7 @@ public:
     // Method to find maximum sum of a subarray, using recursion with memoization - O(N) & O(N)
     int maxSubArray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(2, INT_MAX));
+        vector<vector<int>> dp(n, vector<int>(2, -1));
         return solveWithMemo(dp, nums, 0, false);
     }
 };
@@ -64,7 +64,7 @@ class BottomUp {
 
     // O(N*2) & O(N*2)
     int solveWith2DTable(const vector<int>& nums) {
-        vector<vector<int>> dp(n + 1, vector<int>(2, INT_MAX));
+        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
         dp[n][1] = 0;
         dp[n][0] = INT_MIN;
 
@@ -88,7 +88,7 @@ class BottomUp {
 
     // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
-        vector<int> nextRow(2, INT_MAX), idealRow(2, INT_MAX); 
+        vector<int> nextRow(2, -1), idealRow(2, -1); 
         nextRow[1] = 0;
         nextRow[0] = INT_MIN;
 
@@ -114,11 +114,11 @@ class BottomUp {
     // O(N*2) & O(1)
     int solveWithoutTable(vector<int>& nums) {
         int nextRow_1 = 0;
-        int nextRow_0 = INT_MIN;
+        int nextRow_0 = -1;
 
         for(int index = n-1; index >= 0; --index) {
-            int idealRow_1 = INT_MAX;
-            int idealRow_0 = INT_MAX;
+            int idealRow_1 = -1;
+            int idealRow_0 = -1;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     int pickCurrSubarr = nums[index] + nextRow_1;
