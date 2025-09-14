@@ -133,7 +133,7 @@ public:
 };
 
 // O(N) & O(N)
-void printLevelOrder(TreeNode* rootNode) {
+void printLeveLOrder(TreeNode* rootNode) {
     if(!rootNode)
         return;
 
@@ -182,7 +182,7 @@ int main() {
 
         // Print call
         cout << "\nThe BFS order of tree is: \n";
-        printLevelOrder(rootNode);
+        printLeveLOrder(rootNode);
 
         // Find largest value of each row
         LargestValueEachRow solution;
