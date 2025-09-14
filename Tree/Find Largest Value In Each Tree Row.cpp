@@ -1,11 +1,10 @@
-// Program to find the maximum value of each row of a tree ~ coded by Hiren
+// Program to find largest value of each row of the binary tree ~ coded by Hiren
 #include <iostream>
-#include <climits>
 #include <cstdlib>
 #include <vector>
 #include <queue>
+using namespace std;
 
-// Tree template
 class TreeNode {
 public:
     int val;
@@ -16,180 +15,192 @@ public:
     TreeNode(int val, TreeNode* left = nullptr, TreeNode* right = nullptr)
     :
     val(val), left(left), right(right) {}
+};
 
-    // Init destructor
-    ~TreeNode() {
-        if(left) {
-            delete left;
-        }
-        if(right) {
-            delete right;
-        }
+class ConstructBinaryTree {
+    char getUserChoice(char ch, string side, string& rootPath) {
+        char choice;
+        cout << "Press '" << ch << "' to move to " << side << " side of (" << rootPath  << "): ";
+        cin >> choice;
+        return choice;
     }
 
-    // Method to construct the tree - O(N) & O(H) : Where N is the total number of nodes and H is the height of the tree
-    TreeNode* constructTree(std::vector<int>& nums, int start, int end) {
-        if(start > end)
+public:
+    // O(N) & O(N*N)
+    TreeNode* createTree(string rootPath) {
+        int val;
+        cout << "Enter value of " << rootPath << " (-1 for endpoint): ";
+        cin >> val;
+
+        if(val == -1) {
             return nullptr;
+        }
 
-        int mid = start + (end - start) / 2;
+        TreeNode* rootNode = new TreeNode(val);
 
-        TreeNode* rootNode = new TreeNode(nums[mid]);
-        rootNode->left  = constructTree(nums, start, mid-1);
-        rootNode->right = constructTree(nums, mid+1, end);
+        // Left side
+        string leftPath = rootPath + " -> left";
+        if(getUserChoice('L', "left", leftPath) == 'L' ) {
+            rootNode->left = createTree(leftPath);
+        }
+
+        // Right side
+        string rightPath = rootPath + " -> right";
+        if(getUserChoice('R', "right", rightPath) == 'R' ) {
+            rootNode->right = createTree(rightPath);
+        }
 
         return rootNode;
     }
 
-    // Method to print the tree - O(N) & O(N) : Where N is the total number of nodes of the tree
-    void printTree(TreeNode* rootNode) {
-        if(!rootNode)
-            return;
+    // O(N) & O(N)
+    TreeNode* createTreeOptimized(string& rootPath) {
+        int val;
+        cout << "Enter value of " << rootPath << " (-1 for endpoint): ";
+        cin >> val;
 
-        std::queue<TreeNode*> q;
-        q.push(rootNode);
-
-        while(!q.empty()) {
-            int qSize = q.size();
-            std::cout<<"[";
-            while(qSize--) {
-                TreeNode* currNode = q.front(); q.pop();
-                (!qSize ? std::cout<<currNode->val : std::cout<<currNode->val<<", ");
-                if(currNode->left)
-                    q.push(currNode->left);
-                if(currNode->right)
-                    q.push(currNode->right);
-            }
-            std::cout<<"]\n";
+        if(val == -1) {
+            return nullptr;
         }
+
+        // Left side
+        TreeNode* rootNode = new TreeNode(val);
+        rootPath += " -> left";
+        if(getUserChoice('L', "left", rootPath) == 'L' ) {
+            rootNode->left = createTreeOptimized(rootPath);
+        }
+        int charToRemove = 8;
+        while(charToRemove-- > 0) rootPath.pop_back();
+
+        // Right side
+        rootPath += " -> right";
+        if(getUserChoice('R', "right", rootPath) == 'R' ) {
+            rootNode->right = createTreeOptimized(rootPath);
+        }
+        charToRemove = 9;
+        while(charToRemove-- > 0) rootPath.pop_back();
+
+        return rootNode;
     }
 };
 
-// #1 Solution class
-class Solution_A {
-public:
-    // Method to find the maximum value of each row, using bfs - O(N) & O(N) : Where N is the total number of nodes of the tree
-    std::vector<int> getMaxEachRow(TreeNode* rootNode) {
-        // Edge case: When the tree is empty
+class LargestValueEachRow {
+    // O(N) & O(N)
+    vector<int> BFS(TreeNode* rootNode) {
         if(!rootNode)
             return {};
 
-        // Requires to visit the nodes level wise
-        std::queue<TreeNode*> q;
+        queue<TreeNode*> q;
         q.push(rootNode);
 
-        // Buffer to store the maximum value of each level
-        std::vector<int> maxLevelWise;
+        vector<int> maxLeveLWise;
 
-        // Explore the nodes level wise
         while(!q.empty()) {
             int qSize = q.size();
-            int currLevelMax = INT_MIN; // Stores the maximum value of the current level
-            // Explore the nodes of the current level
+            int currLeveLMax = INT_MIN;
+            
             while(qSize--) {
-                TreeNode* currNode = q.front(); q.pop();
-                // If the left child of the current node exist, then store it to the queue
-                if(currNode->left)
-                    q.push(currNode->left);
-                // If the right child of the current node exist, then store it to the queue
-                if(currNode->right)
-                    q.push(currNode->right);
-                // Update the maximum value each time
-                currLevelMax = std::max(currLevelMax, currNode->val);
+                rootNode = q.front(); q.pop();
+                if(rootNode->left)  q.push(rootNode->left);
+                if(rootNode->right) q.push(rootNode->right);
+                currLeveLMax = max(currLeveLMax, rootNode->val);
             }
-            // Store the maximum value of the current level to the buffer
-            maxLevelWise.push_back(currLevelMax);
-        }
-        
-        // Return the buffer containing the result values
-        return maxLevelWise;
-    }
-};
 
-// #2 Solution class
-class Solution_B {
+            maxLeveLWise.push_back(currLeveLMax);
+        }
+
+        return maxLeveLWise;
+    }
+
+    // O(N) & O(H)
+    void DFS(TreeNode* rootNode, int depth, vector<int>& maxLeveLWise) {
+        if(rootNode) {
+            if(maxLeveLWise.size() == depth) {
+                maxLeveLWise.push_back(INT_MIN);
+            }
+            maxLeveLWise[depth] = max(maxLeveLWise[depth], rootNode->val);
+            DFS(rootNode->left, depth + 1, maxLeveLWise);
+            DFS(rootNode->right, depth + 1, maxLeveLWise);
+        }
+    }
+
 public:
-    // Method to find the maximum value of each row, using dfs - O(N) & O(H) : Where N is the total number of nodes and H is the height of the tree
-    std::vector<int> getMaxEachRow(TreeNode* rootNode) {
-        // Buffer to store the maximum value of each level
-        std::vector<int> maxLevelWise;
-        // Explore the nodes of the tree
-        dfs(rootNode, 0, maxLevelWise);
-        // Return the buffer containing the result values
-        return maxLevelWise;
-    }
-
-private:
-    // Method to get the maximum value of each row - O(N) & O(H)
-    void dfs(TreeNode* currNode, int currDepth, std::vector<int>& maxLevelWise) {
-        // When the node exist
-        if(currNode) {
-            // When the current level is seen for the first time 
-            if(currDepth == maxLevelWise.size()) {
-                maxLevelWise.push_back(INT_MIN);
-            }
-            // Update the maximum value at the corresponding level in the buffer
-            maxLevelWise[currDepth] = std::max(maxLevelWise[currDepth], currNode->val);
-            // Recurse to both the subtrees and look for the maximum value at each level
-            dfs(currNode->left, currDepth+1, maxLevelWise);
-            dfs(currNode->right, currDepth+1, maxLevelWise);
-        }
+    vector<int> largestValues(TreeNode* rootNode) {
+        vector<int> maxLeveLWise;
+        DFS(rootNode, 0, maxLeveLWise);
+        return maxLeveLWise;
     }
 };
+
+// O(N) & O(N)
+void printLevelOrder(TreeNode* rootNode) {
+    if(!rootNode)
+        return;
+
+    queue<TreeNode*> q;
+    q.push(rootNode);
+
+    while(!q.empty()) {
+        int qSize = q.size();
+        cout << "[";
+
+        for(int i = 1; i <= qSize; ++i) {    
+            rootNode = q.front(); q.pop();
+            cout << rootNode->val;
+            if(i < qSize) cout << ", ";
+            if(rootNode->left)  q.push(rootNode->left);
+            if(rootNode->right) q.push(rootNode->right);
+        }
+
+        cout << "]\n";
+    }
+}
+
+// O(N) & O(H)
+TreeNode* deleteTree(TreeNode* rootNode) {
+    if(!rootNode)
+        return nullptr;
+
+    rootNode->left  = deleteTree(rootNode->left);
+    rootNode->right = deleteTree(rootNode->right);
+
+    delete rootNode; 
+    return nullptr;
+}
 
 // Driver code
 int main() {
-    // Tracks the user wants to perform the operation or not
-    bool userWantsOperation = true;
+    bool userRunApp = true;
 
-    while(userWantsOperation) {
-        // Controls console clearance for both "windows" and "linux" user 
+    while(userRunApp) {
         system("cls || clear");
 
-        // Input the size of the nodes
-        int size;
-        std::cout<<"Enter the number of nodes for the tree: ";
-        std::cin>>size;
+        // Tree creation call
+        ConstructBinaryTree cbt;
+        string rootPath = "root";
+        TreeNode* rootNode = cbt.createTreeOptimized(rootPath);
 
-        // Check the given size is valid or not
-        if(size <= 0) {
-            std::cout<<"Enter a valid size, application expects a positive integer!";
-            return 0;
+        // Print call
+        cout << "\nThe BFS order of tree is: \n";
+        printLevelOrder(rootNode);
+
+        // Find largest value of each row
+        LargestValueEachRow solution;
+        vector<int> maxLeveLWise = solution.largestValues(rootNode);
+
+        // Print largest values
+        cout << "\nThe largest values of each row of the tree:\n";
+        for(const int& val : maxLeveLWise) {
+            cout << val << '\n';
         }
 
-        // Stores the nodes value
-        std::vector<int> nums(size, 0);
+        // Deletion call
+        rootNode = deleteTree(rootNode);
 
-        // Input the nodes value
-        for(int node=0; node<size; ++node) {
-            std::cout<<"Enter the value of the "<<node+1<<"th node: ";
-            std::cin>>nums[node];
-        } 
-
-        // Call to construct the tree
-        TreeNode* rootNode = rootNode->constructTree(nums, 0, size-1);
-
-        // Print call (print each row of the tree)
-        std::cout<<"\nTree:\n";
-        rootNode->printTree(rootNode);
-
-        // Call to find the maximum value of each row
-        Solution_B solution;
-        std::vector<int> maxLevelWise = solution.getMaxEachRow(rootNode);
-
-        // Print values (print the maximum value of each row)
-        std::cout<<"\nLargest value of each row: ";
-        for(int maxNumber : maxLevelWise)
-            std::cout<<maxNumber<<"  ";
-
-        // Deletion call (delete the root node and recursively the entire tree)
-        delete rootNode; rootNode = nullptr;
-
-        // Input section to control the flow of iterations of the application
-        char userChoise;
-        std::cout<<"\n\nPress \'R\' to restart the application, else it will exit automatically: ";
-        std::cin>>userChoise;
-        userWantsOperation = (userChoise == 'R' ? true : false);
+        char userChoice;
+        cout << "\nPress 'R' to restart application, else application will exit: ";
+        cin >> userChoice;
+        userRunApp = (userChoice == 'R');
     }
 
     return 0;
