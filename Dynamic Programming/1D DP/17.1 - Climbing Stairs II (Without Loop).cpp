@@ -1,3 +1,7 @@
+// Code to find minimum total cost to reach step n ~ coded by Hiren
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     int n;
 
@@ -71,13 +75,15 @@ class TopDown {
     }
 
 public:
-    // O(N) & O(N)
-    int climbStairs(int step_n, vector<int>& costs) {
+    // Method to find minimum cost to reach step n, using recursion with memoization - O(N) & O(N)
+    int climbStairsII(int step_n, vector<int>& costs) {
         n = step_n;
         vector<int> dp(n, -1);
         return solveWithMemo(dp, costs, 0);
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     int n;
@@ -163,8 +169,13 @@ class BottomUp {
     }
 
 public:
-    int climbStairs(int step_n, vector<int>& costs) {
+    int climbStairsII(int step_n, vector<int>& costs) {
         n = step_n;
         return solveWithoutTable(costs);
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Array | Dynamic Programming | Biweekly Contest 166
+Link  : https://leetcode.com/problems/climbing-stairs-ii/description/
