@@ -1,6 +1,7 @@
 class TopDown {
     int n;
 
+    // O(3^N) & O(N)
     int solveWithoutMemo(const vector<int>& costs, int i) {
         if(i == n)
             return 0; // If reached last step, return 0 as indication
@@ -33,6 +34,7 @@ class TopDown {
         return min({jump1Step, jump2Step, jump3Step});
     }
     
+    // O(3*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, const vector<int>& costs, int i) {
         if(i == n)
             return 0; 
@@ -69,6 +71,7 @@ class TopDown {
     }
 
 public:
+    // O(N) & O(N)
     int climbStairs(int step_n, vector<int>& costs) {
         n = step_n;
         vector<int> dp(n, -1);
@@ -79,6 +82,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(N*3) & O(N)
     int solveWith1DTable(const vector<int>& costs) {
         vector<int> dp(n + 1, -1);
         dp[n] = 0;
@@ -115,11 +119,12 @@ class BottomUp {
         return dp[0];
     }
 
+    // O(N*3) & O(1)
     int solveWithoutTable(const vector<int>& costs) {
-        int dp_i = -1;
-        int dp_i_1 = 0;
-        int dp_i_2 = 0;
-        int dp_i_3 = 0;
+        int dp_i = -1;  // dp[i]
+        int dp_i_1 = 0; // dp[i + 1] 
+        int dp_i_2 = 0; // dp[i + 2]
+        int dp_i_3 = 0; // dp[i + 3]
 
         for(int i = n-1; i >= 0; --i) {
             int jump1Step = INT_MAX;
