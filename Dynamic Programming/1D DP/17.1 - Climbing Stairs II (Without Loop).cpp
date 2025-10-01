@@ -5,9 +5,6 @@ class TopDown {
         if(i == n)
             return 0; // If reached last step, return 0 as indication
 
-        if(dp[i] != -1)
-            return dp[i];
-
         int jump1Step = INT_MAX;
         int jump2Step = INT_MAX;
         int jump3Step = INT_MAX;
@@ -38,7 +35,7 @@ class TopDown {
     
     int solveWithMemo(vector<int>& dp, const vector<int>& costs, int i) {
         if(i == n)
-            return 0; // If reached last step, return 0 as indication
+            return 0; 
 
         if(dp[i] != -1)
             return dp[i];
