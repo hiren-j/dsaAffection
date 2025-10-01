@@ -1,6 +1,6 @@
 // Code to find minimum cost to reach step n ~ coded by Hiren
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
     int n;
@@ -44,19 +44,19 @@ class TopDown {
 
 public:
     // Method to find minimum cost to reach step n, using recursion with memoization - O(N) & O(N)
-    int climbStairs(int step_n, vector<int>& costs) {
+    int climbStairsII(int step_n, vector<int>& costs) {
         n = step_n;
         vector<int> dp(n, -1);
         return solveWithMemo(dp, costs, 0);
     }
 };
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
 public:
     // O(N) & O(N)
-    int climbStairs(int n, const vector<int>& costs) {
+    int climbStairsII(int n, const vector<int>& costs) {
         vector<int> dp(n + 1, -1);
         dp[n] = 0;
 
@@ -76,9 +76,9 @@ public:
         return dp[0];
     }
 };
-// Note: We can optimize this without using 1D dp array. I am not doing here because it will look inconsistent with this loop version. The solution `solveWithoutTable()` of 17.1 will be the same.
+// Note: We can optimize this without using 1D dp array. I am not doing here because it will look inconsistent with this loop version. So you can use `solveWithoutTable()` of 17.1 for this 17.2
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Biweekly Contest 166
 Link  : https://leetcode.com/problems/climbing-stairs-ii/description/
