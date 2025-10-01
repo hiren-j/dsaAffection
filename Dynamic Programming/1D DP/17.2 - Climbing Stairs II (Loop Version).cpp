@@ -76,7 +76,8 @@ public:
         return dp[0];
     }
 };
-// Note: We can optimize this without using 1D dp array. I am not doing here because it will look inconsistent with this loop version. The solution `solveWithoutTable()` of 17.1 it will be the same.
+// Note: We can optimize this without using 1D dp array. I am not doing here because it will look inconsistent with this loop version. The solution `solveWithoutTable()` of 17.1
+will be the same.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
