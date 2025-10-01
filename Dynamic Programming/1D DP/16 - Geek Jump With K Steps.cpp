@@ -8,7 +8,7 @@ class TopDown {
     // O(K^N) & O(N)
     int solveWithoutMemo(vector<int>& nums, int k, int index) {
         if(index == n-1)
-            return 0;
+            return 0; // If reached last stone, return 0 as indication
         
         int minCost = INT_MAX;
         
@@ -24,7 +24,7 @@ class TopDown {
     // O(K*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, vector<int>& nums, int k, int index) {
         if(index == n-1)
-            return 0;
+            return 0; // If reached last stone, return 0 as indication
             
         if(dp[index] != -1)
             return dp[index];
@@ -57,7 +57,7 @@ public:
         int n = nums.size();
         
         vector<int> dp(n, -1);
-        dp[n - 1] = 0; // Init the edge case
+        dp[n - 1] = 0; // Initialize edge case
         
         for(int index = n-2; index >= 0; --index) {
             int minCost = INT_MAX;
