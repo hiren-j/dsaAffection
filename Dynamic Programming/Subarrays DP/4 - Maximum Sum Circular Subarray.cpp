@@ -50,7 +50,10 @@ public:
         n = nums.size();
         vector<vector<int>> dp1(n, vector<int>(2, -1));
         int maxSum = solveWithMemo(dp1, nums, 0, false, true);
-        if(maxSum <= 0) return maxSum; // If all the numbers are negative or 0 then return the maximum sum you've got
+
+        if(maxSum <= 0) // If all the numbers are negative or 0 then return the maximum sum you've got
+            return maxSum; 
+
         vector<vector<int>> dp2(n, vector<int>(2, -1)); 
         int minSum   = solveWithMemo(dp2, nums, 0, false, false);
         int totalSum = accumulate(begin(nums), end(nums), 0);
