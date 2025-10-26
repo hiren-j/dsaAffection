@@ -5,45 +5,43 @@
 class TopDown {
     int n;
 
-    // O(2^N) & O(N) 
-    int solveWithoutMemo(vector<int>& nums, int index, bool prevPick, bool findMaxSum) {
-        // Edge case: If elements are exhausted and previously if you've picked any subarray then return 0 otherwise if you've to find maximum sum subarray the return INT_MIN or if you've to find minimum sum subarray then return INT_MAX
-        if(index == n)
-            return (prevPick) ? 0 : (findMaxSum ? INT_MIN : INT_MAX);
+    // O(2^N) & O(N)
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, bool findMaxSum) {
+        if(i == n)
+            return prevPick ? 0 : (findMaxSum ? INT_MIN : INT_MAX);
 
         if(prevPick) {
-            int pickCurrSubarr = nums[index] + solveWithoutMemo(nums, index + 1, true, findMaxSum);
+            int pickCurr = nums[i] + solveWithoutMemo(nums, i + 1, true, findMaxSum);
             int stopHere = 0;
-            return (findMaxSum ? max(pickCurrSubarr, stopHere) : min(pickCurrSubarr, stopHere));
+            return (findMaxSum) ? max(pickCurr, stopHere) : min(pickCurr, stopHere);
         }
         else {
-            int startNewFromNext = solveWithoutMemo(nums, index + 1, false, findMaxSum);
-            int startNewFromCurr = nums[index] + solveWithoutMemo(nums, index + 1, true, findMaxSum);
-            return (findMaxSum ? max(startNewFromNext, startNewFromCurr) : min(startNewFromNext, startNewFromCurr));
+            int startNext = solveWithoutMemo(nums, i + 1, false, findMaxSum);
+            int startCurr = nums[i] + solveWithoutMemo(nums, i + 1, true, findMaxSum);
+            return (findMaxSum) ? max(startNext, startCurr) : min(startNext, startCurr);
         }
     }
 
-    // O(2*N*2) & O(N*2 + N) 
-    int solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, int index, bool prevPick, bool findMaxSum) {
-        // Edge case: If elements are exhausted and previously if you've picked any subarray then return 0 otherwise if you've to find maximum sum subarray the return INT_MIN or if you've to find minimum sum subarray then return INT_MAX
-        if(index == n)
-            return (prevPick) ? 0 : (findMaxSum ? INT_MIN : INT_MAX);
+    // O(2*N*2) & O(N*2 + N)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, int i, bool prevPick, bool findMaxSum) {
+        if(i == n)
+            return (prevPick ? 0 : (findMaxSum ? INT_MIN : INT_MAX));
 
-        if(dp[index][prevPick] != -1)
-            return dp[index][prevPick];
+        if(dp[i][prevPick] != -1)
+            return dp[i][prevPick];
 
         if(prevPick) {
-            int pickCurrSubarr = nums[index] + solveWithMemo(dp, nums, index + 1, true, findMaxSum);
+            int pickCurr = nums[i] + solveWithMemo(dp, nums, i + 1, true, findMaxSum);
             int stopHere = 0;
-            return dp[index][prevPick] = (findMaxSum ? max(pickCurrSubarr, stopHere) : min(pickCurrSubarr, stopHere));
+            return dp[i][prevPick] = (findMaxSum) ? max(pickCurr, stopHere) : min(pickCurr, stopHere);
         }
         else {
-            int startNewFromNext = solveWithMemo(dp, nums, index + 1, false, findMaxSum);
-            int startNewFromCurr = nums[index] + solveWithMemo(dp, nums, index + 1, true, findMaxSum);
-            return dp[index][prevPick] = (findMaxSum ? max(startNewFromNext, startNewFromCurr) : min(startNewFromNext, startNewFromCurr));
+            int startNext = solveWithMemo(dp, nums, i + 1, false, findMaxSum);
+            int startCurr = nums[i] + solveWithMemo(dp, nums, i + 1, true, findMaxSum);
+            return dp[i][prevPick] = (findMaxSum) ? max(startNext, startCurr) : min(startNext, startCurr);
         }
     }
-
+    
 public:
     // Method to find the maximum sum of any subarray, using recursion with memoization - O(N) & O(N)
     int maxSubarraySumCircular(vector<int>& nums) {
@@ -51,7 +49,7 @@ public:
         vector<vector<int>> dp1(n, vector<int>(2, -1));
         int maxSum = solveWithMemo(dp1, nums, 0, false, true);
 
-        if(maxSum <= 0) // If all the numbers are negative or 0 then return the maximum sum you've got
+        if(maxSum <= 0) // If all the numbers are negative or 0 then return maximum sum you've got
             return maxSum; 
 
         vector<vector<int>> dp2(n, vector<int>(2, -1)); 
@@ -149,7 +147,7 @@ public:
         n = nums.size();
         int maxSum = solveInPlace(nums, true);
 
-        if(maxSum <= 0) // If all the numbers are negative or 0 then return the maximum sum you've got
+        if(maxSum <= 0) // If all the numbers are negative or 0 then return maximum sum you've got
             return maxSum; 
 
         int minSum   = solveInPlace(nums, false);
@@ -184,9 +182,8 @@ public:
             minSum    = min(minSum, minEnding);
         }
 
-        // If all the numbers are negative or 0 then return the maximum sum you've got
-        if(maxSum <= 0) return maxSum;
-        
+        if(maxSum <= 0) // If all the numbers are negative or 0 then return maximum sum you've got
+            return maxSum;
         return max(maxSum, totalSum - minSum);
     }
 };
