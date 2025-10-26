@@ -67,22 +67,22 @@ class BottomUp {
     int n;
 
     // O(N*2) & O(N*2)
-    int solveUsing2DTable(vector<int>& nums, bool findMaxSum) {
+    int solveBy2DTable(const vector<int>& nums, bool findMaxSum) {
         vector<vector<int>> dp(n + 1, vector<int>(2, -1));
         dp[n][1] = 0;
         dp[n][0] = (findMaxSum ? INT_MIN : INT_MAX);
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n-1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nums[index] + dp[index + 1][true];
-                    int stopHere = 0;
-                    dp[index][prevPick] = (findMaxSum ? max(pickCurrSubarr, stopHere) : min(pickCurrSubarr, stopHere));
+                    int pickCurr = nums[i] + dp[i + 1][true];
+                    int stopHere = 0; 
+                    dp[i][prevPick] = (findMaxSum) ? max(pickCurr, stopHere) : min(pickCurr, stopHere);
                 }
                 else {
-                    int startNewFromNext = dp[index + 1][false];
-                    int startNewFromCurr = nums[index] + dp[index + 1][true];
-                    dp[index][prevPick] = (findMaxSum ? max(startNewFromNext, startNewFromCurr) : min(startNewFromNext, startNewFromCurr));
+                    int startNext = dp[i + 1][false];
+                    int startCurr = nums[i] + dp[i + 1][true];
+                    dp[i][prevPick] = (findMaxSum) ? max(startNext, startCurr) : min(startNext, startCurr);
                 }
             }
         }
@@ -91,63 +91,67 @@ class BottomUp {
     }
 
     // O(N*2) & O(2*2)
-    int solveUsing1DTable(vector<int>& nums, bool findMaxSum) {
-        vector<int> nextRow(2, -1), idealRow(2, -1);
+    int solveBy1DTable(const vector<int>& nums, bool findMaxSum) {
+        vector<int> nextRow(2, -1);
         nextRow[1] = 0;
         nextRow[0] = (findMaxSum ? INT_MIN : INT_MAX);
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n-1; i >= 0; --i) {
+            vector<int> idealRow(2, -1);
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nums[index] + nextRow[true];
-                    int stopHere = 0;
-                    idealRow[prevPick] = (findMaxSum ? max(pickCurrSubarr, stopHere) : min(pickCurrSubarr, stopHere));
+                    int pickCurr = nums[i] + nextRow[true];
+                    int stopHere = 0; 
+                    idealRow[prevPick] = (findMaxSum) ? max(pickCurr, stopHere) : min(pickCurr, stopHere);
                 }
                 else {
-                    int startNewFromNext = nextRow[false];
-                    int startNewFromCurr = nums[index] + nextRow[true];
-                    idealRow[prevPick] = (findMaxSum ? max(startNewFromNext, startNewFromCurr) : min(startNewFromNext, startNewFromCurr));
+                    int startNext = nextRow[false];
+                    int startCurr = nums[i] + nextRow[true];
+                    idealRow[prevPick] = (findMaxSum) ? max(startNext, startCurr) : min(startNext, startCurr);
                 }
             }
-            nextRow = idealRow;
+            swap(nextRow, idealRow);
         }
 
         return nextRow[false];
     }
 
     // O(N*2) & O(1)
-    int solveInPlace(vector<int>& nums, bool findMaxSum) {
+    int solveInPlace(const vector<int>& nums, bool findMaxSum) {
         int nextRow_1 = 0;
         int nextRow_0 = (findMaxSum ? INT_MIN : INT_MAX);
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n-1; i >= 0; --i) {
             int idealRow_1 = -1;
             int idealRow_0 = -1;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nums[index] + nextRow_1;
-                    int stopHere = 0;
-                    idealRow_1 = (findMaxSum ? max(pickCurrSubarr, stopHere) : min(pickCurrSubarr, stopHere));
+                    int pickCurr = nums[i] + nextRow_1;
+                    int stopHere = 0; 
+                    idealRow_1 = (findMaxSum) ? max(pickCurr, stopHere) : min(pickCurr, stopHere);
                 }
                 else {
-                    int startNewFromNext = nextRow_0;
-                    int startNewFromCurr = nums[index] + nextRow_1;
-                    idealRow_0 = (findMaxSum ? max(startNewFromNext, startNewFromCurr) : min(startNewFromNext, startNewFromCurr));
+                    int startNext = nextRow_0;
+                    int startCurr = nums[i] + nextRow_1;
+                    idealRow_0 = (findMaxSum) ? max(startNext, startCurr) : min(startNext, startCurr);
                 }
             }
-            nextRow_1 = idealRow_1;
-            nextRow_0 = idealRow_0;
+            swap(nextRow_1, idealRow_1);
+            swap(nextRow_0, idealRow_0);
         }
 
         return nextRow_0;
     }
 
 public:
-    // Method to find the maximum sum of any subarray, using tabulation :-
+    // Method to find the maximum sum of any subarray, using recursion with memoization - O(N) & O(N)
     int maxSubarraySumCircular(vector<int>& nums) {
         n = nums.size();
         int maxSum = solveInPlace(nums, true);
-        if(maxSum <= 0) return maxSum; // If all the numbers are negative or 0 then return the maximum sum you've got
+
+        if(maxSum <= 0) // If all the numbers are negative or 0 then return the maximum sum you've got
+            return maxSum; 
+
         int minSum   = solveInPlace(nums, false);
         int totalSum = accumulate(begin(nums), end(nums), 0);
         return max(maxSum, totalSum - minSum);
