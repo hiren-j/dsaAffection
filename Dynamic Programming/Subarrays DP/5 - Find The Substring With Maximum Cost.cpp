@@ -7,39 +7,43 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(const string& s, int index, bool prevPick) {
-        if(index == n)  
+    int solveWithoutMemo(const string& s, int i, bool prevPick) {
+        if(i == n)
             return 0;
-
+        
         if(prevPick) {
-            int pickCurrSubarr = values[s[index] - 'a'] + solveWithoutMemo(s, index + 1, true);
+            const char ch = s[i];
+            int pickCurr = values[ch - 'a'] + solveWithoutMemo(s, i + 1, true);
             int stopHere = 0;
-            return max(pickCurrSubarr, stopHere);
+            return max(pickCurr, stopHere);
         }
         else {
-            int startNewFromNext = solveWithoutMemo(s, index + 1, false);
-            int startNewFromCurr = values[s[index] - 'a'] + solveWithoutMemo(s, index + 1, true);
-            return max(startNewFromNext, startNewFromCurr);
+            const char ch = s[i];
+            int startHere = values[ch - 'a'] + solveWithoutMemo(s, i + 1, true);
+            int startNext = solveWithoutMemo(s, i + 1, false);
+            return max(startHere, startNext);
         }
     }
 
     // O(2*N*2) & O(N*2 + N)
-    int solveWithMemo(vector<vector<int>>& dp, const string& s, int index, bool prevPick) {
-        if(index == n)  
+    int solveWithMemo(vector<vector<int>>& dp, const string& s, int i, bool prevPick) {
+        if(i == n)
             return 0;
 
-        if(dp[index][prevPick] != -1)
-            return dp[index][prevPick];
+        if(dp[i][prevPick] != -1)
+            return dp[i][prevPick];
 
         if(prevPick) {
-            int pickCurrSubarr = values[s[index] - 'a'] + solveWithMemo(dp, s, index + 1, true);
+            const char ch = s[i];
+            int pickCurr = values[ch - 'a'] + solveWithMemo(dp, s, i + 1, true);
             int stopHere = 0;
-            return dp[index][prevPick] = max(pickCurrSubarr, stopHere);
+            return dp[i][prevPick] = max(pickCurr, stopHere);
         }
         else {
-            int startNewFromNext = solveWithMemo(dp, s, index + 1, false);
-            int startNewFromCurr = values[s[index] - 'a'] + solveWithMemo(dp, s, index + 1, true);
-            return dp[index][prevPick] = max(startNewFromNext, startNewFromCurr);
+            const char ch = s[i];
+            int startHere = values[ch - 'a'] + solveWithMemo(dp, s, i + 1, true);
+            int startNext = solveWithMemo(dp, s, i + 1, false);
+            return dp[i][prevPick] = max(startHere, startNext);
         }
     }
 
@@ -69,21 +73,25 @@ class BottomUp {
     int n;
 
     // O(N*2) & O(N*2)
-    int solveUsing2DTable(const string& s) {
-        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+    int solveBy2DTable(const string& s) {
+        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
+        dp[n][0] = 0;
+        dp[n][1] = 0;
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n-1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = values[s[index] - 'a'] + dp[index + 1][true];
+                    const char ch = s[i];
+                    int pickCurr = values[ch - 'a'] + dp[i + 1][true];
                     int stopHere = 0;
-                    dp[index][prevPick] = max(pickCurrSubarr, stopHere);
+                    dp[i][prevPick] = max(pickCurr, stopHere);
                 }
                 else {
-                    int startNewFromNext = dp[index + 1][false];
-                    int startNewFromCurr = values[s[index] - 'a'] + dp[index + 1][true];
-                    dp[index][prevPick]  = max(startNewFromNext, startNewFromCurr);
-                }
+                    const char ch = s[i];
+                    int startHere = values[ch - 'a'] + dp[i + 1][true];
+                    int startNext = dp[i + 1][false];
+                    dp[i][prevPick] = max(startHere, startNext);
+                } 
             }
         }
 
@@ -91,51 +99,60 @@ class BottomUp {
     }
 
     // O(N*2) & O(2*2)
-    int solveUsing1DTable(const string& s) {
-        vector<int> nextRow(2, 0), idealRow(2, 0);
+    int solveBy1DTable(const string& s) {
+        vector<int> nextRow(2, -1);
+        nextRow[0] = 0;
+        nextRow[1] = 0;
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n-1; i >= 0; --i) {
+            vector<int> idealRow(2, -1);
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = values[s[index] - 'a'] + nextRow[true];
+                    const char ch = s[i];
+                    int pickCurr = values[ch - 'a'] + nextRow[true];
                     int stopHere = 0;
-                    idealRow[prevPick] = max(pickCurrSubarr, stopHere);
+                    idealRow[prevPick] = max(pickCurr, stopHere);
                 }
                 else {
-                    int startNewFromNext = nextRow[false];
-                    int startNewFromCurr = values[s[index] - 'a'] + nextRow[true];
-                    idealRow[prevPick] = max(startNewFromNext, startNewFromCurr);
-                }
+                    const char ch = s[i];
+                    int startHere = values[ch - 'a'] + nextRow[true];
+                    int startNext = nextRow[false];
+                    idealRow[prevPick] = max(startHere, startNext);
+                } 
             }
-            nextRow = idealRow;
+            swap(nextRow, idealRow);
         }
 
-        return idealRow[false];
+        return nextRow[false];
     }
 
     // O(N*2) & O(1)
     int solveInPlace(const string& s) {
-        int nextRow_0  = 0, nextRow_1  = 0;
-        int idealRow_0 = 0, idealRow_1 = 0;
+        int nextRow_0 = 0;
+        int nextRow_1 = 0;
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n-1; i >= 0; --i) {
+            int idealRow_0 = 0;
+            int idealRow_1 = 0;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = values[s[index] - 'a'] + nextRow_1;
+                    const char ch = s[i];
+                    int pickCurr = values[ch - 'a'] + nextRow_1;
                     int stopHere = 0;
-                    idealRow_1 = max(pickCurrSubarr, stopHere);
+                    idealRow_1 = max(pickCurr, stopHere);
                 }
                 else {
-                    int startNewFromNext = nextRow_0;
-                    int startNewFromCurr = values[s[index] - 'a'] + nextRow_1;
-                    idealRow_0 = max(startNewFromNext, startNewFromCurr);
-                }
+                    const char ch = s[i];
+                    int startHere = values[ch - 'a'] + nextRow_1;
+                    int startNext = nextRow_0;
+                    idealRow_0 = max(startHere, startNext);
+                } 
             }
-            nextRow_0 = idealRow_0;
-            nextRow_1 = idealRow_1;
+            swap(nextRow_0, idealRow_0);
+            swap(nextRow_1, idealRow_1);
         }
 
-        return idealRow_0;
+        return nextRow_0;
     }
 
 public:
