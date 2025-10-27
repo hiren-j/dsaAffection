@@ -50,6 +50,7 @@ class TopDown {
 public:
     // Method to find the maximum cost among all substrings, using recursion with memoization - O(N) & O(N) 
     int maximumCostSubstring(string& s, string& chars, vector<int>& vals) {
+        n = s.size();
         values.resize(26);
 
         for(int i = 0; i < 26; ++i) {
@@ -60,7 +61,6 @@ public:
             values[char_idx] = vals[i];
         }
         
-        n = s.size();
         vector<vector<int>> dp(n, vector<int>(2, -1));
         return solveWithMemo(dp, s, 0, false);
     }
@@ -158,6 +158,7 @@ class BottomUp {
 public:
     // Method to find the maximum cost among all substrings, using tabulation :- 
     int maximumCostSubstring(string& s, string& chars, vector<int>& vals) {
+        n = s.size();
         values.resize(26);
 
         for(int i = 0; i < 26; ++i) {
@@ -168,7 +169,6 @@ public:
             values[char_idx] = vals[i];
         }
         
-        n = s.size();
         return solveInPlace(s);
     }
 };
