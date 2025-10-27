@@ -12,14 +12,14 @@ class TopDown {
             return 0;
         
         if(prevPick) {
-            const char ch = s[i];
-            int pickCurr = values[ch - 'a'] + solveWithoutMemo(s, i + 1, true);
+            const int ch = s[i] - 'a';
+            int pickCurr = values[ch] + solveWithoutMemo(s, i + 1, true);
             int stopHere = 0;
             return max(pickCurr, stopHere);
         }
         else {
-            const char ch = s[i];
-            int startHere = values[ch - 'a'] + solveWithoutMemo(s, i + 1, true);
+            const int ch = s[i] - 'a';
+            int startHere = values[ch] + solveWithoutMemo(s, i + 1, true);
             int startNext = solveWithoutMemo(s, i + 1, false);
             return max(startHere, startNext);
         }
