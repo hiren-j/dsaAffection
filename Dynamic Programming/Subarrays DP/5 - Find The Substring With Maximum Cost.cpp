@@ -34,14 +34,14 @@ class TopDown {
             return dp[i][prevPick];
 
         if(prevPick) {
-            const char ch = s[i];
-            int pickCurr = values[ch - 'a'] + solveWithMemo(dp, s, i + 1, true);
+            const int ch = s[i] - 'a';
+            int pickCurr = values[ch] + solveWithMemo(dp, s, i + 1, true);
             int stopHere = 0;
             return dp[i][prevPick] = max(pickCurr, stopHere);
         }
         else {
-            const char ch = s[i];
-            int startHere = values[ch - 'a'] + solveWithMemo(dp, s, i + 1, true);
+            const int ch = s[i] - 'a';
+            int startHere = values[ch] + solveWithMemo(dp, s, i + 1, true);
             int startNext = solveWithMemo(dp, s, i + 1, false);
             return dp[i][prevPick] = max(startHere, startNext);
         }
@@ -57,8 +57,8 @@ public:
             values[i] = i + 1;
         }
         for(int i = 0; i < chars.size(); ++i) {
-            int char_idx = chars[i] - 'a';
-            values[char_idx] = vals[i];
+            const int ch = chars[i] - 'a';
+            values[ch] = vals[i];
         }
         
         vector<vector<int>> dp(n, vector<int>(2, -1));
@@ -81,14 +81,14 @@ class BottomUp {
         for(int i = n-1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    const char ch = s[i];
-                    int pickCurr = values[ch - 'a'] + dp[i + 1][true];
+                    const int ch = s[i] - 'a';
+                    int pickCurr = values[ch] + dp[i + 1][true];
                     int stopHere = 0;
                     dp[i][prevPick] = max(pickCurr, stopHere);
                 }
                 else {
-                    const char ch = s[i];
-                    int startHere = values[ch - 'a'] + dp[i + 1][true];
+                    const int ch = s[i] - 'a';
+                    int startHere = values[ch] + dp[i + 1][true];
                     int startNext = dp[i + 1][false];
                     dp[i][prevPick] = max(startHere, startNext);
                 } 
@@ -108,14 +108,14 @@ class BottomUp {
             vector<int> idealRow(2, -1);
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    const char ch = s[i];
-                    int pickCurr = values[ch - 'a'] + nextRow[true];
+                    const int ch = s[i] - 'a';
+                    int pickCurr = values[ch] + nextRow[true];
                     int stopHere = 0;
                     idealRow[prevPick] = max(pickCurr, stopHere);
                 }
                 else {
-                    const char ch = s[i];
-                    int startHere = values[ch - 'a'] + nextRow[true];
+                    const int ch = s[i] - 'a';
+                    int startHere = values[ch] + nextRow[true];
                     int startNext = nextRow[false];
                     idealRow[prevPick] = max(startHere, startNext);
                 } 
@@ -136,14 +136,14 @@ class BottomUp {
             int idealRow_1 = 0;
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    const char ch = s[i];
-                    int pickCurr = values[ch - 'a'] + nextRow_1;
+                    const int ch = s[i] - 'a';
+                    int pickCurr = values[ch] + nextRow_1;
                     int stopHere = 0;
                     idealRow_1 = max(pickCurr, stopHere);
                 }
                 else {
-                    const char ch = s[i];
-                    int startHere = values[ch - 'a'] + nextRow_1;
+                    const int ch = s[i] - 'a';
+                    int startHere = values[ch] + nextRow_1;
                     int startNext = nextRow_0;
                     idealRow_0 = max(startHere, startNext);
                 } 
@@ -165,8 +165,8 @@ public:
             values[i] = i + 1;
         }
         for(int i = 0; i < chars.size(); ++i) {
-            int char_idx = chars[i] - 'a';
-            values[char_idx] = vals[i];
+            const int ch = chars[i] - 'a';
+            values[ch] = vals[i];
         }
         
         return solveInPlace(s);
