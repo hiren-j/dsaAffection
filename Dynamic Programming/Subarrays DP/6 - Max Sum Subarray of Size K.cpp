@@ -4,60 +4,50 @@
 
 class TopDown {
     int n;
-
-    // O(2^N) & O(N) 
-    int solveWithoutMemo(vector<int>& nums, int index, int k, bool prevPick) {
-        // Edge case: Previously if you've picked any subarray of size k then return 0 as an indication of it 
-        if(prevPick && k == 0)
+        
+    // O(2^N) & O(N)
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int k) {
+        if(k == 0 || i == n)
             return 0;
-            
-        // Edge case: At this point, It's not possible to pick a k length subarray hence return INT_MIN as an indication of it 
-        if(k < 0 || index == n)
-            return INT_MIN;
                         
         if(prevPick) {
-            int pickCurrSubarr = nums[index] + solveWithoutMemo(nums, index + 1, k - 1, true);
-            int stopHere = (k == 0) ? 0 : INT_MIN;
-            return max(pickCurrSubarr, stopHere);
+            int pickCurr = nums[i] + solveWithoutMemo(dp, nums, i + 1, true, k - 1);
+            int stopHere = 0;
+            return max(pickCurr, stopHere);
         }
         else {
-            int startNewFromNext = solveWithoutMemo(nums, index + 1, k, false);
-            int startNewFromCurr = nums[index] + solveWithoutMemo(nums, index + 1, k - 1, true);
-            return max(startNewFromNext, startNewFromCurr);
-        }
-    }
-
-    // O(2*N*K*2) & O(N*K*2 + N)
-    int solveWithMemo(vector<vector<vector<int>>>& dp, vector<int>& nums, int index, int k, bool prevPick) {
-        // Edge case: Previously if you've picked any subarray of size k then return 0 as an indication of it 
-        if(prevPick && k == 0)
-            return 0;
-            
-        // Edge case: At this point, It's not possible to pick a k length subarray hence return INT_MIN as an indication of it 
-        if(k < 0 || index == n)
-            return INT_MIN;
-            
-        if(dp[index][k][prevPick] != -1)
-            return dp[index][k][prevPick];
-            
-        if(prevPick) {
-            int pickCurrSubarr = nums[index] + solveWithMemo(dp, nums, index + 1, k - 1, true);
-            int stopHere = (k == 0) ? 0 : INT_MIN;
-            return dp[index][k][prevPick] = max(pickCurrSubarr, stopHere);
-        }
-        else {
-            int startNewFromNext = solveWithMemo(dp, nums, index + 1, k, false);
-            int startNewFromCurr = nums[index] + solveWithMemo(dp, nums, index + 1, k - 1, true);
-            return dp[index][k][prevPick] = max(startNewFromNext, startNewFromCurr);
+            int startHere = nums[i] + solveWithoutMemo(dp, nums, i + 1, true, k - 1);
+            int startNext = solveWithoutMemo(dp, nums, i + 1, false, k);
+            return max(startHere, startNext);
         }
     }
     
+    // O(2*N*2*K) & O(N*2*K + N)
+    int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int k) {
+        if(k == 0 || i == n)
+            return 0;
+            
+        if(dp[i][prevPick][k] != -1)
+            return dp[i][prevPick][k]; 
+            
+        if(prevPick) {
+            int pickCurr = nums[i] + solveWithMemo(dp, nums, i + 1, true, k - 1);
+            int stopHere = 0;
+            return dp[i][prevPick][k] = max(pickCurr, stopHere);
+        }
+        else {
+            int startHere = nums[i] + solveWithMemo(dp, nums, i + 1, true, k - 1);
+            int startNext = solveWithMemo(dp, nums, i + 1, false, k);
+            return dp[i][prevPick][k] = max(startHere, startNext);
+        }
+    }
+
 public:
-    // Method to find the maximum sum of a subarray of size k, using recursion with memoization - O(N*K) & O(N*K)
-    int maximumSumSubarray(vector<int>& nums, int k) {
+    // Method to find maximum sum of a subarray of size k, using recursion with memoization - O(N*K) & O(N*K)
+    int maxSumSubarrSizeK(vector<int>& nums, int k) {
         n = nums.size();
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(k + 1, vector<int>(2, -1)));
-        return solveWithMemo(dp, nums, 0, k, false);
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(k + 1, -1)));
+        return solveWithMemo(dp, nums, 0, false, k);
     }
 };
 // Note: This solution will lead to time limit exceed
@@ -65,73 +55,98 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the maximum sum of a subarray of size k, using 3D tabulation - O(N*K) & O(N*K)
-    int maximumSumSubarray_V1(vector<int>& nums, int k) {
-        int n = nums.size();
+    int n;
+
+    // O(N*2*K) & O(N*2*K) : Where K = given_K
+    int solveBy3DTable(const vector<int>& nums, int given_k) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(given_k + 1, -1)));
         
-        // 3D DP table
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(k + 1, vector<int>(2, INT_MIN)));
+        // Init edge case (k == 0)
+        for(int i = 0; i <= n; ++i) 
+            for(int prevPick = 0; prevPick <= 1; ++prevPick)
+                dp[i][prevPick][0] = 0;
         
-        // Initialize the first edge case
-        for(int index = 0; index <= n; ++index)
-            dp[index][0][1] = 0;
-        
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int len = 0; len <= k; ++len) {
-                for(int prevPick = 1; prevPick >= 0; --prevPick) {
+        // Init edge case (i == n)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) 
+            for(int k = 0; k <= given_k; ++k)
+                dp[n][prevPick][k] = 0;
+                
+        for(int i = n-1; i >= 0; --i) {
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int k = 1; k <= given_k; ++k) {
                     if(prevPick) {
-                        int pickCurrSubarr = (len-1 >= 0) ? nums[index] + dp[index + 1][len - 1][true] : INT_MIN;
-                        int stopHere = (len == 0) ? 0 : INT_MIN;
-                        dp[index][len][prevPick] = max(pickCurrSubarr, stopHere);
+                        int pickCurr = nums[i] + dp[i + 1][true][k - 1];
+                        int stopHere = 0;
+                        dp[i][prevPick][k] = max(pickCurr, stopHere);
                     }
                     else {
-                        int startNewFromNext = dp[index + 1][len][false];
-                        int startNewFromCurr = (len-1 >= 0) ? nums[index] + dp[index + 1][len - 1][true] : INT_MIN;
-                        dp[index][len][prevPick] = max(startNewFromNext, startNewFromCurr);
+                        int startHere = nums[i] + dp[i + 1][true][k - 1];
+                        int startNext = dp[i + 1][false][k];
+                        dp[i][prevPick][k] = max(startHere, startNext);
                     }
                 }
             }
         }
         
-        // Return the result value
-        return dp[0][k][false];
+        return dp[0][false][given_k];
     }
-
-    // #2 Method to find the maximum sum of a subarray of size k, using 2D tabulation - O(N*K) & O(K)
-    int maximumSumSubarray_V2(vector<int>& nums, int k) {
-        int n = nums.size();
+    
+    // O(N*2*K) & O(N*2*K) : Where K = given_K
+    int solveBy3DEnhanced(const vector<int>& nums, int given_k) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(given_k + 1, 0)));
         
-        // 2D DP tables
-        vector<vector<int>> nextRow(k + 1, vector<int>(2, INT_MIN));
-        vector<vector<int>> idealRow(k + 1, vector<int>(2, INT_MIN));
-
-        // Initialize the first edge case
-        nextRow[0][1] = 0;
-        
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            idealRow[0][1] = 0; // Initialize the first edge case
-            for(int len = 0; len <= k; ++len) {
-                for(int prevPick = 1; prevPick >= 0; --prevPick) {
+        for(int i = n-1; i >= 0; --i) {
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int k = 1; k <= given_k; ++k) {
                     if(prevPick) {
-                        int pickCurrSubarr = (len-1 >= 0) ? nums[index] + nextRow[len - 1][true] : INT_MIN;
-                        int stopHere = (len == 0) ? 0 : INT_MIN;
-                        idealRow[len][prevPick] = max(pickCurrSubarr, stopHere);
+                        int pickCurr = nums[i] + dp[i + 1][true][k - 1];
+                        int stopHere = 0;
+                        dp[i][prevPick][k] = max(pickCurr, stopHere);
                     }
                     else {
-                        int startNewFromNext = nextRow[len][false];
-                        int startNewFromCurr = (len-1 >= 0) ? nums[index] + nextRow[len - 1][true] : INT_MIN;
-                        idealRow[len][prevPick] = max(startNewFromNext, startNewFromCurr);
+                        int startHere = nums[i] + dp[i + 1][true][k - 1];
+                        int startNext = dp[i + 1][false][k];
+                        dp[i][prevPick][k] = max(startHere, startNext);
                     }
                 }
             }
-            nextRow = idealRow;
         }
-
-        // Return the result value
-        return nextRow[k][false];
+        
+        return dp[0][false][given_k];
+    }
+    
+    // O(N*2*K) & O(2*2*K) : Where K = given_K
+    int solveBy2DTable(const vector<int>& nums, int given_k) {
+        vector<vector<int>> nextRow(2, vector<int>(given_k + 1, 0));
+        
+        for(int i = n-1; i >= 0; --i) {
+            vector<vector<int>> idealRow(2, vector<int>(given_k + 1, 0));
+            
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int k = 1; k <= given_k; ++k) {
+                    if(prevPick) {
+                        int pickCurr = nums[i] + nextRow[true][k - 1];
+                        int stopHere = 0;
+                        idealRow[prevPick][k] = max(pickCurr, stopHere);
+                    }
+                    else {
+                        int startHere = nums[i] + nextRow[true][k - 1];
+                        int startNext = nextRow[false][k];
+                        idealRow[prevPick][k] = max(startHere, startNext);
+                    }
+                }
+            }
+            
+            swap(nextRow, idealRow);
+        }
+        
+        return nextRow[false][given_k];
+    }
+        
+public:
+    int maxSumSubarrSizeK(vector<int>& nums, int k) {
+        n = nums.size();
+        return solveBy2DTable(nums, k);
     }
 };
 // Note: This solution will lead to time limit exceed
@@ -140,17 +155,17 @@ public:
 
 class BruteForce {
 public:
-    // Method to find the maximum sum of a subarray of size k, using brute force approach - O(N*K) & O(1)
-    int maximumSumSubarray(vector<int>& nums, int k) {
+    // Method to find maximum sum of a subarray of size k, using brute force approach - O(N*K) & O(1)
+    int maxSumSubarrSizeK(vector<int>& nums, int k) {
         int n = nums.size();
-        int windowSum, maxSum = 0;
+        int subarrSum, maxSum = 0;
         
         for(int i = 0; i <= n-k; ++i) {
-            windowSum = 0;
+            subarrSum = 0;
             for(int j = i; j < i+k; ++j) {
-                windowSum += nums[j];
+                subarrSum += nums[j];
             }
-            maxSum = max(maxSum, windowSum);
+            maxSum = max(maxSum, subarrSum);
         }
         
         return maxSum;
@@ -162,20 +177,22 @@ public:
 
 class SlidingWindow {
 public:
-    // Method to find the maximum sum of a subarray of size k, using sliding window technique - O(N*K) & O(1)
-    int maximumSumSubarray(vector<int>& nums, int k) {
+    // Method to find maximum sum of a subarray of size k, using sliding window technique - O(N) & O(1)
+    int maxSumSubarrSizeK(vector<int>& nums, int k) {
         int n = nums.size();
         int i = 0, j = 0;
-        int windowSum = 0, maxSum = 0;
+        int subarrSum = 0, maxSum = 0;
         
         while(j < n) {
-            windowSum += nums[j];
-            // If the window size is equal to k then update the result and shrink the window from left
+            subarrSum += nums[j];
+            
+            // If window size is equal to k then update result and shrink window from left
             if(j-i+1 == k) { 
-                maxSum = max(maxSum, windowSum);
-                windowSum -= nums[i]; 
+                maxSum = max(maxSum, subarrSum);
+                subarrSum -= nums[i]; 
                 i++;
             }
+            
             j++;
         }
         
