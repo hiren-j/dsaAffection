@@ -11,7 +11,7 @@ class TopDown {
         if(src == dest)
             return true;
 
-        for(int neighbor : adjList[src]) 
+        for(const int neighbor : adjList[src]) 
             if(canReachDestination(neighbor, dest)) 
                 return true;
 
@@ -26,7 +26,7 @@ class TopDown {
         if(dp[src][dest] != -1)
             return dp[src][dest];
 
-        for(int neighbor : adjList[src]) 
+        for(const int neighbor : adjList[src]) 
             if(canReachDestination_DP(neighbor, dest)) 
                 return dp[src][dest] = true;
 
