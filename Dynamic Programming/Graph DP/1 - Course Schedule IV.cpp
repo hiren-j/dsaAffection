@@ -61,8 +61,8 @@ class BottomUp {
 
     void markReachableCourses_DFS(int courseA, int mainCourse, vector<vector<bool>>& isPrequisite) {
         for(const int courseB : adjList[courseA]) {
-            if(isPrequisite[mainCourse][courseB])
-                continue;
+            if(isPrequisite[mainCourse][courseB]) // If precomputed
+                continue; 
             isPrequisite[mainCourse][courseB] = true;
             markReachableCourses_DFS(courseB, mainCourse, isPrequisite);
         }
@@ -76,8 +76,8 @@ class BottomUp {
             const int courseA = q.front(); q.pop();
 
             for(const int courseB : adjList[courseA]) {
-                if(isPrequisite[mainCourse][courseB])
-                    continue;
+                if(isPrequisite[mainCourse][courseB]) // If precomputed
+                    continue; 
                 isPrequisite[mainCourse][courseB] = true;
                 q.push(courseB);
             }
