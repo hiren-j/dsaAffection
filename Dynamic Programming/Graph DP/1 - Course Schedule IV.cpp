@@ -6,6 +6,7 @@ class TopDown {
     vector<vector<int>> adjList;
     vector<vector<int>> dp;
 
+    // O(Q*V*V) & O(V) : Where V = numCourses, Q = queries.size
     bool canReachDestination(int src, int dest) {
         if(src == dest)
             return true;
@@ -20,8 +21,22 @@ class TopDown {
         return dp[src][dest] = false;
     }
 
+    // O(Q+V*V) & O(V*V) : Where V = numCourses, Q = queries.size
+    bool canReachDestination_DP(int src, int dest) {
+        if(src == dest)
+            return true;
+
+        if(dp[src][dest] != -1)
+            return dp[src][dest];
+
+        for(int neighbor : adjList[src]) 
+            if(canReachDestination(neighbor, dest)) 
+                return dp[src][dest] = true;
+
+        return dp[src][dest] = false;
+    }
+
 public:
-    // O(V*V) & O(V*V) : Where V = numCourses
     vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
         adjList.resize(numCourses);
         
@@ -36,7 +51,7 @@ public:
         for(const auto& q : queries) {
             const int src  = q[0];
             const int dest = q[1];
-            answer.push_back(canReachDestination(src, dest));
+            answer.push_back(canReachDestination_DP(src, dest));
         }
         return answer;
     }
@@ -96,6 +111,15 @@ public:
     }
 };  
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+    NOTE: The time complexity of Bottom-up : O(V*(V+E))
+          is for the worst case, but on an average It's taking very less time, 
+          due to avoiding rechecking of pairs [isPrequisite[mainCourse][courseB]]. 
+          But still considering the majors I still need to consider the mentioned time.
+*/
+    
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Graph | Dynamic Programming | Depth-first-search | Breadth-first-search | Greedy
