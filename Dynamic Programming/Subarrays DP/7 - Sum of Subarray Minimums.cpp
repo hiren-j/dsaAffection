@@ -189,7 +189,7 @@ public:
             sumMins = (sumMins + numSubarrays * nums[i]) % MOD;
         }
 
-        return sumMins % MOD;
+        return sumMins;
     }
 };
 
