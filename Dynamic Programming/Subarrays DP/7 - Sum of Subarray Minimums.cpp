@@ -3,145 +3,145 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
+    int LIMIT;
     int n;
 
-    // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, int index, bool prevPick, int subarrMin) {
-        // Edge case: If elements are exhausted and previously if you've picked any subarray then return its minimum element otherwise 0 
-        if(index == n)
-            return (prevPick) ? subarrMin : 0;
+    // O(2^N) & O(N) : Where L = LIMIT
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrMin) {
+        if(i == n)
+            return (subarrMin == LIMIT) ? 0 : subarrMin;
 
         if(prevPick) {
-            int pickCurrSubarr = solveWithoutMemo(nums, index + 1, true, min(subarrMin, nums[index]));
-            int stopHere = subarrMin;
-            return (pickCurrSubarr + stopHere) % MOD;
+            int pickCurr = solveWithoutMemo(nums, i + 1, true, min(subarrMin, nums[i]));
+            int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
+            dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
         }
         else {
-            int startNewFromNext = solveWithoutMemo(nums, index + 1, false, subarrMin);
-            int startNewFromCurr = solveWithoutMemo(nums, index + 1, true, min(subarrMin, nums[index]));
-            return (startNewFromNext + startNewFromCurr) % MOD;
+            int startHere = solveWithoutMemo(nums, i + 1, true, min(subarrMin, nums[i]));
+            int startNext = solveWithoutMemo(nums, i + 1, false, subarrMin);
+            dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
         }
     }
-    // Note: This solution will lead to time-limit-exceed
+    // Note: This solution will lead to TLE
+    
+    // O(2*N*2*L) & O(N*2*L + N) : Where L = LIMIT
+    int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrMin) {
+        if(i == n)
+            return (subarrMin == LIMIT) ? 0 : subarrMin;
 
-    // O(2*N*2*M) & O(N*2*M + N)
-    int solveWithMemo(vector<vector<vector<int>>>& dp, vector<int>& nums, int index, bool prevPick, int subarrMin) {
-        // Edge case: If elements are exhausted and previously if you've picked any subarray then return its minimum element otherwise 0 
-        if(index == n)
-            return (prevPick) ? subarrMin : 0;
-
-        if(dp[index][prevPick][subarrMin] != -1)
-            return dp[index][prevPick][subarrMin];
+        if(dp[i][prevPick][subarrMin] != -1)
+            return dp[i][prevPick][subarrMin];
 
         if(prevPick) {
-            int pickCurrSubarr = solveWithMemo(dp, nums, index + 1, true, min(subarrMin, nums[index]));
-            int stopHere = subarrMin;
-            return dp[index][prevPick][subarrMin] = (pickCurrSubarr + stopHere) % MOD;
+            int pickCurr = solveWithMemo(dp, nums, i + 1, true, min(subarrMin, nums[i]));
+            int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
+            return dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
         }
         else {
-            int startNewFromNext = solveWithMemo(dp, nums, index + 1, false, subarrMin);
-            int startNewFromCurr = solveWithMemo(dp, nums, index + 1, true, min(subarrMin, nums[index]));
-            return dp[index][prevPick][subarrMin] = (startNewFromNext + startNewFromCurr) % MOD;
+            int startHere = solveWithMemo(dp, nums, i + 1, true, min(subarrMin, nums[i]));
+            int startNext = solveWithMemo(dp, nums, i + 1, false, subarrMin);
+            return dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
         }
     }
-    // Note: This solution will lead to memory-limit-exceed
+    // Note: This solution will lead to MLE
 
 public:
-    // Method to find the sum of minimum element of all the subarrays, using recursion with memoization - O(N*M) & O(N*M) : Where M is "maxElement".
+    // Method to find sum of minimum element of all subarrays, using recursion with memoization - O(N*L) & (N*L) : Where L = LIMIT
     int sumSubarrayMins(vector<int>& nums) {
+        LIMIT = *max_element(begin(nums), end(nums)) + 1; 
         n = nums.size();
-        int maxElement = *max_element(begin(nums), end(nums));
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(maxElement + 2, -1)));
-        return solveWithMemo(dp, nums, false, 0, maxElement + 1);
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(LIMIT + 1, -1)));
+        return solveWithMemo(dp, nums, 0, false, LIMIT);
     }
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
+    int LIMIT;
+    int n;
+    
+    // O(N*2*L) & O(N*2*L) : Where L = LIMIT
+    int solveBy3DTable(const vector<int>& nums) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(LIMIT + 1, -1)));
+
+        // Init edge case: if(i == n) then (subarrMin == LIMIT : 0)
+        dp[n][0][LIMIT] = 0;
+        dp[n][1][LIMIT] = 0;
+
+        // Init edge case: if(i == n) then (subarrMin == LIMIT ? subarrMin)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+            for(int subarrMin = 0; subarrMin < LIMIT; ++subarrMin) 
+                dp[n][prevPick][subarrMin] = subarrMin;
+
+        for(int i = n-1; i >= 0; --i) {
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int subarrMin = 0; subarrMin <= LIMIT; ++subarrMin) {
+                    if(prevPick) {
+                        int pickCurr = dp[i + 1][true][min(subarrMin, nums[i])];
+                        int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
+                        dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
+                    }
+                    else {
+                        int startHere = dp[i + 1][true]
+                        [min(subarrMin, nums[i])];
+                        int startNext = dp[i + 1][false][subarrMin];
+                        dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
+                    }   
+                }
+            }
+        }
+
+        return dp[0][false][LIMIT];
+    }
+
+    // O(N*2*L) & O(2*2*L) : Where L = LIMIT
+    int solveBy2DTable(const vector<int>& nums) {
+        vector<vector<int>> nextRow(2, vector<int>(LIMIT + 1, -1));
+
+        // Init edge case: if(i == n) then (subarrMin == LIMIT : 0)
+        nextRow[0][LIMIT] = 0;
+        nextRow[1][LIMIT] = 0;
+
+        // Init edge case: if(i == n) then (subarrMin == LIMIT ? subarrMin)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+            for(int subarrMin = 0; subarrMin < LIMIT; ++subarrMin) 
+                nextRow[prevPick][subarrMin] = subarrMin;
+
+        for(int i = n-1; i >= 0; --i) {
+            vector<vector<int>> idealRow(2, vector<int>(LIMIT + 1, -1));
+
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int subarrMin = 0; subarrMin <= LIMIT; ++subarrMin) {
+                    if(prevPick) {
+                        int pickCurr = nextRow[true][min(subarrMin, nums[i])];
+                        int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
+                        idealRow[prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
+                    }
+                    else {
+                        int startHere = nextRow[true][min(subarrMin, nums[i])];
+                        int startNext = nextRow[false][subarrMin];
+                        idealRow[prevPick][subarrMin] = (startHere + startNext) % MOD;
+                    }   
+                }
+            }
+
+            swap(nextRow, idealRow);
+        }
+
+        return nextRow[false][LIMIT];
+    }
 
 public:
-    // #1 Method to find the sum of minimum element of all the subarrays, using 3D tabulation - O(N*M) & O(N*M)
-    int sumSubarrayMins_V1(vector<int>& nums) {
-        int n = nums.size();
-        int maxElement = *max_element(begin(nums), end(nums));
-
-        // 3D DP table
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(maxElement + 2, -1)));
-
-        // Initialize the edge case (prevPick ? subarrMin)
-        for(int subarrMin = 1; subarrMin <= maxElement+1; ++subarrMin)
-            dp[n][1][subarrMin] = subarrMin;
-
-        // Initialize the edge case (prevPick : 0)
-        for(int subarrMin = 1; subarrMin <= maxElement+1; ++subarrMin)
-            dp[n][0][subarrMin] = 0;
-            
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrMin = 0; subarrMin <= maxElement+1; ++subarrMin) {
-                    if(prevPick) {
-                        int pickCurrSubarr = dp[index + 1][true][min(subarrMin, nums[index])];
-                        int stopHere = subarrMin;
-                        dp[index][prevPick][subarrMin] = (pickCurrSubarr + stopHere) % MOD;
-                    }
-                    else {
-                        int startNewFromNext = dp[index + 1][false][subarrMin];
-                        int startNewFromCurr = dp[index + 1][true][min(subarrMin, nums[index])];
-                        dp[index][prevPick][subarrMin] = (startNewFromNext + startNewFromCurr) % MOD;
-                    }
-                }
-            }
-        }
-
-        // Return the result value
-        return dp[0][false][maxElement + 1];
-    }
-
-    // #2 Method to find the sum of minimum element of all the subarrays, using 2D tabulation - O(N*M) & O(M)
-    int sumSubarrayMins_V2(vector<int>& nums) {
-        int n = nums.size();
-        int maxElement = *max_element(begin(nums), end(nums));
-
-        // 2D DP tables
-        vector<vector<int>> nextRow(2, vector<int>(maxElement + 2, -1));
-        vector<vector<int>> idealRow(2, vector<int>(maxElement + 2, -1));
-
-        // Initialize the edge case (prevPick ? subarrMin)
-        for(int subarrMin = 1; subarrMin <= maxElement+1; ++subarrMin)
-            nextRow[1][subarrMin] = subarrMin;
-
-        // Initialize the edge case (prevPick : 0)
-        for(int subarrMin = 1; subarrMin <= maxElement+1; ++subarrMin)
-            nextRow[0][subarrMin] = 0;
-        
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrMin = 0; subarrMin <= maxElement+1; ++subarrMin) {
-                    if(prevPick) {
-                        int pickCurrSubarr = nextRow[true][min(subarrMin, nums[index])];
-                        int stopHere = subarrMin;
-                        idealRow[prevPick][subarrMin] = (pickCurrSubarr + stopHere) % MOD;
-                    }
-                    else {
-                        int startNewFromNext = nextRow[false][subarrMin];
-                        int startNewFromCurr = nextRow[true][min(subarrMin, nums[index])];
-                        idealRow[prevPick][subarrMin] = (startNewFromNext + startNewFromCurr) % MOD;
-                    }
-                }
-            }
-            nextRow = idealRow;
-        }
-
-        // Return the result value
-        return nextRow[false][maxElement + 1];
+    int sumSubarrayMins(vector<int>& nums) {
+        LIMIT = *max_element(begin(nums), end(nums)) + 1; 
+        n = nums.size();
+        return solveBy2DTable(nums);
     }
 };
-// Note: This solution will lead to time-limit-exceed
+// Note: This solution will lead to TLE
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
