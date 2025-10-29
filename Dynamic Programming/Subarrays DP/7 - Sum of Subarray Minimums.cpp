@@ -85,8 +85,7 @@ class BottomUp {
                         dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
                     }
                     else {
-                        int startHere = dp[i + 1][true]
-                        [min(subarrMin, nums[i])];
+                        int startHere = dp[i + 1][true][min(subarrMin, nums[i])];
                         int startNext = dp[i + 1][false][subarrMin];
                         dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
                     }   
