@@ -8,7 +8,7 @@ class TopDown {
 
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrLen, int subarrSum) {
         if(i == n)
-            return (subarrLen % 2 != 0) ? subarrSum : 0;
+            return (subarrLen % 2 != 0) ? subarrSum : 0; // If odd length subarray then return its sum
 
         if(prevPick) {
             int pickCurr = solveWithoutMemo(nums, i + 1, true, subarrLen + 1, subarrSum + nums[i]);
@@ -24,7 +24,7 @@ class TopDown {
 
     int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrLen, int subarrSum) {
         if(i == n)
-            return (subarrLen % 2 != 0) ? subarrSum : 0;
+            return (subarrLen % 2 != 0) ? subarrSum : 0; // If odd length subarray then return its sum
 
         if(dp[i][prevPick][subarrLen][subarrSum] != -1)
             return dp[i][prevPick][subarrLen][subarrSum];
@@ -60,6 +60,7 @@ class BottomUp {
     int solveBy4DTable(const vector<int>& nums) {
         vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, -1))));
 
+        // Init edge case
         for(int prevPick = 0; prevPick <= 1; ++prevPick)
             for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
                 for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
@@ -92,6 +93,7 @@ class BottomUp {
     int solveBy4DEnhanced(const vector<int>& nums) {
         vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0))));
 
+        // Init edge case
         for(int prevPick = 0; prevPick <= 1; ++prevPick)
             for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
                 if(subarrLen % 2 != 0)
@@ -125,6 +127,7 @@ class BottomUp {
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> nextRow(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0)));
 
+        // Init edge case
         for(int prevPick = 0; prevPick <= 1; ++prevPick)
             for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
                 if(subarrLen % 2 != 0)
