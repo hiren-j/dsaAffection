@@ -11,14 +11,11 @@ class TopDown {
         if(src == dest)
             return true;
 
-        if(dp[src][dest] != -1)
-            return dp[src][dest];
-
         for(int neighbor : adjList[src]) 
             if(canReachDestination(neighbor, dest)) 
-                return dp[src][dest] = true;
+                return true;
 
-        return dp[src][dest] = false;
+        return false;
     }
 
     // O(Q+V*V) & O(V*V) : Where V = numCourses, Q = queries.size
