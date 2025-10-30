@@ -64,8 +64,7 @@ class BottomUp {
     int solveBy4DTable(const vector<int>& nums) {
         vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, -1))));
 
-        // Init edge case
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
                 for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
                     dp[n][prevPick][subarrLen][subarrSum] = (subarrLen % 2 != 0) ? subarrSum : 0;
@@ -98,8 +97,7 @@ class BottomUp {
     int solveBy4DEnhanced(const vector<int>& nums) {
         vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0))));
 
-        // Init edge case
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
                 if(subarrLen % 2 != 0)
                     for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
@@ -133,8 +131,7 @@ class BottomUp {
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> nextRow(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0)));
 
-        // Init edge case
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
                 if(subarrLen % 2 != 0)
                     for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
