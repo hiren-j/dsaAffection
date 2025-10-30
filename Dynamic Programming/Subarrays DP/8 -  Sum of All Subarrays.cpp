@@ -6,6 +6,7 @@ class TopDown {
     int arrSum;
     int n;
     
+    // O(2^N) & O(N)
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrSum) {
         if(i == n)
             return subarrSum;
@@ -21,7 +22,8 @@ class TopDown {
             return startHere + startNext;
         }
     }
-    
+
+    // O(2*N*2*AS) & O(N*2*AS + N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrSum) {
         if(i == n)
             return subarrSum;
@@ -42,6 +44,7 @@ class TopDown {
     }
     
 public:
+    // Method to find sum of all subarrays, using recursion with memoization - O(N*AS) & O(N*AS) : Where AS = arrSum
     int subarraySum(vector<int>& nums) {
         n = nums.size();
         arrSum = accumulate(begin(nums), end(nums), 0);
@@ -55,11 +58,12 @@ public:
 class BottomUp {
     int arrSum;
     int n;
-    
+
+    // O(N*2*AS) & O(N*2*AS) : Where AS = arrSum
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(arrSum + 1, -1)));
         
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
                 dp[n][prevPick][subarrSum] = subarrSum;
             
@@ -85,10 +89,11 @@ class BottomUp {
         return dp[0][false][0];
     }
     
+    // O(N*2*AS) & O(2*2*AS) : Where AS = arrSum
     int solveBy2DTable(const vector<int>& nums) {
         vector<vector<int>> nextRow(2, vector<int>(arrSum + 1, -1));
         
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
                 nextRow[prevPick][subarrSum] = subarrSum;
             
