@@ -6,6 +6,7 @@ class TopDown {
     int arrSum;
     int n;
 
+    // O(2^N) & O(N)
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrLen, int subarrSum) {
         if(i == n)
             return (subarrLen % 2 != 0) ? subarrSum : 0; // If odd length subarray then return its sum
@@ -22,6 +23,7 @@ class TopDown {
         }
     }
 
+    // O(2*N*2*N*AS) & O(N*2*N*AS + N)
     int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrLen, int subarrSum) {
         if(i == n)
             return (subarrLen % 2 != 0) ? subarrSum : 0; // If odd length subarray then return its sum
@@ -42,6 +44,7 @@ class TopDown {
     }
 
 public:
+    // Method to find sum of odd length subarrays, using recursion with memoization - O(N*N*AS) & O(N*N*AS) : Where AS = arrSum
     int sumOddLengthSubarrays(vector<int>& nums) {
         n = nums.size();
         arrSum = accumulate(begin(nums), end(nums), 0);
@@ -57,6 +60,7 @@ class BottomUp {
     int arrSum;
     int n;
 
+    // O(N*2*N*AS) & O(N*2*N*AS) : Where AS = arrSum
     int solveBy4DTable(const vector<int>& nums) {
         vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, -1))));
 
@@ -90,6 +94,7 @@ class BottomUp {
         return dp[0][false][0][0];
     }
 
+    // O(N*2*N*AS) & O(N*2*N*AS) : Where AS = arrSum
     int solveBy4DEnhanced(const vector<int>& nums) {
         vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0))));
 
@@ -124,6 +129,7 @@ class BottomUp {
         return dp[0][false][0][0];
     }
 
+    // O(N*2*N*AS) & O(2*2*N*AS) : Where AS = arrSum
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> nextRow(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0)));
 
