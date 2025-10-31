@@ -2,7 +2,6 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-// MLE TLE
 class TopDown {
     int n;
 
@@ -30,6 +29,7 @@ class TopDown {
             return max(startHere, startNext);
         }
     }
+    // Note: This solution could lead to TLE
 
     int solveWithMemo(vector<vector<vector<int>>>& dp, const string& s, int i, bool prevPick, int stackLen) {
         if(i == n)
@@ -54,6 +54,7 @@ class TopDown {
             return dp[i][prevPick][stackLen] = max(startHere, startNext);
         }
     }
+    // Note: This solution could lead to MLE
 
 public:
     int longestValidParentheses(string& s) {
@@ -175,6 +176,7 @@ public:
         return solveBy2DTable(s);
     }
 };
+// Note: This solution could lead to MLE
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
