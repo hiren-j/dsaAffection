@@ -1,5 +1,9 @@
+// Code to find the the length of the longest valid (well-formed) parentheses substring ~ coded by Hiren
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 // MLE TLE
-class Solution {
+class TopDown {
     int n;
 
     int changeLen(char ch, int stackLen) {
@@ -49,6 +53,23 @@ class Solution {
             int startNext = solveWithMemo(dp, s, i + 1, false, stackLen);
             return dp[i][prevPick][stackLen] = max(startHere, startNext);
         }
+    }
+
+public:
+    int longestValidParentheses(string& s) {
+        n = s.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        return solveWithMemo(dp, s, 0, false, 0);
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+    int n;
+
+    int changeLen(char ch, int stackLen) {
+        return ch == '(' ? stackLen + 1 : stackLen - 1;
     }
 
     int solveBy3DTable(const string& s) {
@@ -151,8 +172,11 @@ class Solution {
 public:
     int longestValidParentheses(string& s) {
         n = s.size();
-        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // int maxLen = solveWithMemo(dp, s, 0, false, 0);
         return solveBy2DTable(s);
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Array | Dynamic Programming | String
+Link  : https://leetcode.com/problems/longest-valid-parentheses/
