@@ -9,16 +9,19 @@ class TopDown {
         return ch == '(' ? stackLen + 1 : stackLen - 1;
     }
 
+    // O(2^N) & O(N)
     int solveWithoutMemo(const string& s, int i, bool prevPick, int stackLen) {
+        // Edge case: If you've seen a subarray and stack length is 0 then it's a valid substring return 0 as indication
         if(i == n)
-            return (stackLen == 0) ? 0 : INT_MIN;
+            return (stackLen == 0) ? 0 : INT_MIN; 
 
+        // Edge case: If stack length is negative then it's not valid substring return INT_MIN as indication
         if(stackLen < 0)
             return INT_MIN;
 
         if(prevPick) {
             int pickCurr = solveWithoutMemo(s, i + 1, true, changeLen(s[i], stackLen));
-            if(pickCurr != INT_MIN) pickCurr++;
+            if(pickCurr != INT_MIN) pickCurr++; 
             int stopHere = (stackLen == 0) ? 0 : INT_MIN;
             return max(pickCurr, stopHere);
         }
@@ -31,10 +34,13 @@ class TopDown {
     }
     // Note: This solution could lead to TLE
 
+    // O(2*N*2*N) & O(N*2*N + N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const string& s, int i, bool prevPick, int stackLen) {
+        // Edge case: If you've seen a subarray and stack length is 0 then it's a valid substring return 0 as indication
         if(i == n)
             return (stackLen == 0) ? 0 : INT_MIN;
 
+        // Edge case: If stack length is negative then it's not valid substring return INT_MIN as indication
         if(stackLen < 0)
             return INT_MIN;
         
@@ -57,6 +63,7 @@ class TopDown {
     // Note: This solution could lead to MLE
 
 public:
+    // Method to find length of longest valid parentheses substring, using recursion with memoization - O(N*N) & O(N*N)
     int longestValidParentheses(string& s) {
         n = s.size();
         vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
@@ -73,11 +80,15 @@ class BottomUp {
         return ch == '(' ? stackLen + 1 : stackLen - 1;
     }
 
+    // O(N*2*N) & O(N*2*N)
     int solveBy3DTable(const string& s) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+
+        // Init edge case: if(i == n) then (stackLen == 0) ? 0
         dp[n][0][0] = 0;
         dp[n][1][0] = 0;
 
+        // Init edge case: if(i == n) then (stackLen == 0) : INT_MIN
         for(int i = 0; i <= n; ++i)
             for(int prevPick = 0; prevPick <= 1; ++prevPick)
                 for(int stackLen = 0; stackLen <= n; ++stackLen)
@@ -108,8 +119,11 @@ class BottomUp {
         return dp[0][false][0];
     }
 
+    // O(N*2*N) & O(N*2*N)
     int solveBy3DEnhanced(const string& s) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, INT_MIN)));
+        
+        // Init edge case: if(i == n) then (stackLen == 0) ? 0
         dp[n][0][0] = 0;
         dp[n][1][0] = 0;
 
@@ -137,8 +151,11 @@ class BottomUp {
         return dp[0][false][0];
     }
 
+    // O(N*2*N) & O(2*2*N)
     int solveBy2DTable(const string& s) {
         vector<vector<int>> nextRow(2, vector<int>(n + 1, INT_MIN));
+        
+        // Init edge case: if(i == n) then (stackLen == 0) ? 0
         nextRow[0][0] = 0;
         nextRow[1][0] = 0;
 
