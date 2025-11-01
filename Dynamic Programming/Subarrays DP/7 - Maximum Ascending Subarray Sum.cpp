@@ -168,6 +168,7 @@ public:
 class Greedy {
     int n;
 
+    // O(N*N) & O(1)
     int bruteForce(const vector<int>& nums) {
         int maxSum = 0;
 
@@ -182,6 +183,7 @@ class Greedy {
         return maxSum;
     }
 
+    // O(N) & O(1)
     int traceStrictlyIncreasingSubarrs(const vector<int>& nums) {
         int subarrSum = 0;
         int maxSum = 0;
