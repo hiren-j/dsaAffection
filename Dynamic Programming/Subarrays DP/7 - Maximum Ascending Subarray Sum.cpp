@@ -208,5 +208,29 @@ public:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+class SlidingWindow {
+public:
+    // O(N) & O(1)
+    int maxAscendingSum(vector<int>& nums) {
+        int n = nums.size();
+        int i = 0, j = 0;
+        int subArraySum = 0, maxSum = 0;
+
+        while(j < n) {
+            subArraySum += nums[j];
+            while(i < j && (j == i || nums[j - 1] >= nums[j])) {
+                subArraySum -= nums[i];
+                i++;
+            }
+            maxSum = max(maxSum, subArraySum);
+            j++;
+        }
+
+        return maxSum;
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 Topics: Array | Greedy | Dynamic Programming
 Link  : https://leetcode.com/problems/maximum-ascending-subarray-sum/description/
