@@ -5,6 +5,7 @@
 class TopDown {
     int n;
 
+    // O(2^N) & O(N)
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int prev_i) {
         if(i == n)
             return 0;
@@ -25,6 +26,7 @@ class TopDown {
         }
     }
 
+    // O(2*N*2*N) & O(N*2*N + N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int prev_i) {
         if(i == n)
             return 0;
@@ -49,6 +51,7 @@ class TopDown {
     }
 
 public:
+    // Method to find maximum sum of strictly increasing subarray, using recursion with memoization - O(N*N) & O(N*N)
     int maxAscendingSum(vector<int>& nums) {
         n = nums.size(); 
         vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
@@ -61,6 +64,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(N*2*N) & O(N*2*N)
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
         
@@ -92,6 +96,7 @@ class BottomUp {
         return dp[0][false][n];
     }
 
+    // O(N*2*N) & O(N*2*N)
     int solveBy3DEnhanced(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, 0)));
 
@@ -119,6 +124,7 @@ class BottomUp {
         return dp[0][false][n];
     }
 
+    // O(N*2*N) & O(2*2*N)
     int solveBy2DTable(const vector<int>& nums) {
         vector<vector<int>> nextRow(2, vector<int>(n + 1, 0));
 
