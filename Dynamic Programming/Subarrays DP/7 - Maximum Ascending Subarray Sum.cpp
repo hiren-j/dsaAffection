@@ -1,4 +1,4 @@
-class Solution {
+class TopDown {
     int n;
 
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int prev_i) {
@@ -43,6 +43,18 @@ class Solution {
             return dp[i][prevPick][prev_i] = max(startHere, startNext);
         }
     }
+
+public:
+    int maxAscendingSum(vector<int>& nums) {
+        n = nums.size(); 
+        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // return solveWithMemo(dp, nums, 0, false, n);
+        return traceStrictlyIncreasingSubarrs(nums);
+    }
+};
+
+class BottomUp {
+    int n;
 
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
@@ -133,6 +145,18 @@ class Solution {
         return nextRow[false][n];
     }
 
+public:
+    int maxAscendingSum(vector<int>& nums) {
+        n = nums.size(); 
+        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // return solveWithMemo(dp, nums, 0, false, n);
+        return traceStrictlyIncreasingSubarrs(nums);
+    }
+};
+
+class Greedy {
+    int n;
+
     int bruteForce(const vector<int>& nums) {
         int maxSum = 0;
 
@@ -170,8 +194,6 @@ class Solution {
 public:
     int maxAscendingSum(vector<int>& nums) {
         n = nums.size(); 
-        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // return solveWithMemo(dp, nums, 0, false, n);
         return traceStrictlyIncreasingSubarrs(nums);
     }
 };
