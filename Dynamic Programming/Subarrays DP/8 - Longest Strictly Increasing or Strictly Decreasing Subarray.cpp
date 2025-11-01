@@ -200,5 +200,5 @@ public:
     }
 };
 
-Topics: Array | Dynamic Programming
+Topics: Array | Greedy | Dynamic Programming
 Link  : https://leetcode.com/problems/longest-strictly-increasing-or-strictly-decreasing-subarray/description/
