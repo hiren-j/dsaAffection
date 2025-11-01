@@ -147,7 +147,7 @@ class Solution {
         return maxSum;
     }
 
-    int traceStrictlyIncSubarrs(const vector<int>& nums) {
+    int traceStrictlyIncreasingSubarrs(const vector<int>& nums) {
         int subarrSum = 0;
         int maxSum = 0;
         int i = 0;
@@ -172,6 +172,11 @@ public:
         n = nums.size(); 
         // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
         // return solveWithMemo(dp, nums, 0, false, n);
-        return traceStrictlyIncSubarrs(nums);
+        return traceStrictlyIncreasingSubarrs(nums);
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Array | Greedy | Dynamic Programming
+Link  : https://leetcode.com/problems/maximum-ascending-subarray-sum/description/
