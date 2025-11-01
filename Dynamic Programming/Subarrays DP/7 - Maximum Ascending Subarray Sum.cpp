@@ -1,3 +1,7 @@
+// Code to find the maximum possible sum of a strictly increasing subarray ~ coded by Hiren
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     int n;
 
@@ -47,11 +51,12 @@ class TopDown {
 public:
     int maxAscendingSum(vector<int>& nums) {
         n = nums.size(); 
-        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // return solveWithMemo(dp, nums, 0, false, n);
-        return traceStrictlyIncreasingSubarrs(nums);
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        return solveWithMemo(dp, nums, 0, false, n);
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     int n;
@@ -148,11 +153,11 @@ class BottomUp {
 public:
     int maxAscendingSum(vector<int>& nums) {
         n = nums.size(); 
-        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // return solveWithMemo(dp, nums, 0, false, n);
-        return traceStrictlyIncreasingSubarrs(nums);
+        return solveBy2DTable(nums);
     }
 };
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Greedy {
     int n;
