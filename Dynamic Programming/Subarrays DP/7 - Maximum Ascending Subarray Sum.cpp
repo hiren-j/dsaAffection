@@ -181,15 +181,15 @@ class Greedy {
     // O(N) & O(1)
     int SlidingWindow(const vector<int>& nums) {
         int i = 0, j = 0;
-        int subArraySum = 0, maxSum = 0;
+        int subarrSum = 0, maxSum = 0;
 
         while(j < n) {
-            subArraySum += nums[j];
+            subarrSum += nums[j];
             while(i < j && (j == i || nums[j - 1] >= nums[j])) {
-                subArraySum -= nums[i];
+                subarrSum -= nums[i];
                 i++;
             }
-            maxSum = max(maxSum, subArraySum);
+            maxSum = max(maxSum, subarrSum);
             j++;
         }
 
