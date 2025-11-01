@@ -1,0 +1,177 @@
+class Solution {
+    int n;
+
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int prev_i) {
+        if(i == n)
+            return 0;
+
+        if(prevPick) {
+            int stopHere = 0;
+            int pickCurr = (nums[prev_i] < nums[i]) 
+                            ? solveWithoutMemo(nums, i + 1, true, i)
+                            : INT_MIN;
+            if(pickCurr != INT_MIN) pickCurr += nums[i];
+            return max(pickCurr, stopHere);
+        }
+        else {
+            int startNext = solveWithoutMemo(nums, i + 1, false, prev_i);
+            int startHere = solveWithoutMemo(nums, i + 1, true, i);
+            if(startHere != INT_MIN) startHere += nums[i];
+            return max(startHere, startNext);
+        }
+    }
+
+    int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int prev_i) {
+        if(i == n)
+            return 0;
+
+        if(dp[i][prevPick][prev_i] != -1)
+            return dp[i][prevPick][prev_i];
+
+        if(prevPick) {
+            int stopHere = 0;
+            int pickCurr = (nums[prev_i] < nums[i]) 
+                            ? solveWithMemo(dp, nums, i + 1, true, i)
+                            : INT_MIN;
+            if(pickCurr != INT_MIN) pickCurr += nums[i];
+            return dp[i][prevPick][prev_i] = max(pickCurr, stopHere);
+        }
+        else {
+            int startNext = solveWithMemo(dp, nums, i + 1, false, prev_i);
+            int startHere = solveWithMemo(dp, nums, i + 1, true, i);
+            if(startHere != INT_MIN) startHere += nums[i];
+            return dp[i][prevPick][prev_i] = max(startHere, startNext);
+        }
+    }
+
+    int solveBy3DTable(const vector<int>& nums) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        
+        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+            for(int prev_i = 0; prev_i <= n; ++prev_i)
+                dp[n][prevPick][prev_i] = 0;
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int prev_i = 0; prev_i <= n; ++prev_i) {
+                    if(prevPick) {
+                        int stopHere = 0;
+                        int pickCurr = (prev_i < n && nums[prev_i] < nums[i]) 
+                                        ? dp[i + 1][true][i]
+                                        : INT_MIN;
+                        if(pickCurr != INT_MIN) pickCurr += nums[i];
+                        dp[i][prevPick][prev_i] = max(pickCurr, stopHere);
+                    }
+                    else {
+                        int startNext = dp[i + 1][false][prev_i];
+                        int startHere = dp[i + 1][true][i];
+                        if(startHere != INT_MIN) startHere += nums[i];
+                        dp[i][prevPick][prev_i] = max(startHere, startNext);
+                    }    
+                }
+            }
+        }
+
+        return dp[0][false][n];
+    }
+
+    int solveBy3DEnhanced(const vector<int>& nums) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, 0)));
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int prev_i = 0; prev_i <= n; ++prev_i) {
+                    if(prevPick) {
+                        int stopHere = 0;
+                        int pickCurr = (prev_i < n && nums[prev_i] < nums[i]) 
+                                        ? dp[i + 1][true][i]
+                                        : INT_MIN;
+                        if(pickCurr != INT_MIN) pickCurr += nums[i];
+                        dp[i][prevPick][prev_i] = max(pickCurr, stopHere);
+                    }
+                    else {
+                        int startNext = dp[i + 1][false][prev_i];
+                        int startHere = dp[i + 1][true][i];
+                        if(startHere != INT_MIN) startHere += nums[i];
+                        dp[i][prevPick][prev_i] = max(startHere, startNext);
+                    }    
+                }
+            }
+        }
+
+        return dp[0][false][n];
+    }
+
+    int solveBy2DTable(const vector<int>& nums) {
+        vector<vector<int>> nextRow(2, vector<int>(n + 1, 0));
+
+        for(int i = n - 1; i >= 0; --i) {
+            vector<vector<int>> idealRow(2, vector<int>(n + 1, 0));  
+
+            for(int prevPick = 1; prevPick >= 0; --prevPick) {
+                for(int prev_i = 0; prev_i <= n; ++prev_i) {
+                    if(prevPick) {
+                        int stopHere = 0;
+                        int pickCurr = (prev_i < n && nums[prev_i] < nums[i]) 
+                                        ? nextRow[true][i]
+                                        : INT_MIN;
+                        if(pickCurr != INT_MIN) pickCurr += nums[i];
+                        idealRow[prevPick][prev_i] = max(pickCurr, stopHere);
+                    }
+                    else {
+                        int startNext = nextRow[false][prev_i];
+                        int startHere = nextRow[true][i];
+                        if(startHere != INT_MIN) startHere += nums[i];
+                        idealRow[prevPick][prev_i] = max(startHere, startNext);
+                    }    
+                }
+            }
+
+            swap(nextRow, idealRow);
+        }
+
+        return nextRow[false][n];
+    }
+
+    int bruteForce(const vector<int>& nums) {
+        int maxSum = 0;
+
+        for(int i = 0; i < n; ++i) {
+            int subarrSum = nums[i];
+            for(int j = i + 1; (j < n && nums[j - 1] < nums[j]); ++j) {
+                subarrSum += nums[j];
+            }
+            maxSum = max(maxSum, subarrSum);
+        }
+
+        return maxSum;
+    }
+
+    int traceStrictlyIncSubarrs(const vector<int>& nums) {
+        int subarrSum = 0;
+        int maxSum = 0;
+        int i = 0;
+
+        while(i < n) {
+            if(i == 0 || nums[i - 1] < nums[i]) {
+                subarrSum += nums[i];
+            }
+            else {
+                maxSum = max(maxSum, subarrSum);
+                subarrSum = nums[i];
+            }
+            i++;
+        }
+
+        maxSum = max(maxSum, subarrSum);
+        return maxSum;
+    }
+
+public:
+    int maxAscendingSum(vector<int>& nums) {
+        n = nums.size(); 
+        // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // return solveWithMemo(dp, nums, 0, false, n);
+        return traceStrictlyIncSubarrs(nums);
+    }
+};
