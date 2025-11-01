@@ -179,7 +179,7 @@ class Greedy {
     }
 
     // O(N) & O(1)
-    int SlidingWindow(const vector<int>& nums) {
+    int slidingWindow(const vector<int>& nums) {
         int i = 0, j = 0;
         int subarrSum = 0, maxSum = 0;
 
