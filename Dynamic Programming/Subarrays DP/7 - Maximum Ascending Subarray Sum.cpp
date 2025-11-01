@@ -20,8 +20,7 @@ class TopDown {
         }
         else {
             int startNext = solveWithoutMemo(nums, i + 1, false, prev_i);
-            int startHere = solveWithoutMemo(nums, i + 1, true, i);
-            if(startHere != INT_MIN) startHere += nums[i];
+            int startHere = nums[i] + solveWithoutMemo(nums, i + 1, true, i);
             return max(startHere, startNext);
         }
     }
@@ -44,8 +43,7 @@ class TopDown {
         }
         else {
             int startNext = solveWithMemo(dp, nums, i + 1, false, prev_i);
-            int startHere = solveWithMemo(dp, nums, i + 1, true, i);
-            if(startHere != INT_MIN) startHere += nums[i];
+            int startHere = nums[i] + solveWithMemo(dp, nums, i + 1, true, i);
             return dp[i][prevPick][prev_i] = max(startHere, startNext);
         }
     }
@@ -85,8 +83,7 @@ class BottomUp {
                     }
                     else {
                         int startNext = dp[i + 1][false][prev_i];
-                        int startHere = dp[i + 1][true][i];
-                        if(startHere != INT_MIN) startHere += nums[i];
+                        int startHere = nums[i] + dp[i + 1][true][i];
                         dp[i][prevPick][prev_i] = max(startHere, startNext);
                     }    
                 }
@@ -113,8 +110,7 @@ class BottomUp {
                     }
                     else {
                         int startNext = dp[i + 1][false][prev_i];
-                        int startHere = dp[i + 1][true][i];
-                        if(startHere != INT_MIN) startHere += nums[i];
+                        int startHere = nums[i] + dp[i + 1][true][i];
                         dp[i][prevPick][prev_i] = max(startHere, startNext);
                     }    
                 }
@@ -143,8 +139,7 @@ class BottomUp {
                     }
                     else {
                         int startNext = nextRow[false][prev_i];
-                        int startHere = nextRow[true][i];
-                        if(startHere != INT_MIN) startHere += nums[i];
+                        int startHere = nums[i] + nextRow[true][i];
                         idealRow[prevPick][prev_i] = max(startHere, startNext);
                     }    
                 }
