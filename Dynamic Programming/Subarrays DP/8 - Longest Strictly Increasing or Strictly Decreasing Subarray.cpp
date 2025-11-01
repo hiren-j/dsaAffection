@@ -199,3 +199,6 @@ public:
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
+
+Topics: Array | Dynamic Programming
+Link  : https://leetcode.com/problems/longest-strictly-increasing-or-strictly-decreasing-subarray/description/
