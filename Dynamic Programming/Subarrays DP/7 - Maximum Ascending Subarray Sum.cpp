@@ -199,8 +199,8 @@ class Greedy {
             }
             i++;
         }
+        maxSum = max(maxSum, subarrSum); // Don't miss the last subarray ending at index n - 1
 
-        maxSum = max(maxSum, subarrSum);
         return maxSum;
     }
 
