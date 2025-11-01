@@ -1,4 +1,4 @@
-🎉 **Title:** Blindfolded Solving & Creating Patterns In Rubik Pyramid Through DSA (Real World Problem) : Creating Patterns Without Even Looking! 💡🎯🔥
+🎉 **Title:** Blindfolded Solving & Creating Patterns In Rubik Pyramid Through DSA - Best Problem I've Ever Solved (Real World Problem)💡🎯🔥
 
 🧩 **Initial Note:** This video showcases why DSA is my all-time favorite subject. Programming helped me improve my problem-solving skills, and it was these skills that allowed me to solve this real-world problem and I feel its the best problem that I have ever solved! Literally a huge thanks to DSA for sharpening my mind and enabling me to tackle such challenge! And I specially want to thank [LeetCode](https://leetcode.com/u/leetcode/) for providing such a great platform to improve problem-solving skills.
 
