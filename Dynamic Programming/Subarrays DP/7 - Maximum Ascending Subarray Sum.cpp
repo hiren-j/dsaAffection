@@ -68,7 +68,7 @@ class BottomUp {
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
         
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
+        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int prev_i = 0; prev_i <= n; ++prev_i)
                 dp[n][prevPick][prev_i] = 0;
 
