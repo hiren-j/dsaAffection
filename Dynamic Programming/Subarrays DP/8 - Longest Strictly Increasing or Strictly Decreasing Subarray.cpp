@@ -52,12 +52,10 @@ class TopDown {
 public:
     int longestMonotonicSubarray(vector<int>& nums) {
         n = nums.size();
-        // vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
-        // int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
-        int maxLenStrictlyInc = traceSpecifiedSubarrs(nums, true);
-        int maxLenStrictlyDec = traceSpecifiedSubarrs(nums, false);
+        vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
+        int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
@@ -164,12 +162,8 @@ class BottomUp {
 public:
     int longestMonotonicSubarray(vector<int>& nums) {
         n = nums.size();
-        // vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
-        // int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
-        int maxLenStrictlyInc = traceSpecifiedSubarrs(nums, true);
-        int maxLenStrictlyDec = traceSpecifiedSubarrs(nums, false);
+        int maxLenStrictlyInc = solveBy2DTable(nums, true);
+        int maxLenStrictlyDec = solveBy2DTable(nums, false);
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
@@ -236,10 +230,6 @@ class Greedy {
 public:
     int longestMonotonicSubarray(vector<int>& nums) {
         n = nums.size();
-        // vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        // int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
-        // int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
         int maxLenStrictlyInc = traceSpecifiedSubarrs(nums, true);
         int maxLenStrictlyDec = traceSpecifiedSubarrs(nums, false);
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
