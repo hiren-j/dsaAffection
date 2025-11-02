@@ -142,7 +142,6 @@ class BottomUp {
     }
 
 public:
-    // Method to find the maximum sum of any subarray, using recursion with memoization - O(N) & O(N)
     int maxSubarraySumCircular(vector<int>& nums) {
         n = nums.size();
         int maxSum = solveInPlace(nums, true);
@@ -160,7 +159,7 @@ public:
 
 class KadaneAlgorithm {
 public:
-    // Method to find the maximum sum of any subarray - O(N) & O(1)
+    // O(N) & O(1)
     int maxSubarraySumCircular(vector<int>& nums) {
         int totalSum = 0;
         int maxSum = INT_MIN, maxEnding = 0; // Tracks maximum sum of a subarray among all the subarrays ending at an index
