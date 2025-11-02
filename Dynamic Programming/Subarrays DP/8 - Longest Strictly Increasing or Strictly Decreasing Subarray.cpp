@@ -1,4 +1,4 @@
-class Solution {
+class TopDown {
     int n;
 
     bool isInc(int num1, int num2) {
@@ -47,6 +47,29 @@ class Solution {
             int startHere = 1 + solveWithMemo(dp, nums, i + 1, true, i, findInc);
             return dp[i][prevPick][prev_i] = max(startNext, startHere);
         }
+    }
+
+public:
+    int longestMonotonicSubarray(vector<int>& nums) {
+        n = nums.size();
+        // vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
+        // int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
+        int maxLenStrictlyInc = traceSpecifiedSubarrs(nums, true);
+        int maxLenStrictlyDec = traceSpecifiedSubarrs(nums, false);
+        return max(maxLenStrictlyInc, maxLenStrictlyDec);
+    }
+};
+
+class BottomUp {
+    int n;
+
+    bool isInc(int num1, int num2) {
+        return num1 < num2;
+    }
+    bool isDec(int num1, int num2) {
+        return num1 > num2;
     }
 
     int solveBy3DTable(const vector<int>& nums, bool findInc) {
@@ -136,6 +159,29 @@ class Solution {
         }
 
         return nextRow[false][n - 1];
+    }
+
+public:
+    int longestMonotonicSubarray(vector<int>& nums) {
+        n = nums.size();
+        // vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        // int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
+        // int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
+        int maxLenStrictlyInc = traceSpecifiedSubarrs(nums, true);
+        int maxLenStrictlyDec = traceSpecifiedSubarrs(nums, false);
+        return max(maxLenStrictlyInc, maxLenStrictlyDec);
+    }
+};
+
+class Greedy {
+    int n;
+
+    bool isInc(int num1, int num2) {
+        return num1 < num2;
+    }
+    bool isDec(int num1, int num2) {
+        return num1 > num2;
     }
 
     int bruteForce(const vector<int>& nums, bool findInc) {
