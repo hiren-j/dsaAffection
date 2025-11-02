@@ -156,7 +156,6 @@ class BottomUp {
     }
 
 public:
-    // Method to find the maximum cost among all substrings, using tabulation :- 
     int maximumCostSubstring(string& s, string& chars, vector<int>& vals) {
         n = s.size();
         values.resize(26);
