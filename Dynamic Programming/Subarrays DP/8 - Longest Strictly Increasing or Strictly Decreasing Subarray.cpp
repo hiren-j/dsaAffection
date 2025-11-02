@@ -1,3 +1,7 @@
+// Code to find length of the longest strictly increasing or strictly decreasing subarray ~ coded by Hiren
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     int n;
 
@@ -8,6 +12,7 @@ class TopDown {
         return num1 > num2;
     }
 
+    // O(2^N) & O(N)
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int prev_i, bool findInc) {
         if(i == n)
             return 0;
@@ -27,6 +32,7 @@ class TopDown {
         }
     }
 
+    // O(2*N*2*N) & O(N*2*N + N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int prev_i, bool findInc) {
         if(i == n)
             return 0;
@@ -50,6 +56,7 @@ class TopDown {
     }
 
 public:
+    // Method to find length of longest strictly increasing or strictly decreasing subrray, using recursion with memoization - O(N*N) & O(N*N)
     int longestMonotonicSubarray(vector<int>& nums) {
         n = nums.size();
         vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
@@ -59,6 +66,8 @@ public:
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     int n;
@@ -70,6 +79,7 @@ class BottomUp {
         return num1 > num2;
     }
 
+    // O(N*2*N) & O(N*2*N)
     int solveBy3DTable(const vector<int>& nums, bool findInc) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
 
@@ -103,6 +113,7 @@ class BottomUp {
         return dp[0][false][n];
     }
 
+    // O(N*2*N) & O(N*2*N)
     int solveBy3DEnhanced(const vector<int>& nums, bool findInc) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n, 0)));
         
@@ -129,6 +140,7 @@ class BottomUp {
         return dp[0][false][n - 1];
     }
 
+    // O(N*2*N) & O(2*2*N)
     int solveBy2DTable(const vector<int>& nums, bool findInc) {
         vector<vector<int>> nextRow(2, vector<int>(n, 0));
         
@@ -168,6 +180,8 @@ public:
     }
 };
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
 class Greedy {
     int n;
 
@@ -178,6 +192,7 @@ class Greedy {
         return num1 > num2;
     }
 
+    // O(N*N) & O(1)
     int bruteForce(const vector<int>& nums, bool findInc) {
         int maxLen = 0;
 
@@ -192,6 +207,7 @@ class Greedy {
         return maxLen;
     }
 
+    // O(N) & O(1)
     int slidingWindow(const vector<int>& nums, bool findInc) {
         int i = 0, j = 0;
         int maxLen = 0;
@@ -207,6 +223,7 @@ class Greedy {
         return maxLen;
     }
 
+    // O(N) & O(1)
     int traceSpecifiedSubarrs(const vector<int>& nums, bool findInc) {
         int i = 0;
         int subarrLen = 0;
@@ -235,6 +252,8 @@ public:
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Greedy | Dynamic Programming
 Link  : https://leetcode.com/problems/longest-strictly-increasing-or-strictly-decreasing-subarray/description/
