@@ -65,8 +65,8 @@ class BottomUp {
     // O(N*2) & O(N*2)
     int solveWith2DTable(const vector<int>& nums) {
         vector<vector<int>> dp(n + 1, vector<int>(2, -1));
-        dp[n][1] = 0;
-        dp[n][0] = INT_MIN;
+        dp[n][1] = 0;       // Init edge case: if(index == n) prevPick ? 0
+        dp[n][0] = INT_MIN; // Init edge case: if(index == n) prevPick : INT_MIN
 
         for(int index = n-1; index >= 0; --index) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
@@ -89,8 +89,8 @@ class BottomUp {
     // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
         vector<int> nextRow(2, -1);
-        nextRow[1] = 0;
-        nextRow[0] = INT_MIN;
+        nextRow[1] = 0;       // Init edge case: if(index == n) prevPick ? 0
+        nextRow[0] = INT_MIN; // Init edge case: if(index == n) prevPick : INT_MIN
 
         for(int index = n-1; index >= 0; --index) {
             vector<int> idealRow(2, -1);
@@ -114,8 +114,8 @@ class BottomUp {
 
     // O(N*2) & O(1)
     int solveWithoutTable(vector<int>& nums) {
-        int nextRow_1 = 0;
-        int nextRow_0 = INT_MIN;
+        int nextRow_1 = 0;       // Init edge case: if(index == n) prevPick ? 0
+        int nextRow_0 = INT_MIN; // Init edge case: if(index == n) prevPick ? INT_MIN
 
         for(int index = n-1; index >= 0; --index) {
             int idealRow_1 = -1;
