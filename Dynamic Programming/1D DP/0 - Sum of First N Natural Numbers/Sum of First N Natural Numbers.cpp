@@ -100,7 +100,6 @@ class BottomUp {
     }
     // Note: For calculating the result of any n we are dependent on the previous value, which is constant, so we could simply maintain one variable instead of using the dp array  
 
-
     // O(1*LIMIT) & O(1)
     vector<LL> solveWithoutTable(LL LIMIT) {
         int dp_n_1 = 1; // dp[n - 1]
