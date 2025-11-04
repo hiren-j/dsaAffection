@@ -66,6 +66,10 @@ class TopDown {
         if(n == 1)
             return 1;
 
+        // Memoization table: If result is already computed then return it
+        if(dp[n] != -1) 
+            return dp[n];
+        
         LL sum = n + solveWithMemo(dp, n - 1);
 
         return dp[n] = sum; // Store sum to memoization table and then return it
