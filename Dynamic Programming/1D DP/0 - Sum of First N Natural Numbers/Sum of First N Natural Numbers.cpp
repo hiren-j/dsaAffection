@@ -120,7 +120,7 @@ class BottomUp {
             LL sum = n + dp_n_1;
             dp_n   = sum;
             answer.push_back(dp_n);
-            dp_n_1 = dp_n;
+            dp_n_1 = dp_n; // For any future n, the previous will become dp_n
         }
 
         return answer;
