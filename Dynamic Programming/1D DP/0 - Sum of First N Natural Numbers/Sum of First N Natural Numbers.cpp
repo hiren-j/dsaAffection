@@ -1,11 +1,3 @@
-// Code to find the sum of first N natural numbers, while considering different-different given N's ~ coded by Hiren
-#include <iostream>
-#include <vector>
-#define LL long long
-using namespace std;
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 /*   
     DON'T IGNORE MUST READ: Hey! Welcome to my series. I am assuming you know the basic theory of DP, like there are two ways to do DP (TopDown and BottomUp), meaning of memoization, meaning of tabulation, why DP is required? 
                             I know you want this so I'll be adding this theory soon. 
@@ -47,6 +39,12 @@ using namespace std;
 */  
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Code to find the sum of first N natural numbers, while considering different-different given N's ~ coded by Hiren
+#include <iostream>
+#include <vector>
+#define LL long long
+using namespace std;
 
 class TopDown {
     // O(LIMIT*N) & O(1*N)
