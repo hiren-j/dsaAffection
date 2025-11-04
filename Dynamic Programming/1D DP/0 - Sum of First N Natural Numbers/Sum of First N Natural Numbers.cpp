@@ -57,7 +57,7 @@ class TopDown {
         return sum; 
     }
     
-    // O(LIMIT*1) & O(1)
+    // O(LIMIT*2) & O(1)
     LL solveWithMemo(vector<LL>& dp, LL n) {
         if(n == 1)
             return 1;
