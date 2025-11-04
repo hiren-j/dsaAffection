@@ -88,16 +88,18 @@ class BottomUp {
     // O(1*N) & O(1)
     int solveWithoutTable(int n) {
         int dp_i_2 = 0; // n = 0 then return 0
-        int dp_1_1 = 1; // n = 1 then return 1
+        int dp_i_1 = 1; // n = 1 then return 1
         int dp_i = 0;
 
         for(int i = 2; i <= n; ++i) {
-            dp_i   = dp_1_1 + dp_i_2;
+            int prevNum1 = dp_i_1;
+            int prevNum2 = dp_i_2;
+            dp_i   = prevNum1 + prevNum2;
             dp_i_2 = dp_i_1;
             dp_i_1 = dp_i;
         }
 
-        return currNum;
+        return dp_i;
     }
 
 public:
