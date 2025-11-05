@@ -40,6 +40,7 @@
     IMP: I also forget to add this in video lecture, see for solveWithMemo, Time is O(LIMIT*2) because any value of n could be seen twice, for example
          if n = 4, then for it we will fetch result from 3 (n - 1), then when we will move to n = 5 then for it we will fetch result from 4 (n - 1).
          So you could see 4 is seen twice, so that's how any value of n could be seen twice, thus O(LIMIT*2).
+        So the same thing applies to Time complexity of Bottom-up. 
 */  
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
