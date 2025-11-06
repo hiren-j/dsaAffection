@@ -67,7 +67,7 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class BottomUp {
-    // O(1*N) & O(1*N)
+    // O(3*N) & O(1*N)
     int solveWith1DTable(int n) {
         vector<int> dp(n + 1, -1);
 
@@ -85,7 +85,7 @@ class BottomUp {
     }
     // Note: For calculating the result of any ith number we are dependent on the previous two values, which is constant, so we could simply maintain two variables instead of using the dp array  
 
-    // O(1*N) & O(1)
+    // O(3*N) & O(1)
     int solveWithoutTable(int n) {
         int dp_i_2 = 0; // n = 0 then return 0
         int dp_i_1 = 1; // n = 1 then return 1
