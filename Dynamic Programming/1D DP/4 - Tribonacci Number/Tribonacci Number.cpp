@@ -40,11 +40,12 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    // O(1*N) & O(1*N)
+    // O(4*N) & O(1*N)
     int solveWith1DTable(int n) {
         vector<int> dp(n + 1, -1);
         dp[0] = 0;
-        dp[1] = dp[2] = 1;
+        dp[1] = 1;
+        dp[2] = 1;
 
         for(int i = 3; i <= n; ++i) {
             int prevNum1 = dp[i - 1];
@@ -56,20 +57,24 @@ class BottomUp {
         return dp[n];
     }   
 
-    // O(1*N) & O(1)
+    // O(4*N) & O(1)
     int solveWithoutTable(int n) {
-        int prevNum3 = 0;
-        int prevNum2 = 1, prevNum1 = 1;
-        int currNum  = 0;
+        int dp_i_3 = 0;
+        int dp_i_2 = 1;
+        int dp_i_1 = 1;
+        int dp_i = 1;
 
         for(int i = 3; i <= n; ++i) {
-            currNum  = (prevNum1 + prevNum2 + prevNum3);
-            prevNum3 = prevNum2;
-            prevNum2 = prevNum1;
-            prevNum1 = currNum;
+            int prevNum1 = dp_i_1;
+            int prevNum2 = dp_i_2;
+            int prevNum3 = dp_i_3;
+            dp_i = (prevNum1 + prevNum2 + prevNum3);
+            dp_i_3 = dp_i_2;
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
         }
 
-        return currNum;
+        return dp_i;
     }   
 
 public:
