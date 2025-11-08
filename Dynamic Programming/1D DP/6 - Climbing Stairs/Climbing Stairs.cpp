@@ -6,7 +6,7 @@ class TopDown {
     // O(2^N) & O(N)
     int solveWithoutMemo(int n) {
         if(n <= 1)
-            return 1;
+            return 1; // Here, We have 1 way to reach point 0 from point n
 
         int jump1StepDown = solveWithoutMemo(n - 1);
         int jump2StepDown = solveWithoutMemo(n - 2);
@@ -17,7 +17,7 @@ class TopDown {
     // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& memory, int n) {
         if(n <= 1)
-            return 1;
+            return 1; // Here, We have 1 way to reach point 0 from point n
 
         if(memory[n] != -1)
             return memory[n];
