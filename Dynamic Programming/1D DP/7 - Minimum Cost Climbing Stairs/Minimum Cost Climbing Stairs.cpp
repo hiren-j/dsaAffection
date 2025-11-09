@@ -8,7 +8,7 @@ class TopDown {
     // O(2^N) & O(N)
     int solveWithoutMemo(const vector<int>& cost, int idx) {
         if(idx >= n)
-            return 0;
+            return 0; // If no steps left
 
         int climb1Step = solveWithoutMemo(cost, idx + 1);
         int climb2Step = solveWithoutMemo(cost, idx + 2);
@@ -19,7 +19,7 @@ class TopDown {
     // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, const vector<int>& cost, int idx) {
         if(idx >= n)
-            return 0;
+            return 0; // If no steps left
 
         if(dp[idx] != -1)
             return dp[idx];
