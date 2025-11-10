@@ -29,6 +29,7 @@ class TopDown {
     }
 
 public:
+    // Method to count ways to reach nth step, using recursion with memoization - O(N) & O(N) 
     int numWaysToReachTop(int n) {
         vector<int> memory(n + 1, -1);
         return solveWithMemo(memory, n);
