@@ -31,6 +31,7 @@ class TopDown {
     }    
 
 public:
+    // Method to find minimum cost to reach top, using recursion with memoization - O(N) & O(N) 
     int minCostToReachTop(vector<int>& cost) {
         n = cost.size();
         vector<int> dp1(n, -1), dp2(n, -1);
