@@ -41,8 +41,8 @@ class Solution {
     }
 
     int solveWithoutTable(const vector<int>& houses, int start, const int end) {
-        int dp_idx_2 = 0;
         int dp_idx_1 = 0;
+        int dp_idx_2 = 0;
         int dp_idx   = 0;
 
         for(int idx = end; idx >= start; --idx) {
