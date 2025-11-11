@@ -2,44 +2,66 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
-    // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& houses, int start, int end) {
+class Solution {
+    int solveWithoutMemo(const vector<int>& houses, int start, const int end) {
         if(start > end)
             return 0;
-        
-        int robHouse = houses[start] + solveWithoutMemo(houses, start + 2, end);
-        int skipRob  = solveWithoutMemo(houses, start + 1, end);
 
-        return max(robHouse, skipRob);
+        int robHouse  = houses[start] + solveWithoutMemo(houses, start + 2, end);
+        int skipHouse = solveWithoutMemo(houses, start + 1, end);
+        
+        return max(robHouse, skipHouse);
     }
 
-    // O(2*N) & O(2*N)
-    int solveWithMemo(vector<int>& dp, vector<int>& houses, int start, int end) {
+    int solveWithMemo(vector<int>& dp, const vector<int>& houses, int start, const int end) {
         if(start > end)
             return 0;
-        
+
         if(dp[start] != -1)
             return dp[start];
 
-        int robHouse = houses[start] + solveWithMemo(dp, houses, start + 2, end);
-        int skipRob  = solveWithMemo(dp, houses, start + 1, end);
+        int robHouse  = houses[start] + solveWithMemo(dp, houses, start + 2, end);
+        int skipHouse = solveWithMemo(dp, houses, start + 1, end);
+        
+        return dp[start] = max(robHouse, skipHouse);
+    }
 
-        return dp[start] = max(robHouse, skipRob);
+    int solveWith1DTable(const vector<int>& houses, int start, const int end) {
+        vector<int> dp(end + 3, -1);
+        dp[end + 1] = 0;
+        dp[end + 2] = 0;
+
+        for(int idx = end; idx >= start; --idx) {
+            int robHouse  = houses[idx] + dp[idx + 2];
+            int skipHouse = dp[idx + 1];
+            dp[idx] = max(robHouse, skipHouse);
+        }
+
+        return dp[start];
+    }
+
+    int solveWithoutTable(const vector<int>& houses, int start, const int end) {
+        int dp_idx_2 = 0;
+        int dp_idx_1 = 0;
+        int dp_idx   = 0;
+
+        for(int idx = end; idx >= start; --idx) {
+            int robHouse  = houses[idx] + dp_idx_2;
+            int skipHouse = dp_idx_1;
+            dp_idx   = max(robHouse, skipHouse);
+            dp_idx_2 = dp_idx_1;
+            dp_idx_1 = dp_idx;
+        }
+
+        return dp_idx;
     }
 
 public:
     int robMaxMoney(vector<int>& houses) {
-        int n = houses.size();
-
-        if(n == 1) 
-            return houses[0];
-
-        vector<int> dp1(n, -1), dp2(n, -1);
-
-        int startFrom0 = solveWithMemo(dp1, houses, 0, n-2);
-        int startFrom1 = solveWithMemo(dp2, houses, 1, n-1);
-
+        const int n = houses.size();
+        if(n == 1) return houses[0];
+        int startFrom0 = solveWith1DTable(houses, 0, n - 2);
+        int startFrom1 = solveWith1DTable(houses, 1, n - 1);
         return max(startFrom0, startFrom1);
     }
 };
