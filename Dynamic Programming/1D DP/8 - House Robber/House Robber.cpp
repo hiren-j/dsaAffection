@@ -68,7 +68,7 @@ class BottomUp {
         for(int idx = n-1; idx >= 0; --idx) {
             int robHouse  = nums[idx] + dp_idx_2; 
             int skipHouse = dp_idx_1;
-            dp_idx = max(robHouse, skipHouse);
+            dp_idx   = max(robHouse, skipHouse);
             dp_idx_2 = dp_idx_1;
             dp_idx_1 = dp_idx;
         }
