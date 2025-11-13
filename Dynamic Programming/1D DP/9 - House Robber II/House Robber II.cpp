@@ -79,8 +79,8 @@ public:
     int robMaxMoney(vector<int>& nums) {
         const int n = nums.size();
         if(n == 1) return nums[0];
-        int startFrom0 = solveWith1DTable(nums, 0, n - 2);
-        int startFrom1 = solveWith1DTable(nums, 1, n - 1);
+        int startFrom0 = solveWithoutTable(nums, 0, n - 2);
+        int startFrom1 = solveWithoutTable(nums, 1, n - 1);
         return max(startFrom0, startFrom1);
     }
 };
