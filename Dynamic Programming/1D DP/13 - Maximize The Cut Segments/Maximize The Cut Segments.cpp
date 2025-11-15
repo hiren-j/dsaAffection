@@ -44,7 +44,7 @@ class TopDown {
     }
 
 public:
-    // Method to find maximum segments can cut, using recursion with memoization - O(N) & O(N)
+    // Method to find maximum segments can achieve, using recursion with memoization - O(N) & O(N)
     int maximizeTheCuts(int n, int x, int y, int z) {
         vector<int> memory(n + 1, -1);
         int result = solveWithMemo(memory, n, x, y, z);
