@@ -1,4 +1,4 @@
-// Code to find the maximum number of cut segments possible. Given an integer n denoting the Length of a line segment. You need to cut the line segment in such a way that the cut len of a line segment each time is either x , y or z. Here x, y, and z are integers. After performing all the cut operations, your total number of cut segments must be maximum ~ coded by Hiren
+// Code to find the maximum number of cut segments possible. Given an integer n denoting the Length of a line segment. You need to cut the line segment in such a way that the cut length of a line segment each time is either x , y or z. Here x, y, and z are integers. After performing all the cut operations, your total number of cut segments must be maximum ~ coded by Hiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
@@ -15,9 +15,9 @@ class TopDown {
             return memory[n];
 
         // There are three cut operations to perform
-        int cutInLenX = solveWithoutMemo(n - x, x, y, z); // Is to cut line segment in len x
-        int cutInLenY = solveWithoutMemo(n - y, x, y, z); // Is to cut line segment in len y
-        int cutInLenZ = solveWithoutMemo(n - z, x, y, z); // Is to cut line segment in len z
+        int cutInLenX = solveWithoutMemo(n - x, x, y, z); // Is to cut line segment in length x
+        int cutInLenY = solveWithoutMemo(n - y, x, y, z); // Is to cut line segment in length y
+        int cutInLenZ = solveWithoutMemo(n - z, x, y, z); // Is to cut line segment in length z
 
         int maxSegments = max({cutInLenX, cutInLenY, cutInLenZ});                
         return (maxSegments == INT_MIN) ? INT_MIN : maxSegments + 1;
@@ -35,9 +35,9 @@ class TopDown {
             return memory[n];
 
         // There are three cut operations to perform
-        int cutInLenX = solveWithMemo(memory, n - x, x, y, z); // Is to cut line segment in len x
-        int cutInLenY = solveWithMemo(memory, n - y, x, y, z); // Is to cut line segment in len y
-        int cutInLenZ = solveWithMemo(memory, n - z, x, y, z); // Is to cut line segment in len z
+        int cutInLenX = solveWithMemo(memory, n - x, x, y, z); // Is to cut line segment in length x
+        int cutInLenY = solveWithMemo(memory, n - y, x, y, z); // Is to cut line segment in length y
+        int cutInLenZ = solveWithMemo(memory, n - z, x, y, z); // Is to cut line segment in length z
 
         int maxSegments = max({cutInLenX, cutInLenY, cutInLenZ});                
         return memory[n] = (maxSegments == INT_MIN) ? INT_MIN : maxSegments + 1;
@@ -57,19 +57,19 @@ public:
 class BottomUp {
 public:
     // O(1*N) & O(1*N)
-    int maximizeTheCuts(int n, int x, int y, int z) {
-        vector<int> dp(n + 1, -1);
+    int maximizeTheCuts(int given_n, int x, int y, int z) {
+        vector<int> dp(given_n + 1, -1);
         dp[0] = 0; // Initialize first edge case
         
-        for(int len = 1; len <= n; ++len) {
-            int cutInLenX = (len - x < 0) ? INT_MIN : dp[len - x];
-            int cutInLenY = (len - y < 0) ? INT_MIN : dp[len - y];
-            int cutInLenZ = (len - z < 0) ? INT_MIN : dp[len - z];
+        for(int n = 1; n <= given_n; ++n) {
+            int cutInLenX = (n - x < 0) ? INT_MIN : dp[n - x];
+            int cutInLenY = (n - y < 0) ? INT_MIN : dp[n - y];
+            int cutInLenZ = (n - z < 0) ? INT_MIN : dp[n - z];
             int maxSegments = max({cutInLenX, cutInLenY, cutInLenZ});
-            dp[len] = (maxSegments == INT_MIN) ? INT_MIN : maxSegments + 1;
+            dp[n] = (maxSegments == INT_MIN) ? INT_MIN : maxSegments + 1;
         }
         
-        int result = dp[n];
+        int result = dp[given_n];
         return (result == INT_MIN) ? 0 : result;
     }
 };
