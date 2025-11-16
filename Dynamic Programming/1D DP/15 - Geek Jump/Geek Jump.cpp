@@ -68,7 +68,7 @@ class BottomUp {
     int solveWithoutTable(vector<int>& heights) {
         int dp_idx_1 = 0;
         int dp_idx_2 = 0;
-        int minCost  = 0;
+        int dp_idx   = 0;
             
         for(int idx = n-2; idx >= 0; --idx) {
             int jump1Step = abs(heights[idx + 1] - heights[idx]) + dp_idx_1;
@@ -76,12 +76,12 @@ class BottomUp {
                           ? abs(heights[idx + 2] - heights[idx]) + dp_idx_2 
                           : INT_MAX;
             
-            minCost  = min(jump1Step, jump2Step);
+            dp_idx   = min(jump1Step, jump2Step);
             dp_idx_2 = dp_idx_1;
-            dp_idx_1 = minCost; 
+            dp_idx_1 = dp_idx; 
         }
         
-        return minCost;
+        return dp_idx;
     }
     
 public:
