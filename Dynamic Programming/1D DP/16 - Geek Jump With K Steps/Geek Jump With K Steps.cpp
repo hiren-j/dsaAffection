@@ -15,7 +15,8 @@ class TopDown {
         for(int jump = 1; (jump <= k && index + jump < n); ++jump) { // Try each possible jump from the index
             int jumpCost = abs(nums[index + jump] - nums[index]);
             int nextCost = solveWithoutMemo(nums, k, index + jump);
-            minCost = min(minCost, jumpCost + nextCost);
+            int currPathCost = jumpCost + nextCost;
+            minCost = min(minCost, currPathCost);
         }
         
         return minCost;
@@ -34,7 +35,8 @@ class TopDown {
         for(int jump = 1; (jump <= k && index + jump < n); ++jump) { // Try each possible jump from the index
             int jumpCost = abs(nums[index + jump] - nums[index]);
             int nextCost = solveWithMemo(dp, nums, k, index + jump);
-            minCost = min(minCost, jumpCost + nextCost);
+            int currPathCost = jumpCost + nextCost;
+            minCost = min(minCost, currPathCost);
         }
         
         return dp[index] = minCost;
@@ -65,7 +67,8 @@ public:
             for(int jump = 1; (jump <= k && index + jump < n); ++jump) {
                 int jumpCost = abs(nums[index + jump] - nums[index]);
                 int nextCost = dp[index + jump];
-                minCost = min(minCost, jumpCost + nextCost);
+                int currPathCost = jumpCost + nextCost;
+                minCost = min(minCost, currPathCost);
             }
             
             dp[index] = minCost;
