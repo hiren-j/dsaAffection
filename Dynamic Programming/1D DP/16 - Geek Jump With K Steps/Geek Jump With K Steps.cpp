@@ -6,7 +6,7 @@ class TopDown {
     int n;
 
     // O(K^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, int k, int index) {
+    int solveWithoutMemo(const vector<int>& nums, const int k, int index) {
         if(index == n-1)
             return 0; // If reached last stone, return 0 as indication
         
@@ -23,7 +23,7 @@ class TopDown {
     }
     
     // O(K*N) & O(2*N)
-    int solveWithMemo(vector<int>& dp, vector<int>& nums, int k, int index) {
+    int solveWithMemo(vector<int>& dp, const vector<int>& nums, const int k, int index) {
         if(index == n-1)
             return 0; // If reached last stone, return 0 as indication
             
@@ -55,7 +55,7 @@ public:
 class BottomUp {
 public:
     // O(N*K) & O(N)
-    int minimizeCost(int k, vector<int>& nums) {
+    int minimizeCost(const int k, const vector<int>& nums) {
         int n = nums.size();
         
         vector<int> dp(n, -1);
