@@ -14,6 +14,7 @@ class TopDown {
 
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
             int nextJumps = solveWithoutMemo(nums, index + jump);
+            
             if(nextJumps != INT_MAX) { 
                 minJumps = min(minJumps, nextJumps + 1); // Update result if you reached the last index
             }
@@ -34,6 +35,7 @@ class TopDown {
 
         for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
             int nextJumps = solveWithMemo(dp, nums, index + jump);
+            
             if(nextJumps != INT_MAX) {
                 minJumps = min(minJumps, nextJumps + 1); // Update result if you reached the last index
             }
@@ -66,6 +68,7 @@ public:
 
             for(int jump = 1; (jump <= nums[index] && index + jump < n); ++jump) {
                 int nextJumps = dp[index + jump];
+                
                 if(nextJumps != INT_MAX) {
                     minJumps = min(minJumps, nextJumps + 1);
                 }
