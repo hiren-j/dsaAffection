@@ -47,7 +47,7 @@ class BottomUp {
     const int MOD = 1e9 + 7;
  
     // O(N*6) & O(1*N) : Where N = given_n
-    int solveWith1DTable(int n) {
+    int solveWith1DTable(int given_n) {
         vector<int> dp(given_n + 1, -1);
         dp[0] = 1;
  
