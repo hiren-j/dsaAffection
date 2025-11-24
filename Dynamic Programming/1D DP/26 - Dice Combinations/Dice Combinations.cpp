@@ -12,7 +12,7 @@ class TopDown {
         
         int count = 0;
  
-        for(int outcome = 1; (outcome <= 6 && n - outcome >= 0); ++outcome) 
+        for(int outcome = 1; (outcome <= 6 && outcome <= n); ++outcome) 
             count = (count + solveWithoutMemo(n - outcome)) % MOD;
  
         return count;
@@ -28,7 +28,7 @@ class TopDown {
     
         int count = 0;
  
-        for(int outcome = 1; (outcome <= 6 && n - outcome >= 0); ++outcome) 
+        for(int outcome = 1; (outcome <= 6 && outcome <= n); ++outcome) 
             count = (count + solveWithMemo(dp, n - outcome)) % MOD;
  
         return dp[n] = count;
@@ -54,7 +54,7 @@ class BottomUp {
         for(int n = 1; n <= given_n; ++n) {
             int count = 0;
 
-            for(int outcome = 1; (outcome <= 6 && n - outcome >= 0); ++outcome) {
+            for(int outcome = 1; (outcome <= 6 && outcome <= n); ++outcome) {
                 count = (count + dp[n - outcome]) % MOD;
             }
  
