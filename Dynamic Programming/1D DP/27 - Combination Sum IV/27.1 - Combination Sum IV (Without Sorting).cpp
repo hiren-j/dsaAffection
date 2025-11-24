@@ -4,7 +4,7 @@
     
 class TopDown {
     // O(N^T) & O(T) : Where T = target
-    int solveWithoutMemo(vector<int>& nums, int target) {
+    int solveWithoutMemo(const vector<int>& nums, int target) {
         if(target == 0)
             return 1;
         
@@ -18,7 +18,7 @@ class TopDown {
     }
     
     // O(N*T) & O(2*T) : Where T = target
-    int solveWithMemo(vector<int>& dp, vector<int>& nums, int target) {
+    int solveWithMemo(vector<int>& dp, const vector<int>& nums, int target) {
         if(target == 0)
             return 1;
 
@@ -35,7 +35,7 @@ class TopDown {
     }
 
 public:
-    int numWaysToSumTarget(vector<int>& nums, int givenTarget) {
+    int numWaysToSumTarget(vector<int>& nums, int target) {
         vector<int> dp(target + 1, -1);
         return solveWithMemo(dp, nums, target);
     }
@@ -46,7 +46,7 @@ public:
 class BottomUp {
 public:
     // O(T*N) & O(1*T) : Where T = givenTarget
-    int numWaysToSumTarget(vector<int>& nums, int givenTarget) {
+    int numWaysToSumTarget(const vector<int>& nums, int givenTarget) {
         vector<int> dp(givenTarget + 1, -1);
         dp[0] = 1;
 
