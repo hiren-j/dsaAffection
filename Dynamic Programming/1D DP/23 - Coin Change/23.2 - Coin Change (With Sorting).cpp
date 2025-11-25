@@ -6,7 +6,7 @@ class TopDown {
     int n;
 
     // O(N^A) & O(A) : Where A = amount
-    int solveWithoutMemo(vector<int>& coins, int amount) {
+    int solveWithoutMemo(const vector<int>& coins, int amount) {
         if(amount == 0)
             return 0;
             
@@ -14,14 +14,17 @@ class TopDown {
 
         for(int i = 0; (i < n && coins[i] <= amount); ++i) {
             int nextCoins = solveWithoutMemo(coins, amount - coins[i]);
-            if(nextCoins != INT_MAX) minCoins = min(minCoins, nextCoins + 1);
+
+            if(nextCoins != INT_MAX) {
+                minCoins = min(minCoins, nextCoins + 1);
+            }
         }
 
         return minCoins;
     }
 
     // O(N*A) & O(2*A) : Where A = amount
-    int solveWithMemo(vector<int>& dp, vector<int>& coins, int amount) {
+    int solveWithMemo(vector<int>& dp, const vector<int>& coins, int amount) {
         if(amount == 0)
             return 0;
 
@@ -32,7 +35,10 @@ class TopDown {
 
         for(int i = 0; (i < n && coins[i] <= amount); ++i) {
             int nextCoins = solveWithMemo(dp, coins, amount - coins[i]);
-            if(nextCoins != INT_MAX) minCoins = min(minCoins, nextCoins + 1);
+            
+            if(nextCoins != INT_MAX) {
+                minCoins = min(minCoins, nextCoins + 1);
+            }
         }
 
         return dp[amount] = minCoins;
@@ -53,7 +59,7 @@ public:
 class BottomUp {
 public:
     // O(A*N) & O(1*A) : Where A = givenAmount
-    int minCoinsToMakeAmount(vector<int>& coins, int givenAmount) {
+    int minCoinsToMakeAmount(const vector<int>& coins, int givenAmount) {
         int n = coins.size();
         sort(begin(coins), end(coins));
 
@@ -65,7 +71,10 @@ public:
 
             for(int i = 0; (i < n && coins[i] <= amount); ++i) {
                 int nextCoins = dp[amount - coins[i]];
-                if(nextCoins != INT_MAX) minCoins = min(minCoins, nextCoins + 1);
+                
+                if(nextCoins != INT_MAX) {
+                    minCoins = min(minCoins, nextCoins + 1);
+                }
             }
 
             dp[amount] = minCoins;
