@@ -7,11 +7,11 @@ class TopDown {
 
     // O(2^N) & O(N)
     int solveWithoutMemo(const string& s, int index) {
-        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
+        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've 1 way
         if(index == n)
             return 1;
 
-        // Edge case: If the character is '0' then you've can't decode it in the valid way
+        // Edge case: If the character is '0' then you've can't decode it any way
         if(s[index] == '0')
             return 0;
 
@@ -27,11 +27,11 @@ class TopDown {
 
     // O(2*N) & O(2*N)
     int solveWithMemo(vector<int>& dp, const string& s, int index) {
-        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
+        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've 1 way
         if(index == n)
             return 1;
 
-        // Edge case: If the character is '0' then you've can't decode it in the valid way
+        // Edge case: If the character is '0' then you've can't decode it in any way
         if(s[index] == '0')
             return 0;
 
@@ -86,24 +86,24 @@ class BottomUp {
     int solveWithoutTable(const string& s) {
         int dpIndex1 = 1; // Init first edge case
         int dpIndex2 = 0; 
-        int result = 0;
+        int dpIndex = 0;
 
         for(int index = n-1; index >= 0; --index) {
             if(s[index] == '0') { // Handle second edge case
-                result = 0;
+                dpIndex = 0;
             }
             else {
                 int numWays = dpIndex1;
                 if(index + 1 < n && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
                     numWays += dpIndex2;
                 }
-                result = numWays;
+                dpIndex = numWays;
             }
             dpIndex2 = dpIndex1;
-            dpIndex1 = result;
+            dpIndex1 = dpIndex;
         }
 
-        return result;
+        return dpIndex;
     }
 
 public:
