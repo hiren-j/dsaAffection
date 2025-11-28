@@ -1,4 +1,8 @@
-class Solution {
+// Code to find the number of ways to decode the given string consisting of digits and * ~ coded by vHiren
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class TopDown {
     const int MOD = 1e9 + 7;
     int n;
 
@@ -70,6 +74,35 @@ class Solution {
         return dp[i] = count;
     }
 
+public:
+    int numDecodings(string s) {
+        n = s.size();
+        vector<int> dp(n, -1);
+        return solveWithMemo(dp, s, 0);
+    }
+};
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+    const int MOD = 1e9 + 7;
+    int n;
+
+    bool star(const char ch) {
+        return ch == '*';
+    }
+
+    bool digit(const char ch) {
+        return ch >= '0' && ch <= '9';
+    }
+
+    int getEndLimit(const char ch) {
+        if(ch == '1') return 9;
+        if(ch == '2') return 6;
+        return 0;
+    }
+
+    // O(1*N) & O(1*N)
     int solveWith1DTable(const string& s) {
         vector<int> dp(n + 1, -1);
         dp[n] = 1;
@@ -122,6 +155,7 @@ class Solution {
         return dp[0];
     }
 
+    // O(1*N) & O(1)
     int solveWithoutTable(const string& s) {
         int dp_i_1 = 1;  
         int dp_i_2 = 0;  
@@ -182,7 +216,11 @@ class Solution {
 public:
     int numDecodings(string s) {
         n = s.size();
-        vector<int> dp(n, -1);
-        return solveWithMemo(dp, s, 0);
+        return solveWithoutTable(s);
     }
 };
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics : String | Dynamic Programming
+Link   : https://leetcode.com/problems/decode-ways-ii/description/
