@@ -97,6 +97,7 @@ class BottomUp {
         return ch >= '0' && ch <= '9';
     }
 
+    // O(1*N) & O(1*N)
     int solveWith1DTable(const string& s) {
         vector<LL> dp(n + 1, -1);
         dp[n] = 1;
@@ -151,6 +152,7 @@ class BottomUp {
         return dp[0];
     }
 
+    // O(1*N) & O(1)
     int solveWithoutTable(const string& s) {
         LL dp_i_1 = 1;
         LL dp_i_2 = 0;
