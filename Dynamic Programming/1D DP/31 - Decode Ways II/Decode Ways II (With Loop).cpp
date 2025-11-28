@@ -70,7 +70,7 @@ class Solution {
         return dp[i] = count;
     }
 
-    int solveBy1DTable(const string& s) {
+    int solveWith1DTable(const string& s) {
         vector<int> dp(n + 1, -1);
         dp[n] = 1;
 
