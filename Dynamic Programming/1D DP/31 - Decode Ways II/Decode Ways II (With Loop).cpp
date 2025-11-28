@@ -87,9 +87,11 @@ class Solution {
             }
 
             if(i + 1 < n) {
+                // Case 1 : dd
                 if(digit(s[i + 1]) && (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))) {
                     count = (count + dp[i + 2]) % MOD;
                 }
+                // Case 2 : *d
                 else if(star(s[i]) && digit(s[i + 1])) {
                     count = (count + dp[i + 2]) % MOD;
 
@@ -97,11 +99,13 @@ class Solution {
                         count = (count + dp[i + 2]) % MOD;
                     }
                 }
+                // Case 3 : d*
                 else if(digit(s[i]) && star(s[i + 1])) {
                     for(int d = 1; d <= getEndLimit(s[i]); ++d) {
                         count = (count + dp[i + 2]) % MOD;
                     }
                 }
+                // Case 4 : **
                 else if(star(s[i]) && star(s[i + 1])) {
                     for(int d = 1; d <= 9; ++d) {
                         count = (count + dp[i + 2]) % MOD;
@@ -138,9 +142,11 @@ class Solution {
             }
 
             if(i + 1 < n) {
+                // Case 1 : dd
                 if(digit(s[i + 1]) && (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))) {
                     count = (count + dp_i_2) % MOD;
                 }
+                // Case 2 : *d
                 else if(star(s[i]) && digit(s[i + 1])) {
                     count = (count + dp_i_2) % MOD;
 
@@ -148,11 +154,13 @@ class Solution {
                         count = (count + dp_i_2) % MOD;
                     }
                 }
+                // Case 3 : d*
                 else if(digit(s[i]) && star(s[i + 1])) {
                     for(int d = 1; d <= getEndLimit(s[i]); ++d) {
                         count = (count + dp_i_2) % MOD;
                     }
                 }
+                // Case 4 : **
                 else if(star(s[i]) && star(s[i + 1])) {
                     for(int d = 1; d <= 9; ++d) {
                         count = (count + dp_i_2) % MOD;
