@@ -107,7 +107,7 @@ class BottomUp {
                 continue;
             }
 
-            int count = dp[i + 1]; // for specific s[i] or for 1 of below star loop
+            int count = dp[i + 1]; // for specific s[i] or for 1 if star exists 
 
             if(star(s[i])) {
                 int nextCount = 8 * dp[i + 1] % MOD; // 2 - 9
@@ -164,7 +164,7 @@ class BottomUp {
                 continue;
             }
 
-            int count = dp_i_1; // for specific s[i] or for 1 of below star loop
+            int count = dp_i_1; // for specific s[i] or for 1 if star exists
 
             if(star(s[i])) {
                 int nextCount = 8 * dp_i_1 % MOD; // 2 - 9
