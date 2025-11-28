@@ -1,211 +1,180 @@
-// Code to find the total number of ways to decode the given string in the specified way. In addition to the specified mapping, an encoded message may contain the '*' character, which can represent any digit from '1' to '9' ('0' is excluded) ~ coded by Hiren
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown {
-    const int MOD = 1e9+7;
+class Solution {
+    const int MOD = 1e9 + 7;
     int n;
 
-    int getEndLimit(char digit) {
-        if(digit == '1')
-            return 9;
-        if(digit == '2')
-            return 6;
+    bool star(const char ch) {
+        return ch == '*';
+    }
+
+    bool digit(const char d) {
+        return d >= '0' && d <= '9';
+    }
+
+    int getEndLimit(const char ch) {
+        if(ch == '1') return 9;
+        if(ch == '2') return 6;
         return 0;
     }
 
     // O(24*N) & O(2*N)
-    int solveWithMemo(vector<int>& dp, const string& s, int index) {
-        // Edge case: If all the characters are exhausted then you've decoded the whole string hence you've one valid way
-        if(index == n)
+    int solveWithMemo(vector<int>& dp, const string& s, int i) {
+        if(i == n)
             return 1;
 
-        // Edge case: If the character is '0' then you've can't decode it in the valid way
-        if(s[index] == '0')
+        if(s[i] == '0')
             return 0;
 
-        if(dp[index] != -1)
-            return dp[index];
+        if(dp[i] != -1)
+            return dp[i];
 
-        // If you're here then the character could be within '1' to '9' or it could be a '*' which can be decoded hence consider it and move to the next character. Remember when it's a '*' then suppose we're considering it for the digit '1' only
-        int numWays = solveWithMemo(dp, s, index + 1);
+        int count = solveWithMemo(dp, s, i + 1);
 
-        // If it's confirmly a '*' then consider it for the rest of the digits from '2' to '9'
-        if(s[index] == '*') {
-            for(int digit = 2; digit <= 9; ++digit) {
-                numWays = (numWays + solveWithMemo(dp, s, index + 1)) % MOD;
+        for(int d = 2; (d <= 9 && s[i] == '*'); ++d) {
+            count = (count + solveWithMemo(dp, s, i + 1)) % MOD;
+        }
+
+        if(i + 1 < n) {
+            // Case 1 : dd
+            // If you're here then: When the first character is '1' then it's guaranteed that the next character will be within '0' to '9'. If the first character is '2' then you can only decode when the next character lies within '0' to '6'
+            if(digit(s[i + 1]) && (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))) {
+                count = (count + solveWithMemo(dp, s, i + 2)) % MOD;
+            }
+            // Case 2 : *d
+            // When the first character is a '*' and the second character is not, then consider the first character as '1' or to consider it as '2'
+            else if(star(s[i]) && digit(s[i + 1])) {
+                count = (count + solveWithMemo(dp, s, i + 2)) % MOD;
+
+                if(s[i + 1] <= '6') {
+                    count = (count + solveWithMemo(dp, s, i + 2)) % MOD;
+                }
+            }
+            // Case 3 : d*
+            // When the second character is a '*' and the first character is not, then if the first character is '1' then you can consider the second character to be within '1' to '9'. If the first character is '2' then you can consider the second character to be within '1' to '6' 
+            else if(digit(s[i]) && star(s[i + 1])) {
+                for(int d = 1; d <= getEndLimit(s[i]); ++d) {
+                    count = (count + solveWithMemo(dp, s, i + 2)) % MOD;
+                }
+            }
+            // Case 4 : **
+            // When both the characters are '*' then consider the first character as '1' then for it consider the second character to be within '1' to '9'. If you consider the first character as '2' then for it consider the second character to be within '1' to '6'
+            else if(star(s[i]) && star(s[i + 1])) {
+                for(int d = 1; d <= 9; ++d) {
+                    count = (count + solveWithMemo(dp, s, i + 2)) % MOD;
+                }  
+                for(int d = 1; d <= 6; ++d) {
+                    count = (count + solveWithMemo(dp, s, i + 2)) % MOD;
+                }  
             }
         }
 
-        // At this point now we will look for the cases when we've to consider both the characters together
-        if(index + 1 < n) {
-            // When both the characters are '*' then there are two possible ways of decoding: Consider the first character as '1' then for it consider the second character to be within '1' to '9'. If you consider the first character as '2' then for it consider the second character to be within '1' to '6'
-            if(s[index] == '*' && s[index + 1] == '*') {
-                for(int digit = 1; digit <= 9; ++digit) {
-                    numWays = (numWays + solveWithMemo(dp, s, index + 2)) % MOD;
-                    if(digit <= 6) {
-                        numWays = (numWays + solveWithMemo(dp, s, index + 2)) % MOD;
-                    }
-                }
-            }
-            // When the first character is a '*' and the second character is not, then you've two ways to decode, which means is to consider the first character as '1' or to consider it as '2'
-            else if(s[index] == '*') {
-                numWays = (numWays + solveWithMemo(dp, s, index + 2)) % MOD;
-                if(s[index + 1] <= '6') {
-                    numWays = (numWays + solveWithMemo(dp, s, index + 2)) % MOD;
-                }
-            }
-            // When the second character is a '*' and the first character is not, then you've two ways to decode, in which if the first character is '1' then you can consider the second character to be within '1' to '9'. If the first character is '2' then you can consider the second character to be within '1' to '6' 
-            else if(s[index + 1] == '*') {
-                for(int digit = 1; (digit <= getEndLimit(s[index])); ++digit) {
-                    numWays = (numWays + solveWithMemo(dp, s, index + 2)) % MOD;
-                }
-            }
-            // If you're here then there are two possible ways of decoding: When the first character is '1' then it's guaranteed that the next character will be within '0' to '9'. If the first character is '2' then you can only decode when the next character lies within '0' to '6'
-            else if((s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
-                numWays = (numWays + solveWithMemo(dp, s, index + 2)) % MOD;
-            }
-        }
-
-        return dp[index] = numWays;
-    }
-    // Note: Creating the `solveWithoutMemo()` is easy, simply remove the dp part, I haven't included because it will increase the line of code
-
-public: 
-    // Method to find the total number of ways to decode the string, using recursion with memoization - O(N) & O(N)
-    int numDecodings(string& s) {
-        n = s.size();
-        vector<int> dp(n, -1);
-        return solveWithMemo(dp, s, 0);
-    }
-};
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUp {
-    const int MOD = 1e9+7;
-    int n;
-
-    int getEndLimit(char digit) {
-        if(digit == '1')
-            return 9;
-        if(digit == '2')
-            return 6;
-        return 0;
+        return dp[i] = count;
     }
 
-    // O(1*N) & O(1*N)
-    int solveWith1DTable(const string& s) {
+    int solveBy1DTable(const string& s) {
         vector<int> dp(n + 1, -1);
-        dp[n] = 1; // Init first edge case
+        dp[n] = 1;
 
-        for(int index = n-1; index >= 0; --index) {
-            if(s[index] == '0') { // Handle second edge case
-                dp[index] = 0;
+        for(int i = n - 1; i >= 0; --i) {
+            if(s[i] == '0') {
+                dp[i] = 0;
                 continue;
             }
 
-            int numWays = dp[index + 1];
+            int count = dp[i + 1];
 
-            if(s[index] == '*') {
-                for(int digit = 2; digit <= 9; ++digit) {
-                    numWays = (numWays + dp[index + 1]) % MOD;
+            for(int d = 2; (d <= 9 && s[i] == '*'); ++d) {
+                count = (count + dp[i + 1]) % MOD;
+            }
+
+            if(i + 1 < n) {
+                if(digit(s[i + 1]) && (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))) {
+                    count = (count + dp[i + 2]) % MOD;
+                }
+                else if(star(s[i]) && digit(s[i + 1])) {
+                    count = (count + dp[i + 2]) % MOD;
+
+                    if(s[i + 1] <= '6') {
+                        count = (count + dp[i + 2]) % MOD;
+                    }
+                }
+                else if(digit(s[i]) && star(s[i + 1])) {
+                    for(int d = 1; d <= getEndLimit(s[i]); ++d) {
+                        count = (count + dp[i + 2]) % MOD;
+                    }
+                }
+                else if(star(s[i]) && star(s[i + 1])) {
+                    for(int d = 1; d <= 9; ++d) {
+                        count = (count + dp[i + 2]) % MOD;
+                    }  
+                    for(int d = 1; d <= 6; ++d) {
+                        count = (count + dp[i + 2]) % MOD;
+                    }  
                 }
             }
 
-            if(index + 1 < n) {
-                if(s[index] == '*' && s[index + 1] == '*') {
-                    for(int digit = 1; digit <= 9; ++digit) {
-                        numWays = (numWays + dp[index + 2]) % MOD;
-                        if(digit <= 6) {
-                            numWays = (numWays + dp[index + 2]) % MOD;
-                        }
-                    }
-                }
-                else if(s[index] == '*') {
-                    numWays = (numWays + dp[index + 2]) % MOD;
-                    if(s[index + 1] <= '6') {
-                        numWays = (numWays + dp[index + 2]) % MOD;
-                    }
-                }
-                else if(s[index + 1] == '*') {
-                    for(int digit = 1; (digit <= getEndLimit(s[index])); ++digit) {
-                        numWays = (numWays + dp[index + 2]) % MOD;
-                    }
-                }
-                else if((s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
-                    numWays = (numWays + dp[index + 2]) % MOD;
-                }
-            }
-    
-            dp[index] = numWays;
+            dp[i] = count;
         }
 
         return dp[0];
     }
 
-    // O(1*N) & O(1)
     int solveWithoutTable(const string& s) {
-        int dpIndex1 = 1; // Init first edge case
-        int dpIndex2 = 0;
-        int result = 0;
+        int dp_i_1 = 1;  
+        int dp_i_2 = 0;  
+        int dp_i   = 0;  
 
-        for(int index = n-1; index >= 0; --index) {
-            if(s[index] == '0') { // Handle second edge case
-                result   = 0;
-                dpIndex2 = dpIndex1;
-                dpIndex1 = result;
+        for(int i = n - 1; i >= 0; --i) {
+            if(s[i] == '0') {
+                dp_i   = 0;
+                dp_i_2 = dp_i_1;
+                dp_i_1 = dp_i;
                 continue;
             }
 
-            int numWays = dpIndex1;
+            int count = dp_i_1;
 
-            if(s[index] == '*') {
-                for(int digit = 2; digit <= 9; ++digit) {
-                    numWays = (numWays + dpIndex1) % MOD;
+            for(int d = 2; (d <= 9 && s[i] == '*'); ++d) {
+                count = (count + dp_i_1) % MOD;
+            }
+
+            if(i + 1 < n) {
+                if(digit(s[i + 1]) && (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))) {
+                    count = (count + dp_i_2) % MOD;
+                }
+                else if(star(s[i]) && digit(s[i + 1])) {
+                    count = (count + dp_i_2) % MOD;
+
+                    if(s[i + 1] <= '6') {
+                        count = (count + dp_i_2) % MOD;
+                    }
+                }
+                else if(digit(s[i]) && star(s[i + 1])) {
+                    for(int d = 1; d <= getEndLimit(s[i]); ++d) {
+                        count = (count + dp_i_2) % MOD;
+                    }
+                }
+                else if(star(s[i]) && star(s[i + 1])) {
+                    for(int d = 1; d <= 9; ++d) {
+                        count = (count + dp_i_2) % MOD;
+                    }  
+                    for(int d = 1; d <= 6; ++d) {
+                        count = (count + dp_i_2) % MOD;
+                    }  
                 }
             }
 
-            if(index + 1 < n) {
-                if(s[index] == '*' && s[index + 1] == '*') {
-                    for(int digit = 1; digit <= 9; ++digit) {
-                        numWays = (numWays + dpIndex2) % MOD;
-                        if(digit <= 6) {
-                            numWays = (numWays + dpIndex2) % MOD;
-                        }
-                    }
-                }
-                else if(s[index] == '*') {
-                    numWays = (numWays + dpIndex2) % MOD;
-                    if(s[index + 1] <= '6') {
-                        numWays = (numWays + dpIndex2) % MOD;
-                    }
-                }
-                else if(s[index + 1] == '*') {
-                    for(int digit = 1; (digit <= getEndLimit(s[index])); ++digit) {
-                        numWays = (numWays + dpIndex2) % MOD;
-                    }
-                }
-                else if((s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
-                    numWays = (numWays + dpIndex2) % MOD;
-                }
-            }
-            result   = numWays;
-            dpIndex2 = dpIndex1;
-            dpIndex1 = result;
+            dp_i   = count;
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
         }
 
-        return result;        
+        return dp_i;
     }
 
-public: 
-    int numDecodings(string& s) {
+public:
+    int numDecodings(string s) {
         n = s.size();
-        return solveWithoutTable(s);
+        vector<int> dp(n, -1);
+        return solveWithMemo(dp, s, 0);
     }
 };
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Topics: String | Dynamic Programming
-Link  : https://leetcode.com/problems/decode-ways-ii/description/
