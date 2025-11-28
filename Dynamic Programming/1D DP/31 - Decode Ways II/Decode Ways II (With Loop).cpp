@@ -6,8 +6,8 @@ class Solution {
         return ch == '*';
     }
 
-    bool digit(const char d) {
-        return d >= '0' && d <= '9';
+    bool digit(const char ch) {
+        return ch >= '0' && ch <= '9';
     }
 
     int getEndLimit(const char ch) {
