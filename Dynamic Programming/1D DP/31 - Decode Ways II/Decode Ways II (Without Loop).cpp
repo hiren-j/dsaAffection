@@ -1,4 +1,8 @@
-class Solution {
+// Code to find the number of ways to decode the given string consisting of digits and * ~ coded by vHiren
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class TopDown {
     using LL = long long;
     const int MOD = 1e9 + 7;
     int n;
@@ -67,6 +71,30 @@ class Solution {
         }
 
         return dp[i] = count;
+    }
+    // For solveWithoutMemo(), the time complexity is O(24^N). I have not included it here because it will increase the lines of code
+
+public:
+    int numDecodings(string s) {
+        n = s.size();
+        vector<int> dp(n, -1);
+        return solveWithMemo(dp, s, 0);
+    }
+};
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+    using LL = long long;
+    const int MOD = 1e9 + 7;
+    int n;
+
+    bool star(const char ch) {
+        return ch == '*';
+    }
+
+    bool digit(const char ch) {
+        return ch >= '0' && ch <= '9';
     }
 
     int solveWith1DTable(const string& s) {
@@ -185,8 +213,11 @@ class Solution {
 public:
     int numDecodings(string s) {
         n = s.size();
-        // vector<int> dp(n, -1);
-        // return solveWithMemo(dp, s, 0);
         return solveWithoutTable(s);
     }
 };
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics : String | Dynamic Programming
+Link   : https://leetcode.com/problems/decode-ways-ii/description/
