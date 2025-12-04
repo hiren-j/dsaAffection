@@ -87,7 +87,7 @@ class BottomUp {
 
     // O(N*2) & O(1) : Where N = given_n
     int solveWithoutTable(int given_n) {
-        // Init the edge case
+        // Initialize edge case
         int prevRow_0 = 1; 
         int prevRow_1 = 1; 
 
