@@ -47,7 +47,7 @@ class BottomUp {
     int solveWith2DTable(int given_n) {
         vector<vector<int>> dp(given_n + 1, vector<int>(2, -1));
 
-        // Init the edge case
+        // Initialize edge case
         dp[0][0] = 1;
         dp[0][1] = 1;
         
