@@ -103,7 +103,7 @@ public:
 class BottomUpIntuitive {
     const int MOD = 1e9 + 7;
     
-    // O(X*Y) & O(X*Y)
+    // O(X*Y) & O(X*Y) : Where X = given_X, Y = given_Y
     int solveBy2DTable(int given_X, int given_Y) {
         vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, 0));
 
@@ -126,7 +126,7 @@ class BottomUpIntuitive {
         return dp[given_X][given_Y];
     }
 
-    // O(X*Y) & O(X*Y)
+    // O(X*Y) & O(X*Y) : Where X = given_X, Y = given_Y
     int solveBy2DEnhanced(int given_X, int given_Y) {
         //  Suppose you're on a cell and that cell is also a destination cell then you've only 1 path it's because you're already on the cell. So, initially fill all the cells by value 1
         vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, 1));
@@ -142,7 +142,7 @@ class BottomUpIntuitive {
         return dp[given_X][given_Y];
     }
 
-    // O(X*Y) & O(2*Y)
+    // O(X*Y) & O(2*Y) : Where X = given_X, Y = given_Y
     int solveBy1DTable(int given_X, int given_Y) {
         vector<int> prevRow(given_Y + 1, 1);
 
