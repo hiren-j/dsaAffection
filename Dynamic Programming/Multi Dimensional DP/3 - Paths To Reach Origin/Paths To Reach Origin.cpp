@@ -86,7 +86,7 @@ class BottomUp {
                 currRow[Y] = (moveLeft + moveUp) % MOD;
             }
             
-            prevRow = currRow;
+            swap(prevRow, currRow);
         }
         
         return prevRow[given_Y];
@@ -155,7 +155,7 @@ class BottomUpIntuitive {
                 currRow[Y] = (moveUp + moveLeft) % MOD;
             }
 
-            prevRow = currRow;
+            swap(prevRow, currRow);
         }
 
         return prevRow[given_Y];
