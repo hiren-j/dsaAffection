@@ -58,8 +58,8 @@ class BottomUp {
             for(int C = 0; C <= Y; ++C) {
                 if(R == 0 && C == 0)
                     continue;
-                int moveLeft = (C-1 >= 0) ? dp[R][C-1] : 0;
-                int moveUp   = (R-1 >= 0) ? dp[R-1][C] : 0;
+                int moveLeft = (C-1 < 0) : 0 ? dp[R][C-1];
+                int moveUp   = (R-1 < 0) : 0 ? dp[R-1][C];
                 dp[R][C] = (moveLeft + moveUp) % MOD;
             }
         }
@@ -79,8 +79,8 @@ class BottomUp {
                     currRow[0] = 1; // Init first edge case
                     continue;
                 }
-                int moveLeft = (C-1 >= 0) ? currRow[C-1] : 0;
-                int moveUp   = (R-1 >= 0) ? prevRow[C] : 0;
+                int moveLeft = (C-1 < 0) : 0 ? currRow[C-1];
+                int moveUp   = (R-1 < 0) : 0 ? prevRow[C];
                 currRow[C] = (moveLeft + moveUp) % MOD;
             }
             
