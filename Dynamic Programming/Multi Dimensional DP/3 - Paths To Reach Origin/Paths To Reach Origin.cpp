@@ -3,7 +3,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
 
     // O(2^(X*Y)) & O(X+Y)
     int solveWithoutMemo(int X, int Y) {
@@ -13,8 +13,8 @@ class TopDown {
         if(X < 0 || Y < 0)
             return 0;
             
-        int moveLeft = solveWithoutMemo(X, Y-1);
-        int moveUp   = solveWithoutMemo(X-1, Y);
+        int moveLeft = solveWithoutMemo(X, Y - 1);
+        int moveUp   = solveWithoutMemo(X - 1, Y);
         
         return (moveLeft + moveUp) % MOD;
     }
@@ -30,16 +30,16 @@ class TopDown {
         if(dp[X][Y] != -1)
             return dp[X][Y];
             
-        int moveLeft = solveWithMemo(dp, X, Y-1);
-        int moveUp   = solveWithMemo(dp, X-1, Y);
+        int moveLeft = solveWithMemo(dp, X, Y - 1);
+        int moveUp   = solveWithMemo(dp, X - 1, Y);
         
         return dp[X][Y] = (moveLeft + moveUp) % MOD;
     }
     
 public:
-    // Method to count total ways to reach the origin point, using recursion with mwmoization - O(X*Y) & O(X*Y)
+    // Method to count total ways to reach the origin point, using recursion with memoization - O(X*Y) & O(X*Y)
     int waysToReachOrigin(int X, int Y) {
-        vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
+        vector<vector<int>> dp(X + 1, vector<int>(Y + 1, -1));
         return solveWithMemo(dp, X, Y);
     }
 };
@@ -47,119 +47,123 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
 
-    // O(X*Y) & O(X*Y)
-    int solveWith2DTable(int X, int Y) {
-        vector<vector<int>> dp(X+1, vector<int>(Y+1, -1));
-        dp[0][0] = 1; // Init first edge case
+    // O(X*Y) & O(X*Y) : Where X = given_X, Y = given_Y
+    int solveBy2DTable(int given_X, int given_Y) {
+        vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, -1));
+
+        // Init first edge case
+        dp[0][0] = 1; 
         
-        for(int R = 0; R <= X; ++R) {
-            for(int C = 0; C <= Y; ++C) {
-                if(R == 0 && C == 0)
+        for(int X = 0; X <= given_X; ++X) {
+            for(int Y = 0; Y <= given_Y; ++Y) {
+                if(X == 0 && Y == 0)
                     continue;
-                int moveLeft = (C-1 < 0) : 0 ? dp[R][C-1];
-                int moveUp   = (R-1 < 0) : 0 ? dp[R-1][C];
-                dp[R][C] = (moveLeft + moveUp) % MOD;
+                int moveLeft = (Y - 1 < 0) ? 0 : dp[X][Y - 1];
+                int moveUp   = (X - 1 < 0) ? 0 : dp[X - 1][Y];
+                dp[X][Y] = (moveLeft + moveUp) % MOD;
             }
         }
         
-        return dp[X][Y];
+        return dp[given_X][given_Y];
     }
     
-    // O(X*Y) & O(2*Y)
-    int solveWith1DTable(int X, int Y) {
-        vector<int> prevRow(Y+1, -1);
+    // O(X*Y) & O(2*Y) : Where X = given_X, Y = given_Y
+    int solveBy1DTable(int given_X, int given_Y) {
+        vector<int> prevRow(given_Y + 1, -1);
 
-        for(int R = 0; R <= X; ++R) {
-            vector<int> currRow(Y+1, -1);
+        for(int X = 0; X <= given_X; ++X) {
+            vector<int> currRow(given_Y + 1, -1);
             
-            for(int C = 0; C <= Y; ++C) {
-                if(R == 0 && C == 0) {
+            for(int Y = 0; Y <= given_Y; ++Y) {
+                if(X == 0 && Y == 0) {
                     currRow[0] = 1; // Init first edge case
                     continue;
                 }
-                int moveLeft = (C-1 < 0) : 0 ? currRow[C-1];
-                int moveUp   = (R-1 < 0) : 0 ? prevRow[C];
-                currRow[C] = (moveLeft + moveUp) % MOD;
+                int moveLeft = (Y - 1 < 0) ? 0 : currRow[Y - 1];
+                int moveUp   = (X - 1 < 0) ? 0 : prevRow[Y];
+                currRow[Y] = (moveLeft + moveUp) % MOD;
             }
             
             prevRow = currRow;
         }
         
-        return prevRow[Y];
+        return prevRow[given_Y];
     }
     
 public:
     int waysToReachOrigin(int X, int Y) {
-        return solveWith1DTable(X, Y);
+        return solveBy1DTable(X, Y);
     }
 };
     
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class BottomUpIntuitive {
-    const int MOD = 1e9+7;
-
+    const int MOD = 1e9 + 7;
+    
     // O(X*Y) & O(X*Y)
-    int solveWith2DTable(int X, int Y) {
-        vector<vector<int>> dp(X+1, vector<int>(Y+1, 0));
+    int solveBy2DTable(int given_X, int given_Y) {
+        vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, 0));
 
         // Logically when the value of X is 0 then for any value of Y you can reach point 0
-        for(int C = 0; C <= Y; ++C)
-            dp[0][C] = 1;
+        for(int Y = 0; Y <= given_Y; ++Y)
+            dp[0][Y] = 1;
 
         // Logically when the value of Y is 0 then for any value of X you can reach point 0
-        for(int R = 0; R <= X; ++R)
-            dp[R][0] = 1;
+        for(int X = 0; X <= given_X; ++X)
+            dp[X][0] = 1;
 
-        for(int R = 1; R <= X; ++R) {
-            for(int C = 1; C <= Y; ++C) {
-                int moveLeft = dp[R][C-1];  
-                int moveUp   = dp[R-1][C];  
-                dp[R][C]  = (moveUp + moveLeft) % MOD;
+        for(int X = 1; X <= given_X; ++X) {
+            for(int Y = 1; Y <= given_Y; ++Y) {
+                int moveLeft = dp[X][Y - 1];  
+                int moveUp   = dp[X - 1][Y];  
+                dp[X][Y]  = (moveUp + moveLeft) % MOD;
             }
         }
 
-        return dp[X][Y];
+        return dp[given_X][given_Y];
     }
 
     // O(X*Y) & O(X*Y)
-    int solveWith2DEnhanced(int X, int Y) {
+    int solveBy2DEnhanced(int given_X, int given_Y) {
         //  Suppose you're on a cell and that cell is also a destination cell then you've only 1 path it's because you're already on the cell. So, initially fill all the cells by value 1
-        vector<vector<int>> dp(X+1, vector<int>(Y+1, 1));
+        vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, 1));
 
-        for(int R = 1; R <= X; ++R) {
-            for(int C = 1; C <= Y; ++C) {
-                int moveLeft = dp[R][C-1];  
-                int moveUp   = dp[R-1][C];  
-                dp[R][C]  = (moveUp + moveLeft) % MOD;
+        for(int X = 1; X <= given_X; ++X) {
+            for(int Y = 1; Y <= given_Y; ++Y) {
+                int moveLeft = dp[X][Y - 1];  
+                int moveUp   = dp[X - 1][Y];  
+                dp[X][Y]  = (moveUp + moveLeft) % MOD;
             }
         }
 
-        return dp[X][Y];
+        return dp[given_X][given_Y];
     }
 
     // O(X*Y) & O(2*Y)
-    int solveWith1DTable(int X, int Y) {
-        vector<int> prevRow(Y+1, 1);
+    int solveBy1DTable(int given_X, int given_Y) {
+        vector<int> prevRow(given_Y + 1, 1);
 
-        for(int R = 1; R <= X; ++R) {
-            vector<int> currRow(Y+1, 1);
-            for(int C = 1; C <= Y; ++C) {
-                int moveLeft = currRow[C-1];  
-                int moveUp   = prevRow[C];  
-                currRow[C] = (moveUp + moveLeft) % MOD;
+        for(int X = 1; X <= given_X; ++X) {
+            vector<int> currRow(given_Y + 1, 1);
+
+            for(int Y = 1; Y <= given_Y; ++Y) {
+                int moveLeft = currRow[Y - 1];  
+                int moveUp   = prevRow[Y];  
+                currRow[Y] = (moveUp + moveLeft) % MOD;
             }
+
             prevRow = currRow;
         }
 
-        return prevRow[Y];
+        return prevRow[given_Y];
     }
 
 public:
     int waysToReachOrigin(int X, int Y) {
-        return solveWith1DTable(X, Y);
+        return solveBy1DTable(X, Y);
     }
 };
 
