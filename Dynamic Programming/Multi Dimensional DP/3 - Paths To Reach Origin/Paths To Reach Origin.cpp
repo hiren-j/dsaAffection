@@ -75,8 +75,6 @@ class BottomUp {
     // O(X*Y) & O(X*Y) : Where X = given_X, Y = given_Y
     int solveBy2DEnhanced(int given_X, int given_Y) {
         vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, -1));
-
-        // Init first edge case
         dp[0][0] = 1; 
         
         for(int X = 0; X <= given_X; ++X) {
@@ -101,7 +99,7 @@ class BottomUp {
             
             for(int Y = 0; Y <= given_Y; ++Y) {
                 if(X == 0 && Y == 0) {
-                    currRow[0] = 1; // Init first edge case
+                    currRow[0] = 1; 
                     continue;
                 }
                 int moveLeft = (Y - 1 < 0) ? 0 : currRow[Y - 1];
