@@ -51,6 +51,29 @@ class BottomUp {
 
     // O(X*Y) & O(X*Y) : Where X = given_X, Y = given_Y
     int solveBy2DTable(int given_X, int given_Y) {
+        vector<vector<int>> dp(given_X + 2, vector<int>(given_Y + 2, -1));
+        dp[1][1] = 1; // Base Case1 - (R == 0 && C == 0) return 1
+        
+        for(int C = 0; C <= given_Y + 1; ++C) // Base Case2 - (R < 0) return 0    
+            dp[0][C] = 0;
+        for(int R = 0; R <= given_X + 1; ++R) // Base Case2 - (C < 0) return 0 
+            dp[R][0] = 0;
+            
+        for(int R = 1; R <= given_X + 1; ++R) {
+            for(int C = 1; C <= given_Y + 1; ++C) {
+                if(R == 1 && C == 1)
+                    continue;
+                int moveLeft = dp[R][C - 1];
+                int moveUp   = dp[R - 1][C];
+                dp[R][C] = (moveLeft + moveUp) % MOD;
+            }
+        }
+        
+        return dp[given_X + 1][given_Y + 1];
+    }
+
+    // O(X*Y) & O(X*Y) : Where X = given_X, Y = given_Y
+    int solveBy2DEnhanced(int given_X, int given_Y) {
         vector<vector<int>> dp(given_X + 1, vector<int>(given_Y + 1, -1));
 
         // Init first edge case
