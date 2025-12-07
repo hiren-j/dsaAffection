@@ -64,8 +64,8 @@ class BottomUp {
                 } else if(grid[R][C] == 1) {
                     dp[R][C] = 0;
                 } else {
-                    long moveRight = (C+1 < N) ? dp[R][C+1] : 0;
-                    long moveDown  = (R+1 < M) ? dp[R+1][C] : 0;
+                    long moveRight = dp[R][C+1];
+                    long moveDown  = dp[R+1][C];
                     dp[R][C] = moveRight + moveDown;
                 }
             }
