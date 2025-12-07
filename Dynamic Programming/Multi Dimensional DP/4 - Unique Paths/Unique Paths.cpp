@@ -49,7 +49,30 @@ public:
 
 class BottomUp {
     // O(M*N) & O(M*N)
-    int solveWith2DTable(int M, int N) {
+    int solveBy2DTable(int M, int N) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, -1));
+        dp[M-1][N-1] = 1; // if(R == M-1 && C == N-1) return 1
+
+        for(int C = 0; C <= N; ++C) // if(R == M) return 0
+            dp[M][C] = 0;
+        for(int R = 0; R <= M; ++R) // if(C == N) return 0
+            dp[R][N] = 0;
+
+        for(int R = M-1; R >= 0; --R) {
+            for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)
+                    continue; 
+                int moveRight = dp[R][C+1];
+                int moveDown  = dp[R+1][C];
+                dp[R][C] = (moveRight + moveDown);
+            }
+        }
+
+        return dp[0][0];
+    }
+
+    // O(M*N) & O(M*N)
+    int solveBy2DEnhanced_V1(int M, int N) {
         vector<vector<int>> dp(M, vector<int>(N, -1));
         dp[M-1][N-1] = 1;
         
@@ -57,8 +80,8 @@ class BottomUp {
             for(int C = N-1; C >= 0; --C) {
                 if(R == M-1 && C == N-1)    
                     continue;
-                int moveRight = (C+1 < N) ? dp[R][C+1] : 0;
-                int moveDown  = (R+1 < M) ? dp[R+1][C] : 0;
+                int moveRight = (C+1 == N) ? 0 : dp[R][C+1];
+                int moveDown  = (R+1 == M) ? 0 : dp[R+1][C];
                 dp[R][C] = moveRight + moveDown;
             }
         }
@@ -67,7 +90,7 @@ class BottomUp {
     }
 
     // O(M*N) & O(M*N)
-    int solveWith2DEnhanced(int M, int N) {
+    int solveBy2DEnhanced_V2(int M, int N) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
         dp[M-1][N-1] = 1;
         
@@ -85,27 +108,27 @@ class BottomUp {
     }
 
     // O(M*N) & O(2*N)
-    int solveWith1DTable(int M, int N) {
-        vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
-        idealRow[N-1] = 1;
+    int solveBy1DTable(int M, int N) {
+        vector<int> nextRow(N+1, 0), currRow(N+1, 0);
+        currRow[N-1] = 1;
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
                 if(R == M-1 && C == N-1)
                     continue;
-                int moveRight = idealRow[C+1]; 
+                int moveRight = currRow[C+1]; 
                 int moveDown  = nextRow[C]; 
-                idealRow[C] = moveDown + moveRight;
+                currRow[C] = moveDown + moveRight;
             }
-            nextRow = idealRow;
+            swap(nextRow, currRow);
         }
 
-        return nextRow[0]; // Return idealRow[0] will also work
+        return nextRow[0]; // Return currRow[0] will also work
     }
 
 public:
     int uniquePaths(int M, int N) {
-        return solveWith1DTable(M, N);
+        return solveBy1DTable(M, N);
     }
 };
 
@@ -125,14 +148,14 @@ class BottomUpIntuitve {
     }
 
     // O(M*N) & O(2*N)
-    int solveWith1DTable(int M, int N) {
-        vector<int> prevRow(N, 1), idealRow(N, 1);
+    int solveBy1DTable(int M, int N) {
+        vector<int> prevRow(N, 1), currRow(N, 1);
 
         for(int R = 1; R < M; ++R) {
             for(int C = 1; C < N; ++C) {
-                idealRow[C] = prevRow[C] + idealRow[C-1];
+                currRow[C] = prevRow[C] + currRow[C-1];
             }
-            prevRow = idealRow;
+            swap(prevRow, currRow);
         }
 
         return prevRow[N-1];
@@ -140,7 +163,7 @@ class BottomUpIntuitve {
 
 public:
     int uniquePaths(int M, int N) {
-        return solveWith1DTable(M, N);
+        return solveBy1DTable(M, N);
     }
 };
     
