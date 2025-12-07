@@ -111,7 +111,7 @@ class BottomUp {
                     idealRow[C] = moveRight + moveDown;
                 }
             }
-            nextRow = idealRow;
+            swap(nextRow, idealRow);
         }
 
         return nextRow[0];
