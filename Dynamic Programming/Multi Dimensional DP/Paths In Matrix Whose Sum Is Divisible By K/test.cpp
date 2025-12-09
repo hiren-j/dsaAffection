@@ -107,7 +107,7 @@ class BottomUp {
             for(int C = N-1; C >= 0; --C) {
                 for(int pathSum = K-1; pathSum >= 0; --pathSum) {
                     if(R == M-1 && C == N-1) {
-                        curr[N-1][pathSum] = (pathSum + grid[M-1][N-1]) % K == 0 ? 1 : 0;
+                        curr[N-1][pathSum] = (pathSum + grid[M-1][N-1]) % K == 0;
                     }
                     else {
                         int moveRight = curr[C+1][(pathSum + grid[R][C]) % K];
