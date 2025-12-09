@@ -68,9 +68,9 @@ class BottomUp {
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1) 
+                    continue;
                 for(int pathSum = K-1; pathSum >= 0; --pathSum) {
-                    if(R == M-1 && C == N-1) 
-                        continue;
                     int moveRight = dp[R][C+1][(pathSum + grid[R][C]) % K];
                     int moveDown  = dp[R+1][C][(pathSum + grid[R][C]) % K];
                     dp[R][C][pathSum] = (moveRight + moveDown) % MOD;
@@ -90,9 +90,9 @@ class BottomUp {
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1) 
+                    continue;
                 for(int pathSum = K-1; pathSum >= 0; --pathSum) {
-                    if(R == M-1 && C == N-1) 
-                        continue;
                     int moveRight = dp[R][C+1][(pathSum + grid[R][C]) % K];
                     int moveDown  = dp[R+1][C][(pathSum + grid[R][C]) % K];
                     dp[R][C][pathSum] = (moveRight + moveDown) % MOD;
