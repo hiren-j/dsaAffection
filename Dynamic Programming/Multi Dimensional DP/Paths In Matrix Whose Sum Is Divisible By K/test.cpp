@@ -1,3 +1,7 @@
+// Code to find the number of paths where the sum of the elements on the path is divisible by k. Since the answer may be very large, return it modulo 1e9 + 7 ~ coded by vHiren
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 class TopDown {
     const int MOD = 1e9 + 7;
     int M, N, K;
@@ -40,6 +44,8 @@ public:
         return solveWithMemo(dp, grid, 0, 0, 0);
     }
 };
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
     const int MOD = 1e9 + 7;
@@ -129,3 +135,8 @@ public:
         return solveBy2DTable(grid);
     }
 };
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Topics: Array | Dynamic Programming | Matrix | Weekly Contest 314
+Link  : https://leetcode.com/problems/paths-in-matrix-whose-sum-is-divisible-by-k/description/
