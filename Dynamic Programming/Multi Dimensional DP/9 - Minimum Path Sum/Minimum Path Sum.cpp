@@ -75,7 +75,7 @@ class BottomUp {
     }
 
     // O(M*N) & O(M*N)
-    int solveWith2DEnhanced(vector<vector<int>>& grid) {
+    int solveWith2DEnhanced(const vector<vector<int>>& grid) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, INT_MAX));
         dp[M-1][N-1] = grid[M-1][N-1];
 
@@ -93,7 +93,7 @@ class BottomUp {
     }
 
     // O(M*N) & O(2*N)
-    int solveWith1DTable(vector<vector<int>>& grid) {
+    int solveWith1DTable(const vector<vector<int>>& grid) {
         vector<int> nextRow(N+1, INT_MAX), idealRow(N+1, INT_MAX);
         idealRow[N-1] = grid[M-1][N-1];
 
