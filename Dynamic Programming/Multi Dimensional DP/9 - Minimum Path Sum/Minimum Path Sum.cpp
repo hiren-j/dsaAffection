@@ -6,7 +6,7 @@ class TopDown {
     int M, N;
 
     // O(2^(M*N)) & O(M+N)
-    int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
+    int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
         if(R == M || C == N)
             return INT_MAX;
         
@@ -20,7 +20,7 @@ class TopDown {
     }
 
     // O(2*M*N) & O(M*N + M+N)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
+    int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int C) {
         if(R == M || C == N)
             return INT_MAX;
         
@@ -51,16 +51,22 @@ class BottomUp {
     int M, N;
 
     // O(M*N) & O(M*N)
-    int solveWith2DTable(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(M, vector<int>(N, -1));
+    int solveWith2DTable(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, -1));
+
+        for(int C = 0; C <= N; ++C)
+            dp[M][C] = INT_MAX;
+        for(int R = 0; R <= M; ++R)
+            dp[R][N] = INT_MAX;
+
         dp[M-1][N-1] = grid[M-1][N-1];
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
-                if(R == M-1 && C == N-1)    
+                if(R == M-1 && C == N-1)
                     continue;
-                int moveRight = (C+1 < N) ? dp[R][C+1] : INT_MAX;
-                int moveDown  = (R+1 < M) ? dp[R+1][C] : INT_MAX;
+                int moveRight  = dp[R][C+1];
+                int moveDown   = dp[R+1][C];
                 dp[R][C] = min(moveRight, moveDown) + grid[R][C];
             }
         }
@@ -99,7 +105,7 @@ class BottomUp {
                 int moveDown  = nextRow[C];
                 idealRow[C] = min(moveRight, moveDown) + grid[R][C];
             }
-            nextRow = idealRow;
+            swap(nextRow, idealRow);
         }
 
         return nextRow[0];
