@@ -19,7 +19,7 @@ class TopDown {
         return moveRight || moveDown;
     }
 
-    // O(2*N*N) & O(N*N + 2*N)
+    // O(2*N*N*2) & O(N*N*2 + 2*N)
     bool solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<int>>& maze, int R, int C, int key) {
         if(R == N || C == N || key < 0)
             return false;
@@ -51,73 +51,87 @@ class BottomUp {
     int N;
 
     // O(N*N*2) & O(N*N*2)
-    bool solveWith3DTable(vector<vector<int>>& maze) {
-        vector<vector<vector<int>>> dp(N, vector<vector<int>>(N, vector<int>(2, -1)));
-        dp[N-1][N-1][0] = (0 - maze[N-1][N-1] >= 0); // Init second edge case
-        dp[N-1][N-1][1] = (1 - maze[N-1][N-1] >= 0); // Init second edge case
+    bool solveBy3DTable(const vector<vector<int>>& maze) {
+    	vector<vector<vector<int>>> dp(N+1, vector<vector<int>>(N+1, vector<int>(2, -1)));
 
-        for(int R = N-1; R >= 0; --R) {
-            for(int C = N-1; C >= 0; --C) {
-                if(R == N-1 && C == N-1)
-                    continue;
-                for(int key = 0; key <= 1; ++key) {
-                    bool moveRight = (C+1 < N) ? dp[R][C+1][key - maze[R][C]] : false;
-                    bool moveDown  = (R+1 < N) ? dp[R+1][C][key - maze[R][C]] : false;
-                    dp[R][C][key]  = moveRight || moveDown;
-                }
-            }
-        }
-
-        return dp[0][0][1];
+    	for(int C = 0; C <= N; ++C)
+    		for(int key = 0; key <= 1; ++key)
+    			dp[N][C][key] = false;
+    
+    	for(int R = 0; R <= N; ++R)
+    		for(int key = 0; key <= 1; ++key)
+    			dp[R][N][key] = false;
+    
+    	for(int key = 0; key <= 1; ++key)
+    		dp[N-1][N-1][key] = (key - maze[N-1][N-1] >= 0);	
+    
+    	for(int R = N-1; R >= 0; --R) {
+    		for(int C = N-1; C >= 0; --C) {
+    			if(R == N-1 && C == N-1)
+    				continue;
+    			for(int key = 0; key <= 1; ++key) {
+    				bool moveRight = (key - maze[R][C] < 0) ? false : dp[R][C+1][key - maze[R][C]];
+    				bool moveDown  = (key - maze[R][C] < 0) ? false : dp[R+1][C][key - maze[R][C]];
+    				dp[R][C][key] = (moveRight || moveDown);
+    			}
+    		}
+    	}
+    
+    	return dp[0][0][1];
     }
-
+    
     // O(N*N*2) & O(N*N*2)
-    bool solveWith3DEnhanced(vector<vector<int>>& maze) {
-        vector<vector<vector<bool>>> dp(N+1, vector<vector<bool>>(N+1, vector<bool>(2, false)));
-        dp[N-1][N-1][0] = (maze[N-1][N-1] == 0); // 0 - maze[N-1][N-1] >= 0;
-        dp[N-1][N-1][1] = true;                  // 1 - maze[N-1][N-1] >= 0;
-
-        for(int R = N-1; R >= 0; --R) {
-            for(int C = N-1; C >= 0; --C) {
-                if(R == N-1 && C == N-1)
-                    continue;
-                for(int key = 0; key <= 1; ++key) {
-                    bool moveRight = dp[R][C+1][key - maze[R][C]];
-                    bool moveDown  = dp[R+1][C][key - maze[R][C]];
-                    dp[R][C][key]  = moveRight || moveDown;
-                }
-            }
-        }
-
-        return dp[0][0][1];
+    bool solveBy3DEnhanced(const vector<vector<int>>& maze) {
+    	vector<vector<vector<bool>>> dp(N+1, vector<vector<bool>>(N+1, vector<bool>(2, false)));
+    
+    	for(int key = 0; key <= 1; ++key)
+    		dp[N-1][N-1][key] = (key - maze[N-1][N-1] >= 0);	
+    
+    	for(int R = N-1; R >= 0; --R) {
+    		for(int C = N-1; C >= 0; --C) {
+    			if(R == N-1 && C == N-1)
+    				continue;
+    			for(int key = 0; key <= 1; ++key) {
+    				bool moveRight = (key - maze[R][C] < 0) ? false : dp[R][C+1][key - maze[R][C]];
+    				bool moveDown  = (key - maze[R][C] < 0) ? false : dp[R+1][C][key - maze[R][C]];
+    				dp[R][C][key] = (moveRight || moveDown);
+    			}
+    		}
+    	}
+    
+    	return dp[0][0][1];
     }
-
+    
     // O(N*N*2) & O(2*N*2)
-    bool solveWith2DTable(vector<vector<int>>& maze) {
-        vector<vector<bool>> nextRow(N+1, vector<bool>(2, false)), idealRow(N+1, vector<bool>(2, false));
-        idealRow[N-1][0] = (maze[N-1][N-1] == 0); // 0 - maze[N-1][N-1] >= 0;
-        idealRow[N-1][1] = true;                  // 1 - maze[N-1][N-1] >= 0;
-
-        for(int R = N-1; R >= 0; --R) {
-            for(int C = N-1; C >= 0; --C) {
-                if(R == N-1 && C == N-1)
-                    continue;
-                for(int key = 0; key <= 1; ++key) {
-                    bool moveRight = idealRow[C+1][key - maze[R][C]];
-                    bool moveDown  = nextRow[C][key - maze[R][C]];
-                    idealRow[C][key]  = moveRight || moveDown;
-                }
-            }
-            nextRow = idealRow;
-        }
-
-        return nextRow[0][1];
+    bool solveBy2DTable(const vector<vector<int>>& maze) {
+    	vector<vector<bool>> next(N+1, vector<bool>(2, false)); // R + 1th table
+    
+    	for(int R = N-1; R >= 0; --R) {
+    		vector<vector<bool>> curr(N+1, vector<bool>(2, false)); // Rth table
+    
+    		for(int C = N-1; C >= 0; --C) {
+    			for(int key = 0; key <= 1; ++key) {
+    				if(R == N-1 && C == N-1) {
+    					curr[N-1][key] = (key - maze[N-1][N-1] >= 0);	
+    				}
+                    else {
+    				    bool moveRight = (key - maze[R][C] < 0) ? false : curr[C+1][key - maze[R][C]];
+    				    bool moveDown  = (key - maze[R][C] < 0) ? false : next[C][key - maze[R][C]];
+    				    curr[C][key] = (moveRight || moveDown);
+                    }
+    			}
+    		}
+    
+    		swap(next, curr);
+    	}
+    
+    	return next[0][1];
     }
 
 public:
     bool canReachCornerWith1Key(vector<vector<int>>& maze, int n) {
         N = n;
-        return solveWith2DTable(maze);
+        return solveBy2DTable(maze);
     }
 };
 
