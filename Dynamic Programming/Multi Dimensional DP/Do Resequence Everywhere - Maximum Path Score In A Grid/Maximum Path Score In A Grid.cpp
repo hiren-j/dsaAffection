@@ -69,9 +69,9 @@ class BottomUp {
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)
+                    continue;
                 for(int K = 0; K <= given_K; ++K) {
-                    if(R == M-1 && C == N-1)
-                        continue;
                     int next_K    = grid[R][C] != 0 ? K-1 : K;
                     int moveRight = (next_K < 0) ? INT_MIN : dp[R][C+1][next_K];
                     int moveDown  = (next_K < 0) ? INT_MIN : dp[R+1][C][next_K]; 
@@ -94,9 +94,9 @@ class BottomUp {
 
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
+                if(R == M-1 && C == N-1)
+                    continue;
                 for(int K = 0; K <= given_K; ++K) {
-                    if(R == M-1 && C == N-1)
-                        continue;
                     int next_K    = grid[R][C] != 0 ? K-1 : K;
                     int moveRight = (next_K < 0) ? INT_MIN : dp[R][C+1][next_K];
                     int moveDown  = (next_K < 0) ? INT_MIN : dp[R+1][C][next_K]; 
