@@ -121,13 +121,14 @@ class BottomUp {
                 for(int K = 0; K <= given_K; ++K) {
                     if(R == M-1 && C == N-1) {
                         curr[N-1][K] = (grid[M-1][N-1] != 0 && K-1 < 0) ? INT_MIN : grid[M-1][N-1];  
-                        continue;
                     }
-                    int next_K    = grid[R][C] != 0 ? K-1 : K;
-                    int moveRight = (next_K < 0) ? INT_MIN : curr[C+1][next_K];
-                    int moveDown  = (next_K < 0) ? INT_MIN : next[C][next_K]; 
-                    int maxScore  = max(moveRight, moveDown);
-                    curr[C][K] = (maxScore == INT_MIN) ? INT_MIN : maxScore + grid[R][C];
+                    else {  
+                        int next_K    = grid[R][C] != 0 ? K-1 : K;
+                        int moveRight = (next_K < 0) ? INT_MIN : curr[C+1][next_K];
+                        int moveDown  = (next_K < 0) ? INT_MIN : next[C][next_K]; 
+                        int maxScore  = max(moveRight, moveDown);
+                        curr[C][K] = (maxScore == INT_MIN) ? INT_MIN : maxScore + grid[R][C];
+                    }
                 }
             }
 
