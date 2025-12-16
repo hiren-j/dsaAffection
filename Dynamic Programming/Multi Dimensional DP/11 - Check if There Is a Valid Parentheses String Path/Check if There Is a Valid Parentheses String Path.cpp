@@ -3,7 +3,7 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    int M, N, maxLen;
+    int M, N, LIMIT;
 
     // O(2^(M*N)) & O(M+N)
     bool solveWithoutMemo(vector<vector<char>>& grid, int R, int C, int stackLen) {
@@ -27,7 +27,7 @@ class TopDown {
         return moveRight || moveDown;
     }
 
-    // O(2*M*N*ML) & O(M*N*ML + M+N) : Where ML = maxLen
+    // O(2*M*N*L) & O(M*N*L + M+N) : Where L = LIMIT
     bool solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<char>>& grid, int R, int C, int stackLen) {
         if(R == M || C == N)
             return false;
@@ -53,12 +53,12 @@ class TopDown {
     }
 
 public:
-    // Method to check whether there exists a valid parentheses string path, using recursion with memoization - O(M*N*ML) & O(M*N*ML) : Where ML = maxLen
+    // Method to check whether there exists a valid parentheses string path, using recursion with memoization - O(M*N*L) & O(M*N*L) : Where L = LIMIT
     bool hasValidPath(vector<vector<char>>& grid) {
-        M = grid.size(), N = grid[0].size(), maxLen = M+N;     
-        if(grid[M-1][N-1] == '(') 
+        M = grid.size(), N = grid[0].size(), LIMIT = M+N;     
+        if(grid[0][0] == ')' || grid[M-1][N-1] == '(') 
             return false;
-        vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(maxLen, -1)));
+        vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(LIMIT, -1)));
         return solveWithMemo(dp, grid, 0, 0, 0);
     }
 };
@@ -66,9 +66,9 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    // O(M*N*ML) & O(M*N*ML) : Where ML = maxLen
+    // O(M*N*L) & O(M*N*L) : Where L = LIMIT
     int solveWith3DTable(vector<vector<char>>& grid) {
-        vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(maxLen, false)));
+        vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(LIMIT, false)));
 
         // Init third edge case: Only valid if we have exactly 1 opening parentheses before
         dp[M-1][N-1][1] = true;
@@ -77,9 +77,9 @@ class BottomUp {
             for(int C = N-1; C >= 0; --C) {
                 if(R == M-1 && C == N-1) 
                     continue;
-                for(int stackLen = maxLen-1; stackLen >= 0; --stackLen) {
+                for(int stackLen = LIMIT-1; stackLen >= 0; --stackLen) {
                     int newLen = (grid[R][C] == '(') ? stackLen + 1 : stackLen - 1; 
-                    if(newLen >= 0 && newLen < maxLen) {
+                    if(newLen >= 0 && newLen < LIMIT) {
                         bool moveRight = dp[R][C+1][newLen];
                         bool moveDown  = dp[R+1][C][newLen];
                         dp[R][C][stackLen] = moveRight || moveDown;
@@ -91,10 +91,10 @@ class BottomUp {
         return dp[0][0][0];
     }
 
-    // O(M*N*ML) & O(2*N*ML) : Where ML = maxLen
+    // O(M*N*L) & O(2*N*L) : Where L = LIMIT
     int solveWith2DTable(vector<vector<char>>& grid) {
-        vector<vector<bool>> nextRow(N+1, vector<bool>(maxLen, false));
-        vector<vector<bool>> idealRow(N+1, vector<bool>(maxLen, false));
+        vector<vector<bool>> nextRow(N+1, vector<bool>(LIMIT, false));
+        vector<vector<bool>> idealRow(N+1, vector<bool>(LIMIT, false));
 
         // Init third edge case: Only valid if we have exactly 1 opening parentheses before
         idealRow[N-1][1] = true;
@@ -103,9 +103,9 @@ class BottomUp {
             for(int C = N-1; C >= 0; --C) {
                 if(R == M-1 && C == N-1) 
                     continue;
-                for(int stackLen = maxLen-1; stackLen >= 0; --stackLen) {
+                for(int stackLen = LIMIT-1; stackLen >= 0; --stackLen) {
                     int newLen = (grid[R][C] == '(') ? stackLen + 1 : stackLen - 1; 
-                    if(newLen >= 0 && newLen < maxLen) {
+                    if(newLen >= 0 && newLen < LIMIT) {
                         bool moveRight = idealRow[C+1][newLen];
                         bool moveDown  = nextRow[C][newLen];
                         idealRow[C][stackLen] = moveRight || moveDown;
@@ -122,8 +122,8 @@ class BottomUp {
 
 public:
     bool hasValidPath(vector<vector<char>>& grid) {
-        M = grid.size(), N = grid[0].size(), maxLen = M+N;     
-        if(grid[M-1][N-1] == '(') 
+        M = grid.size(), N = grid[0].size(), LIMIT = M+N;     
+        if(grid[0][0] == ')' || grid[M-1][N-1] == '(') 
             return false;
         return solveWith2DTable(grid);
     }
