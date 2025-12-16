@@ -137,12 +137,13 @@ class Solution {
                     if(R == M-1 && C == N-1) {
                         curr[N-1][stackLen] = (grid[M-1][N-1] == '(' && stackLen + 1 == 0) || 
                                               (grid[M-1][N-1] == ')' && stackLen - 1 == 0);
-                        continue;
                     }
-                    int newLen     = grid[R][C] == '(' ? stackLen + 1 : stackLen - 1;
-                    bool moveRight = (newLen < 0 || newLen >= LIMIT) ? false : curr[C+1][newLen];
-                    bool moveDown  = (newLen < 0 || newLen >= LIMIT) ? false : next[C][newLen];
-                    curr[C][stackLen] = (moveRight || moveDown);
+                    else {
+                        int newLen     = grid[R][C] == '(' ? stackLen + 1 : stackLen - 1;
+                        bool moveRight = (newLen < 0 || newLen >= LIMIT) ? false : curr[C+1][newLen];
+                        bool moveDown  = (newLen < 0 || newLen >= LIMIT) ? false : next[C][newLen];
+                        curr[C][stackLen] = (moveRight || moveDown);
+                    }
                 }
             }
 
