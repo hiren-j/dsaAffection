@@ -57,7 +57,7 @@ public:
     bool hasValidPath(vector<vector<char>>& grid) {
         M = grid.size(), N = grid[0].size(), LIMIT = M+N;     
         if(grid[0][0] == ')' || grid[M-1][N-1] == '(') 
-            return false;
+                return false;
         vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(LIMIT, -1)));
         return solveWithMemo(dp, grid, 0, 0, 0);
     }
@@ -65,25 +65,35 @@ public:
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp {
-    // O(M*N*L) & O(M*N*L) : Where L = LIMIT
-    int solveWith3DTable(vector<vector<char>>& grid) {
-        vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(LIMIT, false)));
+class Solution {
+    int LIMIT;
+    int M, N;
 
-        // Init third edge case: Only valid if we have exactly 1 opening parentheses before
-        dp[M-1][N-1][1] = true;
+    // O(M*N*L) & O(M*N*L)
+    bool solveBy3DTable(const vector<vector<char>>& grid) {
+        vector<vector<vector<int>>> dp(M+1, vector<vector<int>>(N+1, vector<int>(LIMIT, -1)));
 
+        for(int C = 0; C <= N; ++C)
+            for(int stackLen = 0; stackLen < LIMIT; ++stackLen)
+                dp[M][C][stackLen] = false;
+
+        for(int R = 0; R <= M; ++R)
+            for(int stackLen = 0; stackLen < LIMIT; ++stackLen)
+                dp[R][N][stackLen] = false;
+
+        for(int stackLen = 0; stackLen < LIMIT; ++stackLen)
+            dp[M-1][N-1][stackLen] = (grid[M-1][N-1] == '(' && stackLen + 1 == 0) || 
+                                     (grid[M-1][N-1] == ')' && stackLen - 1 == 0);
+        
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
-                if(R == M-1 && C == N-1) 
-                    continue;
                 for(int stackLen = LIMIT-1; stackLen >= 0; --stackLen) {
-                    int newLen = (grid[R][C] == '(') ? stackLen + 1 : stackLen - 1; 
-                    if(newLen >= 0 && newLen < LIMIT) {
-                        bool moveRight = dp[R][C+1][newLen];
-                        bool moveDown  = dp[R+1][C][newLen];
-                        dp[R][C][stackLen] = moveRight || moveDown;
-                    }
+                    if(R == M-1 && C == N-1)
+                        continue;
+                    int newLen     = grid[R][C] == '(' ? stackLen + 1 : stackLen - 1;
+                    bool moveRight = (newLen < 0 || newLen >= LIMIT) ? false : dp[R][C+1][newLen];
+                    bool moveDown  = (newLen < 0 || newLen >= LIMIT) ? false : dp[R+1][C][newLen];
+                    dp[R][C][stackLen] = (moveRight || moveDown);
                 }
             }
         }
@@ -91,43 +101,65 @@ class BottomUp {
         return dp[0][0][0];
     }
 
-    // O(M*N*L) & O(2*N*L) : Where L = LIMIT
-    int solveWith2DTable(vector<vector<char>>& grid) {
-        vector<vector<bool>> nextRow(N+1, vector<bool>(LIMIT, false));
-        vector<vector<bool>> idealRow(N+1, vector<bool>(LIMIT, false));
+    // O(M*N*L) & O(M*N*L)
+    bool solveBy3DEnhanced(const vector<vector<char>>& grid) {
+        vector<vector<vector<bool>>> dp(M+1, vector<vector<bool>>(N+1, vector<bool>(LIMIT, false)));
 
-        // Init third edge case: Only valid if we have exactly 1 opening parentheses before
-        idealRow[N-1][1] = true;
-
+        for(int stackLen = 0; stackLen < LIMIT; ++stackLen)
+            dp[M-1][N-1][stackLen] = (grid[M-1][N-1] == '(' && stackLen + 1 == 0) || 
+                                     (grid[M-1][N-1] == ')' && stackLen - 1 == 0);
+        
         for(int R = M-1; R >= 0; --R) {
             for(int C = N-1; C >= 0; --C) {
-                if(R == M-1 && C == N-1) 
-                    continue;
                 for(int stackLen = LIMIT-1; stackLen >= 0; --stackLen) {
-                    int newLen = (grid[R][C] == '(') ? stackLen + 1 : stackLen - 1; 
-                    if(newLen >= 0 && newLen < LIMIT) {
-                        bool moveRight = idealRow[C+1][newLen];
-                        bool moveDown  = nextRow[C][newLen];
-                        idealRow[C][stackLen] = moveRight || moveDown;
-                    } else {
-                        idealRow[C][stackLen] = false;
-                    }
+                    if(R == M-1 && C == N-1)
+                        continue;
+                    int newLen     = grid[R][C] == '(' ? stackLen + 1 : stackLen - 1;
+                    bool moveRight = (newLen < 0 || newLen >= LIMIT) ? false : dp[R][C+1][newLen];
+                    bool moveDown  = (newLen < 0 || newLen >= LIMIT) ? false : dp[R+1][C][newLen];
+                    dp[R][C][stackLen] = (moveRight || moveDown);
                 }
             }
-            nextRow = idealRow;
         }
 
-        return nextRow[0][0];
+        return dp[0][0][0];
+    }
+
+    // O(M*N*L) & O(2*N*L)
+    bool solveBy2DTable(const vector<vector<char>>& grid) {
+        vector<vector<bool>> next(N+1, vector<bool>(LIMIT, false)); // R + 1th table
+        
+        for(int R = M-1; R >= 0; --R) {
+            vector<vector<bool>> curr(N+1, vector<bool>(LIMIT, false)); // Rth table
+
+            for(int C = N-1; C >= 0; --C) {
+                for(int stackLen = LIMIT-1; stackLen >= 0; --stackLen) {
+                    if(R == M-1 && C == N-1) {
+                        curr[N-1][stackLen] = (grid[M-1][N-1] == '(' && stackLen + 1 == 0) || 
+                                              (grid[M-1][N-1] == ')' && stackLen - 1 == 0);
+                        continue;
+                    }
+                    int newLen     = grid[R][C] == '(' ? stackLen + 1 : stackLen - 1;
+                    bool moveRight = (newLen < 0 || newLen >= LIMIT) ? false : curr[C+1][newLen];
+                    bool moveDown  = (newLen < 0 || newLen >= LIMIT) ? false : next[C][newLen];
+                    curr[C][stackLen] = (moveRight || moveDown);
+                }
+            }
+
+            swap(next, curr);
+        }
+
+        return next[0][0];
     }
 
 public:
     bool hasValidPath(vector<vector<char>>& grid) {
-        M = grid.size(), N = grid[0].size(), LIMIT = M+N;     
+        M = grid.size(), N = grid[0].size(), LIMIT = M+N;
         if(grid[0][0] == ')' || grid[M-1][N-1] == '(') 
             return false;
-        return solveWith2DTable(grid);
+        return solveBy2DTable(grid);
     }
-};  
+};
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
