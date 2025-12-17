@@ -128,9 +128,6 @@ class BottomUp {
 
     // O(M*M) & O(1)
     int solveWithoutTable(vector<vector<int>>& triangle) {
-        for(int C = 0; C < M; ++C)
-            triangle[M-1][C] = triangle[M-1][C];
-
         for(int R = M-2; R >= 0; --R) {
             for(int C = R; C >= 0; --C) {
                 int moveToSameCol = triangle[R+1][C];
