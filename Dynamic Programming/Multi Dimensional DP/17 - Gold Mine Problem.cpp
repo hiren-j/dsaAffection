@@ -17,7 +17,8 @@
 
 class TopDown {
     int M, N;
-    
+
+    // O(M * 3^(M*N)) & O(M+N)
     int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
         if(R < 0 || R == M || C == N)
             return 0;
@@ -28,7 +29,8 @@ class TopDown {
         
         return max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
     }
-    
+
+    // O(M + 3*M*N) & O(M*N + M+N)
     int solveWithMemo(vector<vector<int>>& memory, const vector<vector<int>>& grid, int R, int C) {
         if(R < 0 || R == M || C == N)
             return 0;
