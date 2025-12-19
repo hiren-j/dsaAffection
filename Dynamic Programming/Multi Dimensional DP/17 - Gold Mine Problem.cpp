@@ -1,14 +1,14 @@
-// Code to find out the maximum amount of gold which the miner can collect until he can no longer move in the grid ~ coded by Hiren
+// Code to find out the maximum amount of gold which the miner can collect until he can no longer move in the grid ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 /*
     DON'T IGNORE MUST READ (NOTE ON TIME COMPLEXITY CALCULATION):
     
-    As you’ve noticed, for this problem, the time complexity of the solveWithMemo function is O(N + 3*N*M) I want to clarify that the N comes from the loop that calls the recursive function, it's not from the function's auxiliary time. Specifically:
+    As you’ve noticed, for this problem, the time complexity of the solveWithMemo function is O(M + 3*M*N) I want to clarify that the N comes from the loop that calls the recursive function, it's not from the function's auxiliary time. Specifically:
 
-        For solveWithMemo, in O(N + 3*N*M), the term 3*N*M represents the auxiliary time of the function itself, while N reflects the time from the loop that invokes the function.
-        For solveWithoutMemo, in O(N * 3^(N*M)), the term 3^(N*M) represents the auxiliary time of the function itself, while N indicates the number of times the loop calls the function.
+        For solveWithMemo, in O(M + 3*M*N), the term 3*M*N represents the auxiliary time of the function itself, while N reflects the time from the loop that invokes the function.
+        For solveWithoutMemo, in O(M * 3^(M*N)), the term 3^(M*N) represents the auxiliary time of the function itself, while N indicates the number of times the loop calls the function.
     
     So for future problems, be sure to identify any loops from which the function is called. This is crucial for providing a complete time complexity analysis, so I can’t ignore these terms.
 */  
@@ -16,152 +16,203 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    int N, M;
+    int M, N;
     
-    // O(N * 3^(N*M)) & O(N+M)
-    int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
-        if(R < 0 || R == N || C == M)
+    int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
+        if(R < 0 || R == M || C == N)
             return 0;
-    
+            
         int moveRight     = solveWithoutMemo(grid, R, C+1);
         int moveUpRight   = solveWithoutMemo(grid, R-1, C+1);
         int moveDownRight = solveWithoutMemo(grid, R+1, C+1);
         
-        return grid[R][C] + max({moveRight, moveUpRight, moveDownRight});
+        return max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
     }
-
-    // O(N + 3*N*M) & O(N*M + N+M)
-    int solveWithMemo(vector<vector<int>>& memory, vector<vector<int>>& grid, int R, int C) {
-        if(R < 0 || R == N || C == M)
+    
+    int solveWithMemo(vector<vector<int>>& memory, const vector<vector<int>>& grid, int R, int C) {
+        if(R < 0 || R == M || C == N)
             return 0;
             
         if(memory[R][C] != -1)
-            return memory[R][C];
-    
+            return memory[R][C]; 
+            
         int moveRight     = solveWithMemo(memory, grid, R, C+1);
         int moveUpRight   = solveWithMemo(memory, grid, R-1, C+1);
         int moveDownRight = solveWithMemo(memory, grid, R+1, C+1);
         
-        return memory[R][C] = grid[R][C] + max({moveRight, moveUpRight, moveDownRight});
+        return memory[R][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
     }
-
+    
 public:
-    // Method to find maximum gold the miner can collect, using recursion with memoization - O(N*M) & O(N*M)
-    int collectMaxGold(vector<vector<int>>& grid) {
-        N = grid.size(), M = grid[0].size(); 
-
-        vector<vector<int>> memory(N, vector<int>(M, -1));
-
-        int maxGold = 0;
-        for(int R = 0; R < N; ++R) // Collect gold from each start point and update maximum gold you can collect
-            maxGold = max(maxGold, solveWithMemo(memory, grid, R, 0));
+    // Method to find maximum gold miner can collect, using recursion with memoization - O(M*N) & O(M*N)
+    int maxGold(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
         
-        return maxGold;
+        vector<vector<int>> memory(M, vector<int>(N, -1));
+        int maxSum = 0;
+        
+        for(int R = 0; R < M; ++R) {
+            int pathSum = solveWithMemo(memory, grid, R, 0);
+            maxSum = max(maxSum, pathSum);
+        }
+        
+        return maxSum;
     }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    int N, M;
+    int M, N;
 
-    // O(N*M) & O(N*M)
-    int solveWith2DTable(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(N, vector<int>(M, -1));
+    // O(M*N) & O(M*N)
+    int solveBy2DShifting(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M+2, vector<int>(N+1, -1));
         
-        for(int C = M-1; C >= 0; --C) {
-            for(int R = N-1; R >= 0; --R) {
-                int moveRight     = (C+1 < M) ? dp[R][C+1] : 0; 
-                int moveUpRight   = (R-1 >= 0 && C+1 < M) ? dp[R-1][C+1] : 0; 
-                int moveDownRight = (R+1 < N && C+1 < M)  ? dp[R+1][C+1] : 0;
-                dp[R][C] = grid[R][C] + max({moveRight, moveUpRight, moveDownRight});
-            }
-        }
-        
-        int maxGold = 0;
-        for(int R = 0; R < N; ++R)
-            maxGold = max(maxGold, dp[R][0]);
-        
-        return maxGold;
-    }
-    
-    // O(N*M) & O(N*M)
-   int solveWith2DEnhanced(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(N+2, vector<int>(M+1, 0));
-        
-        for(int C = M-1; C >= 0; --C) {
-            for(int R = N; R >= 1; --R) {
-                int moveRight     = dp[R][C+1]; 
-                int moveUpRight   = dp[R-1][C+1]; 
-                int moveDownRight = dp[R+1][C+1];
-                dp[R][C] = grid[R-1][C] + max({moveRight, moveUpRight, moveDownRight});   
-            }
-        }
-        
-        int maxGold = 0;
-        for(int R = 0; R < N; ++R)
-            maxGold = max(maxGold, dp[R+1][0]);
+        for(int C = 0; C <= N; ++C)
+            dp[-1+1][C] = 0;
+        for(int C = 0; C <= N; ++C)
+            dp[M+1][C] = 0;
+        for(int R = 0; R <= M; ++R)
+            dp[R+1][N] = 0;
             
-        return maxGold;
-    }
-    
-    // O(N*M) & O(1)
-    int solveWithoutTable(vector<vector<int>>& grid) {
-        for(int C = M-1; C >= 0; --C) {
-            for(int R = N-1; R >= 0; --R) {
-                int moveRight     = (C+1 < M) ? grid[R][C+1] : 0; 
-                int moveUpRight   = (R-1 >= 0 && C+1 < M) ? grid[R-1][C+1] : 0; 
-                int moveDownRight = (R+1 < N && C+1 < M)  ? grid[R+1][C+1] : 0;
-                grid[R][C] += max({moveRight, moveUpRight, moveDownRight});
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int moveRight     = dp[R+1][C+1];
+                int moveUpRight   = (R-1 < 0) ? 0 : dp[R-1+1][C+1];
+                int moveDownRight = dp[R+1+1][C+1];
+                dp[R+1][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
             }
         }
         
-        int maxGold = 0;
-        for(int R = 0; R < N; ++R)
-            maxGold = max(maxGold, grid[R][0]);
+        int maxSum = 0;
         
-        return maxGold;
+        for(int R = 0; R < M; ++R) {
+            int pathSum = dp[R+1][0];
+            maxSum = max(maxSum, pathSum);
+        }
+        
+        return maxSum;
     }
     
-    // O(N*M) & O(N*M)
-    int solveWith2DConcise(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(N+2, vector<int>(M+1, 0));
-        int maxGold = 0;
+    // O(M*N) & O(M*N)
+    int solveBy2DTable_V1(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, -1));
         
-        for(int C = M-1; C >= 0; --C) {
-            for(int R = N; R >= 1; --R) {
-                int moveRight     = dp[R][C+1]; 
-                int moveUpRight   = dp[R-1][C+1]; 
+        for(int C = 0; C <= N; ++C)
+            dp[M][C] = 0;
+        for(int R = 0; R <= M; ++R)
+            dp[R][N] = 0;
+            
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int moveRight     = dp[R][C+1];
+                int moveUpRight   = (R-1 < 0) ? 0 : dp[R-1][C+1];
                 int moveDownRight = dp[R+1][C+1];
-                dp[R][C] = grid[R-1][C] + max({moveRight, moveUpRight, moveDownRight});   
-                maxGold = max(maxGold, dp[R][0]);
+                dp[R][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
             }
         }
-       
-        return maxGold;
+        
+        int maxSum = 0;
+        
+        for(int R = 0; R < M; ++R) {
+            int pathSum = dp[R][0];
+            maxSum = max(maxSum, pathSum);
+        }
+        
+        return maxSum;
     }
     
-    // O(N*M) & O(1)
-    int solveWithoutTableConcise(vector<vector<int>>& grid) {
-        int maxGold = 0;
-        
-        for(int C = M-1; C >= 0; --C) {
-            for(int R = N-1; R >= 0; --R) {
-                int moveRight     = (C+1 < M) ? grid[R][C+1] : 0; 
-                int moveUpRight   = (R-1 >= 0 && C+1 < M) ? grid[R-1][C+1] : 0; 
-                int moveDownRight = (R+1 < N && C+1 < M)  ? grid[R+1][C+1] : 0;
-                grid[R][C] += max({moveRight, moveUpRight, moveDownRight});
-                maxGold = max(maxGold, grid[R][0]);
+    // O(M*N) & O(M*N)
+    int solveBy2DEnhanced(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
+            
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int moveRight     = dp[R][C+1];
+                int moveUpRight   = (R-1 < 0) ? 0 : dp[R-1][C+1];
+                int moveDownRight = dp[R+1][C+1];
+                dp[R][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
             }
         }
         
-        return maxGold;
+        int maxSum = 0;
+        
+        for(int R = 0; R < M; ++R) {
+            int pathSum = dp[R][0];
+            maxSum = max(maxSum, pathSum);
+        }
+        
+        return maxSum;
     }
-
+    
+    // O(M*N) & O(M*N)
+    int solveBy2DTable_V2(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(M, vector<int>(N, -1));
+            
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int moveRight     = (C+1 == N) ? 0 : dp[R][C+1];
+                int moveUpRight   = (R-1 < 0  || C+1 == N) ? 0 : dp[R-1][C+1];
+                int moveDownRight = (R+1 == M || C+1 == N) ? 0 : dp[R+1][C+1];
+                dp[R][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
+            }
+        }
+        
+        int maxSum = 0;
+        
+        for(int R = 0; R < M; ++R) {
+            int pathSum = dp[R][0];
+            maxSum = max(maxSum, pathSum);
+        }
+        
+        return maxSum;
+    }
+    
+    // O(M*N) & O(1)
+    int solveWithoutTable(vector<vector<int>>& grid) {
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int moveRight     = (C+1 == N) ? 0 : grid[R][C+1];
+                int moveUpRight   = (R-1 < 0  || C+1 == N) ? 0 : grid[R-1][C+1];
+                int moveDownRight = (R+1 == M || C+1 == N) ? 0 : grid[R+1][C+1];
+                grid[R][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
+            }
+        }
+        
+        int maxSum = 0;
+        
+        for(int R = 0; R < M; ++R) {
+            int pathSum = grid[R][0];
+            maxSum = max(maxSum, pathSum);
+        }
+        
+        return maxSum;
+    }
+    
+    // O(M*N) & O(1)
+    int solveWithoutTableConcise(vector<vector<int>>& grid) {
+        int maxSum = 0;
+        
+        for(int C = N-1; C >= 0; --C) {
+            for(int R = M-1; R >= 0; --R) {
+                int moveRight     = (C+1 == N) ? 0 : grid[R][C+1];
+                int moveUpRight   = (R-1 < 0  || C+1 == N) ? 0 : grid[R-1][C+1];
+                int moveDownRight = (R+1 == M || C+1 == N) ? 0 : grid[R+1][C+1];
+                grid[R][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
+                
+                int pathSum = grid[R][0];
+                maxSum = max(maxSum, pathSum);
+            }
+        }
+        
+        return maxSum;
+    }
+    
 public:
-    int collectMaxGold(vector<vector<int>>& grid) {
-        N = grid.size(), M = grid[0].size();
-        return solveWithoutTableConcise(grid);   
+    int maxGold(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size();
+        return solveWithoutTableConcise(grid);
     }
 };
 
