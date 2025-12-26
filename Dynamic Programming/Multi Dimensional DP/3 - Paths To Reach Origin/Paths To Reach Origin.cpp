@@ -100,11 +100,12 @@ class BottomUp {
             for(int Y = 0; Y <= given_Y; ++Y) {
                 if(X == 0 && Y == 0) {
                     currRow[0] = 1; 
-                    continue;
                 }
-                int moveLeft = (Y - 1 < 0) ? 0 : currRow[Y - 1];
-                int moveUp   = (X - 1 < 0) ? 0 : prevRow[Y];
-                currRow[Y] = (moveLeft + moveUp) % MOD;
+                else {
+                    int moveLeft = (Y - 1 < 0) ? 0 : currRow[Y - 1];
+                    int moveUp   = (X - 1 < 0) ? 0 : prevRow[Y];
+                    currRow[Y] = (moveLeft + moveUp) % MOD;
+                }
             }
             
             swap(prevRow, currRow);
