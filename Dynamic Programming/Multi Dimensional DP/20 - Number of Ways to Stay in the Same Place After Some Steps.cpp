@@ -13,9 +13,9 @@ class TopDown {
         if(pointer < 0 || pointer == arrLen)
             return 0;
         
-        int moveToRight = solveWithoutMemo(steps - 1, arrLen, pointer + 1); 
-        int moveToLeft  = solveWithoutMemo(steps - 1, arrLen, pointer - 1); 
         int stayAtSame  = solveWithoutMemo(steps - 1, arrLen, pointer);   
+        int moveToLeft  = solveWithoutMemo(steps - 1, arrLen, pointer - 1); 
+        int moveToRight = solveWithoutMemo(steps - 1, arrLen, pointer + 1); 
 
         return ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
     }
@@ -31,9 +31,9 @@ class TopDown {
         if(dp[steps][pointer] != -1)
             return dp[steps][pointer];
         
-        int moveToRight = solveWithMemo(dp, steps - 1, arrLen, pointer + 1); 
-        int moveToLeft  = solveWithMemo(dp, steps - 1, arrLen, pointer - 1); 
         int stayAtSame  = solveWithMemo(dp, steps - 1, arrLen, pointer);   
+        int moveToLeft  = solveWithMemo(dp, steps - 1, arrLen, pointer - 1); 
+        int moveToRight = solveWithMemo(dp, steps - 1, arrLen, pointer + 1); 
 
         return dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
     }
@@ -67,9 +67,9 @@ class BottomUp {
 
         for(int steps = 1; steps <= given_steps; ++steps) {
             for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int stayAtSame  = dp[steps - 1][pointer + 1];   
                 int moveToLeft  = dp[steps - 1][pointer - 1+1]; 
                 int moveToRight = dp[steps - 1][pointer + 1+1]; 
-                int stayAtSame  = dp[steps - 1][pointer + 1];   
                 dp[steps][pointer + 1] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
             }
         }
@@ -90,9 +90,9 @@ class BottomUp {
 
         for(int steps = 1; steps <= given_steps; ++steps) {
             for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int stayAtSame  = dp[steps - 1][pointer];   
                 int moveToLeft  = (pointer - 1 < 0) ? 0 : dp[steps - 1][pointer - 1]; 
                 int moveToRight = dp[steps - 1][pointer + 1]; 
-                int stayAtSame  = dp[steps - 1][pointer];   
                 dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
             }
         }
@@ -110,9 +110,9 @@ class BottomUp {
 
         for(int steps = 1; steps <= given_steps; ++steps) {
             for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int stayAtSame  = dp[steps - 1][pointer];   
                 int moveToLeft  = (pointer - 1 < 0) ? 0 : dp[steps - 1][pointer - 1]; 
                 int moveToRight = (pointer + 1 == arrLen) ? 0 : dp[steps - 1][pointer + 1]; 
-                int stayAtSame  = dp[steps - 1][pointer];   
                 dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
             }
         }
@@ -129,9 +129,9 @@ class BottomUp {
             vector<int> currRow(arrLen + 1, 0); // steps row
 
             for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int stayAtSame  = prevRow[pointer];   
                 int moveToLeft  = (pointer - 1 < 0) ? 0 : prevRow[pointer - 1]; 
                 int moveToRight = prevRow[pointer + 1]; 
-                int stayAtSame  = prevRow[pointer];   
                 currRow[pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
             }
 
