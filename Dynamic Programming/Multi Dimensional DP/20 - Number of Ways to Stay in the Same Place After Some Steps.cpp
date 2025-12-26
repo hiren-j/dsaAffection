@@ -2,116 +2,149 @@
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {  
-    #define MOD 1000000007
+class TopDown {
+    const int MOD = 1e9 + 7;
 
-    // O(3^steps) & O(steps)
-    int solveWithoutMemo(int steps, int pointer, int arrLen) {
+    // O(3^S) & O(S) : Where S = steps
+    int solveWithoutMemo(int steps, int arrLen, int pointer) {
+        if(steps == 0)
+            return (pointer == 0) ? 1 : 0;
+        
         if(pointer < 0 || pointer == arrLen)
             return 0;
-
-        if(steps == 0)
-            return pointer == 0;
         
-        int stayAtSame  = solveWithoutMemo(steps - 1, pointer, arrLen); 
-        int moveToLeft  = solveWithoutMemo(steps - 1, pointer - 1, arrLen);
-        int moveToRight = solveWithoutMemo(steps - 1, pointer + 1, arrLen);
+        int moveToRight = solveWithoutMemo(steps - 1, arrLen, pointer + 1); 
+        int moveToLeft  = solveWithoutMemo(steps - 1, arrLen, pointer - 1); 
+        int stayAtSame  = solveWithoutMemo(steps - 1, arrLen, pointer);   
 
-        return ((moveToLeft + moveToRight) % MOD + stayAtSame) % MOD;
+        return ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
     }
-
-    // O(3*steps*arrLen) & O(steps*arrLen + steps)
-    int solveWithMemo(vector<vector<int>>& memory, int steps, int pointer, int arrLen) {
+    
+    // O(3*S*AL) & O(S*AL + S) : Where S = steps, AL = arrLen
+    int solveWithMemo(vector<vector<int>>& dp, int steps, int arrLen, int pointer) {
+        if(steps == 0)
+            return (pointer == 0) ? 1 : 0;
+        
         if(pointer < 0 || pointer == arrLen)
             return 0;
 
-        if(steps == 0)
-            return pointer == 0;
-
-        if(memory[steps][pointer] != -1)
-            return memory[steps][pointer];
+        if(dp[steps][pointer] != -1)
+            return dp[steps][pointer];
         
-        int stayAtSame  = solveWithMemo(memory, steps - 1, pointer, arrLen); 
-        int moveToLeft  = solveWithMemo(memory, steps - 1, pointer - 1, arrLen);
-        int moveToRight = solveWithMemo(memory, steps - 1, pointer + 1, arrLen);
+        int moveToRight = solveWithMemo(dp, steps - 1, arrLen, pointer + 1); 
+        int moveToLeft  = solveWithMemo(dp, steps - 1, arrLen, pointer - 1); 
+        int stayAtSame  = solveWithMemo(dp, steps - 1, arrLen, pointer);   
 
-        return memory[steps][pointer] = ((moveToLeft + moveToRight) % MOD + stayAtSame) % MOD;
+        return dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
     }
 
 public:
-    // Method to find such number of ways, using recursion with memoization - O(steps*arrLen) & O(steps*arrLen)
+    // Method to find such number of ways, using recursion with memoization - O(S*AL) & O(S*AL) : Where S = steps, AL = arrLen
     int numWays(int steps, int arrLen) {
-        arrLen = min(steps, arrLen); 
-        vector<vector<int>> memory(steps + 1, vector<int>(arrLen, -1));
-        return solveWithMemo(memory, steps, 0, arrLen);
+        arrLen = min(steps, arrLen);
+        vector<vector<int>> dp(steps + 1, vector<int>(arrLen, -1));
+        return solveWithMemo(dp, steps, arrLen, 0);
     }
 };
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    #define MOD 1000000007
+    const int MOD = 1e9 + 7;
 
-    // O(steps*arrLen) & O(steps*arrLen)
-    int solveWith2DTable(int steps, int arrLen) {
-        vector<vector<int>> dp(steps + 1, vector<int>(arrLen, -1));
-        dp[0][0] = 1; // Init second edge case
+    // O(GS*AL) & O(GS*AL) : Where GS = given_steps, AL = arrLen
+    int solveBy2DShifting(int given_steps, int arrLen) {
+        vector<vector<int>> dp(given_steps + 1, vector<int>(arrLen + 2, -1));
 
+        dp[0][0+1] = 1;
         for(int pointer = 1; pointer < arrLen; ++pointer)
-            dp[0][pointer] = 0; // Init first edge case
+            dp[0][pointer + 1] = 0;
 
-        for(int moves = 1; moves <= steps; ++moves) {
-            for(int pointer = arrLen - 1; pointer >= 0; --pointer) {
-                int stayAtSame  = dp[moves - 1][pointer]; 
-                int moveToLeft  = (pointer - 1 >= 0) ? dp[moves - 1][pointer - 1] : 0;
-                int moveToRight = (pointer + 1 < arrLen) ? dp[moves - 1][pointer + 1] : 0;
-                dp[moves][pointer] = (stayAtSame + (moveToLeft + moveToRight) % MOD) % MOD;  
+        for(int steps = 0; steps <= given_steps; ++steps)
+            dp[steps][-1+1] = 0;
+        for(int steps = 0; steps <= given_steps; ++steps)
+            dp[steps][arrLen + 1] = 0;    
+
+        for(int steps = 1; steps <= given_steps; ++steps) {
+            for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int moveToLeft  = dp[steps - 1][pointer - 1+1]; 
+                int moveToRight = dp[steps - 1][pointer + 1+1]; 
+                int stayAtSame  = dp[steps - 1][pointer + 1];   
+                dp[steps][pointer + 1] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
             }
         }
 
-        return dp[steps][0];
-    }
-    // Note: Let's remove the ternary checks inside the loop. To do we'll use dp[steps][0], index 0 will store results for negative index (-1). And We'll be using dp[steps][1], index 1 to store results for index 0. This is called moving negative space to positive space, because we can't have negative indeces in array. look below 
-
-    // O(steps*arrLen) & O(steps*arrLen)
-    int solveWith2DEnhanced(int steps, int arrLen) {
-        vector<vector<int>> dp(steps + 1, vector<int>(arrLen + 2, 0));
-        dp[0][1] = 1;
-
-        for(int moves = 1; moves <= steps; ++moves) {
-            for(int pointer = arrLen; pointer >= 1; --pointer) {
-                int stayAtSame  = dp[moves - 1][pointer]; 
-                int moveToLeft  = dp[moves - 1][pointer - 1];
-                int moveToRight = dp[moves - 1][pointer + 1];
-                dp[moves][pointer] = (stayAtSame + (moveToLeft + moveToRight) % MOD) % MOD;  
-            }
-        }
-
-        return dp[steps][1];
+        return dp[given_steps][0+1];
     }
 
-    // O(steps*arrLen) & O(2*arrLen)
-    int solveWith1DTable(int steps, int arrLen) {
-        vector<int> prevRow(arrLen + 2, 0), idealRow(arrLen + 2, 0);
-        prevRow[1] = 1;
+    // O(GS*AL) & O(GS*AL) : Where GS = given_steps, AL = arrLen
+    int solveBy2DTable_V1(int given_steps, int arrLen) {
+        vector<vector<int>> dp(given_steps + 1, vector<int>(arrLen + 1, -1));
 
-        for(int moves = 1; moves <= steps; ++moves) {
-            for(int pointer = arrLen; pointer >= 1; --pointer) {
-                int stayAtSame  = prevRow[pointer]; 
-                int moveToLeft  = prevRow[pointer - 1];
-                int moveToRight = prevRow[pointer + 1];
-                idealRow[pointer] = (stayAtSame + (moveToLeft + moveToRight) % MOD) % MOD;  
+        dp[0][0] = 1;
+        for(int pointer = 1; pointer < arrLen; ++pointer)
+            dp[0][pointer] = 0;
+
+        for(int steps = 0; steps <= given_steps; ++steps)
+            dp[steps][arrLen] = 0;    
+
+        for(int steps = 1; steps <= given_steps; ++steps) {
+            for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int moveToLeft  = (pointer - 1 < 0) ? 0 : dp[steps - 1][pointer - 1]; 
+                int moveToRight = dp[steps - 1][pointer + 1]; 
+                int stayAtSame  = dp[steps - 1][pointer];   
+                dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
             }
-            prevRow = idealRow;
         }
 
-        return prevRow[1];
+        return dp[given_steps][0];
+    }
+
+    // O(GS*AL) & O(GS*AL) : Where GS = given_steps, AL = arrLen
+    int solveBy2DTable_V2(int given_steps, int arrLen) {
+        vector<vector<int>> dp(given_steps + 1, vector<int>(arrLen + 1, -1));
+
+        dp[0][0] = 1;
+        for(int pointer = 1; pointer < arrLen; ++pointer)
+            dp[0][pointer] = 0;
+
+        for(int steps = 1; steps <= given_steps; ++steps) {
+            for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int moveToLeft  = (pointer - 1 < 0) ? 0 : dp[steps - 1][pointer - 1]; 
+                int moveToRight = (pointer + 1 == arrLen) ? 0 : dp[steps - 1][pointer + 1]; 
+                int stayAtSame  = dp[steps - 1][pointer];   
+                dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
+            }
+        }
+
+        return dp[given_steps][0];
+    }
+
+    // O(GS*AL) & O(2*AL) : Where GS = given_steps, AL = arrLen
+    int solveBy1DTable(int given_steps, int arrLen) {
+        vector<int> prevRow(arrLen + 1, 0); // steps - 1th row
+        prevRow[0] = 1;
+
+        for(int steps = 1; steps <= given_steps; ++steps) {
+            vector<int> currRow(arrLen + 1, 0); // steps row
+
+            for(int pointer = arrLen-1; pointer >= 0; --pointer) {
+                int moveToLeft  = (pointer - 1 < 0) ? 0 : prevRow[pointer - 1]; 
+                int moveToRight = prevRow[pointer + 1]; 
+                int stayAtSame  = prevRow[pointer];   
+                currRow[pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
+            }
+
+            swap(prevRow, currRow);
+        }
+
+        return prevRow[0];
     }
 
 public:
     int numWays(int steps, int arrLen) {
-        arrLen = min(steps, arrLen); ;
-        return solveWith1DTable(steps, arrLen);
+        arrLen = min(steps, arrLen);
+        return solveBy1DTable(steps, arrLen);
     }
 };
 
