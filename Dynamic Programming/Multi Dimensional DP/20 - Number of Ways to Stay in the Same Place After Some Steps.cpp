@@ -13,9 +13,9 @@ class TopDown {
         if(pointer < 0 || pointer == arrLen)
             return 0;
         
+        int stayAtSame  = solveWithoutMemo(steps - 1, arrLen, pointer);   
         int moveToLeft  = solveWithoutMemo(steps - 1, arrLen, pointer - 1); 
         int moveToRight = solveWithoutMemo(steps - 1, arrLen, pointer + 1); 
-        int stayAtSame  = solveWithoutMemo(steps - 1, arrLen, pointer);   
 
         return ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
     }
@@ -31,9 +31,9 @@ class TopDown {
         if(dp[steps][pointer] != -1)
             return dp[steps][pointer];
         
+        int stayAtSame  = solveWithMemo(dp, steps - 1, arrLen, pointer);   
         int moveToLeft  = solveWithMemo(dp, steps - 1, arrLen, pointer - 1); 
         int moveToRight = solveWithMemo(dp, steps - 1, arrLen, pointer + 1); 
-        int stayAtSame  = solveWithMemo(dp, steps - 1, arrLen, pointer);   
 
         return dp[steps][pointer] = ((moveToRight + moveToLeft) % MOD + stayAtSame) % MOD;
     }
