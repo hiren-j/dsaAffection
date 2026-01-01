@@ -78,7 +78,7 @@ class BottomUp {
                 int pick1 = (prevPick != 1) ? prevRow[1] : 0;
                 currRow[prevPick] = (pick0 + pick1);   
             }
-            prevRow = currRow;
+            swap(prevRow, currRow);
         }
         
         return prevRow[0];
