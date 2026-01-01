@@ -210,10 +210,9 @@ class BottomUp {
     // O(M*N*N) & O(2*N*N)
     int solveBy2DTable(const vector<vector<int>>& grid) { 
         vector<vector<int>> next(N+1, vector<int>(N+1, 0)); // R + 1th table
+        vector<vector<int>> curr(N+1, vector<int>(N+1, 0)); // Rth table
                         
         for(int R = M-1; R >= 0; --R) {
-            vector<vector<int>> curr(N+1, vector<int>(N+1, 0)); // Rth table
-
             for(int C1 = N-1; C1 >= 0; --C1) {
                 for(int C2 = 0; C2 <= N-1; ++C2) {
                     int maxPathSum = 0;
@@ -234,7 +233,6 @@ class BottomUp {
                     curr[C1][C2] = maxPathSum;
                 }
             }
-
             swap(next, curr);
         }
 
