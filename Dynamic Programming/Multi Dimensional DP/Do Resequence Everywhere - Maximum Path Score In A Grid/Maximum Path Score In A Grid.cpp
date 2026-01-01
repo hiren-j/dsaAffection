@@ -113,10 +113,9 @@ class BottomUp {
     // O(M*N*GK) & O(2*N*GK) : Where GK = given_K
     int solveBy2DTable(const vector<vector<int>>& grid, int given_K) {
         vector<vector<int>> next(N+1, vector<int>(given_K+1, INT_MIN)); // R + 1th table
+        vector<vector<int>> curr(N+1, vector<int>(given_K+1, INT_MIN)); // Rth table
 
         for(int R = M-1; R >= 0; --R) {
-            vector<vector<int>> curr(N+1, vector<int>(given_K+1, INT_MIN)); // Rth table
-
             for(int C = N-1; C >= 0; --C) {
                 for(int K = 0; K <= given_K; ++K) {
                     if(R == M-1 && C == N-1) {
@@ -131,7 +130,6 @@ class BottomUp {
                     }
                 }
             }
-
             swap(next, curr);
         }  
 
