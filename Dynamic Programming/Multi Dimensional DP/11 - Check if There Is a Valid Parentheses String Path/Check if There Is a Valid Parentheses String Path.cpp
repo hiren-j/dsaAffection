@@ -128,10 +128,9 @@ class Solution {
     // O(M*N*L) & O(2*N*L)
     bool solveBy2DTable(const vector<vector<char>>& grid) {
         vector<vector<bool>> next(N+1, vector<bool>(LIMIT, false)); // R + 1th table
+        vector<vector<bool>> curr(N+1, vector<bool>(LIMIT, false)); // Rth table
         
         for(int R = M-1; R >= 0; --R) {
-            vector<vector<bool>> curr(N+1, vector<bool>(LIMIT, false)); // Rth table
-
             for(int C = N-1; C >= 0; --C) {
                 for(int stackLen = LIMIT-1; stackLen >= 0; --stackLen) {
                     if(R == M-1 && C == N-1) {
@@ -146,7 +145,6 @@ class Solution {
                     }
                 }
             }
-
             swap(next, curr);
         }
 
