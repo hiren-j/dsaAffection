@@ -282,12 +282,12 @@ class BottomUp {
                 vector<vector<int>>(M+1, 
                         vector<int>(N+1, 0)));
 
-        for(int R1 = M-1; R1 >= 0; --R1) {
-            // Rth table
-            vector<vector<vector<int>>> curr(N+1, 
-                    vector<vector<int>>(M+1, 
-                            vector<int>(N+1, 0)));
+        // Rth table
+        vector<vector<vector<int>>> curr(N+1, 
+                vector<vector<int>>(M+1, 
+                        vector<int>(N+1, 0)));
 
+        for(int R1 = M-1; R1 >= 0; --R1) {
             for(int C1 = N-1; C1 >= 0; --C1) {
                 for(int R2 = M-1; R2 >= 0; --R2) {
                     for(int C2 = 0; C2 <= N-1; ++C2) {
@@ -310,7 +310,6 @@ class BottomUp {
                     }
                 }
             }
-
             swap(next, curr);
         }
 
