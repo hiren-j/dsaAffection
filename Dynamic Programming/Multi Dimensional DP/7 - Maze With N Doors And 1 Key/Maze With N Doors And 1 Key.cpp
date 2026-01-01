@@ -105,10 +105,9 @@ class BottomUp {
     // O(N*N*2) & O(2*N*2)
     bool solveBy2DTable(const vector<vector<int>>& maze) {
         vector<vector<bool>> next(N+1, vector<bool>(2, false)); // R + 1th table
+        vector<vector<bool>> curr(N+1, vector<bool>(2, false)); // Rth table
     
         for(int R = N-1; R >= 0; --R) {
-            vector<vector<bool>> curr(N+1, vector<bool>(2, false)); // Rth table
-    
             for(int C = N-1; C >= 0; --C) {
                 for(int key = 0; key <= 1; ++key) {
                     if(R == N-1 && C == N-1) {
@@ -121,7 +120,6 @@ class BottomUp {
                     }
                 }
             }
-    
             swap(next, curr);
         }
     
