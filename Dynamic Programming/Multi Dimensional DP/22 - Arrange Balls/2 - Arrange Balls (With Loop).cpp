@@ -1,28 +1,18 @@
-// Code to find total number of possible arrangements. There are p balls of type P, q balls of type Q and r balls of type R. Using the balls we want to create a straight line such that no two balls of same type are adjacent ~ coded by Hiren
+// Code to find total number of possible arrangements. There are p balls of type P, q balls of type Q and r balls of type R. Using the balls we want to create a straight line such that no two balls of same type are adjacent ~ coded by vHiren
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-    DON'T IGNORE MUST READ :-
-        We'll use 1 to represent the ball of type P
-        We'll use 2 to represent the ball of type Q
-        We'll use 3 to represent the ball of type R
-
-    NOTE: In the previous solution, we're using the same redundant code in all if blocks, here I just removed that redundancy, 
-          means I've created the loop variant of 21.1 solutions. Well! still I'd prefer the 21.1 solutions as the tabulation in second one seems bigger and it also increases a bit of practical time due to how loops work.
-*/
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    const int MOD = 1e9+7;
-
-    // O(2^(P*Q*R)) & O(P+Q+R)
+    const int MOD = 1e9 + 7;
+    
+    // O(2^(P+Q+R)) & O(P+Q+R)
     int solveWithoutMemo(int P, int Q, int R, int prevBall) {
-        if(P == 0 && Q == 0 && R == 0)
-            return 1;
-        
         if(P < 0 || Q < 0 || R < 0)
             return 0;
             
+        if(P == 0 && Q == 0 && R == 0)
+            return 1;
+        
         int count = 0;
         
         for(int ball = 1; ball < 4; ++ball)
@@ -32,18 +22,18 @@ class TopDown {
                                                   (ball == 3 ? R - 1 : R), ball)) % MOD;
         return count;
     }
-
+    
     // O(2*P*Q*R*4) & O(P*Q*R*4 + P+Q+R)
     int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, int P, int Q, int R, int prevBall) {
-        if(P == 0 && Q == 0 && R == 0)
-            return 1;
-        
         if(P < 0 || Q < 0 || R < 0)
             return 0;
             
-        if(dp[P][Q][R][prevBall] != -1)
-            return dp[P][Q][R][prevBall];
+        if(P == 0 && Q == 0 && R == 0)
+            return 1;
             
+        if(dp[P][Q][R][prevBall] != -1)
+            return dp[P][Q][R][prevBall]; 
+        
         int count = 0;
         
         for(int ball = 1; ball < 4; ++ball)
@@ -57,86 +47,177 @@ class TopDown {
 public:
     // Method to count total ways to make ball arrangements, using recursion with memoization - O(PQR) & O(PQR) 
     int countTotalArrangements(int P, int Q, int R) {
-        vector<vector<vector<vector<int>>>> dp(P + 1, vector<vector<vector<int>>>(Q + 1, vector<vector<int>>(R + 1, vector<int>(4, -1))));
-        return solveWithMemo(dp, P, Q, R, 0);
+        return solveBy2DTable(P, Q, R);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
 
-    // O(PQR) & O(PQR) : Where P = givenP, Q = givenQ, R = givenR
-    int solveWith4DTable(int givenP, int givenQ, int givenR) {
-        vector<vector<vector<vector<int>>>> dp(givenP + 2, vector<vector<vector<int>>>(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0))));
+    // O(GP*GQ*GR*4) & O(GP*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
+    int solveBy4DShifting(int given_P, int given_Q, int given_R) {
+        vector<vector<vector<vector<int>>>> dp(given_P + 2, 
+                vector<vector<vector<int>>>(given_Q + 2, 
+                        vector<vector<int>>(given_R + 2, 
+                                vector<int>(4, -1))));
         
-        for(int prevBall = 0; prevBall < 4; ++prevBall)
-            dp[1][1][1][prevBall] = 1;
+        for(int Q = 0; Q <= given_Q; ++Q) 
+            for(int R = 0; R <= given_R; ++R) 
+                for(int prevBall = 3; prevBall >= 0; --prevBall) 
+                    dp[-1+1][Q+1][R+1][prevBall] = 0;
+                        
+        for(int P = 0; P <= given_P; ++P)  
+            for(int R = 0; R <= given_R; ++R) 
+                for(int prevBall = 3; prevBall >= 0; --prevBall) 
+                    dp[P+1][-1+1][R+1][prevBall] = 0;
+                    
+        for(int P = 0; P <= given_P; ++P)  
+            for(int Q = 0; Q <= given_Q; ++Q) 
+                for(int prevBall = 3; prevBall >= 0; --prevBall) 
+                    dp[P+1][Q+1][-1+1][prevBall] = 0;
         
-        for(int P = 1; P <= givenP + 1; ++P) {
-            for(int Q = 1; Q <= givenQ + 1; ++Q) {
-                for(int R = 1; R <= givenR + 1; ++R) {
-                    if(P == 1 && Q == 1 && R == 1)
+        for(int prevBall = 0; prevBall < 4; ++prevBall)                         
+            dp[0+1][0+1][0+1][prevBall] = 1;
+            
+        for(int P = 0; P <= given_P; ++P) {
+            for(int Q = 0; Q <= given_Q; ++Q) {
+                for(int R = 0; R <= given_R; ++R) {
+                    if(P == 0 && Q == 0 && R == 0)
                         continue;
                     for(int prevBall = 3; prevBall >= 0; --prevBall) {
                         int count = 0;
-                        for(int ball = 1; ball < 4; ++ball) {
-                            if(ball != prevBall) {
-                                count = (count + dp[ball == 1 ? P - 1 : P]
-                                                   [ball == 2 ? Q - 1 : Q]
-                                                   [ball == 3 ? R - 1 : R][ball]) % MOD;
-                            }
-                        }
+
+                        for(int ball = 1; ball < 4; ++ball)
+                            if(ball != prevBall)
+                                count = (count + dp[ball == 1 ? P-1+1 : P] 
+                                                   [ball == 2 ? Q-1+1 : Q] 
+                                                   [ball == 3 ? R-1+1 : R][ball]) % MOD;  
+
+                        dp[P+1][Q+1][R+1][prevBall] = count;
+                    }
+                }
+            }
+        }
+        
+        return dp[given_P + 1][given_Q + 1][given_R + 1][0];
+    }
+    
+    // O(GP*GQ*GR*4) & O(GP*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
+    int solveBy4DShiftEnhanced(int given_P, int given_Q, int given_R) {
+        vector<vector<vector<vector<int>>>> dp(given_P + 2, 
+                vector<vector<vector<int>>>(given_Q + 2, 
+                        vector<vector<int>>(given_R + 2, 
+                                vector<int>(4, 0))));
+        
+        for(int prevBall = 0; prevBall < 4; ++prevBall)                         
+            dp[0+1][0+1][0+1][prevBall] = 1;
+            
+        for(int P = 0; P <= given_P; ++P) {
+            for(int Q = 0; Q <= given_Q; ++Q) {
+                for(int R = 0; R <= given_R; ++R) {
+                    if(P == 0 && Q == 0 && R == 0)
+                        continue;
+                    for(int prevBall = 3; prevBall >= 0; --prevBall) {
+                        int count = 0;
+
+                        for(int ball = 1; ball < 4; ++ball)
+                            if(ball != prevBall)
+                                count = (count + dp[ball == 1 ? P-1 : P] 
+                                                   [ball == 2 ? Q-1 : Q] 
+                                                   [ball == 3 ? R-1 : R][ball]) % MOD;  
+                                                   
                         dp[P][Q][R][prevBall] = count;
                     }
                 }
             }
         }
-            
-        return dp[givenP + 1][givenQ + 1][givenR + 1][0];
+        
+        return dp[given_P + 1][given_Q + 1][given_R + 1][0];
     }
-
-    // O(PQR) & O(2*QR) : Where P = givenP, Q = givenQ, R = givenR
-    int solveWith3DTable(int givenP, int givenQ, int givenR) {
-        vector<vector<vector<int>>> prevRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
-        vector<vector<vector<int>>> idealRow(givenQ + 2, vector<vector<int>>(givenR + 2, vector<int>(4, 0)));
+    
+    // O(GP*GQ*GR*4) & O(GP*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
+    int solveBy4DTable(int given_P, int given_Q, int given_R) {
+        vector<vector<vector<vector<int>>>> dp(given_P + 1, 
+                vector<vector<vector<int>>>(given_Q + 1, 
+                        vector<vector<int>>(given_R + 1, 
+                                vector<int>(4, -1))));
         
-        for(int prevBall = 0; prevBall < 4; ++prevBall)
-            idealRow[1][1][prevBall] = 1;
-        
-        for(int P = 1; P <= givenP + 1; ++P) {
-            for(int Q = 1; Q <= givenQ + 1; ++Q) {
-                for(int R = 1; R <= givenR + 1; ++R) {
-                    if(P == 1 && Q == 1 && R == 1)
+        for(int prevBall = 0; prevBall < 4; ++prevBall)                         
+            dp[0][0][0][prevBall] = 1;
+            
+        for(int P = 0; P <= given_P; ++P) {
+            for(int Q = 0; Q <= given_Q; ++Q) {
+                for(int R = 0; R <= given_R; ++R) {
+                    if(P == 0 && Q == 0 && R == 0)
                         continue;
                     for(int prevBall = 3; prevBall >= 0; --prevBall) {
-                        int count = 0;
-                        for(int ball = 1; ball < 4; ++ball) {
-                            if(ball != prevBall) {
-                                if(ball == 1) {
-                                    count = (count + prevRow[ball == 2 ? Q - 1 : Q]
-                                                            [ball == 3 ? R - 1 : R][ball]) % MOD;
-                                }
-                                else {
-                                    count = (count + idealRow[ball == 2 ? Q - 1 : Q]
-                                                             [ball == 3 ? R - 1 : R][ball]) % MOD;
-                                }
-                            }
-                        }
-                        idealRow[Q][R][prevBall] = count;
+                       int count = 0;
+
+                        for(int ball = 1; ball < 4; ++ball)
+                            if(ball != prevBall)
+                                count = (count + dp[ball == 1 ? P-1 : P] 
+                                                   [ball == 2 ? Q-1 : Q] 
+                                                   [ball == 3 ? R-1 : R][ball]) % MOD;  
+                       
+                        dp[P][Q][R][prevBall] = count;
                     }
                 }
             }
-            prevRow = idealRow;
         }
-            
-        return prevRow[givenQ + 1][givenR + 1][0];
+        
+        return dp[given_P][given_Q][given_R][0];
+    }
+    
+    // O(GQ*GR*4 + GP*(GQ*GR*4)) & O(2*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
+    int solveBy2DTable(int given_P, int given_Q, int given_R) {
+        // P - 1th table
+        vector<vector<vector<int>>> prev(given_Q + 1, 
+                vector<vector<int>>(given_R + 1, 
+                        vector<int>(4, -1)));
+        // Pth table
+        vector<vector<vector<int>>> curr(given_Q + 1, 
+                vector<vector<int>>(given_R + 1, 
+                        vector<int>(4, -1)));
+        
+        for(int P = 0; P <= given_P; ++P) {
+            for(int Q = 0; Q <= given_Q; ++Q) {
+                for(int R = 0; R <= given_R; ++R) {
+                    for(int prevBall = 3; prevBall >= 0; --prevBall) {
+                        if(P == 0 && Q == 0 && R == 0) {
+                            curr[0][0][prevBall] = 1;
+                        }
+                        else {
+                            int count = 0;
+
+                            for(int ball = 1; ball < 4; ++ball) {
+                                if(ball != prevBall) {
+                                    if(ball == 1) {
+                                        count = (count + prev[ball == 2 ? Q-1 : Q]
+                                                             [ball == 3 ? R-1 : R][ball]) % MOD;  
+                                    }
+                                    else {
+                                        count = (count + curr[ball == 2 ? Q-1 : Q]
+                                                             [ball == 3 ? R-1 : R][ball]) % MOD;  
+                                    }
+                                }
+                            }
+
+                            curr[Q][R][prevBall] = count;
+                        }
+                    }
+                }
+            }
+            swap(prev, curr);
+        }
+        
+        return prev[given_Q][given_R][0];
     }
     
 public:
     int countTotalArrangements(int P, int Q, int R) {
-        return solveWith3DTable(P, Q, R);
+        return solveBy2DTable(P, Q, R);
     }
 };
 
