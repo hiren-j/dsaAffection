@@ -218,6 +218,7 @@ class BottomUp {
                                 }
                             }
                         }
+
                         curr[Q][R][prevBall] = count;
                     }
                 }
