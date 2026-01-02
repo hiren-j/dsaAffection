@@ -189,7 +189,7 @@ class BottomUp {
     
 public:
     int countTotalArrangements(int P, int Q, int R) {
-        return solveBy2DTable(P, Q, R);
+        return solveBy3DTable(P, Q, R);
     }
 };
 
