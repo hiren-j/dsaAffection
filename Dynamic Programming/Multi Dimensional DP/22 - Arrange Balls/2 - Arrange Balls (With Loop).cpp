@@ -47,7 +47,12 @@ class TopDown {
 public:
     // Method to count total ways to make ball arrangements, using recursion with memoization - O(PQR) & O(PQR) 
     int countTotalArrangements(int P, int Q, int R) {
-        return solveBy2DTable(P, Q, R);
+        vector<vector<vector<vector<int>>>> dp(P + 1, 
+                vector<vector<vector<int>>>(Q + 1, 
+                        vector<vector<int>>(R + 1, 
+                                vector<int>(4, -1))));
+                                
+        return solveWithMemo(dp, P, Q, R, 0);
     }
 };
 
