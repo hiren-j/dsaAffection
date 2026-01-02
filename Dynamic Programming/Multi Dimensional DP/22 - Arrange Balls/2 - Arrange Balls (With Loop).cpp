@@ -180,8 +180,8 @@ class BottomUp {
         return dp[given_P][given_Q][given_R][0];
     }
     
-    // O(GQ*GR*4 + GP*(GQ*GR*4)) & O(2*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
-    int solveBy2DTable(int given_P, int given_Q, int given_R) {
+    // O(GP*GQ*GR*4) & O(2*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
+    int solveBy3DTable(int given_P, int given_Q, int given_R) {
         // P - 1th table
         vector<vector<vector<int>>> prev(given_Q + 1, 
                 vector<vector<int>>(given_R + 1, 
@@ -197,12 +197,13 @@ class BottomUp {
                     for(int prevBall = 3; prevBall >= 0; --prevBall) {
                         if(P == 0 && Q == 0 && R == 0) {
                             curr[0][0][prevBall] = 1;
+                            continue;
                         }
-                        else {
-                            int count = 0;
+                        int count = 0;
 
-                            for(int ball = 1; ball < 4; ++ball) {
-                                if(ball != prevBall) {
+                        for(int ball = 1; ball < 4; ++ball) {
+                            if(ball != prevBall) {
+                                if(ball == 1 && P-1 >= 0 || ball == 2 && Q-1 >= 0 || ball == 3 && R-1 >= 0) {
                                     if(ball == 1) {
                                         count = (count + prev[ball == 2 ? Q-1 : Q]
                                                              [ball == 3 ? R-1 : R][ball]) % MOD;  
@@ -210,12 +211,11 @@ class BottomUp {
                                     else {
                                         count = (count + curr[ball == 2 ? Q-1 : Q]
                                                              [ball == 3 ? R-1 : R][ball]) % MOD;  
-                                    }
+                                    } 
                                 }
                             }
-
-                            curr[Q][R][prevBall] = count;
                         }
+                        curr[Q][R][prevBall] = count;
                     }
                 }
             }
@@ -227,7 +227,7 @@ class BottomUp {
     
 public:
     int countTotalArrangements(int P, int Q, int R) {
-        return solveBy2DTable(P, Q, R);
+        return solveBy3DTable(P, Q, R);
     }
 };
 
