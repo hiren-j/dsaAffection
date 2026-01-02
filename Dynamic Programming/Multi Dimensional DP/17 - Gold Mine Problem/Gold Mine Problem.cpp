@@ -2,19 +2,6 @@
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-/*
-    DON'T IGNORE MUST READ (NOTE ON TIME COMPLEXITY CALCULATION):
-    
-    As you’ve noticed, for this problem, the time complexity of the solveWithMemo function is O(M + 3*M*N) I want to clarify that the M comes from the loop that calls the recursive function, it's not from the function's auxiliary time. Specifically:
-
-        For solveWithMemo, in O(M + 3*M*N), the term 3*M*N represents the auxiliary time of the function itself, while M reflects the time from the loop that invokes the function.
-        For solveWithoutMemo, in O(M * 3^(M*N)), the term 3^(M*N) represents the auxiliary time of the function itself, while M indicates the number of times the loop calls the function.
-    
-    So for future problems, be sure to identify any loops from which the function is called. This is crucial for providing a complete time complexity analysis, so I can’t ignore these terms.
-*/  
-    
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class TopDown {
     int M, N;
 
