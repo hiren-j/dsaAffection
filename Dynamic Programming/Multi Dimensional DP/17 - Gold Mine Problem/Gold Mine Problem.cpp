@@ -68,7 +68,7 @@ class BottomUp {
         for(int C = N-1; C >= 0; --C) {
             for(int R = M-1; R >= 0; --R) {
                 int moveRight     = dp[R+1][C+1];
-                int moveUpRight   = (R-1 < 0) ? 0 : dp[R-1+1][C+1];
+                int moveUpRight   = dp[R-1+1][C+1];
                 int moveDownRight = dp[R+1+1][C+1];
                 dp[R+1][C] = max({moveRight, moveUpRight, moveDownRight}) + grid[R][C];
             }
