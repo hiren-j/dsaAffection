@@ -161,10 +161,15 @@ class BottomUp {
                        int count = 0;
 
                         for(int ball = 1; ball < 4; ++ball)
-                            if(ball != prevBall)
-                                count = (count + dp[ball == 1 ? P-1 : P] 
-                                                   [ball == 2 ? Q-1 : Q] 
-                                                   [ball == 3 ? R-1 : R][ball]) % MOD;  
+                            if(ball != prevBall) {
+                                if(ball == 1 && P-1 >= 0 || 
+                                   ball == 2 && Q-1 >= 0 || 
+                                   ball == 3 && R-1 >= 0) {
+                                        count = (count + dp[ball == 1 ? P-1 : P]
+                                                           [ball == 2 ? Q-1 : Q]
+                                                           [ball == 3 ? R-1 : R][ball]) % MOD;  
+                                }
+                            }
                        
                         dp[P][Q][R][prevBall] = count;
                     }
