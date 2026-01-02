@@ -154,8 +154,8 @@ class BottomUp {
         return dp[given_P][given_Q][given_R][0];
     }
     
-    // O(GQ*GR*4 + GP*(GQ*GR*4)) & O(2*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
-    int solveBy2DTable(int given_P, int given_Q, int given_R) {
+    // O(GP*GQ*GR*4) & O(2*GQ*GR*4) : Where GP = given_P, GQ = given_Q, GR = given_R
+    int solveBy3DTable(int given_P, int given_Q, int given_R) {
         // P - 1th table
         vector<vector<vector<int>>> prev(given_Q + 1, 
                 vector<vector<int>>(given_R + 1, 
