@@ -1,4 +1,4 @@
-// Code to find the maximum grid the geek can earn by performing the aforementioned activites ~ coded by Hiren
+// Code to find the minimum cost of painting all houses such that no adjacent houses are painted with the same colour ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
