@@ -187,7 +187,7 @@ public:
 class BottomUpIntuitive {
     int N, M;
 
-    // O(N*3*3) & O(1)
+    // O(N*M) & O(1)
     int solveWithoutTable_V1(vector<vector<int>>& grid) {
         for(int R = N-2; R >= 0; --R) {
             for(int C = 0; C < M; ++C) {
@@ -206,7 +206,7 @@ class BottomUpIntuitive {
         return *max_element(begin(grid[0]), end(grid[0]));
     }
 
-    // O(N*3) & O(1)
+    // O(N*M) & O(1)
     int solveWithoutTable_V2(vector<vector<int>>& grid) {
         // Suppose you're on a cell so to earn maximum grid, get maximum value from from previous row but the only cell which you shouldn't consider is the same cell from the previous row
         for(int R = 1; R < N; ++R) {
