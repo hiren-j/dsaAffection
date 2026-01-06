@@ -193,7 +193,7 @@ class BottomUpIntuitive {
             for(int C = 0; C < M; ++C) {
                 int maxPoints = 0; // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
                 
-                for(int skipCol = 0; skipCol < 3; ++skipCol) { 
+                for(int skipCol = 0; skipCol < M; ++skipCol) { 
                     if(C != skipCol) { 
                         maxPoints = max(maxPoints, grid[R + 1][skipCol]); 
                     }
