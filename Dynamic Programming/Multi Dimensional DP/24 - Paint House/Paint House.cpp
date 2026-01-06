@@ -235,4 +235,5 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Matrix | Dynamic Programming
-Links : https://www.geeksforgeeks.org/problems/geeks-training/1
+Links : https://leetcode.com/problems/paint-house/
+        https://www.naukri.com/code360/problems/paint-house_1460385
