@@ -213,14 +213,13 @@ class BottomUpIntuitive {
             for(int C = 0; C < M; ++C) {
                 if(C == 0)
                     grid[R][C] += max(grid[R - 1][C + 1], grid[R - 1][C + 2]);
-                    
                 else if(C == 1)
                     grid[R][C] += max(grid[R - 1][C - 1], grid[R - 1][C + 1]);
-
                 else
                     grid[R][C] += max(grid[R - 1][C - 1], grid[R - 1][C - 2]);
             }
         }
+        
         return *max_element(begin(grid[N - 1]), end(grid[N - 1]));
     }
 
