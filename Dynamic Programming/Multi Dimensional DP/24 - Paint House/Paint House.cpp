@@ -223,6 +223,7 @@ class BottomUpIntuitive {
                     grid[R][C] += min(grid[R - 1][C - 1], grid[R - 1][C - 2]);
             }
         }
+        
         return *min_element(begin(grid[N - 1]), end(grid[N - 1]));
     }
 
