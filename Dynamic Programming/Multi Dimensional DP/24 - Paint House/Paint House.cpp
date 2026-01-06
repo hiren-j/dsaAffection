@@ -214,11 +214,9 @@ class BottomUpIntuitive {
         for(int R = 1; R < N; ++R) {
             for(int C = 0; C < M; ++C) {
                 if(C == 0)
-                    grid[R][C] += min(grid[R - 1][C + 1], grid[R - 1][C + 2]);
-                    
+                    grid[R][C] += min(grid[R - 1][C + 1], grid[R - 1][C + 2]); 
                 else if(C == 1)
                     grid[R][C] += min(grid[R - 1][C - 1], grid[R - 1][C + 1]);
-
                 else
                     grid[R][C] += min(grid[R - 1][C - 1], grid[R - 1][C - 2]);
             }
