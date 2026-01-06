@@ -1,177 +1,233 @@
-// Code to find the maximum points the geek can earn by performing the aforementioned activites ~ coded by Hiren
+// Code to find the maximum grid the geek can earn by performing the aforementioned activites ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    int N;
-
-    // O(2^N) & O(N)
-    int solveWithoutMemo(vector<vector<int>>& points, int R, int prevColumn) {
+    int N, M;
+    
+    // O(2^(N*M)) & O(N)
+    int solveWithoutMemo(const vector<vector<int>>& grid, int R, int skipCol) {
         if(R == N)
             return 0;
-        
-        int maxPoints = 0;
-        
-        for(int C = 0; C < 3; ++C)
-            if(C != prevColumn)
-                maxPoints = max(maxPoints, points[R][C] + solveWithoutMemo(points, R + 1, C));
             
-        return maxPoints;
+        int maxPathSum = 0;
+        
+        for(int C = 0; C < M; ++C) {
+            if(C != skipCol) {
+                int nextSideSum = solveWithoutMemo(grid, R+1, C);
+                int currPathSum = nextSideSum + grid[R][C];
+                maxPathSum = max(maxPathSum, currPathSum);
+            }
+        }
+        
+        return maxPathSum;
     }
-
-    // O(2*N*4) & O(N*4+N)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& points, int R, int prevColumn) {
+  
+    // O(2*N*M) & O(N*M + N)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int skipCol) {
         if(R == N)
             return 0;
-        
-        if(dp[R][prevColumn] != -1) 
-            return dp[R][prevColumn];
-        
-        int maxPoints = 0;
-        
-        for(int C = 0; C < 3; ++C)
-            if(C != prevColumn)
-                maxPoints = max(maxPoints, points[R][C] + solveWithMemo(dp, points, R + 1, C));
             
-        return dp[R][prevColumn] = maxPoints;
-    }
+        if(dp[R][skipCol] != -1)
+            return dp[R][skipCol];
+            
+        int maxPathSum = 0;
         
+        for(int C = 0; C < M; ++C) {
+            if(C != skipCol) {
+                int nextSideSum = solveWithMemo(dp, grid, R+1, C);
+                int currPathSum = nextSideSum + grid[R][C];
+                maxPathSum = max(maxPathSum, currPathSum);
+            }
+        }
+        
+        return dp[R][skipCol] = maxPathSum;
+    }
+  
+    // O(2*N*M) & O(N*M + N)
+    int solveWithMemoShifting(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int skipCol) {
+        if(R == N)
+            return 0;
+            
+        if(dp[R][skipCol + 1] != -1)
+            return dp[R][skipCol + 1];
+            
+        int maxPathSum = 0;
+        
+        for(int C = 0; C < M; ++C) {
+            if(C != skipCol) {
+                int nextSideSum = solveWithMemoShifting(dp, grid, R+1, C);
+                int currPathSum = nextSideSum + grid[R][C];
+                maxPathSum = max(maxPathSum, currPathSum);
+            }
+        }
+        
+        return dp[R][skipCol + 1] = maxPathSum;
+    }
+    
 public:
-    // Method to find maximum points geek can earn, using recursion with memoization - O(N) & O(N)
-    int gainMaximumPoints(vector<vector<int>>& points) {
-        N = points.size();
-        vector<vector<int>> dp(N, vector<int>(4, -1));
-        return solveWithMemo(dp, points, 0, 3); // I passed 3 as previously-chosen-column but you can pass any value just avoid the columns indeces 0, 1, 2
+    int gainMaximumPoints(vector<vector<int>>& grid) {
+        N = grid.size(), M = 3;
+        vector<vector<int>> dp(N, vector<int>(M+1, -1));
+        return solveWithMemo(dp, grid, 0, M);
     }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    int N;
-
-    // O(N*4*3) & O(N*4)
-    int solveWith2DTable(vector<vector<int>>& points) {
-        vector<vector<int>> dp(N, vector<int>(4, -1));
+    // O(N*M*2) & O(N*M)
+    int solveBy2DShifting(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N+1, vector<int>(M+1, -1));
         
+        for(int skipCol = 0; skipCol <= M; ++skipCol)
+            dp[N][skipCol + 1] = 0;
+            
         for(int R = N-1; R >= 0; --R) {
-            for(int prevColumn = 0; prevColumn <= 3; ++prevColumn) {
-                int maxPoints = 0;
+            for(int skipCol = M; skipCol >= -1; --skipCol) {
+                int maxPathSum = 0;
                 
-                for(int C = 0; C < 3; ++C) {
-                    if(C != prevColumn) {
-                        int nextPoints = (R + 1 < N) ? dp[R + 1][C] : 0;
-                        maxPoints = max(maxPoints, points[R][C] + nextPoints);
+                for(int C = 0; C < M; ++C) {
+                    if(C != skipCol) {
+                        int nextSideSum = dp[R+1][C+1];
+                        int currPathSum = nextSideSum + grid[R][C];
+                        maxPathSum = max(maxPathSum, currPathSum);
                     }
                 }
                 
-                dp[R][prevColumn] = maxPoints;
+                dp[R][skipCol + 1] = maxPathSum; 
             }
         }
         
-        return dp[0][3];
+        return dp[0][-1+1];
     }
     
-    // O(N*4*3) & O(N*4)
-    int solveWith2DEnhanced(vector<vector<int>>& points) {
-        vector<vector<int>> dp(N + 1, vector<int>(4, 0));
+    // O(N*M*2) & O(N*M)
+    int solveBy2DTable(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N+1, vector<int>(M+1, -1));
         
+        for(int skipCol = 0; skipCol <= M; ++skipCol)
+            dp[N][skipCol] = 0;
+            
         for(int R = N-1; R >= 0; --R) {
-            for(int prevColumn = 0; prevColumn <= 3; ++prevColumn) {
-                int maxPoints = 0;
+            for(int skipCol = 0; skipCol <= M; ++skipCol) {
+                int maxPathSum = 0;
                 
-                for(int C = 0; C < 3; ++C) {
-                    if(C != prevColumn) {
-                        int nextPoints = dp[R + 1][C];
-                        maxPoints = max(maxPoints, points[R][C] + nextPoints);
+                for(int C = 0; C < M; ++C) {
+                    if(C != skipCol) {
+                        int nextSideSum = dp[R+1][C];
+                        int currPathSum = nextSideSum + grid[R][C];
+                        maxPathSum = max(maxPathSum, currPathSum);
                     }
                 }
                 
-                dp[R][prevColumn] = maxPoints;
+                dp[R][skipCol] = maxPathSum; 
             }
         }
         
-        return dp[0][3];
+        return dp[0][M];
     }
     
-    // O(N*4*3) & O(2*4)
-    int solveWith1DTable(vector<vector<int>>& points) {
-        vector<int> nextRow(4, 0), idealRow(4, 0);
+    // O(N*M*2) & O(N*M)
+    int solveBy2DEnhanced(const vector<vector<int>>& grid) {
+        vector<vector<int>> dp(N+1, vector<int>(M+1, 0));
         
         for(int R = N-1; R >= 0; --R) {
-            for(int prevColumn = 0; prevColumn <= 3; ++prevColumn) {
-                int maxPoints = 0;
+            for(int skipCol = 0; skipCol <= M; ++skipCol) {
+                int maxPathSum = 0;
                 
-                for(int C = 0; C < 3; ++C) {
-                    if(C != prevColumn) {
-                        int nextPoints = nextRow[C];
-                        maxPoints = max(maxPoints, points[R][C] + nextPoints);
+                for(int C = 0; C < M; ++C) {
+                    if(C != skipCol) {
+                        int nextSideSum = dp[R+1][C];
+                        int currPathSum = nextSideSum + grid[R][C];
+                        maxPathSum = max(maxPathSum, currPathSum);
                     }
                 }
                 
-                idealRow[prevColumn] = maxPoints;
+                dp[R][skipCol] = maxPathSum; 
             }
-            nextRow = idealRow;
         }
         
-        return nextRow[3];
+        return dp[0][M];
+    }
+    
+    // O(N*M*2) & O(2*M)
+    int solveBy1DTable(const vector<vector<int>>& grid) {
+        vector<int> nextRow(M+1, 0), currRow(M+1, 0); 
+        
+        for(int R = N-1; R >= 0; --R) {    
+            for(int skipCol = 0; skipCol <= M; ++skipCol) {
+                int maxPathSum = 0;
+                
+                for(int C = 0; C < M; ++C) {
+                    if(C != skipCol) {
+                        int nextSideSum = nextRow[C];
+                        int currPathSum = nextSideSum + grid[R][C];
+                        maxPathSum = max(maxPathSum, currPathSum);
+                    }
+                }
+                
+                currRow[skipCol] = maxPathSum; 
+            }
+            swap(nextRow, currRow);
+        }
+        
+        return nextRow[M];
     }
 
 public:
-    int gainMaximumPoints(vector<vector<int>>& points) {
-        N = points.size();
-        return solveWith1DTable(points);
+    int gainMaximumPoints(vector<vector<int>>& grid) {
+        N = grid.size(), M = 3;
+        return solveBy1DTable(grid);
     }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUpIntuitive {
-    int N;
+    int N, M;
 
     // O(N*3*3) & O(1)
-    int solveWithoutTable(vector<vector<int>>& points) {
+    int solveWithoutTable_V1(vector<vector<int>>& grid) {
         for(int R = N-2; R >= 0; --R) {
-            for(int C = 0; C < 3; ++C) {
-                int maxPoints = 0; // To earn maximum points, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
+            for(int C = 0; C < M; ++C) {
+                int maxPoints = 0; // To earn maximum grid, get maximum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
                 
-                for(int prevColumn = 0; prevColumn < 3; ++prevColumn) { 
-
-                    if(C != prevColumn) { 
-                        maxPoints = max(maxPoints, points[R + 1][prevColumn]); 
+                for(int skipCol = 0; skipCol < 3; ++skipCol) { 
+                    if(C != skipCol) { 
+                        maxPoints = max(maxPoints, grid[R + 1][skipCol]); 
                     }
                 }
                 
-                points[R][C] += maxPoints;
+                grid[R][C] += maxPoints;
             }
         }
         
-        return *max_element(begin(points[0]), end(points[0]));
+        return *max_element(begin(grid[0]), end(grid[0]));
     }
 
     // O(N*3) & O(1)
-    int solveWithoutTableEnhanced(vector<vector<int>>& points) {
-        // Suppose you're on a cell so to earn maximum points, get maximum value from from previous row but the only cell which you shouldn't consider is the same cell from the previous row
+    int solveWithoutTable_V2(vector<vector<int>>& grid) {
+        // Suppose you're on a cell so to earn maximum grid, get maximum value from from previous row but the only cell which you shouldn't consider is the same cell from the previous row
         for(int R = 1; R < N; ++R) {
-            for(int C = 0; C < 3; ++C) {
+            for(int C = 0; C < M; ++C) {
                 if(C == 0)
-                    points[R][C] += max(points[R - 1][C + 1], points[R - 1][C + 2]);
-
+                    grid[R][C] += max(grid[R - 1][C + 1], grid[R - 1][C + 2]);
+                    
                 else if(C == 1)
-                    points[R][C] += max(points[R - 1][C - 1], points[R - 1][C + 1]);
+                    grid[R][C] += max(grid[R - 1][C - 1], grid[R - 1][C + 1]);
 
                 else
-                    points[R][C] += max(points[R - 1][C - 1], points[R - 1][C - 2]);
+                    grid[R][C] += max(grid[R - 1][C - 1], grid[R - 1][C - 2]);
             }
         }
-
-        return *max_element(begin(points[N - 1]), end(points[N - 1]));
+        return *max_element(begin(grid[N - 1]), end(grid[N - 1]));
     }
 
 public:
-    int gainMaximumPoints(vector<vector<int>>& points) {
-        N = points.size();
-        return solveWithoutTableEnhanced(points);
+    int gainMaximumPoints(vector<vector<int>>& grid) {
+        N = grid.size(), M = 3;
+        return solveWithoutTable_V2(grid);
     }
 };
 
