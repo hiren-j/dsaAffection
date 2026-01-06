@@ -195,7 +195,7 @@ class BottomUpIntuitive {
             for(int C = 0; C < M; ++C) {
                 int minCost = INT_MAX; // To earn minimum cost, get minimum value from from next row but the only cell which you shouldn't consider is the same cell from the next row
                 
-                for(int skipCol = 0; skipCol < 3; ++skipCol) { 
+                for(int skipCol = 0; skipCol < M; ++skipCol) { 
                     if(C != skipCol) { 
                         minCost = min(minCost, grid[R + 1][skipCol]); 
                     }
