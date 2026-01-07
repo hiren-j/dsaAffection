@@ -28,7 +28,7 @@ class TopDown {
         if(R == N)
             return 0;
             
-        if(dp[R][skipCol] != -1)
+        if(dp[R][skipCol] != INT_MAX)
             return dp[R][skipCol];
             
         int minPathSum = INT_MAX;
@@ -49,7 +49,7 @@ class TopDown {
         if(R == N)
             return 0;
             
-        if(dp[R][skipCol + 1] != -1)
+        if(dp[R][skipCol + 1] != INT_MAX)
             return dp[R][skipCol + 1];
             
         int minPathSum = INT_MAX;
