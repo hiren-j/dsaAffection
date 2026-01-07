@@ -1,22 +1,5 @@
-// Code to find the minimum sum of a falling path with non-zero shifts ~ coded by Hiren
+// Code to find the minimum sum of a falling path with non-zero shifts ~ coded by vHiren
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-    DON'T IGNORE MUST READ: I've initialized the cell values by INT_MAX: [vector<vector<int>> dp(N, vector<int>(N + 1, INT_MAX))]
-                            Why INT_MAX? Why not -1 as we used before? See in the problem constraints its given that in worst case the minimum value of a cell could be -200, 
-                            maximum could be 200: 
-                                N == grid.length == grid[i].length
-                                1 <= N <= 200
-                                -99 <= grid[i][j] <= 99
-                            The worst minimum sum could be -99*n = -99*200 = -19800
-                            The worst maximum sum could be  99*n =  99*200 =  19800
-                            This means you should not use any of the value lying in range [-19800, 19800], Its because those values are contributing in result making.
-                            If we use any of that value for dp matrix initialization then this will lead our solution to hit TLE. So it's better to avoid any value of that range, 
-                            So I would prefer to use lesser values than -19800, or greater values than 19800 for dp initialization, just don't use values within that range.
-                            Hope you've got it. So If you find anything like this in the future problems then I guess you will understand.
-*/
-    
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
