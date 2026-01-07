@@ -181,11 +181,11 @@ class BottomUp {
 public:
     int minFallingPathSum(vector<vector<int>>& grid) {
         N = grid.size();
-        return solveBy2DTable(grid);
+        return solveBy1DTable(grid);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Matrix
-Link  : https://leetcode.com/problems/minimum-falling-path-sum-ii/description/?envType=daily-question&envId=2024-04-26
+Link  : https://leetcode.com/problems/minimum-falling-path-sum-ii/description/
