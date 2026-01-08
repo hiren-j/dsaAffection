@@ -149,9 +149,10 @@ class BottomUpIntuitive {
 public:
     // O(M*N) & O(2*N)
     LL maxPoints(vector<vector<int>>& points) {
-        cosnt int M = points.size(), N = points[0].size();
+        const int M = points.size(), N = points[0].size();
         
-        vector<LL> prevRow(N, 0), currRow(N, 0);
+        vector<LL> prevRow(N, 0); // R - 1th row
+        vector<LL> currRow(N, 0); // Rth row
 
         // Fill values from 0th row of the matrix
         for(int C = 0; C < N; ++C) {
