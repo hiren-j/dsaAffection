@@ -174,7 +174,7 @@ public:
                 maxPointRight[C] = max(maxPointRight[C+1] - 1, prevRow[C]);
             }
 
-            // Compute the current row's maximum points
+            // Compute current row's maximum points
             for(int C = 0; C < N; ++C) {
                 currRow[C] = points[R][C] + max(maxPointLeft[C], maxPointRight[C]);
             }
