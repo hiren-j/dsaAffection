@@ -154,7 +154,7 @@ public:
         vector<LL> prevRow(N, 0); // R - 1th row
         vector<LL> currRow(N, 0); // Rth row
 
-        // Fill values from 0th row of the matrix
+        // Fill values of 0th row of the matrix
         for(int C = 0; C < N; ++C) {
             prevRow[C] = points[0][C];
         }
