@@ -1,4 +1,4 @@
-// Code to find the number of ways such that your pointer is still at index 0 after exactly "steps" steps ~ coded by Hiren
+// Code to find the number of ways such that your pointer is still at index 0 after exactly "steps" steps ~ coded by vHiren
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
