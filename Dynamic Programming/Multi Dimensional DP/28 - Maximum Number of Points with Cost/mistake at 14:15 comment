@@ -1,0 +1,1 @@
+IMPORTANT: At 14:15 I am pointing at wrong call for moveCost, actually consider the moveCost explanation for call made from (0,0) to (1,0) not from (1,0) to (2,0)
