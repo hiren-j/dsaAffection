@@ -15,7 +15,7 @@ class TopDown {
 
         for(int C2 = 0; C2 < N; ++C2) {
             LL nextSideSum = solveWithoutMemo(grid, R+1, C2);
-            LL moveCost    = (C1 == -1) ? 0 : abs(C1 - C2);
+            LL moveCost    = (C1 == N) ? 0 : abs(C1 - C2);
             LL currPathSum = grid[R][C2] + nextSideSum - moveCost;
             maxPathSum = max(maxPathSum, currPathSum);
         } 
