@@ -1,188 +1,183 @@
-// Code to find the maximum number of points you can achieve. To gain points, you must pick one cell in each row. Picking the cell at coordinates (r, c) will add points[r][c] to your score. However, you will lose points if you pick a cell too far from the cell that you picked in the previous row. For every two adjacent rows r and r + 1 (where 0 <= r < m - 1), picking cells at coordinates (r, c1) and (r + 1, c2) will subtract abs(c1 - c2) from your score ~ coded by Hiren
+// Code to find the maximum number of points you can achieve. To gain points, you must pick one cell in each row. Picking the cell at coordinates (r, c) will add points[r][c] to your score. However, you will lose points if you pick a cell too far from the cell that you picked in the previous row. For every two adjacent rows r and r + 1 (where 0 <= r < m - 1), picking cells at coordinates (r, c1) and (r + 1, c2) will subtract abs(c1 - c2) from your score ~ coded by vHiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
-    typedef long long LL;
+class Solution {
+    using LL = long long;
     int M, N;
 
     // O(N^(M*N)) & O(M)
-    LL solveWithoutMemo(vector<vector<int>>& points, int R, int prevCol) {
+    LL solveWithoutMemo(const vector<vector<int>>& grid, int R, int C1) {
         if(R == M)
             return 0;
 
-        LL maxPoints = 0;
+        LL maxPathSum = 0;
 
-        // Consider each cell as a start point and then find the points you can achieve through it's path, then update the result by maximum value
-        for(int C = 0; C < N; ++C) {
-            LL score = points[R][C] + solveWithoutMemo(points, R+1, C);
-            if(prevCol != N) {
-                score -= abs(prevCol - C);
-            }
-            maxPoints = max(maxPoints, score);
-        }
+        for(int C2 = 0; C2 < N; ++C2) {
+            LL nextSideSum = solveWithoutMemo(grid, R+1, C2);
+            LL moveCost    = (C1 == -1) ? 0 : abs(C1 - C2);
+            LL currPathSum = grid[R][C2] + nextSideSum - moveCost;
+            maxPathSum = max(maxPathSum, currPathSum);
+        } 
 
-        return maxPoints;
+        return maxPathSum;
     }
 
     // O(N*M*N) & O(M*N + M)
-    LL solveWithMemo(vector<vector<LL>>& dp, vector<vector<int>>& points, int R, int prevCol) {
+    LL solveWithMemo(vector<vector<LL>>& dp, const vector<vector<int>>& grid, int R, int C1) {
         if(R == M)
             return 0;
 
-        if(dp[R][prevCol] != -1)
-            return dp[R][prevCol];
+        if(dp[R][C1] != -1) 
+            return dp[R][C1];
 
-        LL maxPoints = 0;
+        LL maxPathSum = 0;
 
-        // Consider each cell as a start point and then find the points you can achieve through it's path, then update the result by maximum value
-        for(int C = 0; C < N; ++C) {
-            LL score = points[R][C] + solveWithMemo(dp, points, R+1, C);
-            if(prevCol != N) {
-                score -= abs(prevCol - C);
-            }
-            maxPoints = max(maxPoints, score);
-        }
+        for(int C2 = 0; C2 < N; ++C2) {
+            LL nextSideSum = solveWithMemo(dp, grid, R+1, C2);
+            LL moveCost    = (C1 == N) ? 0 : abs(C1 - C2);
+            LL currPathSum = grid[R][C2] + nextSideSum - moveCost;
+            maxPathSum = max(maxPathSum, currPathSum);
+        } 
 
-        return dp[R][prevCol] = maxPoints;
+        return dp[R][C1] = maxPathSum;
     }
-
+ 
 public:
-    // Method to find the maximum points you can achieve by performing the specified movements, using recursion with memoization - O(M*N*N) & O(M*N)
-    LL maxPoints(vector<vector<int>>& points) {
-        M = points.size(), N = points[0].size();
+    LL maxPoints(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size(); 
         vector<vector<LL>> dp(M, vector<LL>(N+1, -1));
-        return solveWithMemo(dp, points, 0, N);
+        return solveWithMemo(dp, grid, 0, N);
     }
 };
-// Note: This solution will lead to time-limit-exceed
+// Note: This solution will lead to TLE
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    typedef long long LL;
+    using LL = long long;
     int M, N;
 
     // O(M*N*N) & O(M*N)
-    LL solveWith2DTable(vector<vector<int>>& points) {
-        vector<vector<LL>> dp(M, vector<LL>(N+1, -1));
+    LL solveBy2DTable(const vector<vector<int>>& grid) {
+        vector<vector<LL>> dp(M+1, vector<LL>(N+1, -1));
 
+        for(int C1 = 0; C1 <= N; ++C1)
+            dp[M][C1] = 0;
+        
         for(int R = M-1; R >= 0; --R) {
-            for(int prevCol = 0; prevCol <= N; ++prevCol) {
-                LL maxPoints = 0;
+            for(int C1 = 0; C1 <= N; ++C1) {
+                LL maxPathSum = 0;
 
-                for(int C = 0; C < N; ++C) {
-                    LL score = points[R][C] + (R+1 < M ? dp[R+1][C] : 0);
-                    if(prevCol != N) {
-                        score -= abs(prevCol - C);
-                    }
-                    maxPoints = max(maxPoints, score);
-                }
+                for(int C2 = 0; C2 < N; ++C2) {
+                    LL nextSideSum = dp[R+1][C2];
+                    LL moveCost    = (C1 == N) ? 0 : abs(C1 - C2);
+                    LL currPathSum = grid[R][C2] + nextSideSum - moveCost;
+                    maxPathSum = max(maxPathSum, currPathSum);
+                } 
 
-                dp[R][prevCol] = maxPoints;
+                dp[R][C1] = maxPathSum;
             }
         }
 
         return dp[0][N];
     }
+    // Note: This solution will lead to TLE
 
     // O(M*N*N) & O(M*N)
-    LL solveWith2DEnhanced(vector<vector<int>>& points) {
+    LL solveBy2DEnhanced(const vector<vector<int>>& grid) {
         vector<vector<LL>> dp(M+1, vector<LL>(N+1, 0));
-
+        
         for(int R = M-1; R >= 0; --R) {
-            for(int prevCol = 0; prevCol <= N; ++prevCol) {
-                LL maxPoints = 0;
+            for(int C1 = 0; C1 <= N; ++C1) {
+                LL maxPathSum = 0;
 
-                for(int C = 0; C < N; ++C) {
-                    LL score = points[R][C] + dp[R+1][C];
-                    if(prevCol != N) {
-                        score -= abs(prevCol - C);
-                    }
-                    maxPoints = max(maxPoints, score);
-                }
+                for(int C2 = 0; C2 < N; ++C2) {
+                    LL nextSideSum = dp[R+1][C2];
+                    LL moveCost    = (C1 == N) ? 0 : abs(C1 - C2);
+                    LL currPathSum = grid[R][C2] + nextSideSum - moveCost;
+                    maxPathSum = max(maxPathSum, currPathSum);
+                } 
 
-                dp[R][prevCol] = maxPoints;
+                dp[R][C1] = maxPathSum;
             }
         }
 
         return dp[0][N];
     }
+    // Note: This solution will lead to TLE
 
     // O(M*N*N) & O(2*N)
-    LL solveWith1DTable(vector<vector<int>>& points) {
-        vector<LL> nextRow(N+1, 0), idealRow(N+1, 0);
+    LL solveBy1DTable(const vector<vector<int>>& grid) {
+        vector<LL> nextRow(N+1, 0); // R + 1th row
+        vector<LL> currRow(N+1, 0); // Rth row
 
         for(int R = M-1; R >= 0; --R) {
-            for(int prevCol = 0; prevCol <= N; ++prevCol) {
-                LL maxPoints = 0;
+            for(int C1 = 0; C1 <= N; ++C1) {
+                LL maxPathSum = 0;
 
-                for(int C = 0; C < N; ++C) {
-                    LL score = points[R][C] + nextRow[C];
-                    if(prevCol != N) {
-                        score -= abs(prevCol - C);
-                    }
-                    maxPoints = max(maxPoints, score);
-                }
+                for(int C2 = 0; C2 < N; ++C2) {
+                    LL nextSideSum = nextRow[C2];
+                    LL moveCost    = (C1 == N) ? 0 : abs(C1 - C2);
+                    LL currPathSum = grid[R][C2] + nextSideSum - moveCost;
+                    maxPathSum = max(maxPathSum, currPathSum);
+                } 
 
-                idealRow[prevCol] = maxPoints;
+                currRow[C1] = maxPathSum;
             }
-            nextRow = idealRow;
+            swap(nextRow, currRow);
         }
 
         return nextRow[N];
     }
+    // Note: This solution will lead to TLE
 
-public:
-    LL maxPoints(vector<vector<int>>& points) {
-        M = points.size(), N = points[0].size();
-        return solveWith1DTable(points);
-    }
-};
-// Note: This solution will lead to time-limit-exceed
+    // O(M*N) & O(4*N)
+    LL solveBy1DIntuitive(const vector<vector<int>>& grid) {
+        vector<LL> prevRow(N); // R - 1th row
+        vector<LL> currRow(N); // Rth row
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUpIntuitive {
-    typedef long long LL;
-
-public:
-    // O(M*N) & O(2*N)
-    LL maxPoints(vector<vector<int>>& points) {
-        const int M = points.size(), N = points[0].size();
-        
-        vector<LL> prevRow(N, 0); // R - 1th row
-        vector<LL> currRow(N, 0); // Rth row
-
-        // Fill values of 0th row of the matrix
+        // Fill all values of 0th row of matrix
         for(int C = 0; C < N; ++C) {
-            prevRow[C] = points[0][C];
+            prevRow[C] = grid[0][C];
         }
 
         for(int R = 1; R < M; ++R) {
-            vector<LL> maxPointLeft(N, 0), maxPointRight(N , 0);
-            
-            // Fill the maximum points you can gain from the left side of each column
-            maxPointLeft[0] = prevRow[0];
+            // Tracks maximum value for each column in previous row
+            vector<LL> maxValLeft(N), maxValRight(N);
+
+            // Precompute maximum value from left side of each column
+            maxValLeft[0] = prevRow[0];
             for(int C = 1; C < N; ++C) {
-                maxPointLeft[C] = max(maxPointLeft[C-1] - 1, prevRow[C]);
+                maxValLeft[C] = max(maxValLeft[C-1] - 1, prevRow[C]);
             }
 
-            // Fill the maximum points you can gain from the right side of each column
-            maxPointRight[N-1] = prevRow[N-1];
+            // Precompute maximum value from right side of each column
+            maxValRight[N-1] = prevRow[N-1];
             for(int C = N-2; C >= 0; --C) {
-                maxPointRight[C] = max(maxPointRight[C+1] - 1, prevRow[C]);
+                maxValRight[C] = max(maxValRight[C+1] - 1, prevRow[C]);
             }
 
-            // Compute current row's maximum points
+            // Compute maxPathSum ending at each column of currRow
             for(int C = 0; C < N; ++C) {
-                currRow[C] = points[R][C] + max(maxPointLeft[C], maxPointRight[C]);
+                currRow[C] = grid[R][C] + max(maxValLeft[C], maxValRight[C]);
             }
 
-            swap(prevRow, currRow); 
-        }  
+            swap(prevRow, currRow);
+        }
 
-        return *max_element(begin(prevRow), end(prevRow));
+        // Return maxElement lying among all maxPathSum in lastRow
+        LL maxElement = 0;
+        for(int C = 0; C < N; ++C) {
+            maxElement = max(maxElement, prevRow[C]);
+        }
+        return maxElement;
+    }
+
+public:
+    LL maxPoints(vector<vector<int>>& grid) {
+        M = grid.size(), N = grid[0].size(); 
+        return solveBy1DIntuitive(grid);
     }
 };
 
