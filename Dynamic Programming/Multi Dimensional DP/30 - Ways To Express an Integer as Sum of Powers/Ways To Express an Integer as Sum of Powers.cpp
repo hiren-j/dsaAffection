@@ -73,6 +73,7 @@ class BottomUp {
         }
     }
 
+    // O(N^3) & O(N^2) : Where N = given_n
     int solveBy2DTable(int given_n, int x) {
         vector<vector<int>> dp(given_n + 1, vector<int>(given_n + 2, -1));
 
