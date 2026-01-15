@@ -14,10 +14,12 @@ class TopDown {
 
         for(int C2 = 0; C2 < N; ++C2) {
             int currPathCost = grid[R][C2] + solveWithoutMemo(grid, moveCost, R+1, C2);
+
             if(C1 != N) {
                 int valueAtC1 = grid[R-1][C1];
                 currPathCost += moveCost[valueAtC1][C2];
             }
+            
             minPathCost = min(minPathCost, currPathCost);
         }
 
@@ -36,10 +38,12 @@ class TopDown {
 
         for(int C2 = 0; C2 < N; ++C2) {
             int currPathCost = grid[R][C2] + solveWithMemo(dp, grid, moveCost, R+1, C2);
+
             if(C1 != N) {
                 int valueAtC1 = grid[R-1][C1];
                 currPathCost += moveCost[valueAtC1][C2];            
             }
+
             minPathCost = min(minPathCost, currPathCost);
         }
 
@@ -73,10 +77,12 @@ class BottomUp {
 
                 for(int C2 = 0; C2 < N; ++C2) {
                     int currPathCost = grid[R][C2] + dp[R+1][C2];
+                    
                     if(C1 != N && R-1 >= 0) {
                         int valueAtC1 = grid[R-1][C1];
                         currPathCost += moveCost[valueAtC1][C2];
                     }
+
                     minPathCost = min(minPathCost, currPathCost);
                 }
 
@@ -97,10 +103,12 @@ class BottomUp {
 
                 for(int C2 = 0; C2 < N; ++C2) {
                     int currPathCost = grid[R][C2] + dp[R+1][C2];
+
                     if(C1 != N && R-1 >= 0) {
                         int valueAtC1 = grid[R-1][C1];
                         currPathCost += moveCost[valueAtC1][C2];
                     }
+
                     minPathCost = min(minPathCost, currPathCost);
                 }
 
@@ -121,10 +129,12 @@ class BottomUp {
 
                 for(int C2 = 0; C2 < N; ++C2) {
                     int currPathCost = grid[R][C2] + nextRow[C2];
+
                     if(C1 != N && R-1 >= 0) {
                         int valueAtC1 = grid[R-1][C1];
                         currPathCost += moveCost[valueAtC1][C2];
                     }
+
                     minPathCost = min(minPathCost, currPathCost);
                 }
 
