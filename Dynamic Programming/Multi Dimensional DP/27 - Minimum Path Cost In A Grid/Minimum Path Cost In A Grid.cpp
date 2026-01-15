@@ -51,7 +51,6 @@ class TopDown {
     }
 
 public:
-    // Method to find the minimum cost, using recursion with memoization - O(M*N*N) & O(M*N)
     int minPathCost(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
         M = grid.size(), N = grid[0].size();
         vector<vector<int>> dp(M, vector<int>(N+1, -1));
