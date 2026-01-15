@@ -6,16 +6,17 @@ class TopDown {
     int M, N;
 
     // O(N^(M*N)) & O(M)
-    int solveWithoutMemo(vector<vector<int>>& grid, vector<vector<int>>& moveCost, int R, int prevCol) {
+    int solveWithoutMemo(const vector<vector<int>>& grid, const vector<vector<int>>& moveCost, int R, int C1) {
         if(R == M)
             return 0;
         
         int minPathCost = INT_MAX;
 
-        for(int C = 0; C < N; ++C) {
-            int currPathCost = grid[R][C] + solveWithoutMemo(grid, moveCost, R+1, C);
-            if(prevCol != N) {
-                currPathCost += moveCost[grid[R-1][prevCol]][C];
+        for(int C2 = 0; C2 < N; ++C2) {
+            int currPathCost = grid[R][C2] + solveWithoutMemo(grid, moveCost, R+1, C2);
+            if(C1 != N) {
+                int valueAtC1 = grid[R-1][C1];
+                currPathCost += moveCost[valueAtC1][C2];
             }
             minPathCost = min(minPathCost, currPathCost);
         }
@@ -24,24 +25,25 @@ class TopDown {
     }
 
     // O(N*M*N) & O(M*N + M)
-    int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, vector<vector<int>>& moveCost, int R, int prevCol) {
+    int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, const vector<vector<int>>& moveCost, int R, int C1) {
         if(R == M)
             return 0;
 
-        if(dp[R][prevCol] != -1)
-            return dp[R][prevCol];
+        if(dp[R][C1] != -1)
+            return dp[R][C1];
         
         int minPathCost = INT_MAX;
 
-        for(int C = 0; C < N; ++C) {
-            int currPathCost = grid[R][C] + solveWithMemo(dp, grid, moveCost, R+1, C);
-            if(prevCol != N) {
-                currPathCost += moveCost[grid[R-1][prevCol]][C];
+        for(int C2 = 0; C2 < N; ++C2) {
+            int currPathCost = grid[R][C2] + solveWithMemo(dp, grid, moveCost, R+1, C2);
+            if(C1 != N) {
+                int valueAtC1 = grid[R-1][C1];
+                currPathCost += moveCost[valueAtC1][C2];            
             }
             minPathCost = min(minPathCost, currPathCost);
         }
 
-        return dp[R][prevCol] = minPathCost;
+        return dp[R][C1] = minPathCost;
     }
 
 public:
@@ -59,22 +61,26 @@ class BottomUp {
     int M, N;
 
     // O(M*N*N) & O(M*N)
-    int solveWith2DTable(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
-        vector<vector<int>> dp(M, vector<int>(N+1, -1));
+    int solveBy2DTable(const vector<vector<int>>& grid, const vector<vector<int>>& moveCost) {
+        vector<vector<int>> dp(M+1, vector<int>(N+1, -1));
+
+        for(int C1 = 0; C1 <= N; ++C1)
+            dp[M][C1] = 0; 
 
         for(int R = M-1; R >= 0; --R) {
-            for(int prevCol = 0; prevCol <= N; ++prevCol) {
+            for(int C1 = 0; C1 <= N; ++C1) {
                 int minPathCost = INT_MAX;
 
-                for(int C = 0; C < N; ++C) {
-                    int currPathCost = grid[R][C] + (R+1 < M ? dp[R+1][C] : 0);
-                    if(prevCol != N && R-1 >= 0) {
-                        currPathCost += moveCost[grid[R-1][prevCol]][C];
+                for(int C2 = 0; C2 < N; ++C2) {
+                    int currPathCost = grid[R][C2] + dp[R+1][C2];
+                    if(C1 != N && R-1 >= 0) {
+                        int valueAtC1 = grid[R-1][C1];
+                        currPathCost += moveCost[valueAtC1][C2];
                     }
                     minPathCost = min(minPathCost, currPathCost);
                 }
 
-                dp[R][prevCol] = minPathCost;
+                dp[R][C1] = minPathCost;
             }
         }
 
@@ -82,22 +88,23 @@ class BottomUp {
     }
 
     // O(M*N*N) & O(M*N)
-    int solveWith2DEnhanced(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
+    int solveBy2DEnhanced(const vector<vector<int>>& grid, const vector<vector<int>>& moveCost) {
         vector<vector<int>> dp(M+1, vector<int>(N+1, 0));
 
         for(int R = M-1; R >= 0; --R) {
-            for(int prevCol = 0; prevCol <= N; ++prevCol) {
+            for(int C1 = 0; C1 <= N; ++C1) {
                 int minPathCost = INT_MAX;
 
-                for(int C = 0; C < N; ++C) {
-                    int currPathCost = grid[R][C] + dp[R+1][C];
-                    if(prevCol != N && R-1 >= 0) {
-                        currPathCost += moveCost[grid[R-1][prevCol]][C];
+                for(int C2 = 0; C2 < N; ++C2) {
+                    int currPathCost = grid[R][C2] + dp[R+1][C2];
+                    if(C1 != N && R-1 >= 0) {
+                        int valueAtC1 = grid[R-1][C1];
+                        currPathCost += moveCost[valueAtC1][C2];
                     }
                     minPathCost = min(minPathCost, currPathCost);
                 }
 
-                dp[R][prevCol] = minPathCost;
+                dp[R][C1] = minPathCost;
             }
         }
 
@@ -105,24 +112,25 @@ class BottomUp {
     }
 
     // O(M*N*N) & O(2*N)
-    int solveWith1DTable(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
+    int solveBy1DTable(const vector<vector<int>>& grid, const vector<vector<int>>& moveCost) {
         vector<int> nextRow(N+1, 0), idealRow(N+1, 0);
 
         for(int R = M-1; R >= 0; --R) {
-            for(int prevCol = 0; prevCol <= N; ++prevCol) {
+            for(int C1 = 0; C1 <= N; ++C1) {
                 int minPathCost = INT_MAX;
 
-                for(int C = 0; C < N; ++C) {
-                    int currPathCost = grid[R][C] + nextRow[C];
-                    if(prevCol != N && R-1 >= 0) {
-                        currPathCost += moveCost[grid[R-1][prevCol]][C];
+                for(int C2 = 0; C2 < N; ++C2) {
+                    int currPathCost = grid[R][C2] + nextRow[C2];
+                    if(C1 != N && R-1 >= 0) {
+                        int valueAtC1 = grid[R-1][C1];
+                        currPathCost += moveCost[valueAtC1][C2];
                     }
                     minPathCost = min(minPathCost, currPathCost);
                 }
 
-                idealRow[prevCol] = minPathCost;
+                idealRow[C1] = minPathCost;
             }
-            nextRow = idealRow;
+            swap(nextRow, idealRow);
         }
 
         return nextRow[N];
@@ -131,7 +139,7 @@ class BottomUp {
 public:
     int minPathCost(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
         M = grid.size(), N = grid[0].size();
-        return solveWith1DTable(grid, moveCost);
+        return solveBy1DTable(grid, moveCost);
     }
 };
 
