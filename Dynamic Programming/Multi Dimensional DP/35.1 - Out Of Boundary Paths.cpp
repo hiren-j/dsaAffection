@@ -3,38 +3,35 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-    const int MOD = 1e9+7;
+    const vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    const int MOD = 1e9 + 7;
     int M, N;
 
     // O(4^maxMove) & O(maxMove)
     int solveWithoutMemo(int maxMove, int R, int C) {
-        // Edge case: If the ball moves out of the grid boundary then you've one way
         if(R < 0 || C < 0 || R == M || C == N)
             return 1;
-
-        // Edge case: If all moves are over then it's not possible to move the ball anymore
+        
         if(maxMove == 0)
             return 0;
 
         int count = 0;
 
-        for(auto& dir : directions) {
-            int reachR = R + dir[0];
-            int reachC = C + dir[1];
-            count = (count + solveWithoutMemo(maxMove - 1, reachR, reachC)) % MOD;
+        for(const auto& D : dirs) {
+            int newR = R + D[0];
+            int newC = C + D[1];
+            int nextCount = solveWithoutMemo(maxMove - 1, newR, newC);
+            count = (count + nextCount) % MOD;
         }
 
         return count;
     }
 
-    // O(4 * maxMove*M*N) & O(maxMove*M*N + maxMove)
+    // O(4*maxMove*M*N) & O(maxMove*M*N + maxMove)
     int solveWithMemo(vector<vector<vector<int>>>& dp, int maxMove, int R, int C) {
-        // Edge case: If the ball moves out of the grid boundary then you've one way
         if(R < 0 || C < 0 || R == M || C == N)
             return 1;
-
-        // Edge case: If all moves are over then it's not possible to move the ball anymore
+        
         if(maxMove == 0)
             return 0;
 
@@ -43,17 +40,18 @@ class TopDown {
 
         int count = 0;
 
-        for(auto& dir : directions) {
-            int reachR = R + dir[0];
-            int reachC = C + dir[1];
-            count = (count + solveWithMemo(dp, maxMove - 1, reachR, reachC)) % MOD;
+        for(const auto& D : dirs) {
+            int newR = R + D[0];
+            int newC = C + D[1];
+            int nextCount = solveWithMemo(dp, maxMove - 1, newR, newC);
+            count = (count + nextCount) % MOD;
         }
 
         return dp[maxMove][R][C] = count;
     }
 
 public:
-    // Method to find the number of paths, using recursion with memoization - O(maxMove*M*N) & (maxMove*M*N)
+    // Method to find total number of paths, using recursion with memoization - O(maxMove*M*N) & O(maxMove*M*N)
     int findPaths(int m, int n, int maxMove, int startR, int startC) {
         M = m, N = n;
         vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M, vector<int>(N, -1)));
