@@ -64,103 +64,149 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    vector<vector<int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-    const int MOD = 1e9+7;
+    const vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    const int MOD = 1e9 + 7;
     int M, N;
 
-    // O(maxMove*M*N) & O(maxMove*M*N)    
-    int solveWith3DTable(int maxMove, int startR, int startC) {
-        vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
+    // O(GM*M*N) & O(GM*M*N) : Where GM = givenMove
+    int solveBy3DShifting(int givenMove, int startR, int startC) {
+        vector<vector<vector<int>>> dp(givenMove + 1, vector<vector<int>>(M + 2, vector<int>(N + 2, 0)));
 
         /*
-            dp[moves][0][C]     - we're assuming index 0 = negative index -1
-            dp[moves][R][0]     - we're assuming index 0 = negative index -1
-            dp[moves][M + 1][C] - we're assuming index M+1 = Mth index 
-            dp[moves][R][N + 1] - we're assuming index N+1 = Nth index 
+            dp[maxMove][0][C]     - we're assuming index 0 = negative index -1
+            dp[maxMove][R][0]     - we're assuming index 0 = negative index -1
+            dp[maxMove][M + 1][C] - we're assuming index M+1 = Mth index 
+            dp[maxMove][R][N + 1] - we're assuming index N+1 = Nth index 
         */
 
         // Init edge case: (R < 0 || R == M)
-        for(int moves = 0; moves <= maxMove; ++moves) {
+        for(int maxMove = 0; maxMove <= givenMove; ++maxMove) {
             for(int C = 0; C <= N+1; ++C) {
-                dp[moves][0][C]     = 1;
-                dp[moves][M + 1][C] = 1;
+                dp[maxMove][0][C]     = 1;
+                dp[maxMove][M + 1][C] = 1;
             }
         }
 
         // Init edge case: (C < 0 || C == N)
-        for(int moves = 0; moves <= maxMove; ++moves) {
+        for(int maxMove = 0; maxMove <= givenMove; ++maxMove) {
             for(int R = 0; R <= M+1; ++R) {
-                dp[moves][R][0]     = 1;
-                dp[moves][R][N + 1] = 1;
+                dp[maxMove][R][0]     = 1;
+                dp[maxMove][R][N + 1] = 1;
             }
         }
 
-        for(int moves = 1; moves <= maxMove; ++moves) {
-            for(int R = 1; R <= M; ++R) {
-                for(int C = 1; C <= N; ++C) {
+        for(int maxMove = 1; maxMove <= givenMove; ++maxMove) {
+            for(int R = M; R >= 1; --R) {
+                for(int C = N; C >= 1; --C) {
                     int count = 0;
-                    for(auto& dir : directions) {
-                        int reachR = R + dir[0];
-                        int reachC = C + dir[1];
-                        if(reachR >= 0 && reachC >= 0 && reachR <= M+1 && reachC <= N+1) {
-                            count = (count + dp[moves - 1][reachR][reachC]) % MOD;
+
+                    for(const auto& D : dirs) {
+                        int newR = R + D[0];
+                        int newC = C + D[1];
+                        if(newR >= 0 && newC >= 0 && newR <= M+1 && newC <= N+1) {
+                            int nextCount = dp[maxMove - 1][newR][newC];
+                            count = (count + nextCount) % MOD;
                         }
                     }
-                    dp[moves][R][C] = count;
+
+                    dp[maxMove][R][C] = count;
                 }
             }
         }
 
-        return dp[maxMove][startR + 1][startC + 1];
+        return dp[givenMove][startR + 1][startC + 1];
     }
 
-    // O(maxMove*M*N) & O(2*M*N)
-    int solveWith2DTable(int maxMove, int startR, int startC) {
-        vector<vector<int>> prevRow(M + 2, vector<int>(N + 2, 0)), idealRow(M + 2, vector<int>(N + 2, 0));
+    // O(GM*M*N) & O(GM*M*N) : Where GM = givenMove
+    int solveBy3DTable(int givenMove, int startR, int startC) {
+        vector<vector<vector<int>>> dp(givenMove + 1, vector<vector<int>>(M + 1, vector<int>(N + 1, -1)));
 
-        // Init edge case: (R < 0 || R == M) for moves = 0
-        for(int C = 0; C <= N+1; ++C) {
-            prevRow[0][C]     = 1;
-            prevRow[M + 1][C] = 1;
-        }
+        for(int R = 0; R <= M; ++R)
+            for(int C = 0; C <= N; ++C)
+                dp[0][R][C] = 0;
 
-        // Init edge case: (C < 0 || C == N) for moves = 0
-        for(int R = 0; R <= M+1; ++R) {
-            prevRow[R][0]     = 1;
-            prevRow[R][N + 1] = 1;
-        }
-        
-        for(int moves = 1; moves <= maxMove; ++moves) {
-            for(int R = 1; R <= M; ++R) {
-                // Init edge case: (C < 0 || C == N) for moves
-                idealRow[R][0]     = 1;
-                idealRow[R][N + 1] = 1;
-                for(int C = 1; C <= N; ++C) {
-                    // Init edge case: (R < 0 || R == M) for moves
-                    idealRow[0][C]     = 1; 
-                    idealRow[M + 1][C] = 1; 
-
+        for(int maxMove = 1; maxMove <= givenMove; ++maxMove) {
+            for(int R = M-1; R >= 0; --R) {
+                for(int C = N-1; C >= 0; --C) {
                     int count = 0;
-                    for(auto& dir : directions) {
-                        int reachR = R + dir[0];
-                        int reachC = C + dir[1];
-                        if(reachR >= 0 && reachC >= 0 && reachR <= M+1 && reachC <= N+1) {
-                            count = (count + prevRow[reachR][reachC]) % MOD;
-                        }
+
+                    for(const auto& D : dirs) {
+                        int newR = R + D[0];
+                        int newC = C + D[1];
+                        int nextCount = (newR < 0 || newC < 0 || newR == M || newC == N) 
+                                        ? 1 
+                                        : dp[maxMove - 1][newR][newC];
+                        count = (count + nextCount) % MOD;
                     }
-                    idealRow[R][C] = count;
+
+                    dp[maxMove][R][C] = count;
                 }
             }
-            prevRow = idealRow;
         }
 
-        return prevRow[startR + 1][startC + 1];
+        return dp[givenMove][startR][startC];
     }
-    
+
+    // O(GM*M*N) & O(GM*M*N) : Where GM = givenMove
+    int solveBy3DEnhanced(int givenMove, int startR, int startC) {
+        vector<vector<vector<int>>> dp(givenMove + 1, vector<vector<int>>(M + 1, vector<int>(N + 1, 0)));
+
+        for(int maxMove = 1; maxMove <= givenMove; ++maxMove) {
+            for(int R = M-1; R >= 0; --R) {
+                for(int C = N-1; C >= 0; --C) {
+                    int count = 0;
+
+                    for(const auto& D : dirs) {
+                        int newR = R + D[0];
+                        int newC = C + D[1];
+                        int nextCount = (newR < 0 || newC < 0 || newR == M || newC == N) 
+                                        ? 1 
+                                        : dp[maxMove - 1][newR][newC];
+                        count = (count + nextCount) % MOD;
+                    }
+
+                    dp[maxMove][R][C] = count;
+                }
+            }
+        }
+
+        return dp[givenMove][startR][startC];
+    }
+
+    // O(GM*M*N) & O(2*M*N) : Where GM = givenMove
+    int solveBy2DTable(int givenMove, int startR, int startC) {
+        vector<vector<int>> prev(M + 1, vector<int>(N + 1, 0)); // maxMove - 1th table
+
+        for(int maxMove = 1; maxMove <= givenMove; ++maxMove) {
+            vector<vector<int>> curr(M + 1, vector<int>(N + 1, 0)); // maxMove table
+
+            for(int R = M-1; R >= 0; --R) {
+                for(int C = N-1; C >= 0; --C) {
+                    int count = 0;
+
+                    for(const auto& D : dirs) {
+                        int newR = R + D[0];
+                        int newC = C + D[1];
+                        int nextCount = (newR < 0 || newC < 0 || newR == M || newC == N) 
+                                        ? 1 
+                                        : prev[newR][newC];
+                        count = (count + nextCount) % MOD;
+                    }
+
+                    curr[R][C] = count;
+                }
+            }
+
+            swap(prev, curr);
+        }
+
+        return prev[startR][startC];
+    }
+
 public:
-    int findPaths(int m, int n, int maxMove, int startR, int startC) {   
+    int findPaths(int m, int n, int maxMove, int startR, int startC) {
         M = m, N = n;
-        return solveWith2DTable(maxMove, startR, startC);
+        return solveBy2DTable(maxMove, startR, startC);
     }
 };
 
