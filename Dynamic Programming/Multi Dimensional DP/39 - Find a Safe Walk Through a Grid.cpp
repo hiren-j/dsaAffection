@@ -4,7 +4,7 @@
 
 /*
   DON'T IGNORE MUST READ: Creating a correct bottom-up solution for this problem is not possible and also memoization could also fail in such problems! Why? Watch The Video Lecture to know about it.
-                          And I would say there are only 3 problems in the whole series which doesn't contain the bottom-up solution due to this reason. These 3 problems lies in this folder (Multi-Dimensional DP Folder).
+                          And I would say there are only 3 problems in the whole series which doesn't contain the bottom-up solution. These 3 problems lies in this folder (Multi-Dimensional DP Folder).
 */
   
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
