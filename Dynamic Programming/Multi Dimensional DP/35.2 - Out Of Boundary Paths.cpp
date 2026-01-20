@@ -68,7 +68,7 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    vector<vector<int>> dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+    const vector<vector<int>> dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
     const int MOD = 1e9+7;
     int M, N;
 
@@ -77,7 +77,7 @@ class BottomUp {
     }
 
     // O(GM*M*N) & (GM*M*N) : Where GM = givenMove
-    int solveWith3DTable(int givenMove, int startR, int startC) {
+    int solveBy3DTable(int givenMove, int startR, int startC) {
         vector<vector<vector<int>>> dp(givenMove + 1, vector<vector<int>>(M, vector<int>(N, 0)));
         
         for(int maxMove = 1; maxMove <= givenMove; ++maxMove) {
@@ -105,8 +105,8 @@ class BottomUp {
     }
 
     // O(GM*M*N) & (2*M*N) : Where GM = givenMove
-    int solveWith2DTable(int givenMove, int startR, int startC) {
-        vector<vector<int>> prevRow(M, vector<int>(N)), idealRow(M, vector<int>(N));
+    int solveBy2DTable(int givenMove, int startR, int startC) {
+        vector<vector<int>> prevRow(M, vector<int>(N)), currRow(M, vector<int>(N));
 
         for(int maxMove = 1; maxMove <= givenMove; ++maxMove) {
             for(int R = M-1; R >= 0; --R) {
@@ -124,7 +124,7 @@ class BottomUp {
                         }
                     }
 
-                    idealRow[R][C] = count;
+                    currRow[R][C] = count;
                 }
             }
             swap(prevRow, currRow);
@@ -136,7 +136,7 @@ class BottomUp {
 public:
     int findPaths(int m, int n, int maxMove, int startR, int startC) {
         M = m, N = n;
-        return solveWith2DTable(maxMove, startR, startC);
+        return solveBy3DTable(maxMove, startR, startC);
     }
 };
 
