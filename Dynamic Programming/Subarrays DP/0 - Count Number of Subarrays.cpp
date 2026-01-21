@@ -1,5 +1,3 @@
-// Code to find the total number of subarrays ~ coded by vHiren
-
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -151,13 +149,13 @@ int main() {
     cin.tie(nullptr);
 
     vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    cout << nums.size() * (nums.size() + 1) / 2 << '\n';
+    cout << "From Formula: " << nums.size() * (nums.size() + 1) / 2 << '\n';
 
     TopDown td;
-    cout << td.countSubarrays(nums) << '\n';
+    cout << "From Memoization: " << td.countSubarrays(nums) << '\n';
 
     BottomUp bu;
-    cout << bu.countSubarrays(nums);
+    cout << "From Bottom Up: " << bu.countSubarrays(nums);
 
     return 0;
 }
