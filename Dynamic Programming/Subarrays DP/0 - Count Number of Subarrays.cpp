@@ -113,7 +113,7 @@ class BottomUp {
         int nextRow_0 = 0;
 
         for(int i = n - 1; i >= 0; --i) {
-            int currRow_1  = -1;
+            int currRow_1 = -1;
             int currRow_0 = -1;
 
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
