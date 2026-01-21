@@ -1,5 +1,4 @@
 // Code to find the total number of non-empty subarrays ~ coded by vHiren
-
 #include <iostream>
 #include <vector>
 using namespace std;
