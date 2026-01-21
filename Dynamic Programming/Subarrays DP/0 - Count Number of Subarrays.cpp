@@ -1,3 +1,5 @@
+// Code to find the total number of subarrays ~ coded by vHiren
+
 #include <iostream>
 #include <vector>
 using namespace std;
