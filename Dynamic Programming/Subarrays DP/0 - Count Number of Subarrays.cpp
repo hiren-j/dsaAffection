@@ -107,8 +107,7 @@ class BottomUp {
     }
 
     // O(N*2) & O(1)
-    int solveWithoutTable(const vector<int>& nums) {
-        vector<int> nextRow(2, -1);
+    int solveWithoutTable(const vector<int>& nums) {;
         int nextRow_1 = 1;
         int nextRow_0 = 0;
 
