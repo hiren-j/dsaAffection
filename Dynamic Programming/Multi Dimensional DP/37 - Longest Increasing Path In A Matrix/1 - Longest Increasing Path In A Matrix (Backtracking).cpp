@@ -28,10 +28,10 @@ class TopDown {
         if(!isValid(R, C) || grid[R][C] == -1)
             return 0;
 
-        int maxLen = 1, val = grid[R][C];
+        int maxLen = 1, original = grid[R][C];
         grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        for(auto& D : dirs) {
+        for(const auto& D : dirs) {
             const int newR = R + D[0];
             const int newC = C + D[1];
 
@@ -41,7 +41,7 @@ class TopDown {
             }
         }
 
-        grid[R][C] = val; // Mark cell (R, C) as unvisited
+        grid[R][C] = original; // Mark cell (R, C) as unvisited
         return maxLen;
     }
 
@@ -53,10 +53,10 @@ class TopDown {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLen = 1, val = grid[R][C];
+        int maxLen = 1, original = grid[R][C];
         grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        for(auto& D : dirs) {
+        for(const auto& D : dirs) {
             const int newR = R + D[0];
             const int newC = C + D[1];
 
@@ -66,7 +66,7 @@ class TopDown {
             }
         }
 
-        grid[R][C] = val; // Mark cell (R, C) as unvisited
+        grid[R][C] = original; // Mark cell (R, C) as unvisited
         return dp[R][C] = maxLen;
     }
 
