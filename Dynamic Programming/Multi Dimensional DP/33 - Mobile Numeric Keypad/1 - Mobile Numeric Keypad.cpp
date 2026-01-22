@@ -151,8 +151,8 @@ class BottomUp {
     
     // O(GN*RL*CL*5) & O(2*RL*CL) : Where GN = given_N, Where RL = rowLimit, CL = colLimit
     int solveBy2DTable(int given_N) {
-        vector<vector<int>> prev(rowLimit + 1, vector<int>(colLimit + 1, 1));  // N - 1th table
-        vector<vector<int>> curr(rowLimit + 1, vector<int>(colLimit + 1, -1)); // Nth table
+        vector<vector<int>> prev(rowLimit + 1, vector<int>(colLimit + 1, 1)); // N - 1th table
+        vector<vector<int>> curr(rowLimit + 1, vector<int>(colLimit + 1, 1)); // Nth table
     
         for(int N = 1; N <= given_N - 1; ++N) {
             for(int R = rowLimit - 1; R >= 0; --R) {
