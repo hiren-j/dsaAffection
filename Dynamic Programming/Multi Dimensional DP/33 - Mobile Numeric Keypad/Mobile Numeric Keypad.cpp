@@ -80,11 +80,11 @@ class BottomUp {
     
     // O(GN*RL*CL*5) & O(GN*RL*CL) : Where GN = given_N, Where RL = rowLimit, CL = colLimit
     int solveBy3DTable(int given_N) {
-        vector<vector<vector<int>>> dp(given_N + 1, vector<vector<int>>(rowLimit + 1, vector<int>(colLimit + 1, -1)));
+        vector<vector<vector<int>>> dp(given_N, vector<vector<int>>(rowLimit, vector<int>(colLimit, -1)));
     
         // N == 0
-        for(int R = 0; R <= rowLimit; ++R)
-            for(int C = 0; C <= colLimit; ++C)
+        for(int R = 0; R < rowLimit; ++R)
+            for(int C = 0; C < colLimit; ++C)
                 dp[0][R][C] = 1;
                 
         for(int N = 1; N <= given_N - 1; ++N) {
@@ -118,7 +118,7 @@ class BottomUp {
     
     // O(GN*RL*CL*5) & O(GN*RL*CL) : Where GN = given_N, Where RL = rowLimit, CL = colLimit
     int solveBy3DEnhanced(int given_N) {
-        vector<vector<vector<int>>> dp(given_N + 1, vector<vector<int>>(rowLimit + 1, vector<int>(colLimit + 1, 1)));
+        vector<vector<vector<int>>> dp(given_N, vector<vector<int>>(rowLimit, vector<int>(colLimit, 1)));
                 
         for(int N = 1; N <= given_N - 1; ++N) {
             for(int R = rowLimit - 1; R >= 0; --R) {
@@ -151,8 +151,8 @@ class BottomUp {
     
     // O(GN*RL*CL*5) & O(2*RL*CL) : Where GN = given_N, Where RL = rowLimit, CL = colLimit
     int solveBy2DTable(int given_N) {
-        vector<vector<int>> prev(rowLimit + 1, vector<int>(colLimit + 1, 1)); // N - 1th table
-        vector<vector<int>> curr(rowLimit + 1, vector<int>(colLimit + 1, 1)); // Nth table
+        vector<vector<int>> prev(rowLimit, vector<int>(colLimit, 1)); // N - 1th table
+        vector<vector<int>> curr(rowLimit, vector<int>(colLimit, 1)); // Nth table
     
         for(int N = 1; N <= given_N - 1; ++N) {
             for(int R = rowLimit - 1; R >= 0; --R) {
@@ -192,5 +192,5 @@ public:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Topics: Dynamic Programming
+Topics: Combinatorics | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/mobile-numeric-keypad5456/1
