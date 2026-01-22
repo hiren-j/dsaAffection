@@ -1,4 +1,4 @@
-// Code to find the length of the longest increasing path in grid. From each cell, you can either move in four directions: left, right, up, or down. You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed) ~ coded by Hiren
+// Code to find the length of the longest increasing path in grid. From each cell, you can either move in four dirs: left, right, up, or down. You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed) ~ coded by Hiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -16,35 +16,36 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    vector<vector<int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     int M, N;
 
     bool isValid(int R, int C) {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(M*N * 4^(M*N)) & O(M*N)
+    // O(M*N * 3^(M*N)) & O(M*N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C) {
         if(!isValid(R, C) || grid[R][C] == -1)
             return 0;
 
-        int maxLength = 1, val = grid[R][C];
+        int maxLen = 1, val = grid[R][C];
         grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        for(auto& dir : directions) {
-            int reachR = R + dir[0];
-            int reachC = C + dir[1];
-            if(isValid(reachR, reachC) && grid[reachR][reachC] > val) {
-                int nextLength = solveWithoutMemo(grid, reachR, reachC);
-                maxLength = max(maxLength, nextLength + 1);
+        for(auto& D : dirs) {
+            const int newR = R + D[0];
+            const int newC = C + D[1];
+
+            if(isValid(newR, newC) && grid[newR][newC] > val) {
+                int nextLen = solveWithoutMemo(grid, newR, newC);
+                maxLen = max(maxLen, nextLen + 1);
             }
         }
 
         grid[R][C] = val; // Mark cell (R, C) as unvisited
-        return maxLength;
+        return maxLen;
     }
 
-    // O(M*N + 4*M*N) & O(2*M*N)
+    // O(4*M*N) & O(2*M*N)
     int solveWithMemo(vector<vector<int>>& dp, vector<vector<int>>& grid, int R, int C) {
         if(!isValid(R, C) || grid[R][C] == -1)
             return 0;
@@ -52,29 +53,29 @@ class TopDown {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLength = 1, val = grid[R][C];
+        int maxLen = 1, val = grid[R][C];
         grid[R][C] = -1; // Mark cell (R, C) as visited
 
-        for(auto& dir : directions) {
-            int reachR = R + dir[0];
-            int reachC = C + dir[1];
-            if(isValid(reachR, reachC) && grid[reachR][reachC] > val) {
-                int nextLength = solveWithMemo(dp, grid, reachR, reachC);
-                maxLength = max(maxLength, nextLength + 1);
+        for(auto& D : dirs) {
+            const int newR = R + D[0];
+            const int newC = C + D[1];
+
+            if(isValid(newR, newC) && grid[newR][newC] > val) {
+                int nextLen = solveWithMemo(dp, grid, newR, newC);
+                maxLen = max(maxLen, nextLen + 1);
             }
         }
 
         grid[R][C] = val; // Mark cell (R, C) as unvisited
-        return dp[R][C] = maxLength;
+        return dp[R][C] = maxLen;
     }
 
 public:
-    // Method to find length of longest increasing path in grid, using recursion with memoization - O(M*N) & O(M*N)
     int longestIncreasingPath(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
-        int result = 0;
 
         vector<vector<int>> dp(M, vector<int>(N, -1));
+        int result = 0;
 
         for(int R = 0; R < M; ++R)
             for(int C = 0; C < N; ++C)
