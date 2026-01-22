@@ -11,7 +11,7 @@ class TopDown {
                                         {7, 8, 9}, 
                                         {-1, 0, -1}};
 
-    // O((RL*CL) * (8^N)) & O(N)
+    // O(RL*CL * 8^N) & O(N)
     int solveWithoutMemo(int N, int R, int C) {
         if(R < 0 || C < 0 || R >= rowLimit || C >= colLimit || numpad[R][C] == -1)
             return 0;
@@ -31,7 +31,7 @@ class TopDown {
         return count;
     }
 
-    // O(N*RL*CL) & O(N*RL*CL)
+    // O(RL*CL + 8*N*RL*CL) & O(N*RL*CL)
     int solveWithMemo(vector<vector<vector<int>>>& dp, int N, int R, int C) {
         if(R < 0 || C < 0 || R >= rowLimit || C >= colLimit || numpad[R][C] == -1)
             return 0;
