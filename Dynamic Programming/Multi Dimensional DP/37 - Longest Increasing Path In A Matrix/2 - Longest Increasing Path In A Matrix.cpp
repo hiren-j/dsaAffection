@@ -24,8 +24,8 @@ class TopDown {
         int maxLen = 1;
 
         for(const auto& D : dirs) {
-            int newR = R + D[0];
-            int newC = C + D[1];
+            const int newR = R + D[0];
+            const int newC = C + D[1];
 
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
                 int nextLen = solveWithoutMemo(grid, newR, newC);
@@ -44,8 +44,8 @@ class TopDown {
         int maxLen = 1;
 
         for(const auto& D : dirs) {
-            int newR = R + D[0];
-            int newC = C + D[1];
+            const int newR = R + D[0];
+            const int newC = C + D[1];
 
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
                 int nextLen = solveWithMemo(dp, grid, newR, newC);
