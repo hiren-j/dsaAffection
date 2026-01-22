@@ -20,22 +20,24 @@ class TopDown {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(M*N * 4^(M*N)) & O(M*N)
+    // O((M*N) * 3^(M*N)) & O(M*N)
     int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
         int count = 1;
 
         for(const auto& D : dirs) {
-            int newR = R + D[0];
-            int newC = C + D[1];
+            const int newR = R + D[0];
+            const int newC = C + D[1];
+
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                count = (count + solveWithoutMemo(grid, newR, newC)) % MOD;
+                int nextCount = solveWithoutMemo(grid, newR, newC);
+                count = (count + nextCount) % MOD;
             }
         }
 
         return count;
     }
 
-    // O(M*N + 4*M*N) & O(2*M*N)
+    // O(4*M*N) & O(2*M*N)
     int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
@@ -43,10 +45,12 @@ class TopDown {
         int count = 1;
 
         for(const auto& D : dirs) {
-            int newR = R + D[0];
-            int newC = C + D[1];
+            const int newR = R + D[0];
+            const int newC = C + D[1];
+
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                count = (count + solveWithMemo(dp, grid, newR, newC)) % MOD;
+                int nextCount = solveWithMemo(dp, grid, newR, newC);
+                count = (count + nextCount) % MOD;
             }
         }
 
@@ -54,22 +58,21 @@ class TopDown {
     }
 
 public:
-    // Method to find number of strictly increasing paths, using recursion with memoization - O(M*N) & O(M*N)
     int countPaths(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
-        int count = 0;
 
         vector<vector<int>> dp(M, vector<int>(N, -1));
-
+        int result = 0;
+        
         for(int R = 0; R < M; ++R)
             for(int C = 0; C < N; ++C)
-                count = (count + solveWithMemo(dp, grid, R, C)) % MOD;
+                result = (result + solveWithMemo(dp, grid, R, C)) % MOD;
 
-        return count;
+        return result;
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Topics: Array | Dynamic Programming | Depth-First Search | Breadth-First Search | Graph | Topological Sort | Memoization | Matrix | Weekly Contest 300
+Topics: Array | Dynamic Programming | Combinatorics | Depth-First Search | Breadth-First Search | Graph | Topological Sort | Memoization | Matrix | Weekly Contest 300
 Link  : https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/description/
