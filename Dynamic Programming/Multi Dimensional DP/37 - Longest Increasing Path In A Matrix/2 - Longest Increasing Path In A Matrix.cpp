@@ -12,55 +12,56 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    const vector<vector<int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    const vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     int M, N;
 
     bool isValid(int R, int C) {
         return R >= 0 && C >= 0 && R < M && C < N;
     }
 
-    // O(M*N * 4^(M*N)) & O(M*N)
+    // O(M*N * 3^(M*N)) & O(M*N)
     int solveWithoutMemo(const vector<vector<int>>& grid, int R, int C) {
-        int maxLength = 1;
+        int maxLen = 1;
 
-        for(auto& dir : directions) {
-            int newR = R + dir[0];
-            int newC = C + dir[1];
+        for(const auto& D : dirs) {
+            int newR = R + D[0];
+            int newC = C + D[1];
+
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                int nextLength = solveWithoutMemo(grid, newR, newC);
-                maxLength = max(maxLength, nextLength + 1);
+                int nextLen = solveWithoutMemo(grid, newR, newC);
+                maxLen = max(maxLen, nextLen + 1);
             }
         }
 
-        return maxLength;
+        return maxLen;
     }
 
-    // O(M*N + 4*M*N) & O(2*M*N)
+    // O(4*M*N) & O(2*M*N)
     int solveWithMemo(vector<vector<int>>& dp, const vector<vector<int>>& grid, int R, int C) {
         if(dp[R][C] != -1)
             return dp[R][C];
 
-        int maxLength = 1;
+        int maxLen = 1;
 
-        for(auto& dir : directions) {
-            int newR = R + dir[0];
-            int newC = C + dir[1];
+        for(const auto& D : dirs) {
+            int newR = R + D[0];
+            int newC = C + D[1];
+
             if(isValid(newR, newC) && grid[newR][newC] > grid[R][C]) {
-                int nextLength = solveWithMemo(dp, grid, newR, newC);
-                maxLength = max(maxLength, nextLength + 1);
+                int nextLen = solveWithMemo(dp, grid, newR, newC);
+                maxLen = max(maxLen, nextLen + 1);
             }
         }
 
-        return dp[R][C] = maxLength;
+        return dp[R][C] = maxLen;
     }
 
 public:
-    // Method to find the length of the longest increasing path in the matrix, using recursion with memoization - O(N*M) & O(N*M)
     int longestIncreasingPath(vector<vector<int>>& grid) {
         M = grid.size(), N = grid[0].size();
-        int result = 0;
-
+        
         vector<vector<int>> dp(M, vector<int>(N, -1));
+        int result = 0;
 
         for(int R = 0; R < M; ++R)
             for(int C = 0; C < N; ++C)
