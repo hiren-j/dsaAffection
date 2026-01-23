@@ -12,9 +12,9 @@ class TopDown {
             return prevPick;
 
         if(prevPick) {
-            int pickCurrSubarr = solveWithoutMemo(nums, i + 1, true);
+            int pickInSubarr = solveWithoutMemo(nums, i + 1, true);
             int stopHere = prevPick;
-            return (pickCurrSubarr + stopHere);
+            return (pickInSubarr + stopHere);
         }
         else {
             int startNewFromNext = solveWithoutMemo(nums, i + 1, false);
@@ -32,9 +32,9 @@ class TopDown {
             return dp[i][prevPick];
 
         if(prevPick) {
-            int pickCurrSubarr = solveWithMemo(dp, nums, i + 1, true);
+            int pickInSubarr = solveWithMemo(dp, nums, i + 1, true);
             int stopHere = prevPick;
-            return dp[i][prevPick] = (pickCurrSubarr + stopHere);
+            return dp[i][prevPick] = (pickInSubarr + stopHere);
         }
         else {
             int startNewFromNext = solveWithMemo(dp, nums, i + 1, false);
@@ -64,9 +64,9 @@ class BottomUp {
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = dp[i + 1][true];
+                    int pickInSubarr = dp[i + 1][true];
                     int stopHere = prevPick;
-                    dp[i][prevPick] = (pickCurrSubarr + stopHere);
+                    dp[i][prevPick] = (pickInSubarr + stopHere);
                 }
                 else {
                     int startNewFromNext = dp[i + 1][false];
@@ -90,9 +90,9 @@ class BottomUp {
 
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nextRow[true];
+                    int pickInSubarr = nextRow[true];
                     int stopHere = prevPick;
-                    currRow[prevPick] = (pickCurrSubarr + stopHere);
+                    currRow[prevPick] = (pickInSubarr + stopHere);
                 }
                 else {
                     int startNewFromNext = nextRow[false];
@@ -118,9 +118,9 @@ class BottomUp {
 
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nextRow_1;
+                    int pickInSubarr = nextRow_1;
                     int stopHere = prevPick;
-                    currRow_1 = (pickCurrSubarr + stopHere);
+                    currRow_1 = (pickInSubarr + stopHere);
                 }
                 else {
                     int startNewFromNext = nextRow_0;
