@@ -20,7 +20,7 @@ class TopDown {
 
     // O(3^(M*N)) & O(M*N)
     int solveWithoutMemo(vector<vector<int>>& grid, int R, int C, int health) {
-        health -= (grid[R][C] == 1);
+        health -= grid[R][C];
         
         if(health <= 0)
             return false;
@@ -47,7 +47,7 @@ class TopDown {
 
     // O(3*M*N*H) & O(M*N*H + M*N) : Where H = health
     int solveWithMemo(vector<vector<vector<int>>>& dp, vector<vector<int>>& grid, int R, int C, int health) {
-        health -= (grid[R][C] == 1);
+        health -= grid[R][C];
         
         if(health <= 0)
             return false;
