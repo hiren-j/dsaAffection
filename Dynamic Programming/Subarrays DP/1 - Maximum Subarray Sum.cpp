@@ -1,59 +1,52 @@
-// Code to find the subarray having the largest sum ~ coded by Hiren
+// Code to find the subarray having the largest sum ~ coded by vHiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
     int n;
-
+    
     // O(2^N) & O(N)
-    int solveWithoutMemo(const vector<int>& nums, int index, bool prevPick) {
-        // Edge case: If elements are exhausted and previously if you've picked any subarray then return 0 else INT_MIN 
-        if(index == n)
-            return prevPick ? 0 : INT_MIN;
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick) {
+        if(i == n)
+            return (prevPick == true) ? 0 : INT_MIN;
 
-        // Previously if you've picked any subarray then you've two possibilities on the index 
         if(prevPick) {
-            int pickCurrSubarr = nums[index] + solveWithoutMemo(nums, index + 1, true); // Pick the index element or current subarray as a part of the previous subarray
-            int stopHere = 0;                                                           // Consider the index as an end point for the previous subarray    
-            return max(pickCurrSubarr, stopHere);                                       // As we're striving for the maximum sum hence return the maximum value
+            int pickInSubarr = solveWithoutMemo(nums, i + 1, true) + nums[i];
+            int stopHere = 0;
+            return max(pickInSubarr, stopHere);
         }
-        // If you haven't picked any subarray till now then you've two possibilities on the index
         else {
-            int startNewFromNext = solveWithoutMemo(nums, index + 1, false);              // Start a new subarray from the next index
-            int startNewFromCurr = nums[index] + solveWithoutMemo(nums, index + 1, true); // Start a new subarray from the current index
-            return max(startNewFromNext, startNewFromCurr);                               // As we're striving for the maximum sum hence return the maximum value
+            int startNewFromCurr = solveWithoutMemo(nums, i + 1, true) + nums[i];
+            int startNewFromNext = solveWithoutMemo(nums, i + 1, false);
+            return max(startNewFromCurr, startNewFromNext);
         }
     }
 
-    // O(2*N*2) & O(N*2 + N)
-    int solveWithMemo(vector<vector<int>>& memory, const vector<int>& nums, int index, bool prevPick) {
-        // Edge case: If elements are exhausted and previously if you've picked any subarray then return 0 else INT_MIN 
-        if(index == n)
-            return prevPick ? 0 : INT_MIN;
+    // O(4*N) & O(3*N)
+    int solveWithMemo(vector<vector<int>>& memory, const vector<int>& nums, int i, bool prevPick) {
+        if(i == n)
+            return (prevPick == true) ? 0 : INT_MIN;
 
-        if(memory[index][prevPick] != -1)
-            return memory[index][prevPick];
+        if(memory[i][prevPick] != INT_MIN)
+            return memory[i][prevPick];
 
-        // Previously if you've picked any subarray then you've two possibilities on the index 
         if(prevPick) {
-            int pickCurrSubarr = nums[index] + solveWithMemo(memory, nums, index + 1, true); // Pick the index element or current subarray as a part of the previous subarray
-            int stopHere = 0;                                                                // Consider the index as an end point for the previous subarray    
-            return memory[index][prevPick] = max(pickCurrSubarr, stopHere);                
+            int pickInSubarr = solveWithMemo(memory, nums, i + 1, true) + nums[i];
+            int stopHere = 0;
+            return memory[i][prevPick] = max(pickInSubarr, stopHere);
         }
-        // If you haven't picked any subarray till now then you've two possibilities on the index
         else {
-            int startNewFromNext = solveWithMemo(memory, nums, index + 1, false);              // Start a new subarray from the next index
-            int startNewFromCurr = nums[index] + solveWithMemo(memory, nums, index + 1, true); // Start a new subarray from the current index
-            return memory[index][prevPick] = max(startNewFromNext, startNewFromCurr);          
+            int startNewFromCurr = solveWithMemo(memory, nums, i + 1, true) + nums[i];
+            int startNewFromNext = solveWithMemo(memory, nums, i + 1, false);
+            return memory[i][prevPick] = max(startNewFromCurr, startNewFromNext);
         }
     }
 
-public:  
-    // Method to find maximum sum of a subarray, using recursion with memoization - O(N) & O(N)
+public:
     int maxSubArray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        return solveWithMemo(dp, nums, 0, false);
+        vector<vector<int>> memory(n, vector<int>(2, INT_MIN));
+        return solveWithMemo(memory, nums, 0, false);
     }
 };
 
@@ -64,78 +57,82 @@ class BottomUp {
 
     // O(N*2) & O(N*2)
     int solveWith2DTable(const vector<int>& nums) {
-        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
-        dp[n][1] = 0;       // Init edge case: if(index == n) prevPick ? 0
-        dp[n][0] = INT_MIN; // Init edge case: if(index == n) prevPick : INT_MIN
+        vector<vector<int>> dp(n + 1, vector<int>(2, INT_MIN));
+        dp[n][true]  = 0;
+        dp[n][false] = INT_MIN;
 
-        for(int index = n-1; index >= 0; --index) {
+        for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nums[index] + dp[index + 1][true];
+                    int pickInSubarr = dp[i + 1][true] + nums[i];
                     int stopHere = 0;
-                    dp[index][prevPick] = max(pickCurrSubarr, stopHere);
+                    dp[i][prevPick] = max(pickInSubarr, stopHere);
                 }
                 else {
-                    int startNewFromNext = dp[index + 1][false];
-                    int startNewFromCurr = nums[index] + dp[index + 1][true];
-                    dp[index][prevPick] = max(startNewFromNext, startNewFromCurr);
+                    int startNewFromCurr = dp[i + 1][true] + nums[i];
+                    int startNewFromNext = dp[i + 1][false];
+                    dp[i][prevPick] = max(startNewFromCurr, startNewFromNext);
                 }
             }
         }
 
         return dp[0][false];
     }
-
+    
     // O(N*2) & O(2*2)
     int solveWith1DTable(const vector<int>& nums) {
-        vector<int> nextRow(2, -1);
-        nextRow[1] = 0;       // Init edge case: if(index == n) prevPick ? 0
-        nextRow[0] = INT_MIN; // Init edge case: if(index == n) prevPick : INT_MIN
+        vector<int> nextRow(2, INT_MIN); // i + 1th row
+        nextRow[true]  = 0;
+        nextRow[false] = INT_MIN;
 
-        for(int index = n-1; index >= 0; --index) {
-            vector<int> idealRow(2, -1);
+        for(int i = n - 1; i >= 0; --i) {
+            vector<int> idealRow(2, INT_MIN); // ith row
+
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nums[index] + nextRow[true];
+                    int pickInSubarr = nextRow[true] + nums[i];
                     int stopHere = 0;
-                    idealRow[prevPick] = max(pickCurrSubarr, stopHere);
+                    idealRow[prevPick] = max(pickInSubarr, stopHere);
                 }
                 else {
+                    int startNewFromCurr = nextRow[true] + nums[i];
                     int startNewFromNext = nextRow[false];
-                    int startNewFromCurr = nums[index] + nextRow[true];
-                    idealRow[prevPick] = max(startNewFromNext, startNewFromCurr);
+                    idealRow[prevPick] = max(startNewFromCurr, startNewFromNext);
                 }
             }
+
             swap(nextRow, idealRow);
         }
 
         return nextRow[false];
     }
-
+    
     // O(N*2) & O(1)
-    int solveWithoutTable(vector<int>& nums) {
-        int nextRow_1 = 0;       // Init edge case: if(index == n) prevPick ? 0
-        int nextRow_0 = INT_MIN; // Init edge case: if(index == n) prevPick ? INT_MIN
+    int solveWithoutTable(const vector<int>& nums) {
+        int nextRow_1 = 0;
+        int nextRow_0 = INT_MIN;
 
-        for(int index = n-1; index >= 0; --index) {
-            int idealRow_1 = -1;
-            int idealRow_0 = -1;
+        for(int i = n - 1; i >= 0; --i) {
+            int idealRow_1 = INT_MIN;
+            int idealRow_0 = INT_MIN;
+
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurrSubarr = nums[index] + nextRow_1;
+                    int pickInSubarr = nextRow_1 + nums[i];
                     int stopHere = 0;
-                    idealRow_1 = max(pickCurrSubarr, stopHere);
+                    idealRow_1 = max(pickInSubarr, stopHere);
                 }
                 else {
+                    int startNewFromCurr = nextRow_1 + nums[i];
                     int startNewFromNext = nextRow_0;
-                    int startNewFromCurr = nums[index] + nextRow_1;
-                    idealRow_0 = max(startNewFromNext, startNewFromCurr);
+                    idealRow_0 = max(startNewFromCurr, startNewFromNext);
                 }
             }
+
             swap(nextRow_1, idealRow_1);
             swap(nextRow_0, idealRow_0);
         }
-        
+
         return nextRow_0;
     }
 
