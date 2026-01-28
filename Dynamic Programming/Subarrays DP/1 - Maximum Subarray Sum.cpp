@@ -22,7 +22,7 @@ class TopDown {
         }
     }
 
-    // O(4*N) & O(3*N)
+    // O(2*N*2) & O(N*2+N)
     int solveWithMemo(vector<vector<int>>& memory, const vector<int>& nums, int i, bool prevPick) {
         if(i == n)
             return (prevPick == true) ? 0 : INT_MIN;
@@ -43,6 +43,7 @@ class TopDown {
     }
 
 public:
+    // Method to find the subarray having largest sum, using recursion with memoization - O(N) & O(N)
     int maxSubArray(vector<int>& nums) {
         n = nums.size();
         vector<vector<int>> memory(n, vector<int>(2, INT_MIN));
