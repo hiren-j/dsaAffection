@@ -3,138 +3,144 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    using LL = long long;
     int n;
     
     // O(2^N) & O(N)
-    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick) {
+    LL solveWithoutMemo(const vector<int>& nums, int i, bool prevPick) {
         if(i == n)
-            return prevPick ? 0 : INT_MAX;
+            return (prevPick == true) ? 0 : LLONG_MAX;
 
         if(prevPick) {
-            int pickCurr = nums[i] + solveWithoutMemo(nums, i + 1, true); 
-            int stopHere = 0;                                                                    
-            return min(pickCurr, stopHere);                
+            LL pickInSubarr = solveWithoutMemo(nums, i + 1, true) + nums[i];
+            LL stopHere = 0;
+            return min(pickInSubarr, stopHere);
         }
         else {
-            int startFromNext = solveWithoutMemo(nums, i + 1, false);              
-            int startFromCurr = nums[i] + solveWithoutMemo(nums, i + 1, true);  
-            return min(startFromNext, startFromCurr);          
-        }
-    }
-
-    // O(2*N*2) & O(N*2 + N)
-    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, int i, bool prevPick) {
-        if(i == n)
-            return prevPick ? 0 : INT_MAX;
-
-        if(dp[i][prevPick] != -1)
-            return dp[i][prevPick];
-
-        if(prevPick) {
-            int pickCurr = nums[i] + solveWithMemo(dp, nums, i + 1, true); 
-            int stopHere = 0;                                                                    
-            return dp[i][prevPick] = min(pickCurr, stopHere);                
-        }
-        else {
-            int startFromNext = solveWithMemo(dp, nums, i + 1, false);              
-            int startFromCurr = nums[i] + solveWithMemo(dp, nums, i + 1, true);  
-            return dp[i][prevPick] = min(startFromNext, startFromCurr);          
+            LL startFromCurr = solveWithoutMemo(nums, i + 1, true) + nums[i];
+            LL startFromNext = solveWithoutMemo(nums, i + 1, false);
+            return min(startFromCurr, startFromNext);
         }
     }
     
+    // O(4*N) & O(3*N)
+    LL solveWithMemo(vector<vector<LL>>& memory, const vector<int>& nums, int i, bool prevPick) {
+        if(i == n)
+            return (prevPick == true) ? 0 : LLONG_MAX;
+
+        if(memory[i][prevPick] != LLONG_MAX)
+            return memory[i][prevPick]; 
+
+        if(prevPick) {
+            LL pickInSubarr = solveWithMemo(memory, nums, i + 1, true) + nums[i];
+            LL stopHere = 0;
+            return memory[i][prevPick] = min(pickInSubarr, stopHere);
+        }
+        else {
+            LL startFromCurr = solveWithMemo(memory, nums, i + 1, true) + nums[i];
+            LL startFromNext = solveWithMemo(memory, nums, i + 1, false);
+            return memory[i][prevPick] = min(startFromCurr, startFromNext);
+        }
+    }
+
 public:
     // Method to find minimum sum of a subarray, using recursion with memoization - O(N) & O(N)
-    int minSumSubarray(vector<int>& nums) {
+    int smallestSumSubarray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        return solveWithMemo(dp, nums, 0, false);
+        vector<vector<LL>> memory(n, vector<LL>(2, LLONG_MAX));
+        return solveWithMemo(memory, nums, 0, false);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    int n;
+	using LL = long long;
+	int n;
 
     // O(N*2) & O(N*2)
-    int solveWith2DTable(const vector<int>& nums) {
-        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
-        dp[n][1] = 0;
-        dp[n][0] = INT_MAX;
-
-        for(int i = n-1; i >= 0; --i) {
+    LL solveBy2DTable(const vector<int>& nums) {
+        vector<vector<LL>> dp(n + 1, vector<LL>(2, LLONG_MAX));
+        dp[n][true]  = 0;
+        dp[n][false] = LLONG_MAX;
+        
+        for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurr = nums[i] + dp[i + 1][true];
-                    int stopHere = 0;
-                    dp[i][prevPick] = min(pickCurr, stopHere);
+                    LL pickInSubarr = dp[i + 1][true] + nums[i];
+                    LL stopHere = 0;
+                    dp[i][prevPick] = min(pickInSubarr, stopHere);
                 }
                 else {
-                    int startFromNext = dp[i + 1][false];
-                    int startFromCurr = nums[i] + dp[i + 1][true];
-                    dp[i][prevPick] = min(startFromNext, startFromCurr);
-                }
+                    LL startFromCurr = dp[i + 1][true] + nums[i];
+                    LL startFromNext = dp[i + 1][false];
+                    dp[i][prevPick]  = min(startFromCurr, startFromNext);
+                }   
             }
         }
-
+        
         return dp[0][false];
     }
-
+    
     // O(N*2) & O(2*2)
-    int solveWith1DTable(const vector<int>& nums) {
-        vector<int> nextRow(2, -1);
-        nextRow[1] = 0;
-        nextRow[0] = INT_MAX;
-
-        for(int i = n-1; i >= 0; --i) {
-            vector<int> idealRow(2, -1);
+    LL solveBy1DTable(const vector<int>& nums) {
+        vector<LL> nextRow(2, LLONG_MAX); // i + 1th row
+        nextRow[true]  = 0;
+        nextRow[false] = LLONG_MAX;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            vector<LL> currRow(2, LLONG_MAX); // ith row
+            
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurr = nums[i] + nextRow[true];
-                    int stopHere = 0;
-                    idealRow[prevPick] = min(pickCurr, stopHere);
+                    LL pickInSubarr = nextRow[true] + nums[i];
+                    LL stopHere = 0;
+                    currRow[prevPick] = min(pickInSubarr, stopHere);
                 }
                 else {
-                    int startFromNext = nextRow[false];
-                    int startFromCurr = nums[i] + nextRow[true];
-                    idealRow[prevPick] = min(startFromNext, startFromCurr);
-                }
+                    LL startFromCurr  = nextRow[true] + nums[i];
+                    LL startFromNext  = nextRow[false];
+                    currRow[prevPick] = min(startFromCurr, startFromNext);
+                }   
             }
-            swap(nextRow, idealRow);
+            
+            swap(nextRow, currRow);
         }
-
+        
         return nextRow[false];
     }
-
+    
     // O(N*2) & O(1)
-    int solveWithoutTable(vector<int>& nums) {
-        int nextRow_1 = 0;
-        int nextRow_0 = INT_MAX;
-
-        for(int i = n-1; i >= 0; --i) {
-            int idealRow_1 = -1;
-            int idealRow_0 = -1;
+    LL solveWithoutTable(const vector<int>& nums) {
+        LL nextRow_1 = 0;
+        LL nextRow_0 = LLONG_MAX;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            LL currRow_1 = LLONG_MAX;
+            LL currRow_0 = LLONG_MAX;
+            
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
-                    int pickCurr = nums[i] + nextRow_1;
-                    int stopHere = 0;
-                    idealRow_1 = min(pickCurr, stopHere);
+                    LL pickInSubarr = nextRow_1 + nums[i];
+                    LL stopHere = 0;
+                    currRow_1 = min(pickInSubarr, stopHere);
                 }
                 else {
-                    int startFromNext = nextRow_0;
-                    int startFromCurr = nums[i] + nextRow_1;
-                    idealRow_0 = min(startFromNext, startFromCurr);
-                }
+                    LL startFromCurr = nextRow_1 + nums[i];
+                    LL startFromNext = nextRow_0;
+                    currRow_0 = min(startFromCurr, startFromNext);
+                }   
             }
-            swap(nextRow_1, idealRow_1);
-            swap(nextRow_0, idealRow_0);
+            
+            swap(nextRow_1, currRow_1);
+            swap(nextRow_0, currRow_0);
         }
         
         return nextRow_0;
     }
 
 public:
-    int minSumSubarray(vector<int>& nums) {
+    int smallestSumSubarray(vector<int>& nums) {
         n = nums.size();
         return solveWithoutTable(nums);
     }
