@@ -43,6 +43,7 @@ class TopDown {
     }
 
 public:
+    // Method to find maximum absolute sum, using recursionw with memoization - O(N) & O(N)
     int maxAbsoluteSum(vector<int>& nums) {
         n = nums.size();
         vector<vector<int>> dp1(n, vector<int>(2, INT_MIN)), dp2(n, vector<int>(2, INT_MAX));
@@ -111,7 +112,7 @@ class BottomUp {
     
     // O(N*2) & O(1)
     int solveWithoutTable(const vector<int>& nums, bool findMaxSum) {
-        int nextRow_1  = 0;
+        int nextRow_1 = 0;
         int nextRow_0 = (findMaxSum ? INT_MIN : INT_MAX); 
 
         for(int i = n - 1; i >= 0; --i) {
