@@ -1,4 +1,5 @@
-// Code to find the maximum sum of a subarray among all the subarrays of size k ~ coded by Hiren
+
+// Code to find the maximum sum of a subarray among all the subarrays of size k ~ coded by vHiren
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -57,16 +58,16 @@ public:
 class BottomUp {
     int n;
 
-    // O(N*2*K) & O(N*2*K) : Where K = given_K
+    // O(N*2*GK) & O(N*2*GK) : Where GK = given_K
     int solveBy3DTable(const vector<int>& nums, int given_k) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(given_k + 1, -1)));
         
-        // Init edge case (k == 0)
+        // Edge case (k == 0)
         for(int i = 0; i <= n; ++i) 
             for(int prevPick = 0; prevPick <= 1; ++prevPick)
                 dp[i][prevPick][0] = 0;
         
-        // Init edge case (i == n)
+        // Edge case (i == n)
         for(int prevPick = 0; prevPick <= 1; ++prevPick) 
             for(int k = 0; k <= given_k; ++k)
                 dp[n][prevPick][k] = 0;
@@ -91,7 +92,7 @@ class BottomUp {
         return dp[0][false][given_k];
     }
     
-    // O(N*2*K) & O(N*2*K) : Where K = given_K
+    // O(N*2*GK) & O(N*2*GK) : Where GK = given_K
     int solveBy3DEnhanced(const vector<int>& nums, int given_k) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(given_k + 1, 0)));
         
@@ -115,13 +116,11 @@ class BottomUp {
         return dp[0][false][given_k];
     }
     
-    // O(N*2*K) & O(2*2*K) : Where K = given_K
+    // O(N*2*GK) & O(2*2*GK) : Where GK = given_K
     int solveBy2DTable(const vector<int>& nums, int given_k) {
-        vector<vector<int>> nextRow(2, vector<int>(given_k + 1, 0));
+        vector<vector<int>> nextRow(2, vector<int>(given_k + 1, 0)), idealRow(2, vector<int>(given_k + 1, 0));
         
-        for(int i = n-1; i >= 0; --i) {
-            vector<vector<int>> idealRow(2, vector<int>(given_k + 1, 0));
-            
+        for(int i = n-1; i >= 0; --i) {    
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int k = 1; k <= given_k; ++k) {
                     if(prevPick) {
@@ -135,8 +134,7 @@ class BottomUp {
                         idealRow[prevPick][k] = max(startHere, startNext);
                     }
                 }
-            }
-            
+            } 
             swap(nextRow, idealRow);
         }
         
