@@ -88,4 +88,4 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Depth-First Search | Breadth-First Search | Graph | Topological Sort | Memoization | Matrix
-Link  : https://leetcode.com/problems/longest-increasing-path-in-a-grid/description/
+Link  : https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
