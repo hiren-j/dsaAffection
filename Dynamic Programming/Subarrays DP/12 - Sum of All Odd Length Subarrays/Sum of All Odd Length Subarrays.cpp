@@ -1,4 +1,4 @@
-// Code to find the sum of all odd length subarrays of an array ~ coded by Hiren
+// Code to find the sum of all odd length subarrays of an array ~ coded by vHiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
