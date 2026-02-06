@@ -1,4 +1,4 @@
-// Code to find the sum of all subarrays ~ coded by Hiren
+// Code to find the sum of all subarrays ~ coded by vHiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -12,13 +12,13 @@ class TopDown {
             return subarrSum;
         
         if(prevPick) {
-            int pickCurr = solveWithoutMemo(nums, i + 1, true, subarrSum + nums[i]);
+            int pickInSubarr = solveWithoutMemo(nums, i + 1, true, subarrSum + nums[i]);
             int stopHere = subarrSum;
-            return pickCurr + stopHere;
+            return pickInSubarr + stopHere;
         }
         else {
-            int startHere = solveWithoutMemo(nums, i + 1, true, subarrSum + nums[i]);
-            int startNext = solveWithoutMemo(nums, i + 1, false, subarrSum);
+            int startHere = solveWithoutMemo(nums, i + 1, true, nums[i]);
+            int startNext = solveWithoutMemo(nums, i + 1, false, 0);
             return startHere + startNext;
         }
     }
@@ -32,13 +32,13 @@ class TopDown {
             return dp[i][prevPick][subarrSum]; 
         
         if(prevPick) {
-            int pickCurr = solveWithMemo(dp, nums, i + 1, true, subarrSum + nums[i]);
+            int pickInSubarr = solveWithMemo(dp, nums, i + 1, true, subarrSum + nums[i]);
             int stopHere = subarrSum;
-            return dp[i][prevPick][subarrSum] = pickCurr + stopHere;
+            return dp[i][prevPick][subarrSum] = pickInSubarr + stopHere;
         }
         else {
-            int startHere = solveWithMemo(dp, nums, i + 1, true, subarrSum + nums[i]);
-            int startNext = solveWithMemo(dp, nums, i + 1, false, subarrSum);
+            int startHere = solveWithMemo(dp, nums, i + 1, true, nums[i]);
+            int startNext = solveWithMemo(dp, nums, i + 1, false, 0);
             return dp[i][prevPick][subarrSum] = startHere + startNext;
         }
     }
@@ -71,15 +71,14 @@ class BottomUp {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
                     if(prevPick) {
-                        int newSum   = subarrSum + nums[i];
-                        int pickCurr = (newSum <= arrSum) ? dp[i + 1][true][subarrSum + nums[i]] : 0;
+                        int newSum = subarrSum + nums[i];
+                        int pickInSubarr = (newSum <= arrSum) ? dp[i + 1][true][newSum] : 0;
                         int stopHere = subarrSum;
-                        dp[i][prevPick][subarrSum] = pickCurr + stopHere;
+                        dp[i][prevPick][subarrSum] = pickInSubarr + stopHere;
                     }
                     else {
-                        int newSum    = subarrSum + nums[i];
-                        int startHere = (newSum <= arrSum) ? dp[i + 1][true][newSum] : 0;
-                        int startNext = dp[i + 1][false][subarrSum];
+                        int startHere = dp[i + 1][true][nums[i]];
+                        int startNext = dp[i + 1][false][0];
                         dp[i][prevPick][subarrSum] = startHere + startNext;
                     }
                 }
@@ -93,7 +92,7 @@ class BottomUp {
     int solveBy2DTable(const vector<int>& nums) {
         vector<vector<int>> nextRow(2, vector<int>(arrSum + 1, -1));
         
-        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
+        for(int prevPick = 0; prevPick <= 1; ++prevPick)
             for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
                 nextRow[prevPick][subarrSum] = subarrSum;
             
@@ -103,15 +102,14 @@ class BottomUp {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
                     if(prevPick) {
-                        int newSum   = subarrSum + nums[i];
-                        int pickCurr = (newSum <= arrSum) ? nextRow[true][subarrSum + nums[i]] : 0;
+                        int newSum = subarrSum + nums[i];
+                        int pickInSubarr = (newSum <= arrSum) ? nextRow[true][newSum] : 0;
                         int stopHere = subarrSum;
-                        idealRow[prevPick][subarrSum] = pickCurr + stopHere;
+                        idealRow[prevPick][subarrSum] = pickInSubarr + stopHere;
                     }
                     else {
-                        int newSum    = subarrSum + nums[i];
-                        int startHere = (newSum <= arrSum) ? nextRow[true][newSum] : 0;
-                        int startNext = nextRow[false][subarrSum];
+                        int startHere = nextRow[true][nums[i]];
+                        int startNext = nextRow[false][0];
                         idealRow[prevPick][subarrSum] = startHere + startNext;
                     }
                 }
