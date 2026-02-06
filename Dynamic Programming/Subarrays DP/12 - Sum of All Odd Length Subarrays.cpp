@@ -7,52 +7,56 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrLen, int subarrSum) {
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrSum, int subarrLen) {
         if(i == n)
-            return (subarrLen % 2 != 0) ? subarrSum : 0; // If odd length subarray then return its sum
+            return (prevPick == true && subarrLen % 2 != 0) ? subarrSum : 0;
 
         if(prevPick) {
-            int pickCurr = solveWithoutMemo(nums, i + 1, true, subarrLen + 1, subarrSum + nums[i]);
+            int pickInSubarr = solveWithoutMemo(nums, i + 1, true, subarrSum + nums[i], subarrLen + 1);
             int stopHere = (subarrLen % 2 != 0) ? subarrSum : 0;
-            return pickCurr + stopHere;
+            return (pickInSubarr + stopHere);   
         }
         else {
-            int startHere = solveWithoutMemo(nums, i + 1, true, subarrLen + 1, subarrSum + nums[i]);
-            int startNext = solveWithoutMemo(nums, i + 1, false, subarrLen, subarrSum);
-            return startHere + startNext;
+            int startCurr = solveWithoutMemo(nums, i + 1, true, nums[i], 1);
+            int startNext = solveWithoutMemo(nums, i + 1, false, 0, 0);
+            return (startCurr + startNext);
         }
     }
 
-    // O(2*N*2*N*AS) & O(N*2*N*AS + N)
-    int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrLen, int subarrSum) {
+    // O(N*AS*N) & O(N*AS*N) : Where AS = arrSum
+    int solveWithMemo(vector<vector<vector<vector<int>>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrSum, int subarrLen) {
         if(i == n)
-            return (subarrLen % 2 != 0) ? subarrSum : 0; // If odd length subarray then return its sum
+            return (prevPick == true && subarrLen % 2 != 0) ? subarrSum : 0;
 
-        if(dp[i][prevPick][subarrLen][subarrSum] != -1)
-            return dp[i][prevPick][subarrLen][subarrSum];
+        if(dp[i][prevPick][subarrSum][subarrLen] != -1)
+            return dp[i][prevPick][subarrSum][subarrLen];
 
         if(prevPick) {
-            int pickCurr = solveWithMemo(dp, nums, i + 1, true, subarrLen + 1, subarrSum + nums[i]);
+            int pickInSubarr = solveWithMemo(dp, nums, i + 1, true, subarrSum + nums[i], subarrLen + 1);
             int stopHere = (subarrLen % 2 != 0) ? subarrSum : 0;
-            return dp[i][prevPick][subarrLen][subarrSum] = pickCurr + stopHere;
+            return dp[i][prevPick][subarrSum][subarrLen] = (pickInSubarr + stopHere);   
         }
         else {
-            int startHere = solveWithMemo(dp, nums, i + 1, true, subarrLen + 1, subarrSum + nums[i]);
-            int startNext = solveWithMemo(dp, nums, i + 1, false, subarrLen, subarrSum);
-            return dp[i][prevPick][subarrLen][subarrSum] = startHere + startNext;
+            int startCurr = solveWithMemo(dp, nums, i + 1, true, nums[i], 1);
+            int startNext = solveWithMemo(dp, nums, i + 1, false, 0, 0);
+            return dp[i][prevPick][subarrSum][subarrLen] = (startCurr + startNext);
         }
     }
+    // Note: This solution will lead to MLE
 
 public:
-    // Method to find sum of odd length subarrays, using recursion with memoization - O(N*N*AS) & O(N*N*AS) : Where AS = arrSum
     int sumOddLengthSubarrays(vector<int>& nums) {
         n = nums.size();
         arrSum = accumulate(begin(nums), end(nums), 0);
-        vector<vector<vector<vector<int>>>> dp(n, vector<vector<vector<int>>>(2, vector<vector<int>>(n, vector<int>(arrSum + 1, -1))));
+
+        vector<vector<vector<vector<int>>>> dp(n, 
+                vector<vector<vector<int>>>(2, 
+                        vector<vector<int>>(arrSum + 1, 
+                                vector<int>(n + 1, -1))));
+
         return solveWithMemo(dp, nums, 0, false, 0, 0);
     }
 };
-// Note: This solution will lead to MLE
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -60,30 +64,33 @@ class BottomUp {
     int arrSum;
     int n;
 
-    // O(N*2*N*AS) & O(N*2*N*AS) : Where AS = arrSum
+    // O(N*AS*N) & O(N*AS*N) : Where AS = arrSum
     int solveBy4DTable(const vector<int>& nums) {
-        vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, -1))));
+        vector<vector<vector<vector<int>>>> dp(n + 1, 
+                vector<vector<vector<int>>>(2, 
+                        vector<vector<int>>(arrSum + 1, 
+                                vector<int>(n + 1, -1))));
 
-        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
-            for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
-                for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
-                    dp[n][prevPick][subarrLen][subarrSum] = (subarrLen % 2 != 0) ? subarrSum : 0;
-        
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
+                for(int subarrLen = 0; subarrLen <= n; ++subarrLen)
+                    dp[n][prevPick][subarrSum][subarrLen] = (prevPick == true && subarrLen % 2 != 0) ? subarrSum : 0;
+
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrLen = n; subarrLen >= 0; --subarrLen) {
-                    for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
+                for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
+                    for(int subarrLen = n; subarrLen >= 0; --subarrLen) {
                         if(prevPick) {
-                            int newSum   = subarrSum + nums[i];
-                            int pickCurr = (newSum <= arrSum) ? dp[i + 1][true][subarrLen + 1][newSum] : 0;
-                            int stopHere = (subarrLen % 2 != 0) ? subarrSum : 0;
-                            dp[i][prevPick][subarrLen][subarrSum] = pickCurr + stopHere;
+                            int newSum = subarrSum + nums[i];
+                            int newLen = subarrLen + 1;
+                            int pickInSubarr = (newSum <= arrSum && newLen <= n) ? dp[i + 1][true][newSum][newLen] : 0;
+                            int stopHere = (prevPick == true && subarrLen % 2 != 0) ? subarrSum : 0;
+                            dp[i][prevPick][subarrSum][subarrLen] = (pickInSubarr + stopHere);   
                         }
                         else {
-                            int newSum    = subarrSum + nums[i];
-                            int startHere = (newSum <= arrSum) ? dp[i + 1][true][subarrLen + 1][newSum] : 0;
-                            int startNext = dp[i + 1][false][subarrLen][subarrSum];
-                            dp[i][prevPick][subarrLen][subarrSum] = startHere + startNext;
+                            int startCurr = dp[i + 1][true][nums[i]][1];
+                            int startNext = dp[i + 1][false][0][0];
+                            dp[i][prevPick][subarrSum][subarrLen] = (startCurr + startNext);
                         }
                     }
                 }
@@ -93,82 +100,51 @@ class BottomUp {
         return dp[0][false][0][0];
     }
 
-    // O(N*2*N*AS) & O(N*2*N*AS) : Where AS = arrSum
-    int solveBy4DEnhanced(const vector<int>& nums) {
-        vector<vector<vector<vector<int>>>> dp(n + 1, vector<vector<vector<int>>>(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0))));
-
-        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
-            for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
-                if(subarrLen % 2 != 0)
-                    for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
-                        dp[n][prevPick][subarrLen][subarrSum] = subarrSum;
-        
-        for(int i = n - 1; i >= 0; --i) {
-            for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrLen = n; subarrLen >= 0; --subarrLen) {
-                    for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
-                        if(prevPick) {
-                            int newSum   = subarrSum + nums[i];
-                            int pickCurr = (newSum <= arrSum) ? dp[i + 1][true][subarrLen + 1][newSum] : 0;
-                            int stopHere = (subarrLen % 2 != 0) ? subarrSum : 0;
-                            dp[i][prevPick][subarrLen][subarrSum] = pickCurr + stopHere;
-                        }
-                        else {
-                            int newSum    = subarrSum + nums[i];
-                            int startHere = (newSum <= arrSum) ? dp[i + 1][true][subarrLen + 1][newSum] : 0;
-                            int startNext = dp[i + 1][false][subarrLen][subarrSum];
-                            dp[i][prevPick][subarrLen][subarrSum] = startHere + startNext;
-                        }
-                    }
-                }
-            }
-        }
-
-        return dp[0][false][0][0];
-    }
-
-    // O(N*2*N*AS) & O(2*2*N*AS) : Where AS = arrSum
+    // O(N*AS*N) & O(AS*N) : Where AS = arrSum
     int solveBy3DTable(const vector<int>& nums) {
-        vector<vector<vector<int>>> nextRow(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0)));
+        // i + 1th table
+        vector<vector<vector<int>>> next(2, 
+                vector<vector<int>>(arrSum + 1, 
+                        vector<int>(n + 1, -1)));
+        // ith table
+        vector<vector<vector<int>>> curr(2, 
+                vector<vector<int>>(arrSum + 1, 
+                        vector<int>(n + 1, -1)));
+                    
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
+                for(int subarrLen = 0; subarrLen <= n; ++subarrLen)
+                    next[prevPick][subarrSum][subarrLen] = (prevPick == true && subarrLen % 2 != 0) ? subarrSum : 0;
 
-        for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
-            for(int subarrLen = 0; subarrLen <= n; ++subarrLen) 
-                if(subarrLen % 2 != 0)
-                    for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
-                        nextRow[prevPick][subarrLen][subarrSum] = subarrSum;
-        
         for(int i = n - 1; i >= 0; --i) {
-            vector<vector<vector<int>>> idealRow(2, vector<vector<int>>(n + 2, vector<int>(arrSum + 1, 0)));
-
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrLen = n; subarrLen >= 0; --subarrLen) {
-                    for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
+                for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
+                    for(int subarrLen = n; subarrLen >= 0; --subarrLen) {
                         if(prevPick) {
-                            int newSum   = subarrSum + nums[i];
-                            int pickCurr = (newSum <= arrSum) ? nextRow[true][subarrLen + 1][newSum] : 0;
-                            int stopHere = (subarrLen % 2 != 0) ? subarrSum : 0;
-                            idealRow[prevPick][subarrLen][subarrSum] = pickCurr + stopHere;
+                            int newSum = subarrSum + nums[i];
+                            int newLen = subarrLen + 1;
+                            int pickInSubarr = (newSum <= arrSum && newLen <= n) ? next[true][newSum][newLen] : 0;
+                            int stopHere = (prevPick == true && subarrLen % 2 != 0) ? subarrSum : 0;
+                            curr[prevPick][subarrSum][subarrLen] = (pickInSubarr + stopHere);   
                         }
                         else {
-                            int newSum    = subarrSum + nums[i];
-                            int startHere = (newSum <= arrSum) ? nextRow[true][subarrLen + 1][newSum] : 0;
-                            int startNext = nextRow[false][subarrLen][subarrSum];
-                            idealRow[prevPick][subarrLen][subarrSum] = startHere + startNext;
+                            int startCurr = next[true][nums[i]][1];
+                            int startNext = next[false][0][0];
+                            curr[prevPick][subarrSum][subarrLen] = (startCurr + startNext);
                         }
                     }
                 }
             }
-
-            swap(nextRow, idealRow);
+            swap(next, curr);
         }
 
-        return nextRow[false][0][0];
+        return next[false][0][0];
     }
 
 public:
     int sumOddLengthSubarrays(vector<int>& nums) {
-        arrSum = accumulate(begin(nums), end(nums), 0);
         n = nums.size();
+        arrSum = accumulate(begin(nums), end(nums), 0);
         return solveBy3DTable(nums);
     }
 };
