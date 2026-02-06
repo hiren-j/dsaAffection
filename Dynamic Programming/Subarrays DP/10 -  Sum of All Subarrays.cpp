@@ -90,14 +90,13 @@ class BottomUp {
     // O(N*AS) & O(AS) : Where AS = arrSum
     int solveBy2DTable(const vector<int>& nums) {
         vector<vector<int>> nextRow(2, vector<int>(arrSum + 1, -1));
+        vector<vector<int>> idealRow(2, vector<int>(arrSum + 1, -1));
         
         for(int prevPick = 0; prevPick <= 1; ++prevPick) // Init edge case
             for(int subarrSum = 0; subarrSum <= arrSum; ++subarrSum)
                 nextRow[prevPick][subarrSum] = subarrSum;
             
         for(int i = n - 1; i >= 0; --i) {
-            vector<vector<int>> idealRow(2, vector<int>(arrSum + 1, -1));
-            
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int subarrSum = arrSum; subarrSum >= 0; --subarrSum) {
                     if(prevPick) {
@@ -113,7 +112,6 @@ class BottomUp {
                     }
                 }
             }
-            
             swap(nextRow, idealRow);
         }
         
