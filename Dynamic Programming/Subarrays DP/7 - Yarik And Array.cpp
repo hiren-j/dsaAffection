@@ -61,11 +61,8 @@ class BottomUp {
     // O(N) & O(N)
     int solveBy3DTable(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(2, INT_MIN)));
-
-        // i == n
-        for(int prevPick = 0; prevPick < 2; ++prevPick) 
-            for(int parity = 0; parity < 2; ++parity)
-                dp[n][prevPick][parity] = (prevPick == true) ? 0 : INT_MIN;
+        dp[n][true][0] = 0;
+        dp[n][true][1] = 0;
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
@@ -93,11 +90,8 @@ class BottomUp {
     int solveBy2DTable(const vector<int>& nums) {
         vector<vector<int>> next(2, vector<int>(2, INT_MIN)); // i + 1th table
         vector<vector<int>> curr(2, vector<int>(2, INT_MIN)); // ith table
-
-        // i == n
-        for(int prevPick = 0; prevPick < 2; ++prevPick) 
-            for(int parity = 0; parity < 2; ++parity)
-                next[prevPick][parity] = (prevPick == true) ? 0 : INT_MIN;
+        next[true][0] = 0;
+        next[true][1] = 0;
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
