@@ -78,7 +78,7 @@ class BottomUp {
         dp[n][0] = 0;
         dp[n][1] = 0;
 
-        for(int i = n-1; i >= 0; --i) {
+        for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     const int ch = s[i] - 'a';
@@ -104,8 +104,9 @@ class BottomUp {
         nextRow[0] = 0;
         nextRow[1] = 0;
 
-        for(int i = n-1; i >= 0; --i) {
+        for(int i = n - 1; i >= 0; --i) {
             vector<int> idealRow(2, -1);
+            
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     const int ch = s[i] - 'a';
@@ -120,6 +121,7 @@ class BottomUp {
                     idealRow[prevPick] = max(startHere, startNext);
                 } 
             }
+            
             swap(nextRow, idealRow);
         }
 
@@ -131,7 +133,7 @@ class BottomUp {
         int nextRow_0 = 0;
         int nextRow_1 = 0;
 
-        for(int i = n-1; i >= 0; --i) {
+        for(int i = n - 1; i >= 0; --i) {
             int idealRow_0 = 0;
             int idealRow_1 = 0;
 
