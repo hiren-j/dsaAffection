@@ -4,55 +4,51 @@
 
 class TopDown {
     const int MOD = 1e9 + 7;
-    int LIMIT;
     int n;
 
-    // O(2^N) & O(N) : Where L = LIMIT
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrMin) {
         if(i == n)
-            return (subarrMin == LIMIT) ? 0 : subarrMin;
+            return subarrMin;
 
         if(prevPick) {
-            int pickCurr = solveWithoutMemo(nums, i + 1, true, min(subarrMin, nums[i]));
-            int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
-            dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
+            int pickInSubarr = solveWithoutMemo(nums, i + 1, true, min(subarrMin, nums[i]));
+            int stopHere = subarrMin;
+            return (pickInSubarr + stopHere) % MOD;   
         }
         else {
-            int startHere = solveWithoutMemo(nums, i + 1, true, min(subarrMin, nums[i]));
-            int startNext = solveWithoutMemo(nums, i + 1, false, subarrMin);
-            dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
+            int startCurr = solveWithoutMemo(nums, i + 1, true, nums[i]);
+            int startNext = solveWithoutMemo(nums, i + 1, false, 0);
+            return (startCurr + startNext) % MOD;
         }
     }
     // Note: This solution will lead to TLE
-    
-    // O(2*N*2*L) & O(N*2*L + N) : Where L = LIMIT
+
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrMin) {
         if(i == n)
-            return (subarrMin == LIMIT) ? 0 : subarrMin;
+            return subarrMin;
 
         if(dp[i][prevPick][subarrMin] != -1)
             return dp[i][prevPick][subarrMin];
 
         if(prevPick) {
-            int pickCurr = solveWithMemo(dp, nums, i + 1, true, min(subarrMin, nums[i]));
-            int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
-            return dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
+            int pickInSubarr = solveWithMemo(dp, nums, i + 1, true, min(subarrMin, nums[i]));
+            int stopHere = subarrMin;
+            return dp[i][prevPick][subarrMin] = (pickInSubarr + stopHere) % MOD;   
         }
         else {
-            int startHere = solveWithMemo(dp, nums, i + 1, true, min(subarrMin, nums[i]));
-            int startNext = solveWithMemo(dp, nums, i + 1, false, subarrMin);
-            return dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
+            int startCurr = solveWithMemo(dp, nums, i + 1, true, nums[i]);
+            int startNext = solveWithMemo(dp, nums, i + 1, false, 0);
+            return dp[i][prevPick][subarrMin] = (startCurr + startNext) % MOD;
         }
     }
     // Note: This solution will lead to MLE
 
 public:
-    // Method to find sum of minimum element of all subarrays, using recursion with memoization - O(N*L) & (N*L) : Where L = LIMIT
     int sumSubarrayMins(vector<int>& nums) {
-        LIMIT = *max_element(begin(nums), end(nums)) + 1; 
         n = nums.size();
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(LIMIT + 1, -1)));
-        return solveWithMemo(dp, nums, 0, false, LIMIT);
+        const int maxElement = *max_element(begin(nums), end(nums));
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(maxElement + 1, -1)));
+        return solveWithMemo(dp, nums, 0, false, 0);
     }
 };
 
@@ -60,83 +56,71 @@ public:
 
 class BottomUp {
     const int MOD = 1e9 + 7;
-    int LIMIT;
+    int maxElement;
     int n;
-    
-    // O(N*2*L) & O(N*2*L) : Where L = LIMIT
+
+    // O(N*ME) & O(N*ME) : Where ME = maxElement
     int solveBy3DTable(const vector<int>& nums) {
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(LIMIT + 1, -1)));
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(maxElement + 1, -1)));
 
-        // Init edge case: if(i == n) then (subarrMin == LIMIT : 0)
-        dp[n][0][LIMIT] = 0;
-        dp[n][1][LIMIT] = 0;
-
-        // Init edge case: if(i == n) then (subarrMin == LIMIT ? subarrMin)
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
-            for(int subarrMin = 0; subarrMin < LIMIT; ++subarrMin) 
-                dp[n][prevPick][subarrMin] = subarrMin;
-
-        for(int i = n-1; i >= 0; --i) {
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int subarrMin = 0; subarrMin <= maxElement; ++subarrMin)
+              dp[n][prevPick][subarrMin] = subarrMin;
+        
+        for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrMin = 0; subarrMin <= LIMIT; ++subarrMin) {
+                for(int subarrMin = maxElement; subarrMin >= 0; --subarrMin) {
                     if(prevPick) {
-                        int pickCurr = dp[i + 1][true][min(subarrMin, nums[i])];
-                        int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
-                        dp[i][prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
+                        int pickInSubarr = dp[i + 1][true][min(subarrMin, nums[i])];
+                        int stopHere = subarrMin;
+                        dp[i][prevPick][subarrMin] = (pickInSubarr + stopHere) % MOD;   
                     }
                     else {
-                        int startHere = dp[i + 1][true][min(subarrMin, nums[i])];
-                        int startNext = dp[i + 1][false][subarrMin];
-                        dp[i][prevPick][subarrMin] = (startHere + startNext) % MOD;
-                    }   
+                        int startCurr = dp[i + 1][true][nums[i]];
+                        int startNext = dp[i + 1][false][0];
+                        dp[i][prevPick][subarrMin] = (startCurr + startNext) % MOD;
+                    }
                 }
-            }
+            } 
         }
 
-        return dp[0][false][LIMIT];
+        return dp[0][false][0];
     }
 
-    // O(N*2*L) & O(2*2*L) : Where L = LIMIT
+    // O(N*ME) & O(2*ME) : Where ME = maxElement
     int solveBy2DTable(const vector<int>& nums) {
-        vector<vector<int>> nextRow(2, vector<int>(LIMIT + 1, -1));
+        vector<vector<int>> next(2, vector<int>(maxElement + 1, -1)); // i + 1th table
+        vector<vector<int>> curr(2, vector<int>(maxElement + 1, -1)); // ith table
 
-        // Init edge case: if(i == n) then (subarrMin == LIMIT : 0)
-        nextRow[0][LIMIT] = 0;
-        nextRow[1][LIMIT] = 0;
-
-        // Init edge case: if(i == n) then (subarrMin == LIMIT ? subarrMin)
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
-            for(int subarrMin = 0; subarrMin < LIMIT; ++subarrMin) 
-                nextRow[prevPick][subarrMin] = subarrMin;
-
-        for(int i = n-1; i >= 0; --i) {
-            vector<vector<int>> idealRow(2, vector<int>(LIMIT + 1, -1));
-
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int subarrMin = 0; subarrMin <= maxElement; ++subarrMin)
+              next[prevPick][subarrMin] = subarrMin;
+        
+        for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int subarrMin = 0; subarrMin <= LIMIT; ++subarrMin) {
+                for(int subarrMin = maxElement; subarrMin >= 0; --subarrMin) {
                     if(prevPick) {
-                        int pickCurr = nextRow[true][min(subarrMin, nums[i])];
-                        int stopHere = (subarrMin == LIMIT) ? 0 : subarrMin;
-                        idealRow[prevPick][subarrMin] = (pickCurr + stopHere) % MOD;
+                        int pickInSubarr = next[true][min(subarrMin, nums[i])];
+                        int stopHere = subarrMin;
+                        curr[prevPick][subarrMin] = (pickInSubarr + stopHere) % MOD;   
                     }
                     else {
-                        int startHere = nextRow[true][min(subarrMin, nums[i])];
-                        int startNext = nextRow[false][subarrMin];
-                        idealRow[prevPick][subarrMin] = (startHere + startNext) % MOD;
-                    }   
+                        int startCurr = next[true][nums[i]];
+                        int startNext = next[false][0];
+                        curr[prevPick][subarrMin] = (startCurr + startNext) % MOD;
+                    }
                 }
-            }
-
-            swap(nextRow, idealRow);
+            } 
+            swap(next, curr);
         }
 
-        return nextRow[false][LIMIT];
+        return next[false][0];
     }
 
 public:
     int sumSubarrayMins(vector<int>& nums) {
-        LIMIT = *max_element(begin(nums), end(nums)) + 1; 
         n = nums.size();
+        maxElement = *max_element(begin(nums), end(nums));
         return solveBy2DTable(nums);
     }
 };
