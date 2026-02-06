@@ -42,7 +42,8 @@ class TopDown {
             return dp[i][prevPick][subarrSum] = startHere + startNext;
         }
     }
-    
+    // Note: This solution will lead to TLE
+
 public:
     // Method to find sum of all subarrays, using recursion with memoization - O(N*AS) & O(N*AS) : Where AS = arrSum
     int subarraySum(vector<int>& nums) {
@@ -128,6 +129,7 @@ public:
         return solveBy2DTable(nums);
     }
 };
+// Note: This solution will lead to TLE
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
