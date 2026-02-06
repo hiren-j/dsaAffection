@@ -1,4 +1,4 @@
-// Code to find the maximum cost among all substrings of the string `s` ~ coded by Hiren
+// Code to find the maximum cost among all substrings of the string `s` ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ class TopDown {
         
         if(prevPick) {
             const int ch = s[i] - 'a';
-            int pickCurr = values[ch] + solveWithoutMemo(s, i + 1, true);
+            int pickInSubarr = values[ch] + solveWithoutMemo(s, i + 1, true);
             int stopHere = 0;
-            return max(pickCurr, stopHere);
+            return max(pickInSubarr, stopHere);
         }
         else {
             const int ch = s[i] - 'a';
@@ -35,9 +35,9 @@ class TopDown {
 
         if(prevPick) {
             const int ch = s[i] - 'a';
-            int pickCurr = values[ch] + solveWithMemo(dp, s, i + 1, true);
+            int pickInSubarr = values[ch] + solveWithMemo(dp, s, i + 1, true);
             int stopHere = 0;
-            return dp[i][prevPick] = max(pickCurr, stopHere);
+            return dp[i][prevPick] = max(pickInSubarr, stopHere);
         }
         else {
             const int ch = s[i] - 'a';
@@ -82,9 +82,9 @@ class BottomUp {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     const int ch = s[i] - 'a';
-                    int pickCurr = values[ch] + dp[i + 1][true];
+                    int pickInSubarr = values[ch] + dp[i + 1][true];
                     int stopHere = 0;
-                    dp[i][prevPick] = max(pickCurr, stopHere);
+                    dp[i][prevPick] = max(pickInSubarr, stopHere);
                 }
                 else {
                     const int ch = s[i] - 'a';
@@ -109,9 +109,9 @@ class BottomUp {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     const int ch = s[i] - 'a';
-                    int pickCurr = values[ch] + nextRow[true];
+                    int pickInSubarr = values[ch] + nextRow[true];
                     int stopHere = 0;
-                    idealRow[prevPick] = max(pickCurr, stopHere);
+                    idealRow[prevPick] = max(pickInSubarr, stopHere);
                 }
                 else {
                     const int ch = s[i] - 'a';
@@ -134,12 +134,13 @@ class BottomUp {
         for(int i = n-1; i >= 0; --i) {
             int idealRow_0 = 0;
             int idealRow_1 = 0;
+
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
                     const int ch = s[i] - 'a';
-                    int pickCurr = values[ch] + nextRow_1;
+                    int pickInSubarr = values[ch] + nextRow_1;
                     int stopHere = 0;
-                    idealRow_1 = max(pickCurr, stopHere);
+                    idealRow_1 = max(pickInSubarr, stopHere);
                 }
                 else {
                     const int ch = s[i] - 'a';
@@ -148,6 +149,7 @@ class BottomUp {
                     idealRow_0 = max(startHere, startNext);
                 } 
             }
+
             swap(nextRow_0, idealRow_0);
             swap(nextRow_1, idealRow_1);
         }
