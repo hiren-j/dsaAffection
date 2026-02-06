@@ -6,6 +6,7 @@ class TopDown {
     const int MOD = 1e9 + 7;
     int n;
 
+    // O(2^N) & O(N)
     int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int subarrMin) {
         if(i == n)
             return subarrMin;
@@ -23,6 +24,7 @@ class TopDown {
     }
     // Note: This solution will lead to TLE
 
+    // O(N*ME) & O(N*ME) : Where ME = maxElement
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int subarrMin) {
         if(i == n)
             return subarrMin;
