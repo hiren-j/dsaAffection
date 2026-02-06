@@ -89,11 +89,12 @@ class BottomUp {
     // O(N) & O(1)
     int solveBy2DTable(const vector<int>& nums) {
         vector<vector<int>> next(2, vector<int>(2, INT_MIN)); // i + 1th table
-        vector<vector<int>> curr(2, vector<int>(2, INT_MIN)); // ith table
         next[true][0] = 0;
         next[true][1] = 0;
 
         for(int i = n - 1; i >= 0; --i) {
+            vector<vector<int>> curr(2, vector<int>(2, INT_MIN)); // ith table
+            
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int parity = 1; parity >= 0; --parity) {
                     if(prevPick) {
@@ -110,6 +111,7 @@ class BottomUp {
                     }
                 }
             }
+            
             swap(next, curr);
         }
 
