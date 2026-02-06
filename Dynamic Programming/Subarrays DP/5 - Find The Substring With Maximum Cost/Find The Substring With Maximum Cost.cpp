@@ -134,8 +134,8 @@ class BottomUp {
         int nextRow_1 = 0;
 
         for(int i = n - 1; i >= 0; --i) {
-            int idealRow_0 = 0;
-            int idealRow_1 = 0;
+            int idealRow_0 = -1;
+            int idealRow_1 = -1;
 
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 if(prevPick) {
