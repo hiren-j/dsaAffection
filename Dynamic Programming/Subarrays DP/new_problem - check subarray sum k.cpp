@@ -136,16 +136,14 @@ int main() {
     TopDown td;
     if(td.isSubarraySumK(nums, k)) {
         cout << "From Memoization: YES" << '\n';
-    } 
-    else {
+    } else {
         cout << "From Memoization: NO" << '\n';
     }
 
     BottomUp bu;
     if(bu.isSubarraySumK(nums, k)) {
         cout << "From Bottom up: YES" << '\n';
-    } 
-    else {
+    } else {
         cout << "From Bottom up: NO" << '\n';
     }
 
