@@ -1,4 +1,4 @@
-// Code to check whether there exists a non-empty subarray with sum k ~ coded by vHiren
+// Code to check whether there exists a subarray with sum k ~ coded by vHiren
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -12,11 +12,11 @@ class TopDown {
             return false;
 
         if(i == n)
-            return (prevPick == true && k == 0) ? true : false;
+            return (k == 0) ? true : false;
 
         if(prevPick) {
             bool pickInSubarr = solveWithoutMemo(nums, i + 1, true, k - nums[i]);
-            bool stopHere = (prevPick == true && k == 0) ? true : false;
+            bool stopHere = (k == 0) ? true : false;
             return (pickInSubarr || stopHere);
         }
         else {
@@ -32,14 +32,14 @@ class TopDown {
             return false;
 
         if(i == n)
-            return (prevPick == true && k == 0) ? true : false;
+            return (k == 0) ? true : false;
 
         if(dp[i][prevPick][k] != -1)
             return dp[i][prevPick][k];
 
         if(prevPick) {
             bool pickInSubarr = solveWithMemo(dp, nums, i + 1, true, k - nums[i]);
-            bool stopHere = (prevPick == true && k == 0) ? true : false;
+            bool stopHere = (k == 0) ? true : false;
             return dp[i][prevPick][k] = (pickInSubarr || stopHere);
         }
         else {
@@ -66,14 +66,14 @@ class BottomUp {
         
         for(int prevPick = 0; prevPick < 2; ++prevPick)
             for(int k = 0; k <= given_k; ++k)
-                dp[n][prevPick][k] = (prevPick == true && k == 0) ? true : false;
+                dp[n][prevPick][k] = (k == 0) ? true : false;
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int k = 0; k <= given_k; ++k) {
                     if(prevPick) {
                         bool pickInSubarr = (k - nums[i] < 0) ? false : dp[i + 1][true][k - nums[i]];
-                        bool stopHere = (prevPick == true && k == 0) ? true : false;
+                        bool stopHere = (k == 0) ? true : false;
                         dp[i][prevPick][k] = (pickInSubarr || stopHere);
                     }
                     else {
@@ -95,14 +95,14 @@ class BottomUp {
 
         for(int prevPick = 0; prevPick < 2; ++prevPick)
             for(int k = 0; k <= given_k; ++k)
-                next[prevPick][k] = (prevPick == true && k == 0) ? true : false;
+                next[prevPick][k] = (k == 0) ? true : false;
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int k = 0; k <= given_k; ++k) {
                     if(prevPick) {
                         bool pickInSubarr = (k - nums[i] < 0) ? false : next[true][k - nums[i]];
-                        bool stopHere = (prevPick == true && k == 0) ? true : false;
+                        bool stopHere = (k == 0) ? true : false;
                         curr[prevPick][k] = (pickInSubarr || stopHere);
                     }
                     else {
@@ -131,7 +131,7 @@ int main() {
     cin.tie(nullptr);
 
     vector<int> nums = {1, 4, 3, 7, 2};
-    const int k = 14;
+    const int k = 12;
 
     TopDown td;
     if(td.isSubarraySumK(nums, k)) {
