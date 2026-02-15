@@ -1,4 +1,4 @@
-// Code to find the maximum possible sum of a strictly increasing subarray ~ coded by Hiren
+// Code to find the maximum possible sum of a strictly increasing subarray ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
