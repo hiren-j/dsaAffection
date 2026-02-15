@@ -1,39 +1,32 @@
-// Code to find length of the longest strictly increasing or strictly decreasing subarray ~ coded by Hiren
+// Code to find length of the longest strictly increasing or strictly decreasing subarray ~ coded by vHiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    bool findIncreasing;
     int n;
 
-    bool isInc(int num1, int num2) {
-        return num1 < num2;
-    }
-    bool isDec(int num1, int num2) {
-        return num1 > num2;
-    }
-
     // O(2^N) & O(N)
-    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int prev_i, bool findInc) {
+    int solveWithoutMemo(const vector<int>& nums, int i, bool prevPick, int prev_i) {
         if(i == n)
             return 0;
 
         if(prevPick) {
+            int pickInSubarr = ((findIncreasing && nums[prev_i] < nums[i]) || (!findIncreasing && nums[prev_i] > nums[i])) 
+                                ? solveWithoutMemo(nums, i + 1, true, i) + 1
+                                : 0;
             int stopHere = 0;
-            int pickCurr = (findInc && isInc(nums[prev_i], nums[i]) || !findInc && isDec(nums[prev_i], nums[i]))
-                            ? solveWithoutMemo(nums, i + 1, true, i, findInc)
-                            : INT_MIN;
-            if(pickCurr != INT_MIN) pickCurr++;
-            return max(stopHere, pickCurr);
+            return max(pickInSubarr, stopHere);
         }
         else {
-            int startNext = solveWithoutMemo(nums, i + 1, false, prev_i, findInc); 
-            int startHere = 1 + solveWithoutMemo(nums, i + 1, true, i, findInc);
-            return max(startNext, startHere);
+            int startCurr = solveWithoutMemo(nums, i + 1, true, i) + 1;
+            int startNext = solveWithoutMemo(nums, i + 1, false, 0);
+            return max(startCurr, startNext);
         }
     }
-
-    // O(2*N*2*N) & O(N*2*N + N)
-    int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int prev_i, bool findInc) {
+    
+    // O(N*N) & O(N*N)
+    int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int prev_i) {
         if(i == n)
             return 0;
 
@@ -41,28 +34,29 @@ class TopDown {
             return dp[i][prevPick][prev_i];
 
         if(prevPick) {
+            int pickInSubarr = ((findIncreasing && nums[prev_i] < nums[i]) || (!findIncreasing && nums[prev_i] > nums[i])) 
+                                ? solveWithMemo(dp, nums, i + 1, true, i) + 1
+                                : 0;
             int stopHere = 0;
-            int pickCurr = (findInc && isInc(nums[prev_i], nums[i]) || !findInc && isDec(nums[prev_i], nums[i]))
-                            ? solveWithMemo(dp, nums, i + 1, true, i, findInc)
-                            : INT_MIN;
-            if(pickCurr != INT_MIN) pickCurr++;
-            return dp[i][prevPick][prev_i] = max(stopHere, pickCurr);
+            return dp[i][prevPick][prev_i] = max(pickInSubarr, stopHere);
         }
         else {
-            int startNext = solveWithMemo(dp, nums, i + 1, false, prev_i, findInc); 
-            int startHere = 1 + solveWithMemo(dp, nums, i + 1, true, i, findInc);
-            return dp[i][prevPick][prev_i] = max(startNext, startHere);
+            int startCurr = solveWithMemo(dp, nums, i + 1, true, i) + 1;
+            int startNext = solveWithMemo(dp, nums, i + 1, false, 0);
+            return dp[i][prevPick][prev_i] = max(startCurr, startNext);
         }
     }
 
 public:
-    // Method to find length of longest strictly increasing or strictly decreasing subrray, using recursion with memoization - O(N*N) & O(N*N)
     int longestMonotonicSubarray(vector<int>& nums) {
         n = nums.size();
-        vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-        int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, n, true);
-        int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, n, false);
+        
+        vector<vector<vector<int>>> dp1(n, vector<vector<int>>(2, vector<int>(n, -1)));
+        vector<vector<vector<int>>> dp2(n, vector<vector<int>>(2, vector<int>(n, -1)));
+
+        findIncreasing = true;  int maxLenStrictlyInc = solveWithMemo(dp1, nums, 0, false, 0);
+        findIncreasing = false; int maxLenStrictlyDec = solveWithMemo(dp2, nums, 0, false, 0);
+
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
@@ -70,112 +64,98 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+    bool findIncreasing;
     int n;
 
-    bool isInc(int num1, int num2) {
-        return num1 < num2;
-    }
-    bool isDec(int num1, int num2) {
-        return num1 > num2;
-    }
-
-    // O(N*2*N) & O(N*2*N)
-    int solveBy3DTable(const vector<int>& nums, bool findInc) {
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
-
-        for(int prevPick = 0; prevPick <= 1; ++prevPick)
-            for(int prev_i = 0; prev_i <= n; ++prev_i)
+    // O(N*N) & O(N*N)
+    int solveBy3DTable(const vector<int>& nums) {
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n, -1)));
+        
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int prev_i = 0; prev_i < n; ++prev_i)
                 dp[n][prevPick][prev_i] = 0;
-        
+
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int prev_i = 0; prev_i <= n; ++prev_i) {
+                for(int prev_i = n - 1; prev_i >= 0; --prev_i) {
                     if(prevPick) {
+                        int pickInSubarr = ((findIncreasing && nums[prev_i] < nums[i]) || (!findIncreasing && nums[prev_i] > nums[i])) 
+                                            ? dp[i + 1][true][i] + 1
+                                            : 0;
                         int stopHere = 0;
-                        int pickCurr = INT_MIN;
-                        if(prev_i < n) {
-                            pickCurr = (findInc && isInc(nums[prev_i], nums[i]) || !findInc && isDec(nums[prev_i], nums[i]))
-                                        ? dp[i + 1][true][i]
-                                        : INT_MIN;
-                        }
-                        if(pickCurr != INT_MIN) pickCurr++;
-                        dp[i][prevPick][prev_i] = max(stopHere, pickCurr);
+                        dp[i][prevPick][prev_i] = max(pickInSubarr, stopHere);
                     }
                     else {
-                        int startNext = dp[i + 1][false][prev_i]; 
-                        int startHere = 1 + dp[i + 1][true][i];
-                        dp[i][prevPick][prev_i] = max(startNext, startHere);
-                    }   
+                        int startCurr = dp[i + 1][true][i] + 1;
+                        int startNext = dp[i + 1][false][0];
+                        dp[i][prevPick][prev_i] = max(startCurr, startNext);
+                    }
                 }
             }
         }
 
-        return dp[0][false][n];
+        return dp[0][false][0];
     }
 
-    // O(N*2*N) & O(N*2*N)
-    int solveBy3DEnhanced(const vector<int>& nums, bool findInc) {
+    // O(N*N) & O(N*N)
+    int solveBy3DEnhanced(const vector<int>& nums) {
         vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n, 0)));
-        
+
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int prev_i = 0; prev_i < n; ++prev_i) {
+                for(int prev_i = n - 1; prev_i >= 0; --prev_i) {
                     if(prevPick) {
+                        int pickInSubarr = ((findIncreasing && nums[prev_i] < nums[i]) || (!findIncreasing && nums[prev_i] > nums[i])) 
+                                            ? dp[i + 1][true][i] + 1
+                                            : 0;
                         int stopHere = 0;
-                        int pickCurr = (findInc && isInc(nums[prev_i], nums[i]) || !findInc && isDec(nums[prev_i], nums[i]))
-                                    ? dp[i + 1][true][i]
-                                    : INT_MIN;
-                        if(pickCurr != INT_MIN) pickCurr++;
-                        dp[i][prevPick][prev_i] = max(stopHere, pickCurr);
+                        dp[i][prevPick][prev_i] = max(pickInSubarr, stopHere);
                     }
                     else {
-                        int startNext = dp[i + 1][false][prev_i]; 
-                        int startHere = 1 + dp[i + 1][true][i];
-                        dp[i][prevPick][prev_i] = max(startNext, startHere);
-                    }   
+                        int startCurr = dp[i + 1][true][i] + 1;
+                        int startNext = dp[i + 1][false][0];
+                        dp[i][prevPick][prev_i] = max(startCurr, startNext);
+                    }
                 }
             }
         }
 
-        return dp[0][false][n - 1];
+        return dp[0][false][0];
     }
 
-    // O(N*2*N) & O(2*2*N)
-    int solveBy2DTable(const vector<int>& nums, bool findInc) {
-        vector<vector<int>> nextRow(2, vector<int>(n, 0));
-        
-        for(int i = n - 1; i >= 0; --i) {
-            vector<vector<int>> idealRow(2, vector<int>(n, 0));
+    // O(N*N) & O(N)
+    int solveBy2DTable(const vector<int>& nums) {
+        vector<vector<int>> next(2, vector<int>(n, 0)); // i + 1th table
+        vector<vector<int>> curr(2, vector<int>(n, 0)); // ith table
 
+        for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int prev_i = 0; prev_i < n; ++prev_i) {
+                for(int prev_i = n - 1; prev_i >= 0; --prev_i) {
                     if(prevPick) {
+                        int pickInSubarr = ((findIncreasing && nums[prev_i] < nums[i]) || (!findIncreasing && nums[prev_i] > nums[i])) 
+                                            ? next[true][i] + 1
+                                            : 0;
                         int stopHere = 0;
-                        int pickCurr = (findInc && isInc(nums[prev_i], nums[i]) || !findInc && isDec(nums[prev_i], nums[i]))
-                                    ? nextRow[true][i]
-                                    : INT_MIN;
-                        if(pickCurr != INT_MIN) pickCurr++;
-                        idealRow[prevPick][prev_i] = max(stopHere, pickCurr);
+                        curr[prevPick][prev_i] = max(pickInSubarr, stopHere);
                     }
                     else {
-                        int startNext = nextRow[false][prev_i]; 
-                        int startHere = 1 + nextRow[true][i];
-                        idealRow[prevPick][prev_i] = max(startNext, startHere);
-                    }   
+                        int startCurr = next[true][i] + 1;
+                        int startNext = next[false][0];
+                        curr[prevPick][prev_i] = max(startCurr, startNext);
+                    }
                 }
             }
-
-            swap(nextRow, idealRow);
+            swap(next, curr);
         }
 
-        return nextRow[false][n - 1];
+        return next[false][0];
     }
 
 public:
     int longestMonotonicSubarray(vector<int>& nums) {
         n = nums.size();
-        int maxLenStrictlyInc = solveBy2DTable(nums, true);
-        int maxLenStrictlyDec = solveBy2DTable(nums, false);
+        findIncreasing = true;  int maxLenStrictlyInc = solveBy2DTable(nums); 
+        findIncreasing = false; int maxLenStrictlyDec = solveBy2DTable(nums); 
         return max(maxLenStrictlyInc, maxLenStrictlyDec);
     }
 };
