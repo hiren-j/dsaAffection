@@ -1,4 +1,4 @@
-// Code to find the the length of the longest valid (well-formed) parentheses substring ~ coded by Hiren
+// Code to find the the length of the longest valid (well-formed) parentheses substring ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
