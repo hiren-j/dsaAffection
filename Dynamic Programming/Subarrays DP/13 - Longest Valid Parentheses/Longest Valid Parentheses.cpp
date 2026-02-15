@@ -18,10 +18,10 @@ class TopDown {
             return (stackLen == 0) ? 0 : INT_MIN; 
 
         if(prevPick) {
-            int pickCurr = solveWithoutMemo(s, i + 1, true, changeLen(s[i], stackLen));
-            if(pickCurr != INT_MIN) pickCurr++; 
+            int pickInSubarr = solveWithoutMemo(s, i + 1, true, changeLen(s[i], stackLen));
+            if(pickInSubarr != INT_MIN) pickInSubarr++; 
             int stopHere = (stackLen == 0) ? 0 : INT_MIN;
-            return max(pickCurr, stopHere);
+            return max(pickInSubarr, stopHere);
         }
         else {
             int startHere = solveWithoutMemo(s, i + 1, true, changeLen(s[i], stackLen));
@@ -44,10 +44,10 @@ class TopDown {
             return dp[i][prevPick][stackLen];
 
         if(prevPick) {
-            int pickCurr = solveWithMemo(dp, s, i + 1, true, changeLen(s[i], stackLen));
-            if(pickCurr != INT_MIN) pickCurr++;
+            int pickInSubarr = solveWithMemo(dp, s, i + 1, true, changeLen(s[i], stackLen));
+            if(pickInSubarr != INT_MIN) pickInSubarr++;
             int stopHere = (stackLen == 0) ? 0 : INT_MIN;
-            return dp[i][prevPick][stackLen] = max(pickCurr, stopHere);
+            return dp[i][prevPick][stackLen] = max(pickInSubarr, stopHere);
         }
         else {
             int startHere = solveWithMemo(dp, s, i + 1, true, changeLen(s[i], stackLen));
