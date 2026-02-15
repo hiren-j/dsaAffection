@@ -11,13 +11,11 @@ class TopDown {
 
     // O(2^N) & O(N)
     int solveWithoutMemo(const string& s, int i, bool prevPick, int stackLen) {
-        // Edge case: If you've seen a subarray and stack length is 0 then it's a valid substring return 0 as indication
-        if(i == n)
-            return (stackLen == 0) ? 0 : INT_MIN; 
-
-        // Edge case: If stack length is negative then it's not valid substring return INT_MIN as indication
         if(stackLen < 0)
             return INT_MIN;
+        
+        if(i == n)
+            return (stackLen == 0) ? 0 : INT_MIN; 
 
         if(prevPick) {
             int pickCurr = solveWithoutMemo(s, i + 1, true, changeLen(s[i], stackLen));
@@ -34,15 +32,13 @@ class TopDown {
     }
     // Note: This solution could lead to TLE
 
-    // O(2*N*2*N) & O(N*2*N + N)
+    // O(N*N) & O(N*N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const string& s, int i, bool prevPick, int stackLen) {
-        // Edge case: If you've seen a subarray and stack length is 0 then it's a valid substring return 0 as indication
-        if(i == n)
-            return (stackLen == 0) ? 0 : INT_MIN;
-
-        // Edge case: If stack length is negative then it's not valid substring return INT_MIN as indication
         if(stackLen < 0)
             return INT_MIN;
+        
+        if(i == n)
+            return (stackLen == 0) ? 0 : INT_MIN; 
         
         if(dp[i][prevPick][stackLen] != -1)
             return dp[i][prevPick][stackLen];
@@ -63,7 +59,6 @@ class TopDown {
     // Note: This solution could lead to MLE
 
 public:
-    // Method to find length of longest valid parentheses substring, using recursion with memoization - O(N*N) & O(N*N)
     int longestValidParentheses(string& s) {
         n = s.size();
         vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(n + 1, -1)));
@@ -80,120 +75,83 @@ class BottomUp {
         return ch == '(' ? stackLen + 1 : stackLen - 1;
     }
 
-    // O(N*2*N) & O(N*2*N)
+    // O(N*N) & O(N*N)
     int solveBy3DTable(const string& s) {
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, -1)));
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n, -1)));
 
-        // Init edge case: if(i == n) then (stackLen == 0) ? 0
-        dp[n][0][0] = 0;
-        dp[n][1][0] = 0;
-
-        // Init edge case: if(i == n) then (stackLen == 0) : INT_MIN
-        for(int i = 0; i <= n; ++i)
-            for(int prevPick = 0; prevPick <= 1; ++prevPick)
-                for(int stackLen = 0; stackLen <= n; ++stackLen)
-                    if(!(i == n && stackLen == 0))
-                        dp[i][prevPick][stackLen] = INT_MIN;
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int stackLen = 0; stackLen < n; ++stackLen)
+                dp[n][prevPick][stackLen] = (prevPick == true && stackLen == 0) ? 0 : INT_MIN;
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int stackLen = n; stackLen >= 0; --stackLen) {
+                for(int stackLen = n - 1; stackLen >= 0; --stackLen) {
+                    int newLen = changeLen(s[i], stackLen);
+
                     if(prevPick) {
-                        int newLen   = changeLen(s[i], stackLen);
-                        int pickCurr = (newLen >= 0 && newLen <= n) ? dp[i + 1][true][newLen] : INT_MIN;
-                        if(pickCurr != INT_MIN) pickCurr++;
+                        int pickInSubarr = (newLen < 0 || newLen >= n) ? INT_MIN : dp[i + 1][true][newLen];
+                        if(pickInSubarr != INT_MIN) pickInSubarr += 1;
                         int stopHere = (stackLen == 0) ? 0 : INT_MIN;
-                        dp[i][prevPick][stackLen] = max(pickCurr, stopHere);
+                        dp[i][prevPick][stackLen] = max(pickInSubarr, stopHere);
                     }
                     else {
-                        int newLen    = changeLen(s[i], stackLen);
-                        int startHere = (newLen >= 0 && newLen <= n) ? dp[i + 1][true][newLen] : INT_MIN;
-                        if(startHere != INT_MIN) startHere++; 
-                        int startNext = dp[i + 1][false][stackLen];
-                        dp[i][prevPick][stackLen] = max(startHere, startNext);
+                        int startCurr = (newLen < 0 || newLen >= n) ? INT_MIN : dp[i + 1][true][newLen];
+                        if(startCurr != INT_MIN) startCurr += 1;
+                        int startNext = dp[i + 1][false][0];
+                        dp[i][prevPick][stackLen] = max(startCurr, startNext);
                     }
                 }
             }
         }
 
-        return dp[0][false][0];
+        int res = dp[0][false][0];
+        return (res == INT_MIN) ? 0 : res;
     }
+    // Note: This solution will lead to MLE
 
-    // O(N*2*N) & O(N*2*N)
-    int solveBy3DEnhanced(const string& s) {
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(n + 1, INT_MIN)));
-        
-        // Init edge case: if(i == n) then (stackLen == 0) ? 0
-        dp[n][0][0] = 0;
-        dp[n][1][0] = 0;
-
-        for(int i = n - 1; i >= 0; --i) {
-            for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int stackLen = n; stackLen >= 0; --stackLen) {
-                    if(prevPick) {
-                        int newLen   = changeLen(s[i], stackLen);
-                        int pickCurr = (newLen >= 0 && newLen <= n) ? dp[i + 1][true][newLen] : INT_MIN;
-                        if(pickCurr != INT_MIN) pickCurr++;
-                        int stopHere = (stackLen == 0) ? 0 : INT_MIN;
-                        dp[i][prevPick][stackLen] = max(pickCurr, stopHere);
-                    }
-                    else {
-                        int newLen    = changeLen(s[i], stackLen);
-                        int startHere = (newLen >= 0 && newLen <= n) ? dp[i + 1][true][newLen] : INT_MIN;
-                        if(startHere != INT_MIN) startHere++; 
-                        int startNext = dp[i + 1][false][stackLen];
-                        dp[i][prevPick][stackLen] = max(startHere, startNext);
-                    }
-                }
-            }
-        }
-
-        return dp[0][false][0];
-    }
-
-    // O(N*2*N) & O(2*2*N)
+    // O(N*N) & O(N)
     int solveBy2DTable(const string& s) {
-        vector<vector<int>> nextRow(2, vector<int>(n + 1, INT_MIN));
-        
-        // Init edge case: if(i == n) then (stackLen == 0) ? 0
-        nextRow[0][0] = 0;
-        nextRow[1][0] = 0;
+        vector<vector<int>> next(2, vector<int>(n, -1)); // i + 1th table
+        vector<vector<int>> curr(2, vector<int>(n, -1)); // ith table
+
+        for(int prevPick = 0; prevPick < 2; ++prevPick)
+            for(int stackLen = 0; stackLen < n; ++stackLen)
+                next[prevPick][stackLen] = (stackLen == 0) ? 0 : INT_MIN;
 
         for(int i = n - 1; i >= 0; --i) {
-            vector<vector<int>> idealRow(2, vector<int>(n + 1, INT_MIN));
-            
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
-                for(int stackLen = n; stackLen >= 0; --stackLen) {
+                for(int stackLen = n - 1; stackLen >= 0; --stackLen) {
+                    int newLen = changeLen(s[i], stackLen);
+
                     if(prevPick) {
-                        int newLen   = changeLen(s[i], stackLen);
-                        int pickCurr = (newLen >= 0 && newLen <= n) ? nextRow[true][newLen] : INT_MIN;
-                        if(pickCurr != INT_MIN) pickCurr++;
+                        int pickInSubarr = (newLen < 0 || newLen >= n) ? INT_MIN : next[true][newLen];
+                        if(pickInSubarr != INT_MIN) pickInSubarr += 1;
                         int stopHere = (stackLen == 0) ? 0 : INT_MIN;
-                        idealRow[prevPick][stackLen] = max(pickCurr, stopHere);
+                        curr[prevPick][stackLen] = max(pickInSubarr, stopHere);
                     }
                     else {
-                        int newLen    = changeLen(s[i], stackLen);
-                        int startHere = (newLen >= 0 && newLen <= n) ? nextRow[true][newLen] : INT_MIN;
-                        if(startHere != INT_MIN) startHere++; 
-                        int startNext = nextRow[false][stackLen];
-                        idealRow[prevPick][stackLen] = max(startHere, startNext);
+                        int startCurr = (newLen < 0 || newLen >= n) ? INT_MIN : next[true][newLen];
+                        if(startCurr != INT_MIN) startCurr += 1;
+                        int startNext = next[false][0];
+                        curr[prevPick][stackLen] = max(startCurr, startNext);
                     }
                 }
             }
-
-            swap(nextRow, idealRow);
+            swap(next, curr);
         }
 
-        return nextRow[false][0];
+        int res = next[false][0];
+        return (res == INT_MIN) ? 0 : res;
     }
+    // Note: This solution will lead to TLE
 
 public:
     int longestValidParentheses(string& s) {
         n = s.size();
-        return solveBy2DTable(s);
+        if(n == 0) return 0;
+        return solveBy3DTable(s);
     }
 };
-// Note: This solution could lead to MLE
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
