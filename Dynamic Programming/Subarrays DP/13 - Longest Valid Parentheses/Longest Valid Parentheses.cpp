@@ -90,13 +90,13 @@ class BottomUp {
 
                     if(prevPick) {
                         int pickInSubarr = (newLen < 0 || newLen >= n) ? INT_MIN : dp[i + 1][true][newLen];
-                        if(pickInSubarr != INT_MIN) pickInSubarr += 1;
+                        if(pickInSubarr != INT_MIN) pickInSubarr++;
                         int stopHere = (stackLen == 0) ? 0 : INT_MIN;
                         dp[i][prevPick][stackLen] = max(pickInSubarr, stopHere);
                     }
                     else {
                         int startCurr = (newLen < 0 || newLen >= n) ? INT_MIN : dp[i + 1][true][newLen];
-                        if(startCurr != INT_MIN) startCurr += 1;
+                        if(startCurr != INT_MIN) startCurr++;
                         int startNext = dp[i + 1][false][0];
                         dp[i][prevPick][stackLen] = max(startCurr, startNext);
                     }
@@ -125,13 +125,13 @@ class BottomUp {
 
                     if(prevPick) {
                         int pickInSubarr = (newLen < 0 || newLen >= n) ? INT_MIN : next[true][newLen];
-                        if(pickInSubarr != INT_MIN) pickInSubarr += 1;
+                        if(pickInSubarr != INT_MIN) pickInSubarr++;
                         int stopHere = (stackLen == 0) ? 0 : INT_MIN;
                         curr[prevPick][stackLen] = max(pickInSubarr, stopHere);
                     }
                     else {
                         int startCurr = (newLen < 0 || newLen >= n) ? INT_MIN : next[true][newLen];
-                        if(startCurr != INT_MIN) startCurr += 1;
+                        if(startCurr != INT_MIN) startCurr++;
                         int startNext = next[false][0];
                         curr[prevPick][stackLen] = max(startCurr, startNext);
                     }
