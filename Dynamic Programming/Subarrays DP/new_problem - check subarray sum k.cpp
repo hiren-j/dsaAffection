@@ -12,11 +12,11 @@ class TopDown {
             return false;
 
         if(i == n)
-            return (k == 0) ? true : false;
+            return (k == 0);
 
         if(prevPick) {
             bool pickInSubarr = solveWithoutMemo(nums, i + 1, true, k - nums[i]);
-            bool stopHere = (k == 0) ? true : false;
+            bool stopHere = (k == 0);
             return (pickInSubarr || stopHere);
         }
         else {
@@ -32,14 +32,14 @@ class TopDown {
             return false;
 
         if(i == n)
-            return (k == 0) ? true : false;
+            return (k == 0);
 
         if(dp[i][prevPick][k] != -1)
             return dp[i][prevPick][k];
 
         if(prevPick) {
             bool pickInSubarr = solveWithMemo(dp, nums, i + 1, true, k - nums[i]);
-            bool stopHere = (k == 0) ? true : false;
+            bool stopHere = (k == 0);
             return dp[i][prevPick][k] = (pickInSubarr || stopHere);
         }
         else {
@@ -66,14 +66,14 @@ class BottomUp {
         
         for(int prevPick = 0; prevPick < 2; ++prevPick)
             for(int k = 0; k <= given_k; ++k)
-                dp[n][prevPick][k] = (k == 0) ? true : false;
+                dp[n][prevPick][k] = (k == 0);
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int k = 0; k <= given_k; ++k) {
                     if(prevPick) {
                         bool pickInSubarr = (k - nums[i] < 0) ? false : dp[i + 1][true][k - nums[i]];
-                        bool stopHere = (k == 0) ? true : false;
+                        bool stopHere = (k == 0);
                         dp[i][prevPick][k] = (pickInSubarr || stopHere);
                     }
                     else {
@@ -95,14 +95,14 @@ class BottomUp {
 
         for(int prevPick = 0; prevPick < 2; ++prevPick)
             for(int k = 0; k <= given_k; ++k)
-                next[prevPick][k] = (k == 0) ? true : false;
+                next[prevPick][k] = (k == 0);
 
         for(int i = n - 1; i >= 0; --i) {
             for(int prevPick = 1; prevPick >= 0; --prevPick) {
                 for(int k = 0; k <= given_k; ++k) {
                     if(prevPick) {
                         bool pickInSubarr = (k - nums[i] < 0) ? false : next[true][k - nums[i]];
-                        bool stopHere = (k == 0) ? true : false;
+                        bool stopHere = (k == 0);
                         curr[prevPick][k] = (pickInSubarr || stopHere);
                     }
                     else {
