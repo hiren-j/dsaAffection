@@ -40,14 +40,14 @@ int main() {
         }
     }        
 
-    int result = INT_MAX;
+    int minAbsDiff = INT_MAX;
     for(int subarr1Sum = 0; subarr1Sum <= arrSum; ++subarr1Sum) {
-        if(dp[0][false][arrSum]) {
+        if(dp[0][false][subarr1Sum]) {
             int subarr2Sum = arrSum - subarr1Sum;
-            result = min(result, abs(subarr1Sum - subarr2Sum));
+            minAbsDiff = min(minAbsDiff, abs(subarr1Sum - subarr2Sum));
         }
     }
-    cout << result;
+    cout << minAbsDiff;
 
     return 0;
 }
