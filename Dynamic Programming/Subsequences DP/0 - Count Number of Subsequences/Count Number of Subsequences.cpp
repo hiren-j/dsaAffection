@@ -59,17 +59,17 @@ class BottomUp {
 
     // O(N) & O(1)
     int solveWithoutTable(const vector<int>& nums) {
-        int next_val = 1; // dp[i + 1];
-        int curr_val = 1; // dp[i];
+        int dp_i_plus_1 = 1; // dp[i + 1];
+        int dp_i        = 1; // dp[i];
 
         for(int i = n - 1; i >= 0; --i) {
-            int currTake = next_val;
-            int currSkip = next_val;
-            curr_val = (currSkip + currTake);
-            next_val = curr_val;
+            int currTake = dp_i_plus_1;
+            int currSkip = dp_i_plus_1;
+            dp_i = (currSkip + currTake);
+            dp_i_plus_1 = dp_i;
         }
 
-        return next_val;
+        return dp_i;
     }
 
 public:
