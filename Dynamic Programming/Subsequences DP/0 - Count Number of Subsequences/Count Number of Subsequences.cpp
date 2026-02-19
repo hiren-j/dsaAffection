@@ -75,7 +75,7 @@ class BottomUp {
 public:
     int countSubsequences(const vector<int>& nums) {
         n = nums.size();
-        return solveWith1DTable(nums);
+        return solveWithoutTable(nums);
     }
 };
 
