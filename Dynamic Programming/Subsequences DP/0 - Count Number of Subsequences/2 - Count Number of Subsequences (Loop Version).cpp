@@ -8,30 +8,37 @@ class TopDown {
     int n;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(const vector<int>& nums, int i) {
-        if(i == n)
+    int solveWithoutMemo(const vector<int>& nums, int start) {
+        if(start == n)
             return 1;
 
-        int currTake = solveWithoutMemo(nums, i + 1);
-        int currSkip = solveWithoutMemo(nums, i + 1);
+        int count = 1;
 
-        return (currSkip + currTake);
+        for(int i = start; i < n; ++i) {
+            int currTake = solveWithoutMemo(nums, i + 1);
+            count += currTake;
+        }
+
+        return count;
     }
 
-    // O(2*N) & O(2*N)
-    int solveWithMemo(vector<int>& dp, const vector<int>& nums, int i) {
-        if(i == n)
+    // O(N*N) & O(2*N)
+    int solveWithMemo(vector<int>& dp, const vector<int>& nums, int start) {
+        if(start == n)
             return 1;
 
-        if(dp[i] != -1)
-            return dp[i];
+        if(dp[start] != -1)
+            return dp[start];
 
-        int currTake = solveWithMemo(dp, nums, i + 1);
-        int currSkip = solveWithMemo(dp, nums, i + 1);
+        int count = 1;
 
-        return dp[i] = (currSkip + currTake);
+        for(int i = start; i < n; ++i) {
+            int currTake = solveWithMemo(dp, nums, i + 1);
+            count += currTake;
+        }
+
+        return dp[start] = count;
     }
-
 public:
     int countSubsequences(const vector<int>& nums) {
         n = nums.size();
@@ -43,39 +50,29 @@ public:
 class BottomUp {
     int n;
 
-    // O(N) & O(N)
+    // O(N*N) & O(N)
     int solveWith1DTable(const vector<int>& nums) {
         vector<int> dp(n + 1, -1);
         dp[n] = 1;
 
-        for(int i = n - 1; i >= 0; --i) {
-            int currTake = dp[i + 1];
-            int currSkip = dp[i + 1];
-            dp[i] = (currSkip + currTake);
+        for(int start = n - 1; start >= 0; --start) {
+            int count = 1;
+
+            for(int i = start; i < n; ++i) {
+                int currTake = dp[i + 1];
+                count += currTake;
+            }
+
+            dp[start] = count;
         }
 
         return dp[0];
     }
 
-    // O(N) & O(1)
-    int solveWithoutTable(const vector<int>& nums) {
-        int dp_i_plus_1 = 1; // dp[i + 1];
-        int dp_i        = 1; // dp[i];
-
-        for(int i = n - 1; i >= 0; --i) {
-            int currTake = dp_i_plus_1;
-            int currSkip = dp_i_plus_1;
-            dp_i = (currSkip + currTake);
-            dp_i_plus_1 = dp_i;
-        }
-
-        return dp_i;
-    }
-
 public:
     int countSubsequences(const vector<int>& nums) {
         n = nums.size();
-        return solveWithoutTable(nums);
+        return solveWith1DTable(nums);
     }
 };
 
@@ -84,7 +81,7 @@ int main() {
     ios_base::sync_with_stdio(NULL);
     cin.tie(nullptr);
 
-    vector<int> nums = {1, 2, 3};
+    vector<int> nums = {1, 1, 2, 3};
     cout << "From Formula: " << pow(2, nums.size()) << '\n'; // calculate 2^N
 
     TopDown td;
