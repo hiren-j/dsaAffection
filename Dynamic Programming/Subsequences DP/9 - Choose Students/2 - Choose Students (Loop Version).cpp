@@ -1,5 +1,3 @@
-
-
 // Code to find the number of ways you can choose `chooseLimit` students from a class of `totalStudents` students ~ coded by vHiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
