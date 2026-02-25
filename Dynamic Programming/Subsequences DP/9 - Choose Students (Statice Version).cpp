@@ -60,7 +60,6 @@ class BottomUp {
 
         for(int student = totalStudents - 1; student >= 0; --student) {
             dp[student][0] = 1;
-
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int currSkip   = dp[student + 1][chooseLimit];     
                 int currChoose = dp[student + 1][chooseLimit - 1]; 
@@ -78,7 +77,6 @@ class BottomUp {
 
         for(int student = totalStudents - 1; student >= 0; --student) {
             dp[student][0] = 1;
-
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int currSkip   = dp[student + 1][chooseLimit];     
                 int currChoose = dp[student + 1][chooseLimit - 1]; 
@@ -97,13 +95,11 @@ class BottomUp {
         for(int student = totalStudents - 1; student >= 0; --student) {
             vector<int> idealRow(givenLimit + 1, 0); 
             idealRow[0] = 1;
-
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int currSkip   = nextRow[chooseLimit];     
                 int currChoose = nextRow[chooseLimit - 1]; 
                 idealRow[chooseLimit] = (currSkip + currChoose);
             }
-
             swap(nextRow, idealRow);
         }
 
