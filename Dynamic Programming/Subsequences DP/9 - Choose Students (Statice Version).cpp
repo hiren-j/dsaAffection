@@ -21,27 +21,27 @@ class TopDown {
     }
     
     // O(TS*CL) & O(TS*CL) : Where CL = chooseLimit
-    int solveWithMemo(vector<vector<int>>& memory, int student, int chooseLimit) {
+    int solveWithMemo(vector<vector<int>>& dp, int student, int chooseLimit) {
         if(chooseLimit == 0) 
             return 1;
     
         if(student == totalStudents)
             return 0; 
 
-        if(memory[student][chooseLimit] != -1)
-            return memory[student][chooseLimit];
+        if(dp[student][chooseLimit] != -1)
+            return dp[student][chooseLimit];
 
-        int currSkip   = solveWithMemo(memory, student + 1, chooseLimit);     
-        int currChoose = solveWithMemo(memory, student + 1, chooseLimit - 1); 
+        int currSkip   = solveWithMemo(dp, student + 1, chooseLimit);     
+        int currChoose = solveWithMemo(dp, student + 1, chooseLimit - 1); 
     
-        return memory[student][chooseLimit] = (currSkip + currChoose);
+        return dp[student][chooseLimit] = (currSkip + currChoose);
     }
     
 public:
     int numWays(int n, int chooseLimit) {
         totalStudents = n;
-        vector<vector<int>> memory(totalStudents + 1, vector<int>(chooseLimit + 1, -1));
-        return solveWithMemo(memory, totalStudents, 0, chooseLimit);
+        vector<vector<int>> dp(totalStudents + 1, vector<int>(chooseLimit + 1, -1));
+        return solveWithMemo(dp, 0, chooseLimit);
     }
 };
 
@@ -52,7 +52,7 @@ class BottomUp {
 
     // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, CL = givenLimit
     int solveBy2DTable(int givenLimit) {
-        vector<vector<int>> memory(totalStudents + 1, vector<int>(givenLimit + 1, -1));
+        vector<vector<int>> dp(totalStudents + 1, vector<int>(givenLimit + 1, -1));
 
         for(int student = 0; student <= totalStudents; ++student)
             dp[student][0] = 1;
@@ -73,7 +73,7 @@ class BottomUp {
 
     // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, CL = givenLimit
     int solveBy2DEnhanced(int givenLimit) {
-        vector<vector<int>> memory(totalStudents + 1, vector<int>(givenLimit + 1, 0));
+        vector<vector<int>> dp(totalStudents + 1, vector<int>(givenLimit + 1, 0));
 
         for(int student = 0; student <= totalStudents; ++student)
             dp[student][0] = 1;
