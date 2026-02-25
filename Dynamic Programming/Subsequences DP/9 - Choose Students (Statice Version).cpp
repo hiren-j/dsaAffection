@@ -53,14 +53,14 @@ class BottomUp {
     // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, CL = givenLimit
     int solveBy2DTable(int givenLimit) {
         vector<vector<int>> dp(totalStudents + 1, vector<int>(givenLimit + 1, -1));
+        dp[totalStudents][0] = 1;
 
-        for(int student = 0; student <= totalStudents; ++student)
-            dp[student][0] = 1;
-
-        for(int chooseLimit = 0; chooseLimit <= givenLimit; ++chooseLimit)
+        for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit)
             dp[totalStudents][chooseLimit] = 0;
 
         for(int student = totalStudents - 1; student >= 0; --student) {
+            dp[student][0] = 1;
+
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int currSkip   = dp[student + 1][chooseLimit];     
                 int currChoose = dp[student + 1][chooseLimit - 1]; 
@@ -74,11 +74,11 @@ class BottomUp {
     // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, CL = givenLimit
     int solveBy2DEnhanced(int givenLimit) {
         vector<vector<int>> dp(totalStudents + 1, vector<int>(givenLimit + 1, 0));
-
-        for(int student = 0; student <= totalStudents; ++student)
-            dp[student][0] = 1;
+        dp[totalStudents][0] = 1;
 
         for(int student = totalStudents - 1; student >= 0; --student) {
+            dp[student][0] = 1;
+
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int currSkip   = dp[student + 1][chooseLimit];     
                 int currChoose = dp[student + 1][chooseLimit - 1]; 
@@ -91,17 +91,19 @@ class BottomUp {
 
     // O(TS*GL) & O(GL) : Where TS = totalStudents, CL = givenLimit
     int solveBy1DTable(int givenLimit) {
-        vector<int> nextRow(givenLimit + 1, 0), idealRow(givenLimit + 1, 0); 
-
-        for(int student = 0; student <= totalStudents; ++student)
-            nextRow[0] = 1;
-
+        vector<int> nextRow(givenLimit + 1, 0); 
+        nextRow[0] = 1;
+        
         for(int student = totalStudents - 1; student >= 0; --student) {
+            vector<int> idealRow(givenLimit + 1, 0); 
+            idealRow[0] = 1;
+
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
-                int currSkip   = dp[student + 1][chooseLimit];     
-                int currChoose = dp[student + 1][chooseLimit - 1]; 
+                int currSkip   = nextRow[chooseLimit];     
+                int currChoose = nextRow[chooseLimit - 1]; 
                 idealRow[chooseLimit] = (currSkip + currChoose);
             }
+
             swap(nextRow, idealRow);
         }
 
@@ -109,7 +111,6 @@ class BottomUp {
     }
 
 public:
-    // O(TS*CL) & O(TS*CL)
     int numWays(int n, int chooseLimit) {
         totalStudents = n;
         return solveBy1DTable(chooseLimit);
