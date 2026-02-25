@@ -50,7 +50,7 @@ public:
 class BottomUp {
     int totalStudents;
 
-    // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, CL = givenLimit
+    // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, GL = givenLimit
     int solveBy2DTable(int givenLimit) {
         vector<vector<int>> dp(totalStudents + 1, vector<int>(givenLimit + 1, -1));
         dp[totalStudents][0] = 1;
@@ -70,7 +70,7 @@ class BottomUp {
         return dp[0][givenLimit];
     }
 
-    // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, CL = givenLimit
+    // O(TS*GL) & O(TS*GL) : Where TS = totalStudents, GL = givenLimit
     int solveBy2DEnhanced(int givenLimit) {
         vector<vector<int>> dp(totalStudents + 1, vector<int>(givenLimit + 1, 0));
         dp[totalStudents][0] = 1;
@@ -87,7 +87,7 @@ class BottomUp {
         return dp[0][givenLimit];
     }
 
-    // O(TS*GL) & O(GL) : Where TS = totalStudents, CL = givenLimit
+    // O(TS*GL) & O(GL) : Where TS = totalStudents, GL = givenLimit
     int solveBy1DTable(int givenLimit) {
         vector<int> nextRow(givenLimit + 1, 0); 
         nextRow[0] = 1;
