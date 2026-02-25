@@ -14,10 +14,10 @@ class TopDown {
             return 0; // Edge case when no more students left then return 0
 
         // There are always two possibilities at each student
-        int currSkip   = solveWithoutMemo(student + 1, chooseLimit);     // Is to skip it
-        int currChoose = solveWithoutMemo(student + 1, chooseLimit - 1); // Is to choose it
+        int skipStudent   = solveWithoutMemo(student + 1, chooseLimit);     // Is to skip it
+        int chooseStudent = solveWithoutMemo(student + 1, chooseLimit - 1); // Is to choose it
     
-        return (currSkip + currChoose);
+        return (skipStudent + chooseStudent);
     }
     
     // O(TS*CL) & O(TS*CL) : Where CL = chooseLimit
@@ -31,10 +31,10 @@ class TopDown {
         if(dp[student][chooseLimit] != -1)
             return dp[student][chooseLimit];
 
-        int currSkip   = solveWithMemo(dp, student + 1, chooseLimit);     
-        int currChoose = solveWithMemo(dp, student + 1, chooseLimit - 1); 
+        int skipStudent   = solveWithMemo(dp, student + 1, chooseLimit);     
+        int chooseStudent = solveWithMemo(dp, student + 1, chooseLimit - 1); 
     
-        return dp[student][chooseLimit] = (currSkip + currChoose);
+        return dp[student][chooseLimit] = (skipStudent + chooseStudent);
     }
     
 public:
@@ -61,9 +61,9 @@ class BottomUp {
         for(int student = totalStudents - 1; student >= 0; --student) {
             dp[student][0] = 1;
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
-                int currSkip   = dp[student + 1][chooseLimit];     
-                int currChoose = dp[student + 1][chooseLimit - 1]; 
-                dp[student][chooseLimit] = (currSkip + currChoose);
+                int skipStudent   = dp[student + 1][chooseLimit];     
+                int chooseStudent = dp[student + 1][chooseLimit - 1]; 
+                dp[student][chooseLimit] = (skipStudent + chooseStudent);
             }
         }
 
@@ -78,9 +78,9 @@ class BottomUp {
         for(int student = totalStudents - 1; student >= 0; --student) {
             dp[student][0] = 1;
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
-                int currSkip   = dp[student + 1][chooseLimit];     
-                int currChoose = dp[student + 1][chooseLimit - 1]; 
-                dp[student][chooseLimit] = (currSkip + currChoose);
+                int skipStudent   = dp[student + 1][chooseLimit];     
+                int chooseStudent = dp[student + 1][chooseLimit - 1]; 
+                dp[student][chooseLimit] = (skipStudent + chooseStudent);
             }
         }
 
@@ -96,9 +96,9 @@ class BottomUp {
             vector<int> idealRow(givenLimit + 1, 0); 
             idealRow[0] = 1;
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
-                int currSkip   = nextRow[chooseLimit];     
-                int currChoose = nextRow[chooseLimit - 1]; 
-                idealRow[chooseLimit] = (currSkip + currChoose);
+                int skipStudent   = nextRow[chooseLimit];     
+                int chooseStudent = nextRow[chooseLimit - 1]; 
+                idealRow[chooseLimit] = (skipStudent + chooseStudent);
             }
             swap(nextRow, idealRow);
         }
