@@ -18,8 +18,8 @@ class TopDown {
         int count = 0;
 
         for(int student = start; student < totalStudents; ++student) {
-            int pickStudent = solveWithoutMemo(student + 1, chooseLimit - 1); 
-            count += nextCount;
+            int chooseStudent = solveWithoutMemo(student + 1, chooseLimit - 1); 
+            count += chooseStudent;
         }
 
         return count;
@@ -39,8 +39,8 @@ class TopDown {
         int count = 0;
 
         for(int student = start; student < totalStudents; ++student) {
-            int pickStudent = solveWithMemo(dp, student + 1, chooseLimit - 1); 
-            count += nextCount;
+            int chooseStudent = solveWithMemo(dp, student + 1, chooseLimit - 1); 
+            count += chooseStudent;
         }
 
         return dp[start][chooseLimit] = count;
@@ -72,8 +72,8 @@ class BottomUp {
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int count = 0;
                 for(int student = start; student < totalStudents; ++student) {
-                    int pickStudent = dp[student + 1][chooseLimit - 1]; 
-                    count += nextCount;
+                    int chooseStudent = dp[student + 1][chooseLimit - 1]; 
+                    count += chooseStudent;
                 }
                 dp[start][chooseLimit] = count;
             }
@@ -92,8 +92,8 @@ class BottomUp {
             for(int chooseLimit = 1; chooseLimit <= givenLimit; ++chooseLimit) {
                 int count = 0;
                 for(int student = start; student < totalStudents; ++student) {
-                    int pickStudent = dp[student + 1][chooseLimit - 1]; 
-                    count += nextCount;
+                    int chooseStudent = dp[student + 1][chooseLimit - 1]; 
+                    count += chooseStudent;
                 }
                 dp[start][chooseLimit] = count;
             }
