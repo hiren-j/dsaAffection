@@ -1,5 +1,4 @@
-
-// Code to determine if there is a subset of the given set with sum equal to the given sum or not ~ coded by vHiren
+// Code to check whether there exists a subset in the array whose sum is equal to k ~ coded by vHiren
   
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
