@@ -1,180 +1,120 @@
+
 // Code to determine if there is a subset of the given set with sum equal to the given sum or not ~ coded by vHiren
   
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 
-// #1 Class to implement the Top-down approach:
-class TopDown_V1 {   
-public:
-    // Method to determine if there exists the mentioned subset, using recursion with memoization - O(N*S) & O(N*S) : Where S let be the sum
-    bool isSubsetSum(vector<int>& nums, int sum) {
-        int n = nums.size();
-        vector<vector<int>> memory(n, vector<int>(sum + 1, -1));
-        return solveWithMemo(memory, nums, n, 0, sum);
-    }
-    
-private:
-    // O(2*N*S) & O(N*S + N)
-    bool solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int index, int sum) {
-        // Edge case: If the sum becomes zero then there exists a subset with given sum 
-        if(sum == 0)
-            return true;
-
-        // Edge case: If all the elements are exhausted then return false
-        if(index == n)
-            return false;
-            
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][sum] != -1)
-            return memory[index][sum];
-        
-        // There are always two possibilties to perform at each index
-        bool currSkip = solveWithMemo(memory, nums, n, index + 1, sum); // Is to skip the index value
-        bool currTake = false;                                          // Is to take the index value
-
-        // If possible then take the index value
-        if(nums[index] <= sum)
-            currTake = solveWithMemo(memory, nums, n, index + 1, sum - nums[index]);
-        
-        // Store the result value to the memoization table and then return it
-        return memory[index][sum] = currTake || currSkip;
-    }
+class TopDown {   
+    int n;
 
     // O(2^N) & O(N)
-    bool solveWithoutMemo(vector<int>& nums, int n, int index, int sum) {
-        // Edge case: If the sum becomes zero then there exists a subset with given sum 
-        if(sum == 0)
-            return true;
-
-        // Edge case: If all the elements are exhausted then return false
-        if(index == n)
+    bool solveWithoutMemo(const vector<int>& nums, int i, int k) {
+        if(k < 0)
             return false;
+        
+        if(i == n)
+            return (k == 0) ? true : false;
             
-        // There are always two possibilties to perform at each index
-        bool currSkip = solveWithoutMemo(nums, n, index + 1, sum); // Is to skip the index value
-        bool currTake = false;                                     // Is to take the index value
-
-        // If possible then take the index value
-        if(nums[index] <= sum)
-            currTake = solveWithoutMemo(nums, n, index + 1, sum - nums[index]);
-
-        // Return the presence information of the subset 
-        return currTake || currSkip;
+        bool currTake = solveWithoutMemo(nums, i + 1, k - nums[i]);
+        bool currSkip = solveWithoutMemo(nums, i + 1, k);
+        
+        return (currTake || currSkip);
     }
-};
+    
+    // O(N*K) & O(N*K)
+    bool solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, int i, int k) {
+        if(k < 0)
+            return false;
+        
+        if(i == n)
+            return (k == 0) ? true : false;
+            
+        if(dp[i][k] != -1)
+            return dp[i][k];
+            
+        bool currTake = solveWithMemo(dp, nums, i + 1, k - nums[i]);
+        bool currSkip = solveWithMemo(dp, nums, i + 1, k);
+        
+        return dp[i][k] = (currTake || currSkip);
+    }
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // O(N*N*K) & O(N*K)
+    bool solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& nums, int start, int k) {
+        if(k < 0)
+            return false;
+        
+        if(start == n)
+            return (k == 0) ? true : false;
+            
+        if(dp[start][k] != -1)
+            return dp[start][k];
+            
+        bool currTake = (k == 0) ? true : false;
+            
+        for(int i = start; i < n; ++i) {
+            currTake |= solveWithMemoLoop(dp, nums, i + 1, k - nums[i]);
+        }
+            
+        return dp[start][k] = currTake;
+    }
 
-// #2 Class to implement the Top-down approach:
-class TopDown_V2 {
 public:
-    // Method to determine if there exists the mentioned subset, using recursion with memoization - O(N*N*S) & O(N*S)
-    bool isSubsetSum(vector<int>& nums, int sum) {
-        int n = nums.size();
-        vector<vector<int>> memory(n + 1, vector<int>(sum + 1, -1));
-        return solveWithMemo(memory, nums, n, 0, sum);
-    }
-
-private:
-    // O(N*N*S) & O(N*S + N)
-    bool solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int startIndex, int sum) {
-        // Edge case: If the sum becomes zero then there exists a subset with given sum 
-        if(sum == 0)
-            return true;
-        
-        // Edge case: If all the elements are exhausted then return false
-        if(startIndex == n)
-            return false;
-        
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][sum] != -1)
-            return memory[startIndex][sum];
-            
-        // If the subset equal to given sum doesn't exist, then if possible, then take the index value
-        for(int index = startIndex; index < n; ++index)
-            if(nums[index] <= sum && solveWithMemo(memory, nums, n, index + 1, sum - nums[index])) 
-                return memory[startIndex][sum] = true;
-        
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex][sum] = false;
-    }
-
-    // O(N^N) & O(N)
-    bool solveWithoutMemo(vector<int>& nums, int n, int startIndex, int sum) {
-        // Edge case: If the sum becomes zero, then there exists a subset with given sum 
-        if(sum == 0)
-            return true;
-                        
-        // If the subset equal to given sum doesn't exist, then if possible, then take the index value
-        for(int index = startIndex; index < n; ++index) 
-            if(nums[index] <= sum && solveWithoutMemo(nums, n, index + 1, sum - nums[index])) 
-                return true;
-
-        // If reached here then return false 
-        return false;
+    bool isSubsetSum(vector<int>& nums, int k) {
+        n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(k + 1, -1));
+        return solveWithMemoLoop(nums, nums, 0, k);
     }
 };
-// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Bottom-up approach:
 class BottomUp {   
-public:
-    // #1 Method to determine if there exists the mentioned subset, using 2D tabulation - O(N*S) & O(N*S)
-    bool isSubsetSum_V1(vector<int>& nums, int sum) {
-        int n = nums.size();
+    int n;
 
-        // 2D DP table
-        vector<vector<bool>> dp(n + 1, vector<bool>(sum + 1, false));
-
-        // Initialize the first edge case: If the sum becomes zero then there exists a subset with given sum 
-        for(int index = 0; index <= n; ++index)
-            dp[index][0] = true;
-
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int currSum = 1; currSum <= sum; ++currSum) {
-                bool currSkip = dp[index + 1][currSum]; 
-                bool currTake = false;                                          
-                if(nums[index] <= currSum) {
-                    currTake = dp[index + 1][currSum - nums[index]];
-                }
-                dp[index][currSum] = currTake || currSkip;
+    // O(N*GK) & O(N*GK) : Where GK = given_k
+    bool solveBy2DTable(const vector<int>& nums, int given_k) {
+        vector<vector<int>> dp(n + 1, vector<int>(given_k + 1, -1));
+        
+        for(int k = 0; k <= given_k; ++k)
+            dp[n][k] = (k == 0) ? true : false;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 0; k <= given_k; ++k) {
+                bool currTake = (k - nums[i] < 0) ? false : dp[i + 1][k - nums[i]];
+                bool currSkip = dp[i + 1][k];
+                dp[i][k] = (currTake || currSkip);  
             }
         }
-
-        // Return the result value
-        return dp[0][sum];
+        
+        return dp[0][given_k];
+    }
+    
+    // O(N*GK) & O(GK) : Where GK = given_k
+    bool solveBy1DTable(const vector<int>& nums, int given_k) {
+        vector<int> nextRow(given_k + 1, -1), idealRow(given_k + 1, -1);
+        
+        for(int k = 0; k <= given_k; ++k)
+            nextRow[k] = (k == 0) ? true : false;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 0; k <= given_k; ++k) {
+                bool currTake = (k - nums[i] < 0) ? false : nextRow[k - nums[i]];
+                bool currSkip = nextRow[k];
+                idealRow[k] = (currTake || currSkip);  
+            }
+            swap(nextRow, idealRow);
+        }
+        
+        return nextRow[given_k];
     }
 
-    // #2 Method to determine if there exists the mentioned subset, using 1D tabulation - O(N*S) & O(S)
-    bool isSubsetSum_V2(vector<int>& nums, int sum) {
-        int n = nums.size();
-
-        // 1D DP tables
-        vector<bool> nextRow(sum + 1, false), idealRow(sum + 1, false);
-        nextRow[0] = true;
-
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            idealRow[0] = true;
-            for(int currSum = 1; currSum <= sum; ++currSum) {
-                bool currSkip = nextRow[currSum]; 
-                bool currTake = false;                                          
-                if(nums[index] <= currSum) {
-                    currTake = nextRow[currSum - nums[index]];
-                }
-                idealRow[currSum] = currTake || currSkip;
-            }
-            nextRow = idealRow;
-        }
-
-        // Return the result value
-        return nextRow[sum];
+public:
+    bool isSubsetSum(vector<int>& nums, int k) {
+        n = nums.size();
+        return solveBy2DTable(nums, k);
     }
 };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
 Links : https://www.geeksforgeeks.org/problems/subset-sum-problem-1611555638/1
