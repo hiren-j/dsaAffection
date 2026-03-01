@@ -51,7 +51,7 @@ class TopDown {
         bool currTake = (k == 0) ? true : false;
             
         for(int i = start; i < n; ++i) {
-            currTake |= solveWithMemoLoop(dp, nums, i + 1, k - nums[i]);
+            currTake = currTake || solveWithMemoLoop(dp, nums, i + 1, k - nums[i]);
         }
             
         return dp[start][k] = currTake;
@@ -61,7 +61,7 @@ public:
     bool isSubsetSum(vector<int>& nums, int k) {
         n = nums.size();
         vector<vector<int>> dp(n, vector<int>(k + 1, -1));
-        return solveWithMemo(nums, nums, 0, k);
+        return solveWithMemo(dp, nums, 0, k);
     }
 };
 
