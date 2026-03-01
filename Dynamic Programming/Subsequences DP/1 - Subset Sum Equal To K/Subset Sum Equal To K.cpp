@@ -110,7 +110,7 @@ class BottomUp {
 public:
     bool isSubsetSum(vector<int>& nums, int k) {
         n = nums.size();
-        return solveBy2DTable(nums, k);
+        return solveBy1DTable(nums, k);
     }
 };
 
