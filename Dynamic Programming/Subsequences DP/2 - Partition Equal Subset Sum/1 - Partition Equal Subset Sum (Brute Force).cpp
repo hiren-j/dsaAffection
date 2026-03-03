@@ -30,9 +30,7 @@ public:
         vector<vector<int>> dp(n, vector<int>(arrSum / 2 + 1, -1));
 
         for(int subset1Sum = 0; subset1Sum <= arrSum / 2; ++subset1Sum) {
-            bool isPresent = solveWithMemo(dp, nums, 0, subset1Sum);
-            
-            if(isPresent) { // If subset1 is present is array 'nums'
+            if(solveWithMemo(dp, nums, 0, subset1Sum)) { // If subset1 is present is array 'nums'
                 int subset2Sum = arrSum - subset1Sum;
                 if(subset1Sum == subset2Sum) return true;
             }
@@ -72,9 +70,7 @@ public:
         precomputeSubsetSumK(dp, nums);
 
         for(int subset1Sum = 0; subset1Sum <= arrSum / 2; ++subset1Sum) {
-            bool isPresent = dp[0][subset1Sum];
-            
-            if(isPresent) { // If subset1 is present is array 'nums'
+            if(dp[0][subset1Sum]) { // If subset1 is present is array 'nums'
                 int subset2Sum = arrSum - subset1Sum;
                 if(subset1Sum == subset2Sum) return true;
             }
