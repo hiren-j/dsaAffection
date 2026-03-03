@@ -79,7 +79,8 @@ public:
         return false;
     }
 };
-    
+// Note: To optimize bottom up then you could fetch solveBy1DTable() code from problem - Subset Sum Equal To K
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
