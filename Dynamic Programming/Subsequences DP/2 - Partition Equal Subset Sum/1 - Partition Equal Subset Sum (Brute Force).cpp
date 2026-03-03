@@ -48,11 +48,11 @@ class BottomUp {
     void precomputeSubsetSumK(vector<vector<int>>& dp, const vector<int>& nums) {
         dp.resize(n + 1, vector<int>(arrSum / 2 + 1, -1));
 
-        for(int k = 0; k <= arrSum; ++k)
+        for(int k = 0; k <= arrSum / 2; ++k)
             dp[n][k] = (k == 0) ? true : false;
         
         for(int i = n - 1; i >= 0; --i) {
-            for(int k = 0; k <= arrSum; ++k) {
+            for(int k = 0; k <= arrSum / 2; ++k) {
                 bool currTake = (k - nums[i] < 0) ? false : dp[i + 1][k - nums[i]];
                 bool currSkip = dp[i + 1][k];
                 dp[i][k] = (currTake || currSkip);  
@@ -79,7 +79,7 @@ public:
         return false;
     }
 };
-
+    
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming
