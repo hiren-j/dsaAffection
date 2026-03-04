@@ -94,7 +94,7 @@ class BottomUp {
         }
         
         for(int i = 1; i < n; ++i) {
-            vector<int> currRow(given_k + 1, -1); // ih row
+            vector<int> currRow(given_k + 1, -1); // ith row
             
             for(int k = 0; k <= given_k; ++k) {
                 int currSkip = prevRow[k]; 
