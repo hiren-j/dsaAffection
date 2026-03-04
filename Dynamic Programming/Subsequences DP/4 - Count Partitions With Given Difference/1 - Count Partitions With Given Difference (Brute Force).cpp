@@ -75,7 +75,7 @@ public:
         
         int result = 0;
         
-        for(int subset1Sum = arrSum / 2; subset1Sum <= arrSum; ++subset1Sum) {
+        for(int subset1Sum = arrSum; subset1Sum >= arrSum / 2; --subset1Sum) {
             int countSubsets = dp[0][subset1Sum];
             int subset2Sum   = arrSum - subset1Sum;
             if(subset1Sum - subset2Sum == D) {
