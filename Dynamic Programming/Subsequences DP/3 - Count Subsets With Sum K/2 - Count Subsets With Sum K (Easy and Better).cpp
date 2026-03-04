@@ -3,105 +3,117 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    const int MOD = 1e9+7;
-
-public:
-    // Method to count all the subsets whose sum equals to the given sum, using recursion with memoization - O(N*S) & O(N*S) : Where S let be the sum 
-    int countSubsetEqualsSum(vector<int>& nums, int sum) {
-        int n = nums.size();
-        vector<vector<int>> memory(n, vector<int>(sum + 1, -1));
-        return solveWithMemo(memory, nums, n, n - 1, sum);
+    int n;
+    
+    // O(2^N) & O(N)
+    int solveWithoutMemo(const vector<int>& arr, int i, int k) {
+        if(k < 0)
+            return 0;
+        
+        if(i == n)
+            return (k == 0) ? 1 : 0;
+            
+        int currTake = solveWithoutMemo(arr, i + 1, k - arr[i]);
+        int currSkip = solveWithoutMemo(arr, i + 1, k);
+        
+        return (currTake + currSkip);
     }
-
-private:
-    // O(2*N*S) & O(N*S + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& nums, int n, int index, int sum) {
-        // Edge case: If you reached the 0th index then compute the count of all the subsets according to their existence
-        if(index == 0) {
-            if(sum == 0) 
-                return (nums[index] == 0) ? 2 : 1;
-            else
-                return (nums[index] == sum) ? 1 : 0;
+    
+    // O(N*K) & O(N*K)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& arr, int i, int k) {
+        if(k < 0)
+            return 0;
+        
+        if(i == n)
+            return (k == 0) ? 1 : 0;
+            
+        if(dp[i][k] != -1)
+            return dp[i][k];
+            
+        int currTake = solveWithMemo(dp, arr, i + 1, k - arr[i]);
+        int currSkip = solveWithMemo(dp, arr, i + 1, k);
+        
+        return dp[i][k] = (currTake + currSkip);
+    }  
+    
+    // O(N*N*K) & O(N*K)
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& arr, int start, int k) {
+        if(k < 0)
+            return 0;
+        
+        if(start == n)
+            return (k == 0) ? 1 : 0;
+            
+        if(dp[start][k] != -1)
+            return dp[start][k];
+            
+        int count = (k == 0) ? 1 : 0;
+        
+        for(int i = start; i < n; ++i) {
+            int currTake = solveWithMemoLoop(dp, arr, i + 1, k - arr[i]);
+            count += currTake;
         }
         
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][sum] != -1)
-            return memory[index][sum];
-            
-        // There are always two possibilties to perform at each index
-        int currSkip = solveWithMemo(memory, nums, n, index - 1, sum) % MOD; // Is to skip the index value
-        int currTake = 0;                                                    // Is to take the index value
-        
-        // If possible then take the index value
-        if(nums[index] <= sum)
-            currTake = solveWithMemo(memory, nums, n, index - 1, sum - nums[index]) % MOD;
-
-        // Store the result value to the memoization table and then return it
-        return memory[index][sum] = (currTake + currSkip) % MOD;
+        return dp[start][k] = count;
+    }  
+    
+public:
+    int perfectSum(vector<int>& arr, int k) {
+        n = arr.size();
+        vector<vector<int>> dp(n, vector<int>(k + 1, -1));
+        return solveWithMemo(dp, arr, 0, k);
     }
 };
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    const int MOD = 1e9+7;
-
-public:
-    // #1 Method to count all the subsets whose sum equals to the given sum, using 2D tabulation - O(N*S) & O(N*S)
-    int countSubsetEqualsSum_V1(vector<int>& nums, int sum) {
-        int n = nums.size();
+    int n;
+    
+    // O(N*GK) & O(N*GK) : Where GK = given_k
+    int solveBy2DTable(const vector<int>& arr, int given_k) {
+        vector<vector<int>> dp(n + 1, vector<int>(given_k + 1, -1));
         
-        // 2D DP table
-        vector<vector<int>> dp(n, vector<int>(sum + 1, 0));   
-
-        // Initialize the edge case: If you reached the 0th index then compute the count of all the subsets according to their existence
-        dp[0][0] = 1;
-        if(nums[0] == 0) dp[0][0] = 2;
-        else if(nums[0] <= sum) dp[0][nums[0]] = 1;
-
-        // Fill the rest of the table
-        for(int index = 1; index < n; ++index) {
-            for(int currSum = 0; currSum <= sum; ++currSum) {
-                int currSkip = dp[index - 1][currSum] % MOD; 
-                int currTake = 0;                                                       
-                if(nums[index] <= currSum) {
-                    currTake = dp[index - 1][currSum - nums[index]] % MOD;
-                }
-                dp[index][currSum] = (currTake + currSkip) % MOD;
+        for(int k = 0; k <= given_k; ++k)
+            dp[n][k] = (k == 0) ? 1 : 0;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 0; k <= given_k; ++k) {
+                int currTake = (k - arr[i] < 0) ? 0 : dp[i + 1][k - arr[i]];
+                int currSkip = dp[i + 1][k];
+                dp[i][k] = (currTake + currSkip);
             }
         }
-
-        // Return the result value
-        return dp[n - 1][sum];
+        
+        return dp[0][given_k];
     }
-
-    // #2 Method to count all the subsets whose sum equals to the given sum, using 1D tabulation - O(N*S) & O(S)
-    int countSubsetEqualsSum_V2(vector<int>& nums, int sum) {
-        int n = nums.size();
-
-        // 1D DP tables
-        vector<int> prevRow(sum + 1, 0), idealRow(sum + 1, 0);
-
-        // Initialize the edge case: If you reached the 0th index then compute the count of all the subsets according to their existence
-        prevRow[0] = 1;
-        if(nums[0] == 0) prevRow[0] = 2;
-        else if(nums[0] <= sum) prevRow[nums[0]] = 1;
-
-        // Fill the rest of the table
-        for(int index = 1; index < n; ++index) {
-            for(int currSum = 0; currSum <= sum; ++currSum) {
-                int currSkip = prevRow[currSum] % MOD; 
-                int currTake = 0;                                                       
-                if(nums[index] <= currSum) {
-                    currTake = prevRow[currSum - nums[index]] % MOD;
-                }
-                idealRow[currSum] = (currTake + currSkip) % MOD;
+    
+    // O(N*GK) & O(GK) : Where GK = given_k
+    int solveBy1DTable(const vector<int>& arr, int given_k) {
+        vector<int> nextRow(given_k + 1, -1); // i + 1th row
+        
+        for(int k = 0; k <= given_k; ++k)
+            nextRow[k] = (k == 0) ? 1 : 0;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            vector<int> idealRow(given_k + 1, -1); // ith row
+            
+            for(int k = 0; k <= given_k; ++k) {
+                int currTake = (k - arr[i] < 0) ? 0 : nextRow[k - arr[i]];
+                int currSkip = nextRow[k];
+                idealRow[k] = (currTake + currSkip);
             }
-            prevRow = idealRow;
+            
+            swap(nextRow, idealRow);
         }
-
-        // Return the result value
-        return prevRow[sum];
+        
+        return nextRow[given_k];
+    }
+    
+public:
+    int perfectSum(vector<int>& arr, int k) {
+        n = arr.size();
+        return solveBy1DTable(arr, k);
     }
 };
 
