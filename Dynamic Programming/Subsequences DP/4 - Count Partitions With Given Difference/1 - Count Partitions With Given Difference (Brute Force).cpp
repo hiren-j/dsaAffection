@@ -6,7 +6,7 @@ class TopDown {
     int n, arrSum;
     
     // O(N*K) & O(N*K)
-    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& arr, int i, int k) {
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, int i, int k) {
         if(k < 0)
             return 0;
         
@@ -16,23 +16,23 @@ class TopDown {
         if(dp[i][k] != -1)
             return dp[i][k];
             
-        int currTake = solveWithMemo(dp, arr, i + 1, k - arr[i]);
-        int currSkip = solveWithMemo(dp, arr, i + 1, k);
+        int currTake = solveWithMemo(dp, nums, i + 1, k - nums[i]);
+        int currSkip = solveWithMemo(dp, nums, i + 1, k);
         
         return dp[i][k] = (currTake + currSkip);
     }  
     
 public:
     // O(N*AS) & O(N*AS) : Where AS = arrSum
-    int countPartitions(vector<int>& arr, int D) {
-        n = arr.size();
-        arrSum = accumulate(begin(arr), end(arr), 0);
+    int countPartitions(vector<int>& nums, int D) {
+        n = nums.size();
+        arrSum = accumulate(begin(nums), end(nums), 0);
         
         vector<vector<int>> dp(n, vector<int>(arrSum + 1, -1));
         int result = 0;
         
         for(int subset1Sum = arrSum; subset1Sum >= arrSum / 2; --subset1Sum) {
-            int countSubsets = solveWithMemo(dp, arr, 0, subset1Sum);
+            int countSubsets = solveWithMemo(dp, nums, 0, subset1Sum);
             int subset2Sum   = arrSum - subset1Sum;
             if(subset1Sum - subset2Sum == D) {
                 result += countSubsets;
@@ -48,7 +48,7 @@ public:
 class BottomUp {
     int n, arrSum;
     
-    void precomputeCountOfSubsetsSumK(vector<vector<int>>& dp, const vector<int>& arr) {
+    void precomputeCountOfSubsetsSumK(vector<vector<int>>& dp, const vector<int>& nums) {
         dp.resize(n + 1, vector<int>(arrSum + 1, -1));
         
         for(int k = 0; k <= arrSum; ++k)
@@ -56,7 +56,7 @@ class BottomUp {
         
         for(int i = n - 1; i >= 0; --i) {
             for(int k = 0; k <= arrSum; ++k) {
-                int currTake = (k - arr[i] < 0) ? 0 : dp[i + 1][k - arr[i]];
+                int currTake = (k - nums[i] < 0) ? 0 : dp[i + 1][k - nums[i]];
                 int currSkip = dp[i + 1][k];
                 dp[i][k] = (currTake + currSkip);
             }
@@ -65,12 +65,12 @@ class BottomUp {
     
 public:
     // O(N*AS) & O(N*AS) : Where AS = arrSum
-    int countPartitions(vector<int>& arr, int D) {
-        n = arr.size();
-        arrSum = accumulate(begin(arr), end(arr), 0);
+    int countPartitions(vector<int>& nums, int D) {
+        n = nums.size();
+        arrSum = accumulate(begin(nums), end(nums), 0);
         
         vector<vector<int>> dp;
-        precomputeCountOfSubsetsSumK(dp, arr);
+        precomputeCountOfSubsetsSumK(dp, nums);
         
         int result = 0;
         
