@@ -3,44 +3,43 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    int solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, int index, int target) {
-        if(index == 0) {
-            if(target == 0) 
-                return (nums[0] == 0) ? 2 : 1;
-            else
-                return (nums[0] == target);
-        }
-
-        if(target < 0)
+    int n, arrSum;
+    
+    // O(N*K) & O(N*K)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& arr, int i, int k) {
+        if(k < 0)
             return 0;
-
-        if(dp[index][target] != -1)
-            return dp[index][target];
-
-        int currSkip = solveWithMemo(dp, nums, index - 1, target);
-        int currTake = solveWithMemo(dp, nums, index - 1, target - nums[index]);
-
-        return dp[index][target] = (currSkip + currTake);
-    }
-
+        
+        if(i == n)
+            return (k == 0) ? 1 : 0;
+            
+        if(dp[i][k] != -1)
+            return dp[i][k];
+            
+        int currTake = solveWithMemo(dp, arr, i + 1, k - arr[i]);
+        int currSkip = solveWithMemo(dp, arr, i + 1, k);
+        
+        return dp[i][k] = (currTake + currSkip);
+    }  
+    
 public:
-    // O(N*TS) & O(N*TS) : Where TS = totalSum
-    int countPartitions(vector<int>& nums, int difference) {
-        int n = nums.size();
-        int resCount = 0;
-        int totalSum = accumulate(begin(nums), end(nums), 0);
-
-        vector<vector<int>> dp(n, vector<int>(totalSum + 1, -1));
-
-        for(int subset1Sum = totalSum/2; subset1Sum <= totalSum; ++subset1Sum) {
-            int countSubsets = solveWithMemo(dp, nums, n-1, subset1Sum);
-            int subset2Sum   = totalSum - subset1Sum;
-            if(subset1Sum >= subset2Sum && subset1Sum - subset2Sum == difference) {
-                resCount += countSubsets;
+    // O(N*AS) & O(N*AS) : Where AS = arrSum
+    int countPartitions(vector<int>& arr, int D) {
+        n = arr.size();
+        arrSum = accumulate(begin(arr), end(arr), 0);
+        
+        vector<vector<int>> dp(n, vector<int>(arrSum + 1, -1));
+        int result = 0;
+        
+        for(int subset1Sum = arrSum; subset1Sum >= arrSum / 2; --subset1Sum) {
+            int countSubsets = solveWithMemo(dp, arr, 0, subset1Sum);
+            int subset2Sum   = arrSum - subset1Sum;
+            if(subset1Sum - subset2Sum == D) {
+                result += countSubsets;
             }
         }
-
-        return resCount;
+        
+        return result;
     }
 };
 
