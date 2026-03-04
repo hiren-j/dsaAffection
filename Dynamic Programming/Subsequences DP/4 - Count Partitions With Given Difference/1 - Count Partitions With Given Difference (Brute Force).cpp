@@ -85,7 +85,7 @@ public:
         return result;
     }
 };
-// Note: To optimize bottom up then you could fetch solveBy1DTable() code from problem - Subset Sum Equal To K
+// Note: To optimize bottom up then you could fetch solveBy1DTable() code from problem - Count Subsets With Sum K
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
