@@ -47,66 +47,46 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // O(N*TS) & O(N*TS)
-    int countPartitions_V1(vector<int>& nums, int difference) {
-        int n = nums.size();
-        int resCount = 0;
-        int totalSum = accumulate(begin(nums), end(nums), 0);
-
-        vector<vector<int>> dp(n, vector<int>(totalSum + 1, 0));
-        dp[0][0] = 1;
-        if(nums[0] == 0) dp[0][0] = 2;
-        else if(nums[0] <= totalSum) dp[0][nums[0]] = 1;
-
-        for(int index = 1; index < n; ++index) {
-            for(int target = 0; target <= totalSum; ++target) {
-                int currSkip = dp[index - 1][target];
-                int currTake = (target - nums[index] >= 0) ? dp[index - 1][target - nums[index]] : 0;
-                dp[index][target] = (currSkip + currTake);
+    int n, arrSum;
+    
+    void precomputeCountOfSubsetsSumK(vector<vector<int>>& dp, const vector<int>& arr) {
+        dp.resize(n + 1, vector<int>(arrSum + 1, -1));
+        
+        for(int k = 0; k <= arrSum; ++k)
+            dp[n][k] = (k == 0) ? 1 : 0;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 0; k <= arrSum; ++k) {
+                int currTake = (k - arr[i] < 0) ? 0 : dp[i + 1][k - arr[i]];
+                int currSkip = dp[i + 1][k];
+                dp[i][k] = (currTake + currSkip);
             }
         }
-
-        for(int subset1Sum = totalSum/2; subset1Sum <= totalSum; ++subset1Sum) {
-            int subset2Sum = totalSum - subset1Sum;
-            if(subset1Sum >= subset2Sum && subset1Sum - subset2Sum == difference) {
-                resCount += dp[n-1][subset1Sum];
-            }
-        }
-
-        return resCount;
     }
-
-    // O(N*TS) & O(TS)
-    int countPartitions_V2(vector<int>& nums, int difference) {
-        int n = nums.size();
-        int resCount = 0;
-        int totalSum = accumulate(begin(nums), end(nums), 0);
-
-        vector<int> prevRow(totalSum + 1, 0), idealRow(totalSum + 1, 0);
-        prevRow[0] = 1;
-        if(nums[0] == 0) prevRow[0] = 2;
-        else if(nums[0] <= totalSum) prevRow[nums[0]] = 1;
-
-        for(int index = 1; index < n; ++index) {
-            for(int target = 0; target <= totalSum; ++target) {
-                int currSkip = prevRow[target];
-                int currTake = (target - nums[index] >= 0) ? prevRow[target - nums[index]] : 0;
-                idealRow[target] = (currSkip + currTake);
-            }
-            prevRow = idealRow;
-        }
-
-        for(int subset1Sum = totalSum/2; subset1Sum <= totalSum; ++subset1Sum) {
-            int subset2Sum = totalSum - subset1Sum;
-            if(subset1Sum >= subset2Sum && subset1Sum - subset2Sum == difference) {
-                resCount += prevRow[subset1Sum];
+    
+public:
+    // O(N*AS) & O(N*AS) : Where AS = arrSum
+    int countPartitions(vector<int>& arr, int D) {
+        n = arr.size();
+        arrSum = accumulate(begin(arr), end(arr), 0);
+        
+        vector<vector<int>> dp;
+        precomputeCountOfSubsetsSumK(dp, arr);
+        
+        int result = 0;
+        
+        for(int subset1Sum = arrSum / 2; subset1Sum <= arrSum; ++subset1Sum) {
+            int countSubsets = dp[0][subset1Sum];
+            int subset2Sum   = arrSum - subset1Sum;
+            if(subset1Sum - subset2Sum == D) {
+                result += countSubsets;
             }
         }
-
-        return resCount;
+        
+        return result;
     }
 };
+// Note: To optimize bottom up then you could fetch solveBy1DTable() code from problem - Subset Sum Equal To K
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
