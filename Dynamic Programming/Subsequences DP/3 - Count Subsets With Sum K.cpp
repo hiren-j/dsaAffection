@@ -1,4 +1,4 @@
-// Code to find the count of all the subsets of the given array with a sum equal to the given sum ~ coded by Hiren
+// Code to find the count of all the subsets of the given array with a sum equal to the given sum ~ coded by vHiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -109,3 +109,4 @@ public:
 
 Topics: Array | Dynamic Programming
 Link  : https://www.geeksforgeeks.org/problems/perfect-sum-problem5633/1
+        https://www.naukri.com/code360/problems/count-subsets-with-sum-k_3952532
