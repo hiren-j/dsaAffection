@@ -39,30 +39,36 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // O(N*AS) & O(N*AS) : Where AS = arrSum
-    bool canPartition(vector<int>& nums) {
-        const int n = nums.size();
-        int arrSum = accumulate(begin(nums), end(nums), 0);
-        
-        if(arrSum % 2 != 0)
-            return false; 
+    int n, arrSum;
 
-        int subset1Sum = arrSum / 2;
-        vector<vector<int>> dp(n + 1, vector<int>(subset1Sum + 1, -1));
-        
-        for(int k = 0; k <= subset1Sum; ++k)
+    void precomputeSubsetSumK(vector<vector<int>>& dp, const vector<int>& nums) {
+        dp.resize(n + 1, vector<int>(arrSum / 2 + 1, -1));
+
+        for(int k = 0; k <= arrSum / 2; ++k)
             dp[n][k] = (k == 0) ? true : false;
         
         for(int i = n - 1; i >= 0; --i) {
-            for(int k = 0; k <= subset1Sum; ++k) {
+            for(int k = 0; k <= arrSum / 2; ++k) {
                 bool currTake = (k - nums[i] < 0) ? false : dp[i + 1][k - nums[i]];
                 bool currSkip = dp[i + 1][k];
                 dp[i][k] = (currTake || currSkip);  
             }
         }
+    }
 
-        return (dp[0][subset1Sum] == true);
+public:
+    bool canPartition(vector<int>& nums) {
+        n = nums.size();
+        arrSum = accumulate(begin(nums), end(nums), 0);
+        
+        if(arrSum % 2 != 0)
+            return false; 
+
+        vector<vector<int>> dp;
+        precomputeSubsetSumK(dp, nums);
+
+        int subset1Sum = arrSum / 2;
+        return dp[0][subset1Sum];
     }
 };
 // Note: To optimize bottom up then you could fetch solveBy1DTable() code from problem - Subset Sum Equal To K
