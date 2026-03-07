@@ -21,7 +21,7 @@ class TopDown {
         if(i == n)
             return (sum == target) ? 1 : 0;
 
-        if(dp[i][sum + arrSum] != c)
+        if(dp[i][sum + arrSum] != -1)
             return dp[i][sum + arrSum];
 
         int add = solveWithMemo(dp, nums, i + 1, sum + nums[i], target);
@@ -46,7 +46,7 @@ class BottomUp {
     
     // O(N*AS) & O(N*AS) : Where AS = arrSum
     int solveBy2DTable(const vector<int>& nums, int target) {
-        vector<vector<int>> dp(n + 1, vector<int>(arrSum * 2 + 1, INT_MAX));
+        vector<vector<int>> dp(n + 1, vector<int>(arrSum * 2 + 1, -1));
 
         for(int sum = -arrSum; sum <= arrSum; ++sum)
             dp[n][sum + arrSum] = (sum == target) ? 1 : 0;
@@ -66,13 +66,13 @@ class BottomUp {
 
     // O(N*AS) & O(AS) : Where AS = arrSum
     int solveBy1DTable(const vector<int>& nums, int target) {
-        vector<int> nextRow(arrSum * 2 + 1, INT_MAX); // i + 1th row
+        vector<int> nextRow(arrSum * 2 + 1, -1); // i + 1th row
 
         for(int sum = -arrSum; sum <= arrSum; ++sum)
             nextRow[sum + arrSum] = (sum == target) ? 1 : 0;
 
         for(int i = n - 1; i >= 0; --i) {
-            vector<int> currRow(arrSum * 2 + 1, INT_MAX); // ith row
+            vector<int> currRow(arrSum * 2 + 1, -1); // ith row
 
             for(int sum = -arrSum; sum <= arrSum; ++sum) {
                 int newIdx1 = sum + nums[i] + arrSum;
