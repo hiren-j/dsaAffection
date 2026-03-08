@@ -1,3 +1,4 @@
+
 // Code to check whether the string "s" is a subsequence of string "t" or not ~ coded by vHiren
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -121,10 +122,10 @@ class BottomUp {
 
     // O(N*M*M) & O(M)
     int solveBy1DTable(const string& s, const string& t) {
-        vector<bool> next(m + 1, false), curr(m + 1, false);
+        vector<bool> nextRow(m + 1, false), currRow(m + 1, false);
 
         for(int start = 0; start <= m; ++start) // Init first base case
-            next[start] = true;
+            nextRow[start] = true;
 
         for(int i = n - 1; i >= 0; --i) {
             for(int start = m - 1; start >= 0; --start) {
@@ -132,18 +133,18 @@ class BottomUp {
 
                 for(int j = start; j < m; ++j) {
                     bool currTake = s[i] == t[j] 
-                                    ? next[j + 1]
+                                    ? nextRow[j + 1]
                                     : false;
                     flag |= currTake;
                     if(flag) break; // Make faster
                 }   
 
-                curr[start] = flag;    
+                currRow[start] = flag;    
             }
-            next = curr;
+            nextRow = currRow;
         }
 
-        return next[0];
+        return nextRow[0];
     }
     // Note: In this problem 1D space optimization of loop version is possible
 
