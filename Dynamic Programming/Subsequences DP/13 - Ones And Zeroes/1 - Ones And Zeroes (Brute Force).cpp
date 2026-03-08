@@ -110,7 +110,7 @@ class BottomUp {
     // O(AS*GN*GM*K) & O(GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m, K = maximum size among all arr[i]
     int solveBy2DTable(const vector<string>& arr, int given_n, int given_m) {
         vector<vector<int>> next(given_n + 1, vector<int>(given_m + 1, -1)); // i + 1th table
-        vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, -1)); // i + 1th table
+        vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, -1)); // ith table
 
         for(int n = 0; n <= given_n; ++n)
             for(int m = 0; m <= given_m; ++m)
