@@ -28,7 +28,6 @@ public:
         arrSum = accumulate(begin(nums), end(nums), 0);
         
         vector<vector<int>> dp(n + 1, vector<int>(arrSum + 1, -1));
-        
         int minAbsDiff = INT_MAX;
 
         for(int subset1Sum = arrSum / 2; subset1Sum >= 0; --subset1Sum) {
