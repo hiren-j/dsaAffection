@@ -119,10 +119,38 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(N*M*M) & O(M)
+    int solveBy1DTable(const string& s, const string& t) {
+        vector<bool> next(m + 1, false), curr(m + 1, false);
+
+        for(int start = 0; start <= m; ++start) // Init first base case
+            next[start] = true;
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int start = m - 1; start >= 0; --start) {
+                bool flag = false;
+
+                for(int j = start; j < m; ++j) {
+                    bool currTake = s[i] == t[j] 
+                                    ? next[j + 1]
+                                    : false;
+                    flag |= currTake;
+                    if(flag) break; // Make faster
+                }   
+
+                curr[start] = flag;    
+            }
+            next = curr;
+        }
+
+        return next[0];
+    }
+    // Note: In this problem 1D space optimization of loop version was possible
+
 public:
     bool isSubsequence(string& s, string& t) {
         n = s.size(), m = t.size();
-        return solveBy2DEnhanced(s, t);
+        return solveBy1DTable(s, t);
     }
 };
 
