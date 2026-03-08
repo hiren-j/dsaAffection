@@ -5,7 +5,7 @@
 class TopDown {
     int arrSize;
 
-    // O(2^AS) & O(AS) : Where AS = arrSize
+    // O(2^AS * K) & O(AS) : Where AS = arrSize, K = maximum size among all arr[i]
     int solveWithoutMemo(const vector<string>& arr, int i, int n, int m) {
         if(n < 0 || m < 0)
             return INT_MIN;
@@ -23,7 +23,7 @@ class TopDown {
         return max(currTake, currSkip);
     }
 
-    // O(AS*N*M) & O(AS*N*M) : Where AS = arrSize
+    // O(AS*N*M*K) & O(AS*N*M) : Where AS = arrSize, K = maximum size among all arr[i]
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<string>& arr, int i, int n, int m) {
         if(n < 0 || m < 0)
             return INT_MIN;
@@ -44,7 +44,7 @@ class TopDown {
         return dp[i][n][m] = max(currTake, currSkip);
     }
 
-    // O(AS*AS*N*M) & O(AS*N*M) : Where AS = arrSize
+    // O(AS*AS*N*M*K) & O(AS*N*M) : Where AS = arrSize, K = maximum size among all arr[i]
     int solveWithMemoLoop(vector<vector<vector<int>>>& dp, const vector<string>& arr, int start, int n, int m) {
         if(n < 0 || m < 0)
             return INT_MIN;
@@ -81,7 +81,7 @@ public:
 class BottomUp {
     int arrSize;
 
-    // O(AS*GN*GM) & O(AS*GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m
+    // O(AS*GN*GM*K) & O(AS*GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m, K = maximum size among all arr[i]
     int solveBy3DTable(const vector<string>& arr, int given_n, int given_m) {
         vector<vector<vector<int>>> dp(arrSize + 1, vector<vector<int>>(given_n + 1, vector<int>(given_m + 1, -1)));
 
@@ -107,7 +107,7 @@ class BottomUp {
         return dp[0][given_n][given_m];
     }
 
-    // O(AS*GN*GM) & O(GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m
+    // O(AS*GN*GM*K) & O(GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m, K = maximum size among all arr[i]
     int solveBy2DTable(const vector<string>& arr, int given_n, int given_m) {
         vector<vector<int>> next(given_n + 1, vector<int>(given_m + 1, -1)); // i + 1th table
         vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, -1)); // i + 1th table
