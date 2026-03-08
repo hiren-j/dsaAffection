@@ -145,7 +145,7 @@ class BottomUp {
 
         return next[0];
     }
-    // Note: In this problem 1D space optimization of loop version was possible
+    // Note: In this problem 1D space optimization of loop version is possible
 
 public:
     bool isSubsequence(string& s, string& t) {
