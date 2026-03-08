@@ -1,5 +1,4 @@
-
-// Code to check whether the string "s" is a subsequence of string "t" or not ~ coded by vHiren
+// Code to check whether the string 's' is a subsequence of string 't' or not ~ coded by vHiren
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
