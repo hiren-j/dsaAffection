@@ -43,7 +43,8 @@ class TopDown {
 public:
     bool isSubsequence(string& s, string& t) {
         n = s.size(), m = t.size();
-        return solveBy1DTable(s, t);
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return solveWithMemo(dp, s, t, 0, 0);
     }
 };
 
