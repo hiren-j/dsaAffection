@@ -96,7 +96,7 @@ class BottomUp {
         return dp[0][0];
     }
 
-    // O(N*M) & O(N*M)
+    // O(N*M) & O(M)
     bool solveBy1DTable(const string& s, const string& t) {
         vector<bool> nextRow(m + 1, false); 
 
