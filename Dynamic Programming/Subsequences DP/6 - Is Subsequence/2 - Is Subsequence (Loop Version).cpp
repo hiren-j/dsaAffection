@@ -120,27 +120,30 @@ class BottomUp {
     }
 
     // O(N*M*M) & O(M)
-    int solveBy1DTable(const string& s, const string& t) {
-        vector<bool> nextRow(m + 1, false), currRow(m + 1, false);
+    bool solveBy1DTable(const string& s, const string& t) {
+        vector<bool> nextRow(m + 1, false); // i + 1th row
 
-        for(int start = 0; start <= m; ++start) // Init first base case
-            nextRow[start] = true;
+        for(int j = 0; j <= m; ++j)
+            nextRow[j] = true;
 
         for(int i = n - 1; i >= 0; --i) {
+            vector<bool> idealRow(m + 1, false); // ith row
+
             for(int start = m - 1; start >= 0; --start) {
                 bool flag = false;
 
                 for(int j = start; j < m; ++j) {
-                    bool currTake = s[i] == t[j] 
+                    bool currTake = s[i] == t[j]
                                     ? nextRow[j + 1]
                                     : false;
                     flag |= currTake;
                     if(flag) break; // Make faster
-                }   
+                }
 
-                currRow[start] = flag;    
+                idealRow[start] = flag;
             }
-            nextRow = currRow;
+
+            swap(nextRow, idealRow);
         }
 
         return nextRow[0];
