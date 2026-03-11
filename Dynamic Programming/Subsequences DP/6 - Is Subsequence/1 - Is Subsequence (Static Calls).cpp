@@ -43,6 +43,7 @@ class TopDown {
 public:
     bool isSubsequence(string& s, string& t) {
         n = s.size(), m = t.size();
+        if(m < n) return false;
         vector<vector<int>> dp(n, vector<int>(m, -1));
         return solveWithMemo(dp, s, t, 0, 0);
     }
@@ -123,6 +124,7 @@ class BottomUp {
 public:
     bool isSubsequence(string& s, string& t) {
         n = s.size(), m = t.size();
+        if(m < n) return false;
         return solveBy1DTable(s, t);
     }
 };
@@ -134,6 +136,7 @@ public:
     // O(N+M) & O(1)
     bool isSubsequence(const string& s, const string& t) {
         const int n = s.size(), m = t.size();
+        if(m < n) return false;
         int i = 0, j = 0;
         
         while(i < n && j < m) {
