@@ -54,6 +54,7 @@ class TopDown {
 public:
     bool isSubsequence(string& s, string& t) {
         n = s.size(), m = t.size();
+        if(m < n) return false;
         vector<vector<int>> dp(n, vector<int>(m, -1));
         return solveWithMemo(dp, s, t, 0, 0);
     }
