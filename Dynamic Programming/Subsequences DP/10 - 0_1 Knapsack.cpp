@@ -6,7 +6,7 @@ class TopDown {
     int n;
     
     // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, vector<int>& cost, int i, int k) {
+    int solveWithoutMemo(const vector<int>& nums, const vector<int>& cost, int i, int k) {
         if(i == n || k == 0)
             return 0;
         
@@ -19,7 +19,7 @@ class TopDown {
     }
     
     // O(N*K) & O(N*K)
-    int solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, vector<int>& cost, int i, int k) {
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, const vector<int>& cost, int i, int k) {
         if(i == n || k == 0)
             return 0;
             
@@ -35,7 +35,7 @@ class TopDown {
     }
     
     // O(N*N*K) & O(N*K)
-    int solveWithMemoLoop(vector<vector<int>>& dp, vector<int>& nums, vector<int>& cost, int start, int k) {
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& nums, const vector<int>& cost, int start, int k) {
         if(start == n || k == 0)
             return 0;
             
@@ -66,7 +66,7 @@ public:
 class BottomUp {
     int n;
     
-    // O(N*K) & O(N*K)
+    // O(N*GK) & O(N*GK) : Where GK = given_k
     int solveBy2DTable(const vector<int>& nums, const vector<int>& cost, int given_k) {
         vector<vector<int>> dp(n + 1, vector<int>(given_k + 1, -1));
         
@@ -77,7 +77,7 @@ class BottomUp {
             dp[i][0] = 0; // if(k == 0) return 0
         
         for(int i = n - 1; i >= 0; --i) {
-            for(int k  = 1; k <= given_k; ++k) {
+            for(int k = 1; k <= given_k; ++k) {
                 int currSkip = dp[i + 1][k];
                 int currTake = cost[i] <= k 
                                 ? nums[i] + dp[i + 1][k - cost[i]]
@@ -89,12 +89,12 @@ class BottomUp {
         return dp[0][given_k];
     }
     
-    // O(N*K) & O(N*K)
+    // O(N*GK) & O(N*GK) : Where GK = given_k
     int solveBy2DEnhanced(const vector<int>& nums, const vector<int>& cost, int given_k) {
         vector<vector<int>> dp(n + 1, vector<int>(given_k + 1, 0));
         
         for(int i = n - 1; i >= 0; --i) {
-            for(int k  = 1; k <= given_k; ++k) {
+            for(int k = 1; k <= given_k; ++k) {
                 int currSkip = dp[i + 1][k];
                 int currTake = cost[i] <= k 
                                 ? nums[i] + dp[i + 1][k - cost[i]]
@@ -106,12 +106,12 @@ class BottomUp {
         return dp[0][given_k];
     }
     
-    // O(N*K) & O(K)
+    // O(N*GK) & O(GK) : Where GK = given_k
     int solveBy1DTable(const vector<int>& nums, const vector<int>& cost, int given_k) {
         vector<int> nextRow(given_k + 1, 0), idealRow(given_k + 1, 0); 
         
         for(int i = n - 1; i >= 0; --i) {
-            for(int k  = 1; k <= given_k; ++k) {
+            for(int k = 1; k <= given_k; ++k) {
                 int currSkip = nextRow[k];
                 int currTake = cost[i] <= k 
                                 ? nums[i] + nextRow[k - cost[i]]
