@@ -25,7 +25,7 @@ class TopDown {
         }
     }
 
-    // O(8*N) & O(2*N)
+    // O(2*N) & O(2*N)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums, int i, bool prevPick, int parity) {
         if(i == n)
             return (prevPick == true) ? 0 : INT_MIN;
