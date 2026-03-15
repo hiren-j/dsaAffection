@@ -11,7 +11,7 @@ class TopDown {
             return INT_MIN;
 
         if(i == arrSize)
-            return (n >= 0 && m >= 0) ? 0 : INT_MIN;
+            return 0;
 
         int currSkip = solveWithoutMemo(arr, i + 1, n, m);
 
@@ -29,7 +29,7 @@ class TopDown {
             return INT_MIN;
 
         if(i == arrSize)
-            return (n >= 0 && m >= 0) ? 0 : INT_MIN;
+            return 0;
 
         if(dp[i][n][m] != -1)
             return dp[i][n][m];
@@ -49,13 +49,13 @@ class TopDown {
         if(n < 0 || m < 0)
             return INT_MIN;
 
-        if(start == arrSize)
-            return (n >= 0 && m >= 0) ? 0 : INT_MIN;
+        if(i == arrSize)
+            return 0;
 
         if(dp[start][n][m] != -1)
             return dp[start][n][m];
 
-        int maxLen = (n >= 0 && m >= 0) ? 0 : INT_MIN;
+        int maxLen = 0;
 
         for(int i = start; i < arrSize; ++i) {
             int cnt1 = 0, cnt0 = 0;
@@ -87,7 +87,7 @@ class BottomUp {
 
         for(int n = 0; n <= given_n; ++n)
             for(int m = 0; m <= given_m; ++m)
-                dp[arrSize][n][m] = (n >= 0 && m >= 0) ? 0 : INT_MIN;
+                dp[arrSize][n][m] = 0;
 
         for(int i = arrSize - 1; i >= 0; --i) {
             for(int n = 0; n <= given_n; ++n) {
@@ -114,7 +114,7 @@ class BottomUp {
 
         for(int n = 0; n <= given_n; ++n)
             for(int m = 0; m <= given_m; ++m)
-                next[n][m] = (n >= 0 && m >= 0) ? 0 : INT_MIN;
+                dp[arrSize][n][m] = 0; : INT_MIN;
 
         for(int i = arrSize - 1; i >= 0; --i) {
             for(int n = 0; n <= given_n; ++n) {
