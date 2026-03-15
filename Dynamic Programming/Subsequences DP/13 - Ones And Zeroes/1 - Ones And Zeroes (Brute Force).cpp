@@ -107,14 +107,32 @@ class BottomUp {
         return dp[0][given_n][given_m];
     }
 
+    // O(AS*GN*GM*K) & O(AS*GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m, K = maximum size among all arr[i]
+    int solveBy3DEnhanced(const vector<string>& arr, int given_n, int given_m) {
+        vector<vector<vector<int>>> dp(arrSize + 1, vector<vector<int>>(given_n + 1, vector<int>(given_m + 1, 0)));
+
+        for(int i = arrSize - 1; i >= 0; --i) {
+            for(int n = 0; n <= given_n; ++n) {
+                for(int m = 0; m <= given_m; ++m) {
+                    int currSkip = dp[i + 1][n][m];
+
+                    int cnt1 = 0, cnt0 = 0;
+                    for(const char ch : arr[i]) ch == '1' ? cnt1++ : cnt0++;
+                    int currTake = (n - cnt1 < 0 || m - cnt0 < 0) ? INT_MIN : dp[i + 1][n - cnt1][m - cnt0];
+                    if(currTake != INT_MIN) currTake += 1;
+
+                    dp[i][n][m] = max(currTake, currSkip);
+                }
+            }
+        }
+
+        return dp[0][given_n][given_m];
+    }
+
     // O(AS*GN*GM*K) & O(GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m, K = maximum size among all arr[i]
     int solveBy2DTable(const vector<string>& arr, int given_n, int given_m) {
-        vector<vector<int>> next(given_n + 1, vector<int>(given_m + 1, -1)); // i + 1th table
-        vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, -1)); // ith table
-
-        for(int n = 0; n <= given_n; ++n)
-            for(int m = 0; m <= given_m; ++m)
-                dp[arrSize][n][m] = 0; : INT_MIN;
+        vector<vector<int>> next(given_n + 1, vector<int>(given_m + 1, 0)); // i + 1th table
+        vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, 0)); // ith table
 
         for(int i = arrSize - 1; i >= 0; --i) {
             for(int n = 0; n <= given_n; ++n) {
