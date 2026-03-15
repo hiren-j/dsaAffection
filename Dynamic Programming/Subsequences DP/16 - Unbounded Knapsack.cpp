@@ -2,148 +2,133 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown_V1 {
-public:
-    // Method to find the maximum total value you can collect for the knapsack, using recursion with memoization - O(N*C) & O(N*C) : Where C let be the capacity
-    int unboundedKnapsack(int n, int capacity, vector<int>& values, vector<int>& weights) {
-        vector<vector<int>> memory(n, vector<int>(capacity + 1, -1));
-        return solveWithMemo(memory, weights, values, n, 0, capacity);
+class TopDown {
+    int n;
+    
+    // O(2^K) & O(N)
+    int solveWithoutMemo(const vector<int>& nums, const vector<int>& cost, int i, int k) {
+        if(i == n || k == 0)
+            return 0;
+        
+        int currSkip = solveWithoutMemo(nums, cost, i + 1, k);
+        int currTake = cost[i] <= k 
+                        ? nums[i] + solveWithoutMemo(nums, cost, i, k - cost[i])
+                        : 0;
+                       
+        return max(currSkip, currTake);
     }
     
-private:
-    // O(2*N*C) & O(N*C + C)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& weights, vector<int>& values, int n, int index, int capacity) {
-        // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
-        if(index == n || capacity == 0)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][capacity] != -1)
-            return memory[index][capacity];
-            
-        // There are always two possibilities to perform at each index
-        int currSkip = solveWithMemo(memory, weights, values, n, index + 1, capacity); // Is to skip the index value 
-        int currTake = 0;                                                              // Is to take the index value
-        
-        // If possible then take the index value
-        if(capacity - weights[index] >= 0)  
-            currTake = values[index] + solveWithMemo(memory, weights, values, n, index, capacity - weights[index]);
-
-        // Store the result value to the memoization table and then return it
-        return memory[index][capacity] = max(currTake, currSkip);
-    }
-
-    // O(2^C) & O(C)
-    int solveWithoutMemo(vector<int>& weights, vector<int>& values, int n, int index, int capacity) {
-        // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
-        if(index == n || capacity == 0)
+    // O(N*K) & O(N*K)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, const vector<int>& cost, int i, int k) {
+        if(i == n || k == 0)
             return 0;
             
-        // There are always two possibilities to perform at each index
-        int currSkip = solveWithoutMemo(weights, values, n, index + 1, capacity); // Is to skip the index value
-        int currTake = 0;                                                         // Is to take the index value
+        if(dp[i][k] != -1)
+            return dp[i][k];
         
-        // If possible then take the index value
-        if(capacity - weights[index] >= 0)  
-            currTake = values[index] + solveWithoutMemo(weights, values, n, index, capacity - weights[index]);
-
-        // As we're striving for the maximum value hence return the maximum one 
-        return max(currTake, currSkip);
-    }
-};
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown_V2 {
-public:
-    // Method to find the maximum total value you can collect for the knapsack, using recursion with memoization - O(N*N*C) & O(N*C)
-    int unboundedKnapsack(int n, int capacity, vector<int>& values, vector<int>& weights) {
-        vector<vector<int>> memory(n, vector<int>(capacity + 1, -1));
-        return solveWithMemo(memory, weights, values, n, 0, capacity);
+        int currSkip = solveWithMemo(dp, nums, cost, i + 1, k);
+        int currTake = cost[i] <= k 
+                        ? nums[i] + solveWithMemo(dp, nums, cost, i, k - cost[i])
+                        : 0;
+                       
+        return dp[i][k] = max(currSkip, currTake);
     }
     
-private:
-    // O(N*N*C) & O(N*C + C)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& weights, vector<int>& values, int n, int startIndex, int capacity) {
-        // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
-        if(startIndex == n || capacity == 0)
+    // O(N*N*K) & O(N*K)
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& nums, const vector<int>& cost, int start, int k) {
+        if(start == n || k == 0)
             return 0;
             
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][capacity] != -1)
-            return memory[startIndex][capacity];
-            
-        // Stores the result value
-        int maxValue = 0;
+        if(dp[start][k] != -1)
+            return dp[start][k];
         
-        // Iterate and if possible then take the index value and update the result by the maximum value 
-        for(int index = startIndex; index < n; ++index) 
-            if(capacity - weights[index] >= 0) 
-                maxValue = max(maxValue, values[index] + solveWithMemo(memory, weights, values, n, index, capacity - weights[index]));   
-
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex][capacity] = maxValue;
+        int maxSum = 0;
+        
+        for(int i = start; i < n; ++i) {
+            int currTake = cost[i] <= k 
+                            ? nums[i] + solveWithMemoLoop(dp, nums, cost, i, k - cost[i])
+                            : 0;
+            maxSum = max(maxSum, currTake);
+        }
+            
+        return dp[start][k] = maxSum;
     }
-
-    // O(N^C) & O(C)
-    int solveWithoutMemo(vector<int>& weights, vector<int>& values, int n, int startIndex, int capacity) {
-        // Edge case: If all the values are exhausted or the capacity becomes zero then you can't fill any more value to the knapsack
-        if(startIndex == n || capacity == 0)
-            return 0;
-
-        // Stores the result value
-        int maxValue = 0;
-        
-        // Iterate and if possible then take the index value and update the result by the maximum value 
-        for(int index = startIndex; index < n; ++index) 
-            if(capacity - weights[index] >= 0) {
-                maxValue = max(maxValue, values[index] + solveWithoutMemo(weights, values, n, index, capacity - weights[index]));   
-        
-        // Return the result value            
-        return maxValue;
+    
+public:
+    int unboundedKnapsack(vector<int>& nums, vector<int>& cost, int k) {
+        n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(k + 1, -1));
+        return solveWithMemo(dp, nums, cost, 0, k);
     }
 };
-// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the maximum total value you can collect for the knapsack, using 2D tabulation - O(N*C) & O(N*C)
-    int unboundedKnapsack_V1(int n, int capacity, vector<int>& values, vector<int>& weights) {
-        vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
-
-        for(int index = n-1; index >= 0; --index) {
-            for(int currCapacity = 1; currCapacity <= capacity; ++currCapacity) {
-                int currSkip = dp[index + 1][currCapacity];
-                int currTake = 0;
-                if(currCapacity - weights[index] >= 0) {
-                    currTake = values[index] + dp[index][currCapacity - weights[index]];
-                }
-                dp[index][currCapacity] = max(currTake, currSkip);
+    int n;
+    
+    // O(N*GK) & O(N*GK) : Where GK = given_k
+    int solveBy2DTable(const vector<int>& nums, const vector<int>& cost, int given_k) {
+        vector<vector<int>> dp(n + 1, vector<int>(given_k + 1, -1));
+        
+        for(int k = 0; k <= given_k; ++k) 
+            dp[n][k] = 0; // if(i == n) return 0
+        
+        for(int i = 0; i <= n; ++i) 
+            dp[i][0] = 0; // if(k == 0) return 0
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 1; k <= given_k; ++k) {
+                int currSkip = dp[i + 1][k];
+                int currTake = cost[i] <= k 
+                                ? nums[i] + dp[i][k - cost[i]]
+                                : 0;
+                dp[i][k] = max(currSkip, currTake);  
             }
         }
-
-        return dp[0][capacity];
+        
+        return dp[0][given_k];
     }
-
-    // #2 Method to find the maximum total value you can collect for the knapsack, using 1D tabulation - O(N*C) & O(C)
-    int unboundedKnapsack_V2(int n, int capacity, vector<int>& values, vector<int>& weights) {
-        vector<int> nextRow(capacity + 1, 0), idealRow(capacity + 1, 0);
-
-        for(int index = n-1; index >= 0; --index) {
-            for(int currCapacity = 1; currCapacity <= capacity; ++currCapacity) {
-                int currSkip = nextRow[currCapacity];
-                int currTake = 0;
-                if(currCapacity - weights[index] >= 0) {
-                    currTake = values[index] + idealRow[currCapacity - weights[index]];
-                }
-                idealRow[currCapacity] = max(currTake, currSkip);
+    
+    // O(N*GK) & O(N*GK) : Where GK = given_k
+    int solveBy2DEnhanced(const vector<int>& nums, const vector<int>& cost, int given_k) {
+        vector<vector<int>> dp(n + 1, vector<int>(given_k + 1, 0));
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 1; k <= given_k; ++k) {
+                int currSkip = dp[i + 1][k];
+                int currTake = cost[i] <= k 
+                                ? nums[i] + dp[i][k - cost[i]]
+                                : 0;
+                dp[i][k] = max(currSkip, currTake);  
             }
-            nextRow = idealRow;
         }
-
-        return idealRow[capacity];
+        
+        return dp[0][given_k];
+    }
+    
+    // O(N*GK) & O(GK) : Where GK = given_k
+    int solveBy1DTable(const vector<int>& nums, const vector<int>& cost, int given_k) {
+        vector<int> nextRow(given_k + 1, 0), idealRow(given_k + 1, 0); 
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int k = 1; k <= given_k; ++k) {
+                int currSkip = nextRow[k];
+                int currTake = cost[i] <= k 
+                                ? nums[i] + idealRow[k - cost[i]]
+                                : 0;
+                idealRow[k] = max(currSkip, currTake);  
+            }
+            swap(nextRow, idealRow);
+        }
+        
+        return nextRow[given_k];
+    }
+    
+public:
+    int unboundedKnapsack(vector<int>& nums, vector<int>& cost, int k) {
+        n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(k + 1, -1));
+        return solveBy1DTable(nums, cost, k);
     }
 };
 
