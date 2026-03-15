@@ -5,7 +5,7 @@
 class TopDown {
     int n;
     
-    // O(2^K) & O(N)
+    // O(2^K) & O(K)
     int solveWithoutMemo(const vector<int>& nums, const vector<int>& cost, int i, int k) {
         if(i == n || k == 0)
             return 0;
