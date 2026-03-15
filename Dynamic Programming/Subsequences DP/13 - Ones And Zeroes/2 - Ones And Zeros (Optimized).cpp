@@ -25,7 +25,7 @@ class TopDown {
             return INT_MIN;
 
         if(i == arrSize)
-            return (n >= 0 && m >= 0) ? 0 : INT_MIN;
+            return 0;
 
         int currSkip = solveWithoutMemo(arr, i + 1, n, m);
         int currTake = solveWithoutMemo(arr, i + 1, n - count[i].first, m - count[i].second);
@@ -40,7 +40,7 @@ class TopDown {
             return INT_MIN;
 
         if(i == arrSize)
-            return (n >= 0 && m >= 0) ? 0 : INT_MIN;
+            return 0;
 
         if(dp[i][n][m] != -1)
             return dp[i][n][m];
@@ -58,12 +58,12 @@ class TopDown {
             return INT_MIN;
 
         if(start == arrSize)
-            return (n >= 0 && m >= 0) ? 0 : INT_MIN;
+            return 0;
 
         if(dp[start][n][m] != -1)
             return dp[start][n][m];
 
-        int maxLen = (n >= 0 && m >= 0) ? 0 : INT_MIN;
+        int maxLen = 0;
 
         for(int i = start; i < arrSize; ++i) {
             int currTake = solveWithMemoLoop(dp, arr, i + 1, n - count[i].first, m - count[i].second);
@@ -107,7 +107,7 @@ class BottomUp {
 
         for(int n = 0; n <= given_n; ++n)
             for(int m = 0; m <= given_m; ++m)
-                dp[arrSize][n][m] = (n >= 0 && m >= 0) ? 0 : INT_MIN;
+                dp[arrSize][n][m] = 0;
 
         for(int i = arrSize - 1; i >= 0; --i) {
             for(int n = 0; n <= given_n; ++n) {
@@ -127,8 +127,8 @@ class BottomUp {
 
     // O(AS*GN*GM) & O(GN*GM) : Where AS = arrSize, GN = given_n, GM = given_m
     int solveBy2DTable(const vector<string>& arr, int given_n, int given_m) {
-        vector<vector<int>> next(given_n + 1, vector<int>(given_m + 1, -1)); // i + 1th table
-        vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, -1)); // ith table
+        vector<vector<int>> next(given_n + 1, vector<int>(given_m + 1, 0)); // i + 1th table
+        vector<vector<int>> curr(given_n + 1, vector<int>(given_m + 1, 0)); // ith table
 
         for(int n = 0; n <= given_n; ++n)
             for(int m = 0; m <= given_m; ++m)
