@@ -9,12 +9,12 @@ public:
         string s2 = s1;
         reverse(begin(s2), end(s2));
 
-        const int n = s1.size();
-        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+        const int n = s1.size(), m = s2.size();
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
         // Find length of LCS
         for(int i = n - 1; i >= 0; --i) {
-            for(int j = n - 1; j >= 0; --j) {
+            for(int j = m - 1; j >= 0; --j) {
                 int currTake  = s1[i] == s2[j] 
                                 ? 1 + dp[i + 1][j + 1]
                                 : 0;
@@ -24,10 +24,10 @@ public:
             }
         }
         
-        string LPS;
         int i = 0, j = 0;
+        string LPS;
 
-        while(i < n && j < n) {
+        while(i < n && j < m) {
             // If both the letters match
             if(s1[i] == s2[j]) {
                 LPS.push_back(s1[i]);
