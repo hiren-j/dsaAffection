@@ -3,87 +3,122 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 class TopDown {
-public:
-    // Method to find the minimum number of steps required to make word1 and word2 the same :-
-    int minDistance(string& word1, string& word2) {
-        int n = word1.size(), m = word2.size();
-        int lenLCS = longestCommonSubseq(word1, word2, n, m);
-        return (n - lenLCS) + (m - lenLCS);
-    }
+    int n, m;
 
-private:
-    // Method to find the length of the LCS, using recursion with memoization - O(N*M) & O(N*M)
-    int longestCommonSubseq(string& word1, string& word2, int n, int m) {
-        vector<vector<int>> memory(n, vector<int>(m, -1));
-        return solveWithMemo(memory, word1, word2, n - 1, m - 1);
-    }
-
-    // O(2*N*M) & O(N*M + N+M)
-    int solveWithMemo(vector<vector<int>>& memory, string& word1, string& word2, int i, int j) {
-        // Edge case: If any of the string gets exhausted then we've found a common subsequence
-        if(i < 0 || j < 0)
+    // O(2^(N+M)) & O(N+M)
+    int solveWithoutMemo(const string& s1, const string& s2, int i, int j) {
+        if(i == n || j == m)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[i][j] != -1)
-            return memory[i][j];
+        int currSkip1 = solveWithoutMemo(s1, s2, i + 1, j);
+        int currSkip2 = solveWithoutMemo(s1, s2, i, j + 1);
+        int currTake  = s1[i] == s2[j] 
+                        ? 1 + solveWithoutMemo(s1, s2, i + 1, j + 1)
+                        : 0;
 
-        // If the letters of both the string matches then we've got a common subsequence of length 1 
-        if(word1[i] == word2[j])
-            return 1 + solveWithMemo(memory, word1, word2, i - 1, j - 1);
+        return max({currTake, currSkip1, currSkip2});
+    }
+    
+    // O(N*M) & O(N*M)
+    int solveWithMemo(vector<vector<int>>& dp, const string& s1, const string& s2, int i, int j) {
+        if(i == n || j == m)
+            return 0;
 
-        // Else when the letters doesn't match then it's possible that the jth letter could be found at the left side of the ith letter and vice versa. So, that's why explore both the possibilities and as we're striving for the LCS hence store the maximum value to the memoization table and then return it
-        return memory[i][j] = max(solveWithMemo(memory, word1, word2, i, j - 1), solveWithMemo(memory, word1, word2, i - 1, j));
+        if(dp[i][j] != -1)
+            return dp[i][j];
+
+        int currSkip1 = solveWithMemo(dp, s1, s2, i + 1, j);
+        int currSkip2 = solveWithMemo(dp, s1, s2, i, j + 1);
+        int currTake  = s1[i] == s2[j] 
+                        ? 1 + solveWithMemo(dp, s1, s2, i + 1, j + 1)
+                        : 0;
+
+        return dp[i][j] = max({currTake, currSkip1, currSkip2});
+    }
+
+public:
+    int minDistance(string& s1, string& s2) {
+        n = s1.size(), m = s2.size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        int lenLCS = solveWithMemo(dp, s1, s2, 0, 0);
+        return (n - lenLCS) + (m - lenLCS);
     }
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // Method to find the minimum number of steps required to make word1 and word2 the same :-
-    int minDistance(string& word1, string& word2) {
-        int n = word1.size(), m = word2.size();
-        int lenLCS = longestCommonSubseq_V2(word1, word2, n, m);
-        return (n - lenLCS) + (m - lenLCS);
+    int n, m;
+
+    // O(N*M) & O(N*M)
+    int solveBy2DTable(const string& s1, const string& s2) {
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
+
+        for(int j = 0; j <= m; ++j)
+            dp[n][j] = 0;
+
+        for(int i = 0; i <= n; ++i)
+            dp[i][m] = 0;
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = m - 1; j >= 0; --j) {
+                int currSkip1 = dp[i + 1][j];
+                int currSkip2 = dp[i][j + 1];
+                int currTake  = s1[i] == s2[j] 
+                                ? 1 + dp[i + 1][j + 1]
+                                : 0;
+                dp[i][j] = max({currTake, currSkip1, currSkip2});
+            }
+        }
+
+        return dp[0][0];
     }
 
-private:
-    // #1 Method to find the length of the LCS, using 2D tabulation - O(N*M) & O(N*M)
-    int longestCommonSubseq_V1(string& word1, string& word2, int n, int m) {
+    // O(N*M) & O(N*M)
+    int solveBy2DEnhanced(const string& s1, const string& s2) {
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
-        for(int i = 1; i <= n; ++i) {
-            for(int j = 1; j <= m; ++j) {
-                if(word1[i - 1] == word2[j - 1]) {
-                    dp[i][j] = 1 + dp[i - 1][j - 1];
-                }
-                else {
-                    dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
-                }
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = m - 1; j >= 0; --j) {
+                int currSkip1 = dp[i + 1][j];
+                int currSkip2 = dp[i][j + 1];
+                int currTake  = s1[i] == s2[j] 
+                                ? 1 + dp[i + 1][j + 1]
+                                : 0;
+                dp[i][j] = max({currTake, currSkip1, currSkip2});
             }
         }
 
-        return dp[n][m];
+        return dp[0][0];
     }
 
-    // #2 Method to find the length of the LCS, using 1D tabulation - O(N*M) & O(M)
-    int longestCommonSubseq_V2(string& word1, string& word2, int n, int m) {
-        vector<int> prevRow(m + 1, 0), currRow(m + 1, 0);
+    // O(N*M) & O(M)
+    int solveBy1DTable(const string& s1, const string& s2) {
+        vector<int> nextRow(m + 1, 0); // i + 1th row
 
-        for(int i = 1; i <= n; ++i) {
-            for(int j = 1; j <= m; ++j) {
-                if(word1[i - 1] == word2[j - 1]) {
-                    currRow[j] = 1 + prevRow[j - 1];
-                }
-                else {
-                    currRow[j] = max(currRow[j - 1], prevRow[j]);
-                }
+        for(int i = n - 1; i >= 0; --i) {
+            vector<int> idealRow(m + 1, 0); // ith row
+
+            for(int j = m - 1; j >= 0; --j) {
+                int currSkip1 = nextRow[j];
+                int currSkip2 = idealRow[j + 1];
+                int currTake  = s1[i] == s2[j] 
+                                ? 1 + nextRow[j + 1]
+                                : 0;
+                idealRow[j] = max({currTake, currSkip1, currSkip2});
             }
-            prevRow = currRow;
+
+            swap(nextRow, idealRow);
         }
 
-        return prevRow[m];
+        return nextRow[0];
+    }
+
+public:
+    int minDistance(string& s1, string& s2) {
+        n = s1.size(), m = s2.size();
+        int lenLCS = solveBy1DTable(s1, s2);
+        return (n - lenLCS) + (m - lenLCS);
     }
 };
 
