@@ -5,6 +5,7 @@
 class TopDown {
     int n, m;
 
+    // O(2^(N+M)) & O(N+M)
     int solveWithoutMemo(const string& s1, const string& s2, int i, int j) {
         if(i == n || j == m)
             return 0;
@@ -18,6 +19,7 @@ class TopDown {
         return max({currTake, currSkip1, currSkip2});
     }
     
+    // O(N*M) & O(N*M)
     int solveWithMemo(vector<vector<int>>& dp, const string& s1, const string& s2, int i, int j) {
         if(i == n || j == m)
             return 0;
@@ -47,6 +49,7 @@ public:
 class BottomUp {
     int n, m;
 
+    // O(N*M) & O(N*M)
     int solveBy2DTable(const string& s1, const string& s2) {
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
 
@@ -70,6 +73,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(N*M) & O(N*M)
     int solveBy2DEnhanced(const string& s1, const string& s2) {
         vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
@@ -87,6 +91,7 @@ class BottomUp {
         return dp[0][0];
     }
 
+    // O(N*M) & O(M)
     int solveBy1DTable(const string& s1, const string& s2) {
         vector<int> nextRow(m + 1, 0); // i + 1th row
 
