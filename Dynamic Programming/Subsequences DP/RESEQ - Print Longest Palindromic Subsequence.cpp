@@ -27,7 +27,7 @@ public:
         string LPS;
         int i = 0, j = 0;
 
-        while(i > 0 && j > 0) {
+        while(i < n && j < n) {
             // If both the letters match
             if(s1[i] == s2[j]) {
                 LPS.push_back(s1[i]);
