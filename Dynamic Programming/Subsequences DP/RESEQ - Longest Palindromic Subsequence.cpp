@@ -5,7 +5,7 @@
 class TopDown {
     int n, m;
 
-    // O(2^(N+M)) & O(N+M)
+    // O(3^(N+M)) & O(N+M)
     int solveWithoutMemo(const string& s1, const string& s2, int i, int j) {
         if(i == n || j == m)
             return 0;
