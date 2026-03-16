@@ -76,7 +76,7 @@ class BottomUp {
     
     // O(N*M) & O(N*M)
     int solveBy2DEnhanced(const string& s1, const string& s2) {
-        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0)); // Fill dp table with 0 so don't have to initialize both base cases seperately
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0)); 
         int maxLen = 0;
          
         for(int i = n - 1; i >= 0; --i) {
@@ -92,11 +92,34 @@ class BottomUp {
     
         return maxLen;
     }
+
+    // O(N*M) & O(M)
+    int solveBy1DTable(const string& s1, const string& s2) {
+        vector<int> nextRow(m + 1, 0); // i + 1th row
+        int maxLen = 0;
+         
+        for(int i = n - 1; i >= 0; --i) {
+            vector<int> currRow(m + 1, 0); // ith row
+            
+            for(int j = m - 1; j >= 0; --j) {
+                if(s1[i] == s2[j])
+                    currRow[j] = 1 + nextRow[j + 1];
+                else
+                    currRow[j] = 0;
+                
+                maxLen = max(maxLen, currRow[j]);
+            }
+            
+            swap(nextRow, currRow);
+        }
     
+        return maxLen;
+    }
+
 public:
     int longCommSubstr(string& s1, string& s2) {
         n = s1.size(), m = s2.size();
-        return solveBy2DEnhanced(s1, s2);
+        return solveBy1DTable(s1, s2);
     }
 };
 
