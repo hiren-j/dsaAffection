@@ -126,4 +126,4 @@ public:
 
 Topics: String | Dynamic Programming
 Links : https://leetcode.com/problems/delete-operation-for-two-strings/description/
-        https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/String%20DP/Longest%20Common%20Subsequence.cpp
+        https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/Subsequences%20DP/RESEQ%20-%20Longest%20Common%20Subsequence.cpp
