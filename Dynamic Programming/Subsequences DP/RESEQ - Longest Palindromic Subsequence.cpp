@@ -42,7 +42,7 @@ public:
         reverse(begin(s2), end(s2));
         n = s1.size(), m = s2.size();
         vector<vector<int>> dp(n, vector<int>(m, -1));
-        return solveWithMemo(dp, s1, s2, 0, 0);
+        return solveWithMemo(dp, s1, s2, 0, 0); // Find length of LCS
     }
 };
 
@@ -120,7 +120,7 @@ public:
         string s2 = s1;
         reverse(begin(s2), end(s2));
         n = s1.size(), m = s2.size();
-        return solveBy1DTable(s1, s2);
+        return solveBy1DTable(s1, s2); // Find length of LCS
     }
 };
 
