@@ -5,7 +5,7 @@
 class BottomUp {
 public:
     // O(N*M) & O(N*M)
-    int printLongestPalindromicSubseq(string& s1) {
+    string printLongestPalindromicSubseq(string& s1) {
         string s2 = s1;
         reverse(begin(s2), end(s2));
 
@@ -30,7 +30,7 @@ public:
         while(i > 0 && j > 0) {
             // If both the letters match
             if(s1[i] == s2[j]) {
-                LPS.push_back(s1[i1]);
+                LPS.push_back(s1[i]);
                 i = i + 1;
                 j = j + 1;
             }
