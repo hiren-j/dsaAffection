@@ -1,25 +1,25 @@
-// Code to find maximum number of pages can buy without exceeding the total cost of x ~ coded by vHiren
+// Code to find maximum number of pages can buy without exceeding the total prices of x ~ coded by vHiren
 #include <iostream>
 #include <climits>
 #include <vector>
 using namespace std;
 
-// O(N*GK) & O(GK) : Where GK = given_k
-int solveBy1DTable(const vector<int>& nums, const vector<int>& cost, int given_k) {
-    vector<int> nextRow(given_k + 1, 0), currRow(given_k + 1, 0); 
+// O(N*X) & O(X)
+int solveBy1DTable(const vector<int>& pages, const vector<int>& prices, int x) {
+    vector<int> nextRow(x + 1, 0), currRow(x + 1, 0); 
     
-    for(int i = nums.size() - 1; i >= 0; --i) {
-        for(int k = 1; k <= given_k; ++k) {
+    for(int i = pages.size() - 1; i >= 0; --i) {
+        for(int k = 1; k <= x; ++k) {
             int skipPages = nextRow[k];
-            int buyPages = cost[i] <= k 
-                            ? nums[i] + nextRow[k - cost[i]]
+            int buyPages  = prices[i] <= k 
+                            ? pages[i] + nextRow[k - prices[i]]
                             : 0;
             currRow[k] = max(skipPages, buyPages);  
         }
         swap(nextRow, currRow);
     }
     
-    return nextRow[given_k];
+    return nextRow[x];
 }
 
 // Driver code
