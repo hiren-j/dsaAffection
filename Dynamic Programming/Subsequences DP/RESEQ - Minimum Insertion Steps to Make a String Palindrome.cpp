@@ -19,7 +19,7 @@ class TopDown {
                         ? 1 + solveWithMemo(dp, s1, s2, i + 1, j + 1)
                         : 0;
 
-        return dp[i][j] = max({currTake, currSkip1, currSkip2});
+        return dp[i][j] = max({currSkip1, currSkip2, currTake});
     }
 
     int longestPalindromeSubseq(string& s1) {
@@ -54,7 +54,7 @@ class BottomUp {
                 int currTake  = s1[i] == s2[j] 
                                 ? 1 + nextRow[j + 1]
                                 : 0;
-                idealRow[j] = max({currTake, currSkip1, currSkip2});
+                idealRow[j] = max({currSkip1, currSkip2, currTake});
             }
 
             swap(nextRow, idealRow);
