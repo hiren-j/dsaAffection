@@ -13,10 +13,10 @@ class TopDown {
         if(i == n)
             return (k == 0) ? 1 : 0;
             
-        int currTake = solveWithoutMemo(arr, i + 1, k - arr[i]);
         int currSkip = solveWithoutMemo(arr, i + 1, k);
+        int currTake = solveWithoutMemo(arr, i + 1, k - arr[i]);
         
-        return (currTake + currSkip);
+        return (currSkip + currTake);
     }
     
     // O(N*K) & O(N*K)
@@ -30,10 +30,10 @@ class TopDown {
         if(dp[i][k] != -1)
             return dp[i][k];
             
-        int currTake = solveWithMemo(dp, arr, i + 1, k - arr[i]);
         int currSkip = solveWithMemo(dp, arr, i + 1, k);
+        int currTake = solveWithMemo(dp, arr, i + 1, k - arr[i]);
         
-        return dp[i][k] = (currTake + currSkip);
+        return dp[i][k] = (currSkip + currTake);
     }  
     
     // O(N*N*K) & O(N*K)
@@ -79,9 +79,9 @@ class BottomUp {
         
         for(int i = n - 1; i >= 0; --i) {
             for(int k = 0; k <= given_k; ++k) {
-                int currTake = (k - arr[i] < 0) ? 0 : dp[i + 1][k - arr[i]];
                 int currSkip = dp[i + 1][k];
-                dp[i][k] = (currTake + currSkip);
+                int currTake = (k - arr[i] < 0) ? 0 : dp[i + 1][k - arr[i]];
+                dp[i][k] = (currSkip + currTake);
             }
         }
         
@@ -99,9 +99,9 @@ class BottomUp {
             vector<int> idealRow(given_k + 1, -1); // ith row
             
             for(int k = 0; k <= given_k; ++k) {
-                int currTake = (k - arr[i] < 0) ? 0 : nextRow[k - arr[i]];
                 int currSkip = nextRow[k];
-                idealRow[k] = (currTake + currSkip);
+                int currTake = (k - arr[i] < 0) ? 0 : nextRow[k - arr[i]];
+                idealRow[k] = (currSkip + currTake);
             }
             
             swap(nextRow, idealRow);
