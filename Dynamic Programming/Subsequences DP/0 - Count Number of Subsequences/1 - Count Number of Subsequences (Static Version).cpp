@@ -12,8 +12,8 @@ class TopDown {
         if(i == n)
             return 1;
 
-        int currTake = solveWithoutMemo(nums, i + 1);
         int currSkip = solveWithoutMemo(nums, i + 1);
+        int currTake = solveWithoutMemo(nums, i + 1);
 
         return (currSkip + currTake);
     }
@@ -26,8 +26,8 @@ class TopDown {
         if(dp[i] != -1)
             return dp[i];
 
-        int currTake = solveWithMemo(dp, nums, i + 1);
         int currSkip = solveWithMemo(dp, nums, i + 1);
+        int currTake = solveWithMemo(dp, nums, i + 1);
 
         return dp[i] = (currSkip + currTake);
     }
@@ -49,8 +49,8 @@ class BottomUp {
         dp[n] = 1;
 
         for(int i = n - 1; i >= 0; --i) {
-            int currTake = dp[i + 1];
             int currSkip = dp[i + 1];
+            int currTake = dp[i + 1];
             dp[i] = (currSkip + currTake);
         }
 
@@ -63,8 +63,8 @@ class BottomUp {
         int dp_i        = 1; // dp[i];
 
         for(int i = n - 1; i >= 0; --i) {
-            int currTake = dp_i_plus_1;
             int currSkip = dp_i_plus_1;
+            int currTake = dp_i_plus_1;
             dp_i = (currSkip + currTake);
             dp_i_plus_1 = dp_i;
         }
