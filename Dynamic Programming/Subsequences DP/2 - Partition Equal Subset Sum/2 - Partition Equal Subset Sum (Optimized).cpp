@@ -15,10 +15,10 @@ class TopDown {
         if(dp[i][k] != -1)
             return dp[i][k];
             
-        bool currTake = solveWithMemo(dp, nums, i + 1, k - nums[i]);
         bool currSkip = solveWithMemo(dp, nums, i + 1, k);
+        bool currTake = solveWithMemo(dp, nums, i + 1, k - nums[i]);
         
-        return dp[i][k] = (currTake || currSkip);
+        return dp[i][k] = (currSkip || currTake);
     }
 
 public:
@@ -49,9 +49,9 @@ class BottomUp {
         
         for(int i = n - 1; i >= 0; --i) {
             for(int k = 0; k <= arrSum / 2; ++k) {
-                bool currTake = (k - nums[i] < 0) ? false : dp[i + 1][k - nums[i]];
                 bool currSkip = dp[i + 1][k];
-                dp[i][k] = (currTake || currSkip);  
+                bool currTake = (k - nums[i] < 0) ? false : dp[i + 1][k - nums[i]];
+                dp[i][k] = (currSkip || currTake);
             }
         }
     }
