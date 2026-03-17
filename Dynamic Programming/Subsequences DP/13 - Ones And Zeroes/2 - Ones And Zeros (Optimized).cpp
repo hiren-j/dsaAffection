@@ -31,7 +31,7 @@ class TopDown {
         int currTake = solveWithoutMemo(arr, i + 1, n - count[i].first, m - count[i].second);
         if(currTake != INT_MIN) currTake += 1;
 
-        return max(currTake, currSkip);
+        return max(currSkip, currTake);
     }
 
     // O(AS*N*M) & O(AS*N*M) : Where AS = arrSize
@@ -49,7 +49,7 @@ class TopDown {
         int currTake = solveWithMemo(dp, arr, i + 1, n - count[i].first, m - count[i].second);
         if(currTake != INT_MIN) currTake += 1;
 
-        return dp[i][n][m] = max(currTake, currSkip);
+        return dp[i][n][m] = max(currSkip, currTake);
     }
 
     // O(AS*AS*N*M) & O(AS*N*M) : Where AS = arrSize
@@ -117,7 +117,7 @@ class BottomUp {
                                     ? INT_MIN 
                                     : dp[i + 1][n - count[i].first][m - count[i].second];
                     if(currTake != INT_MIN) currTake += 1;
-                    dp[i][n][m] = max(currTake, currSkip);
+                    dp[i][n][m] = max(currSkip, currTake);
                 }
             }
         }
@@ -137,7 +137,7 @@ class BottomUp {
                                     ? INT_MIN 
                                     : dp[i + 1][n - count[i].first][m - count[i].second];
                     if(currTake != INT_MIN) currTake += 1;
-                    dp[i][n][m] = max(currTake, currSkip);
+                    dp[i][n][m] = max(currSkip, currTake);
                 }
             }
         }
@@ -158,7 +158,7 @@ class BottomUp {
                                     ? INT_MIN 
                                     : next[n - count[i].first][m - count[i].second];
                     if(currTake != INT_MIN) currTake += 1;
-                    curr[n][m] = max(currTake, currSkip);
+                    curr[n][m] = max(currSkip, currTake);
                 }
             }
             swap(next, curr);
