@@ -19,7 +19,7 @@ class TopDown {
         if(nums[i] <= k)
             currTake = solveWithoutMemo(nums, i - 1, k - nums[i]);
 
-        return (currTake + currSkip);
+        return (currSkip + currTake);
     }
     
     // O(N*K) & O(N*K)
@@ -40,7 +40,7 @@ class TopDown {
         if(nums[i] <= k)
             currTake = solveWithMemo(dp, nums, i - 1, k - nums[i]);
 
-        return dp[i][k] = (currTake + currSkip);
+        return dp[i][k] = (currSkip + currTake);
     }
     
 public:
@@ -75,7 +75,7 @@ class BottomUp {
                 if(nums[i] <= k)
                     currTake = dp[i - 1][k - nums[i]];
         
-                dp[i][k] = (currTake + currSkip);
+                dp[i][k] = (currSkip + currTake);
             }
         }
         
@@ -103,7 +103,7 @@ class BottomUp {
                 if(nums[i] <= k)
                     currTake = prevRow[k - nums[i]];
         
-                currRow[k] = (currTake + currSkip);
+                currRow[k] = (currSkip + currTake);
             }
             
             swap(prevRow, currRow);
