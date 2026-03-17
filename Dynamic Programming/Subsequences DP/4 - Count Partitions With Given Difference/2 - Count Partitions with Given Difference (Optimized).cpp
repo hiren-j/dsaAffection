@@ -16,10 +16,10 @@ class TopDown {
         if(dp[i][k] != -1)
             return dp[i][k];
             
-        int currTake = solveWithMemo(dp, nums, i + 1, k - nums[i]);
         int currSkip = solveWithMemo(dp, nums, i + 1, k);
+        int currTake = solveWithMemo(dp, nums, i + 1, k - nums[i]);
         
-        return dp[i][k] = (currTake + currSkip);
+        return dp[i][k] = (currSkip + currTake);
     }
     
 public:
@@ -52,9 +52,9 @@ class BottomUp {
         
         for(int i = n - 1; i >= 0; --i) {
             for(int k = 0; k <= arrSum; ++k) {
-                int currTake = (k - nums[i] < 0) ? 0 : dp[i + 1][k - nums[i]];
                 int currSkip = dp[i + 1][k];
-                dp[i][k] = (currTake + currSkip);
+                int currTake = (k - nums[i] < 0) ? 0 : dp[i + 1][k - nums[i]];
+                dp[i][k] = (currSkip + currTake);
             }
         }
     }
