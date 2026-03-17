@@ -16,7 +16,7 @@ class TopDown {
                         ? 1 + solveWithoutMemo(s1, s2, i + 1, j + 1)
                         : 0;
 
-        return max({currTake, currSkip1, currSkip2});
+        return max({currSkip1, currSkip2, currTake});
     }
     
     // O(N*M) & O(N*M)
@@ -33,7 +33,7 @@ class TopDown {
                         ? 1 + solveWithMemo(dp, s1, s2, i + 1, j + 1)
                         : 0;
 
-        return dp[i][j] = max({currTake, currSkip1, currSkip2});
+        return dp[i][j] = max({currSkip1, currSkip2, currTake});
     }
 
 public:
@@ -67,7 +67,7 @@ class BottomUp {
                 int currTake  = s1[i] == s2[j] 
                                 ? 1 + dp[i + 1][j + 1]
                                 : 0;
-                dp[i][j] = max({currTake, currSkip1, currSkip2});
+                dp[i][j] = max({currSkip1, currSkip2, currTake});
             }
         }
 
@@ -85,7 +85,7 @@ class BottomUp {
                 int currTake  = s1[i] == s2[j] 
                                 ? 1 + dp[i + 1][j + 1]
                                 : 0;
-                dp[i][j] = max({currTake, currSkip1, currSkip2});
+                dp[i][j] = max({currSkip1, currSkip2, currTake});
             }
         }
 
@@ -105,7 +105,7 @@ class BottomUp {
                 int currTake  = s1[i] == s2[j] 
                                 ? 1 + nextRow[j + 1]
                                 : 0;
-                idealRow[j] = max({currTake, currSkip1, currSkip2});
+                idealRow[j] = max({currSkip1, currSkip2, currTake});
             }
 
             swap(nextRow, idealRow);
