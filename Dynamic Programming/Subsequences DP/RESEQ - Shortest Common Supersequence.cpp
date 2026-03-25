@@ -27,21 +27,20 @@ public:
         int i = 0, j = 0;
 
         while(i < n && j < m) {
-            // If both the letters match
+            // If both letters match, then take any of the letter in move in both strings
             if(s1[i] == s2[j]) {
-                // Take only 1 letter
                 answer.push_back(s1[i]);
                 i++;
                 j++;
             }
-            // Else when both the letters don't match
+            // Else when both letters don't match
             else {
-                // If it's maximum then string1 will shrink by size 1. So before shrink take that dropped letter of string1
+                // If it's maximum then move in string1. So before moving take the ith letter
                 if(dp[i + 1][j] > dp[i][j + 1]) {
                     answer.push_back(s1[i]);
                     i++;
                 }   
-                // Else if it's maximum then string2 will shrink by size 1. So before shrink take that dropped letter of string2
+                // Else if it's maximum then move in string2. So before moving take the jth letter
                 else {
                     answer.push_back(s2[j]);
                     j++;
@@ -49,13 +48,13 @@ public:
             }
         }
 
-        // Store the remaining letters of string1 to the answer
+        // Store the remaining letters of string1 to answer
         while(i < n) {
             answer.push_back(s1[i]);
             i++;
         }
 
-        // Store the remaining letters of string2 to the answer
+        // Store the remaining letters of string2 to answer
         while(j < m) {
             answer.push_back(s2[j]);
             j++;
