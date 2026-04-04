@@ -4,9 +4,10 @@
 
 class TopDown {
     int n;
-    
+
+    // O(2^(N+N)) & O(N+N)
     int solveWithoutMemo(const vector<int>& price, int cutLen, int rodLen) {
-        if(rodLen == 0 || cutLen > price.size())
+        if(rodLen == 0 || cutLen > n)
             return 0;
             
         int skipCut    = solveWithoutMemo(price, cutLen + 1, rodLen);
@@ -16,7 +17,8 @@ class TopDown {
         
         return max(performCut, skipCut);
     }
-    
+
+    // O(N^2) & O(N^2)
     int solveWithMemo(vector<vector<int>>& memory, const vector<int>& price, int cutLen, int rodLen) {
         if(cutLen > n || rodLen == 0)
             return 0;
@@ -32,6 +34,7 @@ class TopDown {
         return memory[cutLen][rodLen] = max(performCut, skipCut);
     }
     
+    // O(N^3) & O(N^2)
     int solveWithMemoLoop(vector<vector<int>>& memory, const vector<int>& price, int start, int rodLen) {
         if(start > n || rodLen == 0)
             return 0;
@@ -64,6 +67,7 @@ public:
 class BottomUp {
     int n;
 
+    // O(N^2) & O(N^2)
     int solveBy2DTable(const vector<int>& price) {
         vector<vector<int>> dp(n + 2, vector<int>(n + 1, 0));
         
@@ -80,6 +84,7 @@ class BottomUp {
         return dp[1][n];
     }
     
+    // O(N^2) & O(N)
     int solveBy1DTable(const vector<int>& price) {
         vector<int> nextRow(n + 1, 0), currRow(n + 1, 0);
         
