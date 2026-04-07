@@ -65,9 +65,9 @@ class BottomUp {
 
     // O(3*GN) & O(1) : Where GN = given_n
     int solveWithoutTable(int given_n) {
-        int dp_n_2 = 0; // dp[n - 2] = dp[2 - 2] = dp[0]
-        int dp_n_1 = 1; // dp[n - 1] = dp[2 - 1] = dp[1]
-        int dp_n   = 1; // dp[n]
+        int dp_n_2 = 0; 
+        int dp_n_1 = 1; 
+        int dp_n   = 1; 
 
         for(int n = 2; n <= given_n; ++n) {
             int res1 = dp_n_1;
