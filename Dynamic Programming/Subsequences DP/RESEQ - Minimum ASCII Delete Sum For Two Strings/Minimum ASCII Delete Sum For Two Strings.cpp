@@ -11,7 +11,6 @@ class TopDown {
         return sum;
     }
 
-    // O(N*M) & O(N*M)
     int solveWithMemo(vector<vector<int>>& dp, const string& s1, const string& s2, int i, int j) {
         if(i == n || j == m)
             return 0;
@@ -51,7 +50,6 @@ class BottomUp {
         return sum;
     }
 
-    // O(N*M) & O(M)
     int solveBy1DTable(const string& s1, const string& s2) {
         vector<int> nextRow(m + 1, 0); // i + 1th row
 
