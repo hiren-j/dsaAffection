@@ -63,9 +63,9 @@ class BottomUp {
 
     // O(N) & O(1)
     int solveWithoutTable(const vector<int>& cost, int start) {
-        int dp_i_plus_2 = 0; // dp[i + 2] = dp[n - 1 + 2] = dp[n + 1]
-        int dp_i_plus_1 = 0; // dp[i + 1] = dp[n - 1 + 1] = dp[n]
-        int dp_i = -1;       // dp[i]
+        int dp_i_plus_2 = 0; 
+        int dp_i_plus_1 = 0; 
+        int dp_i = -1;       
 
         for(int i = n - 1; i >= start; --i) {
             int climb1Step = dp_i_plus_1 + cost[i];
