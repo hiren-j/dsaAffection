@@ -1,4 +1,4 @@
-// Code to find the nth number of the tribonacci sequence ~ coded by Hiren
+// Code to find the nth number of the tribonacci sequence ~ coded by vHiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
@@ -8,30 +8,29 @@ class TopDown {
         if(n < 3)
             return (n == 0) ? 0 : 1;
 
-        int prevNum1 = solveWithoutMemo(n - 1);
-        int prevNum2 = solveWithoutMemo(n - 2);
-        int prevNum3 = solveWithoutMemo(n - 3);
+        int res1 = solveWithoutMemo(n - 1);
+        int res2 = solveWithoutMemo(n - 2);
+        int res3 = solveWithoutMemo(n - 3);
 
-        return prevNum1 + prevNum2 + prevNum3;
+        return res1 + res2 + res3;
     }
 
     // O(3*N) & O(2*N)
     int solveWithMemo(vector<int>& memory, int n) {
         if(n < 3)
             return (n == 0) ? 0 : 1;
-        
+
         if(memory[n] != -1)
             return memory[n];
 
-        int prevNum1 = solveWithMemo(memory, n - 1);
-        int prevNum2 = solveWithMemo(memory, n - 2);
-        int prevNum3 = solveWithMemo(memory, n - 3);
+        int res1 = solveWithMemo(memory, n - 1);
+        int res2 = solveWithMemo(memory, n - 2);
+        int res3 = solveWithMemo(memory, n - 3);
 
-        return memory[n] = (prevNum1 + prevNum2 + prevNum3);
+        return memory[n] = res1 + res2 + res3;
     }
 
 public:
-    // Method to find nth tribonacci number, using recursion with memoization - O(N) & O(N)
     int nthTribonacci(int n) {
         vector<int> memory(n + 1, -1);
         return solveWithMemo(memory, n);
@@ -41,42 +40,42 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    // O(4*N) & O(1*N)
-    int solveWith1DTable(int n) {
-        vector<int> dp(n + 1, -1);
+    // O(4*GN) & O(GN) : Where GN = given_n
+    int solveWith1DTable(int given_n) {
+        vector<int> dp(given_n + 1, -1);
         dp[0] = 0;
         dp[1] = 1;
         dp[2] = 1;
 
-        for(int i = 3; i <= n; ++i) {
-            int prevNum1 = dp[i - 1];
-            int prevNum2 = dp[i - 2];
-            int prevNum3 = dp[i - 3];
-            dp[i] = (prevNum1 + prevNum2 + prevNum3);
+        for(int n = 3; n <= given_n; ++n) {
+            int res1 = dp[n - 1];
+            int res2 = dp[n - 2];
+            int res3 = dp[n - 3];
+            dp[n] = res1 + res2 + res3;
         }
 
-        return dp[n];
-    }   
+        return dp[given_n];
+    }
 
-    // O(4*N) & O(1)
-    int solveWithoutTable(int n) {
-        int dp_i_3 = 0;
-        int dp_i_2 = 1;
-        int dp_i_1 = 1;
-        int dp_i = 1;
+    // O(4*GN) & O(1) : Where GN = given_n
+    int solveWithoutTable(int given_n) {
+        int dp_n_3 = 0; 
+        int dp_n_2 = 1; 
+        int dp_n_1 = 1; 
+        int dp_n   = 1; 
 
-        for(int i = 3; i <= n; ++i) {
-            int prevNum1 = dp_i_1;
-            int prevNum2 = dp_i_2;
-            int prevNum3 = dp_i_3;
-            dp_i = (prevNum1 + prevNum2 + prevNum3);
-            dp_i_3 = dp_i_2;
-            dp_i_2 = dp_i_1;
-            dp_i_1 = dp_i;
+        for(int n = 3; n <= given_n; ++n) {
+            int res1 = dp_n_1;
+            int res2 = dp_n_2;
+            int res3 = dp_n_3;
+            dp_n   = res1 + res2 + res3;
+            dp_n_3 = dp_n_2;            
+            dp_n_2 = dp_n_1;            
+            dp_n_1 = dp_n;            
         }
 
-        return dp_i;
-    }   
+        return dp_n;
+    }
 
 public:
     int nthTribonacci(int n) {
