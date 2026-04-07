@@ -1,1 +1,1 @@
-## [VIDEO LECTURE LINK](https://youtu.be/5C2BEF2pk7k)
+## [VIDEO LECTURE LINK](https://youtu.be/Zo8mJIRWtFA)
