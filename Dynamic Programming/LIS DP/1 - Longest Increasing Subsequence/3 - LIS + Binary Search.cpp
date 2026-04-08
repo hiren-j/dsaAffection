@@ -31,12 +31,13 @@ class BinarySearch {
     int solveWith1DTable(vector<int>& nums) {
         const int n = nums.size();
 
-        // This array doesn't necessarily store the values of the LIS in the correct temp, This is due to updates made during the binary search. However, it will correctly provide the length of the actual LIS
+        // This array doesn't necessarily store the values of the LIS in the correct temp. 
+        // This is due to updates made during the binary search. 
+        // However, it will correctly provide the length of the actual LIS
         vector<int> temp; 
-        temp.push_back(nums[0]);
 
         for(const int val : nums) {
-            if(temp.back() < val) {
+            if(temp.empty() || temp.back() < val) {
                 temp.push_back(val);
             }
             else {
@@ -58,7 +59,7 @@ class BinarySearch {
                 len++;
             }
             else {
-                int i = lower_bound(begin(nums), begin(nums) + len, val) - begin(nums);
+                int i   = lower_bound(begin(nums), begin(nums) + len, val) - begin(nums);
                 nums[i] = val;
             }
         }
