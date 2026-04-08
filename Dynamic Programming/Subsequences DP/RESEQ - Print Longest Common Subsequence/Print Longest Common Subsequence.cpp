@@ -1,4 +1,4 @@
-// Code to find the longest common subsequence of s1 and s2 ~ coded by Hiren
+// Code to find the longest common subsequence of s1 and s2 ~ coded by vHiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -50,3 +50,4 @@ public:
 Topics: String | Dynamic Programming
 Links : https://www.naukri.com/code360/problems/print-longest-common-subsequence_8416383?leftPanelTabValue=PROBLEM
         https://github.com/hiren-j/dsaAffection/blob/C%2B%2B/Dynamic%20Programming/String%20DP/Longest%20Common%20Subsequence.cpp
+        https://cses.fi/problemset/task/3403
