@@ -98,7 +98,7 @@ class BottomUpCleanVersion {
 public:
     // O(N*N) & O(N)
     int lengthOfLIS(vector<int>& nums) {
-        int n = nums.size(), maxLen = 0;
+        const int n = nums.size(), maxLen = 0;
 
         vector<int> LIS(n, 1);
 
