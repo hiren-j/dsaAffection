@@ -2,65 +2,50 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
-    int n;
+class BottomUpBruteForce {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        const int n = nums.size();
+        
+        vector<int> dp(n, 1);
 
-    // O(N*N) & O(N)
-    int solveWithMemoSpaceReduce(vector<int>& dp, const vector<int>& nums, int i, int prev) {
-        if(i == n)
-            return 0;
-
-        if(dp[prev] != -1)
-            return dp[prev];
-
-        int currSkip = solveWithMemoSpaceReduce(dp, nums, i + 1, prev);
-        int currTake = 0;
-
-        if(prev == n || nums[prev] < nums[i]) {
-            currTake = solveWithMemoSpaceReduce(dp, nums, i + 1, i) + 1;
+        for(int i = 0; i < n; ++i) {
+            for(int prev = 0; prev < i; ++prev) {
+                if(nums[i] > nums[prev]) {
+                    dp[i] = max(dp[i], dp[prev] + 1);
+                }
+            }
         }
 
-        return dp[prev] = max(currSkip, currTake);
-    }
-
-public:
-    int lengthOfLIS(vector<int>& nums) {
-        n = nums.size();
-        vector<int> dp(n + 1, -1);
-        return solveWithMemoSpaceReduce(dp, nums, 0, n);
+        return *max_element(begin(dp), end(dp));
     }
 };
-
+    
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp {
-    int n;
-
-    // O(N*N) & O(N)
-    int solveWithTableSpaceReduce(const vector<int>& nums) {
-        vector<int> dp(n + 1, -1);
-        dp[n] = 0;
-
-        for(int i = n - 1; i >= 0; --i) {
-            for(int prev = n; prev >= 0; --prev) {
-                int currSkip = dp[prev];
-                int currTake = 0;
-
-                if(prev == n || nums[prev] < nums[i])
-                    currTake = dp[i] + 1;
-
-                dp[prev] = max(currSkip, currTake);
-            }
-        }       
-
-        return dp[n];
-    }
-
+class BinarySearch {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        n = nums.size();
-        if(n == 1) return 1;
-        return solveWithTableSpaceReduce(nums);
+        int n = nums.size();
+
+        // This array doesn't necessarily store the values of the LIS in the correct order. This is due to updates made during the binary search. However, it will correctly provide the length of the actual LIS
+        vector<int> LIS; 
+        LIS.push_back(nums[0]);
+
+        for(int num : nums) {
+            // If the last element of the "LIS" array is lesser than the current element of the "nums" array then push the current element to the "LIS" array
+            if(LIS.back() < num) {
+                LIS.push_back(num);
+            }
+            // Else then find the index of the just greater element of the current element and then replace the value lying in the "LIS" array by the current element
+            else {
+                int i  = lower_bound(begin(LIS), end(LIS), num) - begin(LIS);
+                LIS[i] = num;
+            }
+        }
+
+        // Return the length of the LIS
+        return LIS.size();
     }
 };
     
