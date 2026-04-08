@@ -53,24 +53,6 @@ class TopDown {
         return dp[i][prev] = max(currSkip, currTake);
     }
 
-    // O(N*N) & O(N)
-    int solveWithMemoSpaceReduce(vector<int>& dp, const vector<int>& nums, int i, int prev) {
-        if(i == n)
-            return 0;
-
-        if(dp[prev] != -1)
-            return dp[prev];
-
-        int currSkip = solveWithMemoSpaceReduce(dp, nums, i + 1, prev);
-        int currTake = 0;
-
-        if(prev == n || nums[prev] < nums[i]) {
-            currTake = solveWithMemoSpaceReduce(dp, nums, i + 1, i) + 1;
-        }
-
-        return dp[prev] = max(currSkip, currTake);
-    }
-
 public:
     int lengthOfLIS(vector<int>& nums) {
         n = nums.size();
