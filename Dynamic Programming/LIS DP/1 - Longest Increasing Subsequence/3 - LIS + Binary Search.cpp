@@ -2,10 +2,12 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUpBruteForce {
+class BottomUpBrute {
 public:
+    // O(N*N) & O(N)
     int lengthOfLIS(vector<int>& nums) {
         const int n = nums.size();
+        int maxLen = 0;
         
         vector<int> dp(n, 1);
 
@@ -15,9 +17,10 @@ public:
                     dp[i] = max(dp[i], dp[prev] + 1);
                 }
             }
+            maxLen = max(maxLen, dp[i]);
         }
 
-        return *max_element(begin(dp), end(dp));
+        return maxLen;
     }
 };
     
@@ -25,27 +28,27 @@ public:
 
 class BinarySearch {
 public:
+    // O(NLogN) & O(N)
     int lengthOfLIS(vector<int>& nums) {
-        int n = nums.size();
+        const int n = nums.size();
 
-        // This array doesn't necessarily store the values of the LIS in the correct order. This is due to updates made during the binary search. However, it will correctly provide the length of the actual LIS
-        vector<int> LIS; 
-        LIS.push_back(nums[0]);
+        // This array doesn't necessarily store the values of the LIS in the correct ans. 
+        // This is due to updates made during the binary search. 
+        // However, it will correctly provide the length of the actual LIS
+        vector<int> ans; 
+        ans.push_back(nums[0]);
 
-        for(int num : nums) {
-            // If the last element of the "LIS" array is lesser than the current element of the "nums" array then push the current element to the "LIS" array
-            if(LIS.back() < num) {
-                LIS.push_back(num);
+        for(const int val : nums) {
+            if(ans.back() < val) {
+                ans.push_back(val);
             }
-            // Else then find the index of the just greater element of the current element and then replace the value lying in the "LIS" array by the current element
             else {
-                int i  = lower_bound(begin(LIS), end(LIS), num) - begin(LIS);
-                LIS[i] = num;
+                int i  = lower_bound(begin(ans), end(ans), val) - begin(ans);
+                ans[i] = val;
             }
         }
 
-        // Return the length of the LIS
-        return LIS.size();
+        return ans.size();
     }
 };
     
