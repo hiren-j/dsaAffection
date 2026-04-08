@@ -32,23 +32,23 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         const int n = nums.size();
 
-        // This array doesn't necessarily store the values of the LIS in the correct ans. 
+        // This array doesn't necessarily store the values of the LIS in the correct temp. 
         // This is due to updates made during the binary search. 
         // However, it will correctly provide the length of the actual LIS
-        vector<int> ans; 
-        ans.push_back(nums[0]);
+        vector<int> temp; 
+        temp.push_back(nums[0]);
 
         for(const int val : nums) {
-            if(ans.back() < val) {
-                ans.push_back(val);
+            if(temp.back() < val) {
+                temp.push_back(val);
             }
             else {
-                int i  = lower_bound(begin(ans), end(ans), val) - begin(ans);
-                ans[i] = val;
+                int i  = lower_bound(begin(temp), end(temp), val) - begin(temp);
+                temp[i] = val;
             }
         }
 
-        return ans.size();
+        return temp.size();
     }
 };
     
