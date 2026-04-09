@@ -53,6 +53,28 @@ class TopDown {
         return dp[i][prev] = max(currSkip, currTake);
     }
 
+    // O(N*N*N) & O(N*N)
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& nums, int start, int prev) {
+        if(start == n)
+            return 0;
+
+        if(dp[start][prev] != -1)
+            return dp[start][prev];
+
+        int maxLen = 0;
+
+        for(int i = start; i < n; ++i) {
+            int currTake = 0;
+
+            if(prev == n || nums[prev] < nums[i])
+                currTake = solveWithMemoLoop(dp, nums, i + 1, i) + 1;
+            
+            maxLen = max(maxLen, currTake);
+        } 
+
+        return dp[start][prev] = maxLen;
+    }
+
 public:
     int lengthOfLIS(vector<int>& nums) {
         n = nums.size();
