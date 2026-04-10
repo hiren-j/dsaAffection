@@ -22,13 +22,13 @@ public:
             }
         }
 
-        // Find LIS length and index where its stored
-        int lenOfLIS = -1; 
+        // Find index where length of LIS is stored
+        int lengthOfLIS = -1; 
         int idx = -1; 
 
         for(int i = 0; i < n; ++i) {
-            if(LIS[i] > lenOfLIS) {
-                lenOfLIS = LIS[i];
+            if(LIS[i] > lengthOfLIS) {
+                lengthOfLIS = LIS[i];
                 idx = i;
             }
         }
