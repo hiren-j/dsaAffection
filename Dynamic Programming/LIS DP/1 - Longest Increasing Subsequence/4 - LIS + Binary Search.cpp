@@ -6,23 +6,20 @@ class BinarySearch {
     // O(NLogN) & O(N)
     int solveWith1DTable(vector<int>& nums) {
         const int n = nums.size();
-
-        // This array doesn't necessarily store the values of the LIS in the correct temp. 
-        // This is due to updates made during the binary search. 
-        // However, it will correctly provide the length of the actual LIS
-        vector<int> temp; 
+        
+        vector<int> order; 
 
         for(const int val : nums) {
-            if(temp.empty() || temp.back() < val) {
-                temp.push_back(val);
+            if(order.empty() || order.back() < val) {
+                order.push_back(val);
             }
             else {
-                int i  = lower_bound(begin(temp), end(temp), val) - begin(temp);
-                temp[i] = val;
+                int i  = lower_bound(begin(order), end(order), val) - begin(order);
+                order[i] = val;
             }
         }
 
-        return temp.size();
+        return order.size();
     }
 
     // O(NLogN) & O(1)
