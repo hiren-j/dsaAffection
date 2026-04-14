@@ -4,9 +4,7 @@
 
 class BinarySearch {
     // O(NLogN) & O(N)
-    int solveWith1DTable(vector<int>& nums) {
-        const int n = nums.size();
-        
+    int solveWith1DTable(vector<int>& nums) {    
         vector<int> order; 
 
         for(const int val : nums) {
