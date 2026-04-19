@@ -1,4 +1,4 @@
-// Code to find the total number of combinations that make up the given amount ~ coded by Hiren
+// Code to find the total number of combinations that make up the given amount ~ coded by vHiren
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -75,58 +75,78 @@ public:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the number of combinations that make up the given amount, using 2D tabulation - O(N*A) & O(N*A)
-    int countWaysToMakeAmount_V1(int amount, vector<int>& coins) {
-        int n = coins.size();
+    int n;
 
-        // 2D DP table
-        vector<vector<int>> dp(n + 1, vector<int>(amount + 1, 0));
+    // O(N*AG) & O(N*AG) : Where A = amountGiven
+    int solveBy2DTable(const vector<int>& coins, int amountGiven) {
+        vector<vector<int>> dp(n + 1, vector<int>(amountGiven + 1, -1));
 
-        // Initialize the first edge case: If the amount becomes zero then there exists one valid combination
-        for(int index = 0; index <= n; ++index)
-            dp[index][0] = 1;        
+        for(int amount = 0; amount <= amountGiven; ++amount) 
+            dp[n][amount] = 0;
 
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int currAmount = 1; currAmount <= amount; ++currAmount) {
-                int currSkip = dp[index + 1][currAmount]; 
-                int currTake = 0;                                                 
-                if(coins[index] <= currAmount) {
-                    currTake = dp[index][currAmount - coins[index]];
-                }
-                dp[index][currAmount] = currTake + currSkip;  
+        for(int i = 0; i <= n; ++i)
+            dp[i][0] = 1;
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int amount = 0; amount <= amountGiven; ++amount) {
+                unsigned int currSkip = dp[i + 1][amount];
+                unsigned int currTake = coins[i] <= amount 
+                                ? dp[i][amount - coins[i]]
+                                : 0;
+                dp[i][amount] = (currSkip + currTake);   
             }
         }
 
-        // Return the result value 
-        return dp[0][amount];
+        return dp[0][amountGiven];
     }
 
-    // #2 Method to find the number of combinations that make up the given amount, using 1D tabulation - O(N*A) & O(A)
-    int countWaysToMakeAmount_V2(int amount, vector<int>& coins) {
-        int n = coins.size();
+    // O(N*AG) & O(N*AG) : Where A = amountGiven
+    int solveBy2DEnhanced(const vector<int>& coins, int amountGiven) {
+        vector<vector<int>> dp(n + 1, vector<int>(amountGiven + 1, 0));
 
-        // 1D DP tables
-        vector<int> nextRow(amount + 1, 0), idealRow(amount + 1, 0);
-        nextRow[0] = 1;
+        for(int i = 0; i <= n; ++i)
+            dp[i][0] = 1;
 
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            idealRow[0] = 1;
-            for(int currAmount = 1; currAmount <= amount; ++currAmount) {
-                int currSkip = nextRow[currAmount]; 
-                int currTake = 0;                                                 
-                if(coins[index] <= currAmount) {
-                    currTake = idealRow[currAmount - coins[index]];
-                }
-                idealRow[currAmount] = currTake + currSkip;  
+        for(int i = n - 1; i >= 0; --i) {
+            for(int amount = 0; amount <= amountGiven; ++amount) {
+                unsigned int currSkip = dp[i + 1][amount];
+                unsigned int currTake = coins[i] <= amount 
+                                ? dp[i][amount - coins[i]]
+                                : 0;
+                dp[i][amount] = (currSkip + currTake);   
             }
-            nextRow = idealRow;
         }
 
-        // Return the result value 
-        return nextRow[amount];
+        return dp[0][amountGiven];
+    }
+
+    // O(N*AG) & O(AG) : Where A = amountGiven
+    int solveBy1DTable(const vector<int>& coins, int amountGiven) {
+        vector<int> nextRow(amountGiven + 1, 0); // i + 1th row
+        nextRow[0] = 1;
+
+        for(int i = n - 1; i >= 0; --i) {
+            vector<int> idealRow(amountGiven + 1, 0); // ith row
+            idealRow[0] = 1;
+            
+            for(int amount = 0; amount <= amountGiven; ++amount) {
+                unsigned int currSkip = nextRow[amount];
+                unsigned int currTake = coins[i] <= amount 
+                                ? idealRow[amount - coins[i]]
+                                : 0;
+                idealRow[amount] = (currSkip + currTake);   
+            }
+
+            swap(nextRow, idealRow);
+        }
+
+        return nextRow[amountGiven];
+    }   
+
+public:
+    int countWaysToMakeAmount(int amount, vector<int>& coins) {
+        n = coins.size();
+        return solveBy1DTable(coins, amount);
     }
 };
 
