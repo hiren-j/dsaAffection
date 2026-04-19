@@ -2,122 +2,75 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown_V1 {
+class TopDown {
+    int n;
+
+    // O(2^(N+A)) & O(N+A) : Where A = amount
+    int solveWithoutMemo(const vector<int>& coins, int i, int amount) {
+        if(amount == 0)
+            return 1;
+
+        if(i == n)
+            return 0;
+
+        int currSkip = solveWithoutMemo(coins, i + 1, amount);
+        int currTake = coins[i] <= amount 
+                        ? solveWithoutMemo(coins, i, amount - coins[i])
+                        : 0;
+
+        return (currSkip + currTake);
+    }
+
+    // O(N*A) & O(N*A) : Where A = amount
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& coins, int i, int amount) {
+        if(amount == 0)
+            return 1;
+
+        if(i == n)
+            return 0;
+
+        if(dp[i][amount] != -1)
+            return dp[i][amount];
+
+        int currSkip = solveWithMemo(dp, coins, i + 1, amount);
+        int currTake = coins[i] <= amount 
+                        ? solveWithMemo(dp, coins, i, amount - coins[i])
+                        : 0;
+
+        return dp[i][amount] = (currSkip + currTake);
+    }
+
+    // O(N*N*A) & O(N*A) : Where A = amount
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& coins, int start, int amount) {
+        if(amount == 0)
+            return 1;
+
+        if(start == n)
+            return 0;
+
+        if(dp[start][amount] != -1)
+            return dp[start][amount];
+
+        int count = 0;
+
+        for(int i = start; i < n; ++i) {
+            int currTake = coins[i] <= amount 
+                            ? solveWithMemoLoop(dp, coins, i, amount - coins[i])
+                            : 0;
+            count += currTake;
+        }
+
+        return dp[start][amount] = count;
+    }
+
+
 public:
-    // Method to find the number of combinations that make up the given amount, using recursion with memoization - O(N*A) & O(N*A) : Where A let be the amount
     int countWaysToMakeAmount(int amount, vector<int>& coins) {
-        int n = coins.size();
-        vector<vector<int>> memory(n, vector<int>(amount + 1, -1));
-        return solveWithMemo(memory, coins, n, 0, amount);
-    }
-
-private:
-    // O(2*N*A) & O(N*A + A)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& coins, int n, int index, int amount) {
-        // Edge case: If the amount becomes zero then there exists one valid combination
-        if(amount == 0)
-            return 1;
-
-        // Edge case: If all the elements are exhausted then there's no combination
-        if(index == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][amount] != -1)
-            return memory[index][amount];   
-
-        // There are always two possibilities to perform at each index
-        int currSkip = solveWithMemo(memory, coins, n, index + 1, amount); // Is to skip the index value 
-        int currTake = 0;                                                  // Is to take the index value
-
-        // If possible then take the index value
-        if(coins[index] <= amount)   
-            currTake = solveWithMemo(memory, coins, n, index, amount - coins[index]);
-
-        // Store the result value to the memoization table and then return it
-        return memory[index][amount] = currTake + currSkip;
-    }
-
-    // O(2^A) & O(A)
-    int solveWithoutMemo(vector<int>& coins, int n, int index, int amount) {
-        // Edge case: If the amount becomes zero then there exists one valid combination
-        if(amount == 0)
-            return 1;
-
-        // Edge case: If all the elements are exhausted then there's no combination
-        if(index == n)
-            return 0;
-
-        // There are always two possibilities to perform at each index
-        int currSkip = solveWithoutMemo(coins, n, index + 1, amount); // Is to skip the index value 
-        int currTake = 0;                                             // Is to take the index value
-
-        // If possible then take the index value
-        if(coins[index] <= amount)   
-            currTake = solveWithoutMemo(coins, n, index, amount - coins[index]);
-
-        // Return the result value
-        return currTake + currSkip;
+        n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
+        return solveWithMemoLoop(dp, coins, 0, amount);
     }
 };
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown_V2 {
-public:
-    // Method to find the number of combinations that make up the given amount, using recursion with memoization - O(N*N*A) & O(N*A)
-    int countWaysToMakeAmount(int amount, vector<int>& coins) {
-        int n = coins.size();
-        vector<vector<int>> memory(n, vector<int>(amount + 1, -1));
-        return solveWithMemo(memory, coins, n, 0, amount);
-    }
-
-private:
-    // O(N*N*A) & O(N*A + A)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& coins, int n, int startIndex, int amount) {
-        // Edge case: If the amount becomes zero then there exists one valid combination
-        if(amount == 0)
-            return 1;
-
-        // Edge case: If all the elements are exhausted then there's no combination
-        if(startIndex == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][amount] != -1)
-            return memory[startIndex][amount];
-
-        // Stores the result value
-        int countWays = 0;
-
-        // Iterate and if possible then take the index value and try to make up the amount from it
-        for(int index = startIndex; index < n; ++index) 
-            if(coins[index] <= amount) 
-                countWays += solveWithMemo(memory, coins, n, index, amount - coins[index]);
-
-        // Store the result value to the memoization table and then return it 
-        return memory[startIndex][amount] = countWays;
-    }
-
-    // O(N^A) & O(A)
-    int solveWithoutMemo(vector<int>& coins, int n, int startIndex, int amount) {
-        // Edge case: If the amount becomes zero then there exists one valid combination
-        if(amount == 0)
-            return 1;
-
-        // Stores the result value
-        int countWays = 0;
-
-        // Iterate and if possible then take the index value and try to make up the amount from it
-        for(int index = startIndex; index < n; ++index) 
-            if(coins[index] <= amount) 
-                countWays += solveWithoutMemo(coins, n, index, amount - coins[index]);
-
-        // Return the result value
-        return countWays;
-    }
-};
-// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
