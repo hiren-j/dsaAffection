@@ -77,7 +77,7 @@ public:
 class BottomUp {
     int n;
 
-    // O(N*AG) & O(N*AG) : Where A = amountGiven
+    // O(N*AG) & O(N*AG) : Where AG = amountGiven
     int solveBy2DTable(const vector<int>& coins, int amountGiven) {
         vector<vector<int>> dp(n + 1, vector<int>(amountGiven + 1, -1));
 
@@ -100,7 +100,7 @@ class BottomUp {
         return dp[0][amountGiven];
     }
 
-    // O(N*AG) & O(N*AG) : Where A = amountGiven
+    // O(N*AG) & O(N*AG) : Where AG = amountGiven
     int solveBy2DEnhanced(const vector<int>& coins, int amountGiven) {
         vector<vector<int>> dp(n + 1, vector<int>(amountGiven + 1, 0));
 
@@ -120,7 +120,7 @@ class BottomUp {
         return dp[0][amountGiven];
     }
 
-    // O(N*AG) & O(AG) : Where A = amountGiven
+    // O(N*AG) & O(AG) : Where AG = amountGiven
     int solveBy1DTable(const vector<int>& coins, int amountGiven) {
         vector<int> nextRow(amountGiven + 1, 0); // i + 1th row
         nextRow[0] = 1;
