@@ -12,7 +12,7 @@ class BinarySearch {
                 order.push_back(val);
             }
             else {
-                int i  = lower_bound(begin(order), end(order), val) - begin(order);
+                int i    = lower_bound(begin(order), end(order), val) - begin(order);
                 order[i] = val;
             }
         }
