@@ -1,195 +1,169 @@
-// Code to find the minimum cost to buy exactly W kg of oranges. The cost array has a 1-based indexing. If buying exactly W kg of oranges is impossible then return -1 ~ coded by Hiren
+// Code to find the minimum cost to buy exactly W kg of oranges. The cost array has a 1-based indexing. If buying exactly W kg of oranges is impossible then return -1 ~ coded by vHiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown_V1 {
-public:
-    // Method to find the minimum cost, using recursion with memoization - O(N*W) & O(N*W)
-    int minimumCost(int N, int W, vector<int>& cost) {
-        vector<vector<int>> memory(N + 1, vector<int>(W + 1, -1));
-        int minCost = solveWithMemo(memory, cost, N, 1, W);
-        return (minCost == INT_MAX) ? -1 : minCost;
+class TopDown {
+    int n;
+    
+    // O(2^(N+W)) & O(N+W)
+    int solveWithoutMemo(const vector<int>& cost, int pos, int w) {
+        if(w == 0)
+            return 0;
+            
+        if(pos > n)
+            return INT_MAX;
+        
+        int currSkip = solveWithoutMemo(cost, pos + 1, w);
+        int currTake = INT_MAX;
+    
+        if(cost[pos - 1] != -1 && pos <= w) {
+            currTake = solveWithoutMemo(cost, pos, w - pos);
+            if(currTake != INT_MAX) currTake += cost[pos - 1];
+        }
+        
+        return min(currSkip, currTake);
     }
     
-private:
-    // O(2*N*W) & O(N*W + W)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& cost, int N, int KG, int W) {
-        // Edge case: If W becomes zero then you have bought W kgs of oranges hence return 0 as a valid indication of it
-        if(W == 0)
-            return 0;
-        
-        // Edge case: If all the packets are exhausted then you can't buy any more kgs of oranges
-        if(KG == N + 1)
-            return INT_MAX;
-        
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[KG][W] != -1)
-            return memory[KG][W];
-            
-        // There are always two possibilities to perform at each packet of oranges
-        int currSkip = solveWithMemo(memory, cost, N, KG + 1, W); // Is to skip the kg packet
-        int currBuy  = INT_MAX;                                   // Is to buy the kg packet
-        
-        // If the kg packet is availaible then buy the packet
-        if(cost[KG - 1] != -1 && KG <= W) {
-            int nextCost = solveWithMemo(memory, cost, N, KG, W - KG);
-            currBuy = (nextCost != INT_MAX) ? cost[KG - 1] + nextCost : INT_MAX;
-        }
-
-        // Store the result value to the memoization table and then return it
-        return memory[KG][W] = min(currSkip, currBuy);
-    }
-
-    // O(2^W) & O(W)
-    int solveWithoutMemo(vector<int>& cost, int N, int KG, int W) {
-        // Edge case: If W becomes zero then you have bought W kgs of oranges hence return 0 as a valid indication of it
-        if(W == 0)
-            return 0;
-        
-        // Edge case: If all the packets are exhausted then you can't buy any more kgs of oranges
-        if(KG == N + 1)
-            return INT_MAX;
-                    
-        // There are always two possibilities to perform at each packet of oranges
-        int currSkip = solveWithoutMemo(cost, N, KG + 1, W); // Is to skip the kg packet
-        int currBuy  = INT_MAX;                              // Is to buy the kg packet
-        
-        // If the kg packet is availaible then buy the packet
-        if(cost[KG - 1] != -1 && KG <= W) {
-            int nextCost = solveWithoutMemo(cost, N, KG, W - KG);
-            currBuy = (nextCost != INT_MAX) ? cost[KG - 1] + nextCost : INT_MAX;
-        }
-
-        // As we're striving for the minimum cost hence return the minimum value
-        return min(currSkip, currBuy);
-    }
-};
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown_V2 {
-public:
-    // Method to find the minimum cost, using recursion with memoization - O(N*N*W) & O(N*W)
-    int minimumCost(int N, int W, vector<int>& cost) {
-        vector<vector<int>> memory(N + 1, vector<int>(W + 1, -1));
-        int minCost = solveWithMemo(memory, cost, N, 1, W);
-        return (minCost == INT_MAX) ? -1 : minCost;
-    }
-
-private:
-    // O(N*N*W) & O(N*W + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& cost, int N, int startIndex, int W) {
-        // Edge case: If W becomes zero then you have bought weight kgs of oranges hence return 0 as a valid indication of it
-        if(W == 0)
+    // O(N*W) & O(N*W)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& cost, int pos, int w) {
+        if(w == 0)
             return 0;
             
-        // Edge case: If all the packets are exhausted then you can't buy any more kgs of oranges
-        if(startIndex == N + 1)
+        if(pos > n)
             return INT_MAX;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][W] != -1)
-            return memory[startIndex][W];
+        if(dp[pos][w] != -1)
+            return dp[pos][w];
+        
+        int currSkip = solveWithMemo(dp, cost, pos + 1, w);
+        int currTake = INT_MAX;
+    
+        if(cost[pos - 1] != -1 && pos <= w) {
+            currTake = solveWithMemo(dp, cost, pos, w - pos);
+            if(currTake != INT_MAX) currTake += cost[pos - 1];
+        }
+        
+        return dp[pos][w] = min(currSkip, currTake);
+    }
 
-        // Stores the result value
+    // O(N*N*W) & O(N*W)
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& cost, int start, int w) {
+        if(w == 0)
+            return 0;
+            
+        if(start > n)
+            return INT_MAX;
+
+        if(dp[start][w] != -1)
+            return dp[start][w];
+        
         int minCost = INT_MAX;
 
-        // Iterate and if the kg packet is availaible then buy the packet
-        for(int KG = startIndex; KG <= N; ++KG) {
-            if(cost[KG - 1] != -1 && KG <= W) {
-                int nextCost = solveWithMemo(memory, cost, N, KG, W - KG);
-                if(nextCost != INT_MAX) {
-                    minCost = min(minCost, nextCost + cost[KG - 1]);
-                }
-            }
-        }
+        for(int pos = start; pos <= n; ++pos) {
+            int currTake = INT_MAX;
 
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex][W] = minCost;
+            if(cost[pos - 1] != -1 && pos <= w) {
+                currTake = solveWithMemoLoop(dp, cost, pos, w - pos);
+                if(currTake != INT_MAX) currTake += cost[pos - 1];
+            }
+
+            minCost = min(minCost, currTake);
+        }
+        
+        return dp[start][w] = minCost;
     }
     
-    // O(N^W) & O(N)
-    int solveWithoutMemo(vector<int>& cost, int N, int startIndex, int W) {
-        // Edge case: If W becomes zero then you have bought weight kgs of oranges hence return 0 as a valid indication of it
-        if(W == 0)
-            return 0;
-            
-        // Edge case: If all the packets are exhausted then you can't buy any more kgs of oranges
-        if(startIndex == N + 1)
-            return INT_MAX;
-
-        // Stores the result value
-        int minCost = INT_MAX;
-
-        // Iterate and if the kg packet is availaible then buy the packet
-        for(int KG = startIndex; KG <= N; ++KG) {
-            if(cost[KG - 1] != -1 && KG <= W) {
-                int nextCost = solveWithoutMemo(cost, N, KG, W - KG);
-                if(nextCost != INT_MAX) {
-                    minCost = min(minCost, nextCost + cost[KG - 1]);
-                }
-            }
-        }
-
-        // Return the result value
-        return minCost;
+public:
+    int minimumCost(int size, int w, vector<int>& cost) {
+        n = size;
+        vector<vector<int>> dp(n + 1, vector<int>(w + 1, -1));
+        int ans = solveWithMemo(dp, cost, 1, w);
+        return (ans == INT_MAX) ? -1 : ans;
     }
 };
-// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the minimum cost, using 2D tabulation - O(N*W) & O(N*W)
-    int minimumCost_V1(int N, int W, vector<int>& cost) {
-        // 2D DP table
-        vector<vector<int>> dp(N + 2, vector<int>(W + 1, INT_MAX));
-
-        // Initialize the first edge case: If W becomes zero then you have bought W kgs of oranges hence return 0 as a valid indication of it
-        for(int KG = 0; KG <= N + 1; ++KG)
-            dp[KG][0] = 0;
-
-        // Fill the rest of the table
-        for(int KG = N; KG >= 1; --KG) {
-            for(int weight = 1; weight <= W; ++weight) {
-                int currSkip = dp[KG + 1][weight];
-                int currBuy  = INT_MAX;
-                if(cost[KG - 1] != -1 && KG <= weight) {
-                    int nextCost = dp[KG][weight - KG];
-                    currBuy = (nextCost != INT_MAX) ? cost[KG - 1] + nextCost : INT_MAX;
+    int n;
+    
+    // O(N*GW) & O(N*GW) : Where GW = given_w
+    int solveBy2DTable(const vector<int>& cost, int given_w) {
+        vector<vector<int>> dp(n + 1, vector<int>(given_w + 1, -1));
+        
+        for(int pos = 0; pos <= n; ++pos)
+            dp[pos][0] = 0;
+        
+        for(int pos = n; pos >= 1; --pos) {
+            for(int w = 1; w <= given_w; ++w) {
+                int currSkip = (pos + 1 > n) ? INT_MAX : dp[pos + 1][w];
+                int currTake = INT_MAX;
+            
+                if(cost[pos - 1] != -1 && pos <= w) {
+                    currTake = dp[pos][w - pos];
+                    if(currTake != INT_MAX) currTake += cost[pos - 1];
                 }
-                dp[KG][weight] = min(currSkip, currBuy);
+                
+                dp[pos][w] = min(currSkip, currTake);
             }
-        }   
-
-        // Return the result value
-        return (dp[1][W] == INT_MAX) ? -1 : dp[1][W];
-    }
-
-    // #2 Method to find the minimum cost, using 1D tabulation - O(N*W) & O(W)
-    int minimumCost_V2(int N, int W, vector<int>& cost) {
-        // 1D DP tables
-        vector<int> nextRow(W + 1, INT_MAX), idealRow(W + 1, INT_MAX);
-        nextRow[0] = 0;
-
-        // Fill the rest of the table
-        for(int KG = N; KG >= 1; --KG) {
-            idealRow[0] = 0;
-            for(int weight = 1; weight <= W; ++weight) {
-                int currSkip = nextRow[weight];
-                int currBuy  = INT_MAX;
-                if(cost[KG - 1] != -1 && KG <= weight) {
-                    int nextCost = idealRow[weight - KG];
-                    currBuy = (nextCost != INT_MAX) ? cost[KG - 1] + nextCost : INT_MAX;
-                }
-                idealRow[weight] = min(currSkip, currBuy);
-            }
-            nextRow = idealRow;
         }
-
-        // Return the result value
-        return (nextRow[W] == INT_MAX) ? -1 : nextRow[W];
+        
+        int ans = dp[1][given_w];
+        return (ans == INT_MAX) ? -1 : ans;
+    }
+    
+    // O(N*GW) & O(N*GW) : Where GW = given_w
+    int solveBy2DEnhanced(const vector<int>& cost, int given_w) {
+        vector<vector<int>> dp(n + 1, vector<int>(given_w + 1, 0));
+        
+        for(int pos = n; pos >= 1; --pos) {
+            for(int w = 1; w <= given_w; ++w) {
+                int currSkip = (pos + 1 > n) ? INT_MAX : dp[pos + 1][w];
+                int currTake = INT_MAX;
+            
+                if(cost[pos - 1] != -1 && pos <= w) {
+                    currTake = dp[pos][w - pos];
+                    if(currTake != INT_MAX) currTake += cost[pos - 1];
+                }
+                
+                dp[pos][w] = min(currSkip, currTake);
+            }
+        }
+        
+        int ans = dp[1][given_w];
+        return (ans == INT_MAX) ? -1 : ans;
+    }
+    
+    // O(N*GW) & O(GW) : Where GW = given_w
+    int solveBy1DTable(const vector<int>& cost, int given_w) {
+        vector<int> nextRow(given_w + 1, 0); // pos + 1
+        
+        for(int pos = n; pos >= 1; --pos) {
+            vector<int> idealRow(given_w + 1, 0); // pos
+            
+            for(int w = 1; w <= given_w; ++w) {
+                int currSkip = (pos + 1 > n) ? INT_MAX : nextRow[w];
+                int currTake = INT_MAX;
+            
+                if(cost[pos - 1] != -1 && pos <= w) {
+                    currTake = idealRow[w - pos];
+                    if(currTake != INT_MAX) currTake += cost[pos - 1];
+                }
+                
+                idealRow[w] = min(currSkip, currTake);
+            }
+            
+            swap(nextRow, idealRow);
+        }
+        
+        int ans = nextRow[given_w];
+        return (ans == INT_MAX) ? -1 : ans;
+    }
+    
+public:
+    int minimumCost(int size, int w, vector<int>& cost) {
+        n = size;
+        return solveBy1DTable(cost, w);
     }
 };
 
