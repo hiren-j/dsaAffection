@@ -1,133 +1,83 @@
-// Code to find the minimum number of coins to make the change for given cents. Suppose you've infinite supply of each type of coin ~ coded by Hiren
+// Code to find the minimum number of coins to make the change for given cents. Suppose you've infinite supply of each type of coin ~ coded by vHiren
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown_V1 {
-public:
-    // Method to find the minimum number of coins to make the change for given cents, using recursion with memoization - O(N*C) & O(N*C) : Where C let be the cents
-    int minCoinsToMakeChange(vector<int>& coins, int n, int cents) { 
-        vector<vector<int>> memory(n, vector<int>(cents + 1, -1));
-        int minCoins = solveWithMemo(memory, coins, n, 0, cents);
-        return (minCoins == INT_MAX) ? -1 : minCoins;
-    }
-    
-private:
-    // O(2*N*C) & O(N*C + C)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& coins, int n, int index, int cents) {
-        // Edge case: If the cents becomes zero then you've make the change hence return 0 as a valid indication of it
-        if(cents == 0)
+class TopDown {
+    int n;
+
+    // O(2^(N+A)) & O(N+A) : Where A = amount
+    int solveWithoutMemo(const vector<int>& coins, int i, int amount) {
+        if(amount == 0)
             return 0;
 
-        // Edge case: At this point if all the coins are exhausted then you can't make the change hence return INT_MAX as a indication of it
-        if(index == n) 
+        if(i == n)
             return INT_MAX;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][cents] != -1)
-            return memory[index][cents];
-            
-        // There are always two possibilities to perform at each index
-        int currSkip = solveWithMemo(memory, coins, n, index + 1, cents); // Is to skip the index value 
-        int currTake = INT_MAX;                                           // Is to take the index value
-        
-        // If possible then take the index value and then stay on the same index
-        if(cents - coins[index] >= 0) {
-            int nextCoins = solveWithMemo(memory, coins, n, index, cents - coins[index]);
-            currTake = (nextCoins != INT_MAX) ? nextCoins + 1 : INT_MAX;
-        }
+        int currSkip = solveWithoutMemo(coins, i + 1, amount);
+        int currTake = coins[i] <= amount 
+                        ? solveWithoutMemo(coins, i, amount - coins[i])
+                        : INT_MAX;
 
-        // Store the result value to the memoization table and then return it
-        return memory[index][cents] = min(currTake, currSkip);
+        if(currTake != INT_MAX)
+            currTake += 1;
+
+        return min(currSkip, currTake);
     }
-    
-    // O(2^C) & O(C)
-    int solveWithoutMemo(vector<int>& coins, int n, int index, int cents) {
-        // Edge case: If the cents becomes zero then you've make the change hence return 0 as a valid indication of it
-        if(cents == 0)
+
+    // O(N*A) & O(N*A) : Where A = amount
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& coins, int i, int amount) {
+        if(amount == 0)
             return 0;
 
-        // Edge case: At this point if all the coins are exhausted then you can't make the change hence return INT_MAX as a indication of it
-        if(index == n) 
+        if(i == n)
             return INT_MAX;
-            
-        // There are always two possibilities to perform at each index
-        int currSkip = solveWithoutMemo(coins, n, index + 1, cents); // Is to skip the index value 
-        int currTake = INT_MAX;                                      // Is to take the index value
-        
-        // If possible then take the index value and then stay on the same index
-        if(cents - coins[index] >= 0) {
-            int nextCoins = solveWithoutMemo(coins, n, index, cents - coins[index]);
-            currTake = (nextCoins != INT_MAX) ? nextCoins + 1 : INT_MAX;
+
+        if(dp[i][amount] != -1)
+            return dp[i][amount];
+
+        int currSkip = solveWithMemo(dp, coins, i + 1, amount);
+        int currTake = coins[i] <= amount 
+                        ? solveWithMemo(dp, coins, i, amount - coins[i])
+                        : INT_MAX;
+
+        if(currTake != INT_MAX)
+            currTake += 1;
+
+        return dp[i][amount] = min(currSkip, currTake);
+    }
+
+    // O(N*N*A) & O(N*A) : Where A = amount
+    int solveWithMemoLoop(vector<vector<int>>& dp, const vector<int>& coins, int start, int amount) {
+        if(amount == 0)
+            return 0;
+
+        if(start == n)
+            return INT_MAX;
+
+        if(dp[start][amount] != -1)
+            return dp[start][amount];
+
+        int minCoins = INT_MAX;
+
+        for(int i = start; i < n; ++i) {
+            int currTake = coins[i] <= amount 
+                            ? solveWithMemoLoop(dp, coins, i, amount - coins[i])
+                            : INT_MAX;
+            if(currTake != INT_MAX) currTake += 1;
+            minCoins = min(minCoins, currTake);
         }
 
-        // As we're striving for the minimum number of coins hence return the minimum value
-        return min(currTake, currSkip);
+        return dp[start][amount] = minCoins;
     }
-};
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown_V2 {
 public:
-    // Method to find the minimum number of coins to make the change for given cents, using recursion with memoization - O(N*N*C) & O(N*C)
-    int minCoinsToMakeChange(vector<int>& coins, int n, int cents) { 
-        vector<vector<int>> memory(n, vector<int>(cents + 1, -1));
-        int minCoins = solveWithMemo(memory, coins, n, 0, cents);
+    int minCoinsToMakeChange(vector<int>& coins, int amount) {
+        n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
+        int minCoins = solveWithMemo(dp, coins, 0, amount);
         return (minCoins == INT_MAX) ? -1 : minCoins;
     }
-    
-private:
-    // O(N*N*C) & O(N*C + C)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& coins, int n, int startIndex, int cents) {
-        // Edge case: If the cents becomes zero then you've make the change hence return 0 as a valid indication of it
-        if(cents == 0)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][cents] != -1)
-            return memory[startIndex][cents];
-
-        // Stores the result value
-        int minCoins = INT_MAX;
-
-	// Iterate and if possible then take the index value and then stay on the same index
-        for(int index = startIndex; index < n; ++index) {
-            if(cents - coins[index] >= 0) {
-                int nextCoins = solveWithMemo(memory, coins, n, index, cents - coins[index]);
-                if(nextCoins != INT_MAX) {
-                    minCoins = min(minCoins, nextCoins + 1);
-                }
-            }
-        }
-
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex][cents] = minCoins;
-    }
-
-    // O(N^C) & O(C)
-    int solveWithoutMemo(vector<int>& coins, int n, int startIndex, int cents) {
-        // Edge case: If the cents becomes zero then you've make the change hence return 0 as a valid indication of it
-        if(cents == 0)
-            return 0;
-
-        // Stores the result value
-        int minCoins = INT_MAX;
-	    
-	// Iterate and if possible then take the index value and then stay on the same index
-        for(int index = startIndex; index < n; ++index) {
-            if(cents - coins[index] >= 0) {
-                int nextCoins = solveWithoutMemo(coins, n, index, cents - coins[index]);
-                if(nextCoins != INT_MAX) {
-                    minCoins = min(minCoins, nextCoins + 1);
-                }
-            }
-        }
-
-        // Return the result value
-        return minCoins;
-    }
 };
-// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
