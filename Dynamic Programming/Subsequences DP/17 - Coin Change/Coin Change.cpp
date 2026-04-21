@@ -82,60 +82,87 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the minimum number of coins to make the change for given cents, using 2D tabulation - O(N*C) & O(N*C)
-    int minCoinsToMakeChange_V1(vector<int>& coins, int n, int cents) { 
-        // 2D DP table
-        vector<vector<int>> dp(n + 1, vector<int>(cents + 1, INT_MAX));
+    int n;
 
-        // Initialize the first edge case: If the cents becomes zero then you've make the change hence return 0 as a valid indication of it
-        for(int index = 0; index <= n; ++index)
-            dp[index][0] = 0;
+    // O(N*AG) & O(N*AG) : Where AG = amountGiven
+    int solveBy2DTable(const vector<int>& coins, int amountGiven) {
+        vector<vector<int>> dp(n + 1, vector<int>(amountGiven + 1, -1));
 
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int cent = 1; cent <= cents; ++cent) {
-                int currSkip = dp[index + 1][cent];
-                int currTake = INT_MAX;        
-                if(cent - coins[index] >= 0) {
-                    int nextCoins = dp[index][cent - coins[index]];
-                    currTake = (nextCoins != INT_MAX) ? nextCoins + 1 : INT_MAX;
-                }
-                dp[index][cent] = min(currTake, currSkip);
+        for(int amount = 0; amount <= amountGiven; ++amount) 
+            dp[n][amount] = INT_MAX;
+
+        for(int i = 0; i <= n; ++i)
+            dp[i][0] = 0;
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int amount = 0; amount <= amountGiven; ++amount) {
+                int currSkip = dp[i + 1][amount];
+                int currTake = coins[i] <= amount 
+                                ? dp[i][amount - coins[i]]
+                                : INT_MAX;
+                if(currTake != INT_MAX) 
+                    currTake += 1;
+                dp[i][amount] = min(currSkip, currTake);
             }
         }
 
-        int minCoins = dp[0][cents];
-
-        // Return the result value
+        int minCoins = dp[0][amountGiven];
         return (minCoins == INT_MAX) ? -1 : minCoins;
     }
 
-    // #2 Method to find the minimum number of coins to make the change for given cents, using 1D tabulation - O(N*C) & O(C)
-    int minCoinsToMakeChange_V2(vector<int>& coins, int n, int cents) { 
-        // 1D DP tables
-        vector<int> nextRow(cents + 1, INT_MAX), idealRow(cents + 1, INT_MAX);
-        nextRow[0] = 0;
+    // O(N*AG) & O(N*AG) : Where AG = amountGiven
+    int solveBy2DEnhanced(const vector<int>& coins, int amountGiven) {
+        vector<vector<int>> dp(n + 1, vector<int>(amountGiven + 1, INT_MAX));
+            
+        for(int i = 0; i <= n; ++i)
+            dp[i][0] = 0;
 
-        // Fill the rest of the table
-        for(int index = n-1; index >= 0; --index) {
-            idealRow[0] = 0;
-            for(int cent = 1; cent <= cents; ++cent) {
-                int currSkip = nextRow[cent];
-                int currTake = INT_MAX;        
-                if(cent - coins[index] >= 0) {
-                    int nextCoins = idealRow[cent - coins[index]];
-                    currTake = (nextCoins != INT_MAX) ? nextCoins + 1 : INT_MAX;
-                }
-                idealRow[cent] = min(currTake, currSkip);
+        for(int i = n - 1; i >= 0; --i) {
+            for(int amount = 0; amount <= amountGiven; ++amount) {
+                int currSkip = dp[i + 1][amount];
+                int currTake = coins[i] <= amount 
+                                ? dp[i][amount - coins[i]]
+                                : INT_MAX;
+                if(currTake != INT_MAX) 
+                    currTake += 1;
+                dp[i][amount] = min(currSkip, currTake);
             }
-            nextRow = idealRow;
         }
 
-        int minCoins = nextRow[cents];
-
-        // Return the result value
+        int minCoins = dp[0][amountGiven];
         return (minCoins == INT_MAX) ? -1 : minCoins;
+    }
+
+    // O(N*AG) & O(AG) : Where AG = amountGiven
+    int solveBy1DTable(const vector<int>& coins, int amountGiven) {
+        vector<int> nextRow(amountGiven + 1, INT_MAX); // i + 1th row
+        nextRow[0] = 0;
+
+        for(int i = n - 1; i >= 0; --i) {
+            vector<int> idealRow(amountGiven + 1, INT_MAX); // ith row
+            idealRow[0] = 0;
+            
+            for(int amount = 0; amount <= amountGiven; ++amount) {
+                int currSkip = nextRow[amount];
+                int currTake = coins[i] <= amount 
+                                ? idealRow[amount - coins[i]]
+                                : INT_MAX;
+                if(currTake != INT_MAX) 
+                    currTake += 1;
+                idealRow[amount] = min(currSkip, currTake);   
+            }
+
+            swap(nextRow, idealRow);
+        }
+
+        int minCoins = nextRow[amountGiven];
+        return (minCoins == INT_MAX) ? -1 : minCoins;
+    }   
+
+public:
+    int minCoinsToMakeChange(vector<int>& coins, int amount) {
+        n = coins.size();
+        return solveBy1DTable(coins, amount);
     }
 };
 
