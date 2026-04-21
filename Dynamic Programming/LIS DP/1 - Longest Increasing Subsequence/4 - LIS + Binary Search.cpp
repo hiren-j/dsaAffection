@@ -12,8 +12,8 @@ class BinarySearch {
                 order.push_back(val);
             }
             else {
-                int i    = lower_bound(begin(order), end(order), val) - begin(order);
-                order[i] = val;
+                int pos    = lower_bound(begin(order), end(order), val) - begin(order);
+                order[pos] = val;
             }
         }
 
@@ -30,8 +30,8 @@ class BinarySearch {
                 len++;
             }
             else {
-                int i   = lower_bound(begin(nums), begin(nums) + len, val) - begin(nums);
-                nums[i] = val;
+                int pos   = lower_bound(begin(nums), begin(nums) + len, val) - begin(nums);
+                nums[pos] = val;
             }
         }
 
