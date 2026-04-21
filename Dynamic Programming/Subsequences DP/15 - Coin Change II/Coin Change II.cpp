@@ -63,7 +63,6 @@ class TopDown {
         return dp[start][amount] = count;
     }
 
-
 public:
     int countWaysToMakeAmount(int amount, vector<int>& coins) {
         n = coins.size();
