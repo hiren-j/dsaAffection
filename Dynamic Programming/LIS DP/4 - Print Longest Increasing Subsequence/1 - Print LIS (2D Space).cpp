@@ -27,7 +27,7 @@ public:
         
         while(i < n) {
             if((prev == n || nums[prev] < nums[i])) {
-                if(dp[i + 1][i] + 1 >= dp[i][prev]) {
+                if(dp[i + 1][i] + 1 >= dp[i + 1][prev]) {
                     LIS.push_back(nums[i]);
                     prev = i;
                 }
