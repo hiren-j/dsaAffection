@@ -21,18 +21,24 @@ public:
                 dp[i][prev] = max(currSkip, currTake);
             }
         }
-    
+
         int i = 0, prev = n;
         vector<int> LIS;
         
-        while(i < n) {
-            if((prev == n || nums[prev] < nums[i])) {
-                if(dp[i + 1][i] + 1 >= dp[i + 1][prev]) {
+        while(i <= n - 1 && prev >= 0) {
+            int currSkip = dp[i + 1][prev];
+            int currTake = dp[i + 1][i] + 1;
+            
+            if(currSkip > currTake) {
+                i = i + 1;
+            }
+            else {
+                if(prev == n || nums[prev] < nums[i]) {
                     LIS.push_back(nums[i]);
                     prev = i;
                 }
+                i = i + 1;
             }
-            i = i + 1;
         }
         
         return LIS;
