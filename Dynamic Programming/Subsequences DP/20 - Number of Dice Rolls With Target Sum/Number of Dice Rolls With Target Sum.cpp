@@ -58,11 +58,9 @@ class BottomUp {
         for(int n = 1; n <= given_n; ++n) {
             for(int target = 0; target <= targetGiven; ++target) {
                 int count = 0;
-
                 for(int face = 1; (face <= k && face <= target); ++face) {
                     count = (count + dp[n - 1][target - face]) % MOD;
                 }
-
                 dp[n][target] = count;
             }
         }
@@ -72,24 +70,19 @@ class BottomUp {
 
     // O(GN*G*K) & O(TG) : Where GN = given_n, TG = targetGiven 
     int solveBy1DTable(int given_n, int targetGiven, int k) {
-        vector<int> prevRow(targetGiven + 1, -1);
+        vector<int> prevRow(targetGiven + 1, -1), currRow(targetGiven + 1, -1);
 
         for(int target = 0; target <= targetGiven; ++target)
             prevRow[target] = (target == 0);
 
         for(int n = 1; n <= given_n; ++n) {
-            vector<int> currRow(targetGiven + 1, -1);
-
             for(int target = 0; target <= targetGiven; ++target) {
                 int count = 0;
-
                 for(int face = 1; (face <= k && face <= target); ++face) {
                     count = (count + prevRow[target - face]) % MOD;
                 }
-
                 currRow[target] = count;
             }
-
             swap(prevRow, currRow);
         }
 
