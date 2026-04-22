@@ -16,7 +16,7 @@ public:
                 int currTake  = s1[i] == s2[j] 
                                 ? 1 + dp[i + 1][j + 1]
                                 : 0;
-                dp[i][j] = max({currTake, currSkip1, currSkip2});
+                dp[i][j] = max({currSkip1, currSkip2, currTake});
             }
         }
 
@@ -29,18 +29,18 @@ public:
             int currTake  = s1[i] == s2[j] 
                             ? 1 + dp[i + 1][j + 1]
                             : 0;
-            if(currSkip1 > max(currSkip2, currTake)) {
-                i++;
+            if(currSkip1 >= max(currSkip2, currTake)) {
+                i = i + 1;
             }
-            else if(currSkip2 > max(currSkip1, currTake)) {
-                j++;
+            else if(currSkip2 >= max(currSkip1, currTake)) {
+                j = j + 1;
             }
             else {
                 if(s1[i] == s2[j]) {
                     LCS.push_back(s1[i]);
-                    j++;
+                    j = j + 1;
                 }
-                i++;
+                i = i + 1;
             }
         }
 
