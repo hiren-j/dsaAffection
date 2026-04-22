@@ -26,7 +26,7 @@ public:
         while(i <= n - 1 && j <= m - 1) {
             int currSkip1 = dp[i + 1][j];
             int currSkip2 = dp[i][j + 1];
-            int currTake  = dp[i + 1][j + 1] + 1;
+            int currTake  = 1 + dp[i + 1][j + 1];
             
             if(currSkip1 >= max(currSkip2, currTake)) {
                 i = i + 1;
