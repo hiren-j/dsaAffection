@@ -9,37 +9,36 @@ public:
         const int n = nums.size();
 
         vector<int> LIS(n, 1); 
-        vector<int> sequence(n, -1); // sequence[i] represents the index of the recently seen value which is considered as the part of the LIS ending at that index
+        vector<int> prevIndex(n, -1);
 
         for(int i = 0; i < n; ++i) {   
-            sequence[i] = i;
+            prevIndex[i] = i;
 
             for(int prev = 0; prev < i; ++prev) {
                 if(nums[prev] < nums[i] && LIS[prev] + 1 > LIS[i]) {
-                    LIS[i]      = max(LIS[i], LIS[prev] + 1);
-                    sequence[i] = prev;
+                    LIS[i]       = max(LIS[i], LIS[prev] + 1);
+                    prevIndex[i] = prev;
                 }
             }
         }
 
-        // Find index where length of LIS is stored
-        int lengthOfLIS = -1; 
+        int arrayLIS = -1; 
         int idx = -1; 
-
+        
         for(int i = 0; i < n; ++i) {
-            if(LIS[i] > lengthOfLIS) {
-                lengthOfLIS = LIS[i];
+            if(LIS[i] > arrayLIS) {
+                arrayLIS = LIS[i];
                 idx = i;
             }
         }
 
         vector<int> answer;
-
-        while(idx != sequence[idx]) {
-            answer.push_back(nums[idx]);
-            idx = sequence[idx];
+        
+        while(i != prevIndex[i]) {
+            answer.push_back(nums[i]);
+            i = prevIndex[i];
         }
-        answer.push_back(nums[idx]);
+        answer.push_back(nums[i]);
         reverse(begin(answer), end(answer));
         return answer;
     }
