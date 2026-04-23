@@ -16,7 +16,7 @@ public:
 
             for(int prev = 0; prev < i; ++prev) {
                 if(nums[prev] < nums[i] && LIS[prev] + 1 > LIS[i]) {
-                    LIS[i]      = max(LIS[i], LIS[prev] + 1);
+                    LIS[i]       = max(LIS[i], LIS[prev] + 1);
                     prevIndex[i] = prev;
                 }
             }
@@ -33,6 +33,7 @@ public:
         }
 
         vector<int> answer;
+        
         while(curr != prevIndex[curr]) {
             answer.push_back(nums[curr]);
             curr = prevIndex[curr];
