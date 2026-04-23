@@ -16,29 +16,28 @@ public:
 
             for(int prev = 0; prev < i; ++prev) {
                 if(nums[prev] < nums[i] && LIS[prev] + 1 > LIS[i]) {
-                    LIS[i]       = max(LIS[i], LIS[prev] + 1);
+                    LIS[i]      = max(LIS[i], LIS[prev] + 1);
                     prevIndex[i] = prev;
                 }
             }
         }
 
         int arrayLIS = -1; 
-        int idx = -1; 
+        int curr = -1; 
         
         for(int i = 0; i < n; ++i) {
             if(LIS[i] > arrayLIS) {
                 arrayLIS = LIS[i];
-                idx = i;
+                curr = i;
             }
         }
 
         vector<int> answer;
-        
-        while(i != prevIndex[i]) {
-            answer.push_back(nums[i]);
-            i = prevIndex[i];
+        while(curr != prevIndex[curr]) {
+            answer.push_back(nums[curr]);
+            curr = prevIndex[curr];
         }
-        answer.push_back(nums[i]);
+        answer.push_back(nums[curr]);
         reverse(begin(answer), end(answer));
         return answer;
     }
