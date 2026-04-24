@@ -35,8 +35,7 @@ public:
         while(curr != jumpIndex[curr]) {
             answer.push_back(nums[curr]);
             curr = jumpIndex[curr];
-        }
-        
+        } 
         answer.push_back(nums[curr]);
         reverse(begin(answer), end(answer));
         return answer;
