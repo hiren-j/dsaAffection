@@ -3,6 +3,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+public:
     // O(N*N) & O(N)
     vector<int> getLIS(vector<int>& nums) {
         const int n = nums.size();
@@ -15,13 +16,11 @@ class BottomUp {
 
         for(int i = 0; i < n; ++i) {
             jumpIndex[i] = i;
-            
+
             for(int prev = 0; prev < i; ++prev) {
-                if(nums[i] > nums[prev]) {
-                    if(LIS[prev] + 1 > LIS[i]) {
-                        LIS[i] = LIS[prev] + 1;
-                        jumpIndex[i] = prev;
-                    }
+                if(nums[i] > nums[prev] && LIS[prev] + 1 > LIS[i]) {
+                    LIS[i]       = LIS[prev] + 1;
+                    jumpIndex[i] = prev;
                 }
             }
             
@@ -37,6 +36,7 @@ class BottomUp {
             answer.push_back(nums[curr]);
             curr = jumpIndex[curr];
         }
+        
         answer.push_back(nums[curr]);
         reverse(begin(answer), end(answer));
         return answer;
