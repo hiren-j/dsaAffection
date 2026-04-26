@@ -1,4 +1,4 @@
-// Code to find the count of all `n` digit numbers whose sum of digits is `sum`. Leading 0’s are not counted as digits ~ coded by Hiren
+// Code to find the count of all `n` digit numbers whose sum of digits is `sum`. Leading 0’s are not counted as digits ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
