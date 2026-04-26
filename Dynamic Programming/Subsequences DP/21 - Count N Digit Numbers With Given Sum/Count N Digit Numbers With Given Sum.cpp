@@ -3,46 +3,41 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    const int MOD = 1e9+7;
+    const int MOD = 1e9 + 7;
 
-    // O(9^N) & O(N)
-    long solveWithoutMemo(int n, int len, int sum) {
-        // Edge case: If you've created a number of length n and its sum of digits is equal to given sum then return 1
+    // O(10^N) & O(N)
+    int solveWithoutMemo(int n, int len, int sum) {
         if(len == n)
             return (sum == 0); 
                     
-        long count = 0;
+        int count = 0;
         
-        // If length is 0 then avoid start from leading 0's
-        for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && sum - digit >= 0); ++digit)
+        for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && digit <= sum); ++digit)
             count = (count + solveWithoutMemo(n, len + 1, sum - digit)) % MOD;
          
         return count;
     }
     
-    // O(9*N*S) & O(N*S + N)
-    long solveWithMemo(vector<vector<long>>& dp, int n, int len, int sum) {
-        // Edge case: If you've created a number of length n and its sum of digits is equal to given sum then return 1
+    // O(N*S) & O(N*S) : Where S = sum
+    int solveWithMemo(vector<vector<int>>& dp, int n, int len, int sum) {
         if(len == n)
             return (sum == 0); 
             
         if(dp[len][sum] != -1)
             return dp[len][sum];
             
-        long count = 0;
+        int count = 0;
         
-        // If length is 0 then avoid start from leading 0's
-        for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && sum - digit >= 0); ++digit)
+        for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && digit <= sum); ++digit)
             count = (count + solveWithMemo(dp, n, len + 1, sum - digit)) % MOD;
          
         return dp[len][sum] = count;
     }
     
 public:
-    // Method to count all n length numbers whose sum of digits equals to sum, using recursion with memoization - O(N*S) & O(N*S) : Where S = sum
-    long countWays(int n, int sum) {
-        vector<vector<long>> dp(n, vector<long>(sum + 1, -1));
-        long count = solveWithMemo(dp, n, 0, sum); 
+    int countWays(int n, int sum) {
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+        int count = solveWithMemo(dp, n, 0, sum); 
         return (count == 0) ? -1 : count;
     }
 };
