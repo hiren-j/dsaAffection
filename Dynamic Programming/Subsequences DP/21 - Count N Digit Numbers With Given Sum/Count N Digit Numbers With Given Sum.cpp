@@ -47,44 +47,61 @@ public:
 class BottomUp {
     const int MOD = 1e9+7;
     
-public:
-    // #1 Method to count all n length numbers whose sum of digits equals to sum, using 2D tabulation - O(N*S) & O(N*S)
-    long countWays_V1(int n, int sum) {
-        vector<vector<long>> dp(n + 1, vector<long>(sum + 1, 0));
-        dp[n][0] = 1; // Initialize the edge case
+    // O(N*GS) & O(N*GS) : Where GS = givenSum
+    int solveBy2DTable(int n, int givenSum) {
+        vector<vector<int>> dp(n + 1, vector<int>(givenSum + 1, -1));
         
-        for(int len = n-1; len >= 0; --len) {
-            for(int currSum = 0; currSum <= sum; ++currSum) {
-                long count = 0;
-                for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && currSum - digit >= 0); ++digit) {
-                    count = (count + dp[len + 1][currSum - digit]) % MOD;
+        for(int sum = 0; sum <= givenSum; ++sum)
+            dp[n][sum] = (sum == 0);
+        
+        for(int len = n - 1; len >= 0; --len) {
+            for(int sum = 0; sum <= givenSum; ++sum) {
+                int count = 0;
+                
+                for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && digit <= sum); ++digit) {
+                    count = (count + dp[len + 1][sum - digit]) % MOD;
                 }
-                dp[len][currSum] = count;
+                 
+                dp[len][sum] = count;
             }
         }
+        
 
-        long count = dp[0][sum]; 
+        int count = dp[0][givenSum]; 
         return (count == 0) ? -1 : count;
     }
-
-    // #2 Method to count all n length numbers whose sum of digits equals to sum, using 1D tabulation - O(N*S) & O(S)
-    long countWays_V2(int n, int sum) {
-        vector<long> nextRow(sum + 1, 0), idealRow(sum + 1, 0);
-        nextRow[0] = 1; // Initialize the edge case
+    
+    // O(N*GS) & O(GS) : Where GS = givenSum
+    int solveBy1DTable(int n, int givenSum) {
+        vector<int> nextRow(givenSum + 1, -1); 
         
-        for(int len = n-1; len >= 0; --len) {
-            for(int currSum = 0; currSum <= sum; ++currSum) {
-                long count = 0;
-                for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && currSum - digit >= 0); ++digit) {
-                    count = (count + nextRow[currSum - digit]) % MOD;
+        for(int sum = 0; sum <= givenSum; ++sum)
+            nextRow[sum] = (sum == 0);
+        
+        for(int len = n - 1; len >= 0; --len) {
+            vector<int> currRow(givenSum + 1, -1); 
+            
+            for(int sum = 0; sum <= givenSum; ++sum) {
+                int count = 0;
+                
+                for(int digit = (len == 0 ? 1 : 0); (digit <= 9 && digit <= sum); ++digit) {
+                    count = (count + nextRow[sum - digit]) % MOD;
                 }
-                idealRow[currSum] = count;
+                 
+                currRow[sum] = count;
             }
-            nextRow = idealRow;
+            
+            swap(nextRow, currRow);
         }
         
-        long count = nextRow[sum]; 
+
+        int count = nextRow[givenSum]; 
         return (count == 0) ? -1 : count;
+    }
+    
+public:
+    int countWays(int n, int sum) {
+        return solveBy1DTable(n, sum);
     }
 };
 
