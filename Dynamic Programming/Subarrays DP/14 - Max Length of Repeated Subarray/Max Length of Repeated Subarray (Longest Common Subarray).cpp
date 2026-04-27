@@ -27,7 +27,7 @@ class TopDown {
         }
     }
 
-    // O(N*M)) & O(N*M)
+    // O(N*M) & O(N*M)
     int solveWithMemo(vector<vector<vector<int>>>& dp, const vector<int>& nums1, const vector<int>& nums2, int i, int j, bool prevPick) {
         if(i == n || j == m)
             return 0;
