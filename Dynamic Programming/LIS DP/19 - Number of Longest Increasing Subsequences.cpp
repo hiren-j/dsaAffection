@@ -1,41 +1,37 @@
-// Code to find the number of longest increasing subsequences. Notice that the sequence has to be strictly increasing ~ coded by Hiren
+// Code to find the number of longest increasing subsequences. Notice that the sequence has to be strictly increasing ~ coded by vHiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
 public:
-    // Method to find the number of longest increasing subsequences, using 1D tabulation - O(N*N) & O(N)
+    // O(N*N) & O(N)
     int findNumberOfLIS(vector<int>& nums) {
-        int n = nums.size();
+        const int n = nums.size();
 
-        vector<int> dp(n, 1);    // dp[index] represents the length of the LIS ending at that index
-        vector<int> count(n, 1); // count[index] represents the count of the LIS ending at that index
+        vector<int> LIS(n, 1), count(n, 1); 
 
-        for(int index = 0; index < n; ++index) {
-            for(int prevIndex = 0; prevIndex < index; ++prevIndex) {
-                if(nums[prevIndex] < nums[index]) {
-                    if(dp[prevIndex] + 1 == dp[index]) {
-                        count[index] += count[prevIndex];
+        for(int i = 0; i < n; ++i) {
+            for(int prev = 0; prev < i; ++prev) {
+                if(nums[prev] < nums[i]) {
+                    if(LIS[prev] + 1 > LIS[i]) {
+                        LIS[i]   = LIS[prev] + 1; 
+                        count[i] = count[prev];
                     }
-                    else if(dp[prevIndex] + 1 > dp[index]) {
-                        dp[index]    = max(dp[index], 1 + dp[prevIndex]); 
-                        count[index] = count[prevIndex];
+                    else if(LIS[prev] + 1 == LIS[i]) {
+                        count[i] += count[prev];
                     }
                 }
             }
         }
 
-        int lengthOfLIS = *max_element(begin(dp), end(dp));
+        int maxElement = *max_element(begin(LIS), end(LIS));
         int countOfLIS  = 0;
 
-        // Iterate and count the total number of LIS
-        for(int index = 0; index < n; ++index) {
-            if(dp[index] == lengthOfLIS) {
-                countOfLIS += count[index];
-            }
-        }
+        for(int i = 0; i < n; ++i) 
+            if(LIS[i] == maxElement) 
+                countOfLIS += count[i];
 
-        return countOfLIS;
+        return countOfLIS;   
     }
 };
 
