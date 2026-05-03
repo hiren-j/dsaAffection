@@ -1,6 +1,13 @@
 // Code to find the length of the longest chain which can be formed under the mentioned instructions ~ coded by Hiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+
+    DON'T IGNORE MUST READ: In the previous LIS problem, we implemented loop conversion, and we could do the same here. However, the Lines of Code (LOC) for this solution are already quite large, 
+                            so I’m not including the loop-based recursive solution this time. By now, you likely understand the concept, so you can try it on your own if needed.
+                            
+*/
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown_V1 {
 public:
