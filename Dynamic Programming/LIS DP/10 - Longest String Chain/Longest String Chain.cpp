@@ -60,5 +60,99 @@ public:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class BottomUp {
+    int n;
+
+    static bool sortByLength(const string& wordA, const string& wordB) {
+        return wordA.length() < wordB.length();
+    }
+
+    // O(32) Time
+    bool isPredecessor(const string& wordA, const string& wordB) {
+        if(wordA.length() != wordB.length() - 1)
+            return false;
+        
+        int i = 0, j = 0;
+
+        while(i < wordA.length() && j < wordB.length()) {
+            if(wordA[i] == wordB[j])
+                i++;
+            j++;
+        }
+
+        return i == wordA.length() ? true : false;
+    }
+
+    // O(N*N) & O(N*N)
+    int solveBy2DTable(const vector<string>& words) {
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+
+        for(int prev = 0; prev <= n; ++prev)
+            dp[n][prev] = 0;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prev = 0; prev <= n; ++prev) {
+                int currSkip = dp[i + 1][prev];
+                int currTake = 0;
+
+                if(prev == n || isPredecessor(words[prev], words[i]))
+                    currTake = dp[i + 1][i] + 1;
+
+                dp[i][prev] = max(currSkip, currTake);
+            }
+        }
+
+        return dp[0][n];
+    }
+    
+    // O(N*N) & O(N*N)
+    int solveBy2DEnhanced(const vector<string>& words) {
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prev = 0; prev <= n; ++prev) {
+                int currSkip = dp[i + 1][prev];
+                int currTake = 0;
+
+                if(prev == n || isPredecessor(words[prev], words[i]))
+                    currTake = dp[i + 1][i] + 1;
+
+                dp[i][prev] = max(currSkip, currTake);
+            }
+        }
+
+        return dp[0][n];
+    }
+
+    // O(N*N) & O(N)
+    int solveBy1DTable(const vector<string>& words) {
+        vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prev = 0; prev <= n; ++prev) {
+                int currSkip = nextRow[prev];
+                int currTake = 0;
+
+                if(prev == n || isPredecessor(words[prev], words[i]))
+                    currTake = nextRow[i] + 1;
+
+                idealRow[prev] = max(currSkip, currTake);
+            }
+            swap(nextRow, idealRow);
+        }
+
+        return nextRow[n];
+    }
+
+public:
+    int longestStrChain(vector<string>& words) {
+        n = words.size();
+        sort(begin(words), end(words), sortByLength);
+        return solveBy1DTable(words);
+    }
+};
+    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Topics: Array | Hash Table | Two Pointers | String | Dynamic Programming | Sorting 
 Link  : https://leetcode.com/problems/longest-string-chain/description/
