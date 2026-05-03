@@ -4,34 +4,27 @@
 
 class BottomUp {
 public:
-    // Method to find the length of the longest bitonic subsequence, using 1D tabulation - O(N*N) & O(N)
-    int LongestBitonicSequence(int n, vector<int>& nums) {
-        vector<int> LIS(n, 1); // LIS[index] represents the length of the LIS ending at that index
-        vector<int> LDS(n, 1); // LDS[index] represents the length of the LDS ending at that index
+    // O(N*N) & O(N)
+    int longestBitonicSequence(int n, vector<int>& nums) {
+        vector<int> LIS(n, 1); 
+        vector<int> LDS(n, 1); 
         
-        // Compute the length of the LIS of each index
         for(int index = 0; index < n; ++index) 
             for(int prevIndex = 0; prevIndex < index; ++prevIndex) 
-                if(nums[prevIndex] < nums[index]) 
-                    LIS[index] = max(LIS[index], 1 + LIS[prevIndex]);
+                if(nums[index] > nums[prevIndex]) 
+                    LIS[index] = max(LIS[index], LIS[prevIndex] + 1);
                     
-        // Compute the length of the LDS of each index
         for(int index = n-1; index >= 0; --index) 
             for(int nextIndex = n-1; nextIndex > index; --nextIndex) 
                 if(nums[index] > nums[nextIndex]) 
-                    LDS[index] = max(LDS[index], 1 + LDS[nextIndex]);
+                    LDS[index] = max(LDS[index], LDS[nextIndex] + 1);
                     
         int maxLenBitonic = 0;
         
-        for(int index = 0; index < n; ++index) {
-            int lenLIS = LIS[index];
-            int lenLDS = LDS[index];
-            // If both types of subsequence exists then update the result value by the maximum length
-            if(lenLIS > 1 && lenLDS > 1) {
-                maxLenBitonic = max(maxLenBitonic, lenLIS + lenLDS - 1);
-            }
-        }
-        
+        for(int index = 0; index < n; ++index) 
+            if(LIS[index] > 1 && LDS[index] > 1) 
+                maxLenBitonic = max(maxLenBitonic, LIS[index] + LDS[index] - 1);
+            
         return maxLenBitonic;
     }
 };
