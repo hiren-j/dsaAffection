@@ -154,5 +154,45 @@ public:
     
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class BottomUpClean {
+    static bool sortByLength(const string& wordA, const string& wordB) {
+        return wordA.length() < wordB.length();
+    }
+
+    // O(32) Time
+    bool isPredecessor(const string& wordA, const string& wordB) {
+        if(wordA.length() != wordB.length() - 1)
+            return false;
+        
+        int i = 0, j = 0;
+
+        while(i < wordA.length() && j < wordB.length()) {
+            if(wordA[i] == wordB[j])
+                i++;
+            j++;
+        }
+
+        return i == wordA.length() ? true : false;
+    }
+
+public:
+    // O(N*N) & O(N)
+    int longestStrChain(vector<string>& words) {
+        const int n = words.size();
+        sort(begin(words), end(words), sortByLength);
+        
+        vector<int> LIS(n, 1);
+
+        for(int idx = 0; idx < n; ++idx)
+            for(int prevIdx = 0; prevIdx < idx; ++prevIdx)
+                if(isPredecessor(words[prevIdx], words[idx]))
+                    LIS[idx] = max(LIS[idx], LIS[prevIdx] + 1);
+
+        return *max_element(begin(LIS), end(LIS));
+    }
+};
+    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Topics: Array | Hash Table | Two Pointers | String | Dynamic Programming | Sorting 
 Link  : https://leetcode.com/problems/longest-string-chain/description/
