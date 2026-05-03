@@ -4,31 +4,29 @@
 
 class BottomUp {
 public:
-    // Method to find the minimum number of elements to remove to make the given array a mountain array, using 1D tabulation - O(N*N) & O(N)
+    // O(N*N) & O(N)
     int minimumMountainRemovals(vector<int>& nums) {
-        int n = nums.size();
-
-        vector<int> LIS(n, 1), LDS(n, 1);
-
-        // Find the length of the LIS of each index
+        const int n = nums.size();
+        
+        vector<int> LIS(n, 1); 
+        vector<int> LDS(n, 1); 
+        
         for(int index = 0; index < n; ++index) 
             for(int prevIndex = 0; prevIndex < index; ++prevIndex) 
-                if(nums[prevIndex] < nums[index])
+                if(nums[index] > nums[prevIndex]) 
                     LIS[index] = max(LIS[index], LIS[prevIndex] + 1);
-
-        // Find the length of the LDS of each index
+                    
         for(int index = n-1; index >= 0; --index) 
             for(int nextIndex = n-1; nextIndex > index; --nextIndex) 
-                if(nums[nextIndex] < nums[index])
+                if(nums[index] > nums[nextIndex]) 
                     LDS[index] = max(LDS[index], LDS[nextIndex] + 1);
-
+                    
         int maxLenBitonic = 0;
-
-        // If the strictly increasing and strictly decreasing subsequence of each index exists then update the bitonic length by the maximum value
-        for(int index = 0; index < n; ++index) 
-            if(LIS[index] > 1 && LDS[index] > 1)
-                maxLenBitonic = max(maxLenBitonic, LIS[index] + LDS[index] - 1);
         
+        for(int index = 0; index < n; ++index) 
+            if(LIS[index] > 1 && LDS[index] > 1) 
+                maxLenBitonic = max(maxLenBitonic, LIS[index] + LDS[index] - 1);
+            
         return n - maxLenBitonic;
     }
 };
