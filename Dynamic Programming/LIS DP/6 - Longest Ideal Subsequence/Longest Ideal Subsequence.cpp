@@ -1,4 +1,4 @@
-// Code to find the length of the longest ideal string ~ coded by Hiren
+// Code to find the length of the longest ideal string ~ coded by vHiren
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
