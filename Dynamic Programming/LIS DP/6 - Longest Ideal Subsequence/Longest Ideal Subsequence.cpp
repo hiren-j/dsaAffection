@@ -2,160 +2,142 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-class TopDown_V1 {
-public:
-    // Method to find the length of the longest ideal string, using recursion with memoization - O(N) & O(N)
-    int longestIdealString(const std::string& s, int k) {
-        int n = s.size();
-        std::vector<std::vector<int>> memory(n, std::vector<int>(123, -1));
-        return solveWithMemo(memory, s, k, n, 0, '\0');
-    }
-
-private:
-    // O(2*N*123) & O(N*123 + N)
-    int solveWithMemo(std::vector<std::vector<int>>& memory, const std::string& s, int k, int n, int index, char prevLetter) {
-        // Edge case: If all the letters are exhausted then you can't pick any more
-        if(index == n)  
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][prevLetter] != -1)
-            return memory[index][prevLetter];
-
-        // There are always two possibilities to perform at each letter
-        int currSkip = solveWithMemo(memory, s, k, n, index + 1, prevLetter); // Is to skip the letter 
-        int currTake = 0;                                                     // Is to pick the letter 
-
-        // If the absolute difference between the previous and the current letter is valid then pick the current letter into the subsequence and then move on
-        if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k)
-            currTake = 1 + solveWithMemo(memory, s, k, n, index + 1, s[index]);
-
-        // Store the result value to the memoization table and then return it
-        return memory[index][prevLetter] = std::max(currSkip, currTake);
-    }
+class TopDown {
+    int n, k;
 
     // O(2^N) & O(N)
-    int solveWithoutMemo(const std::string& s, int k, int n, int index, char prevLetter) {
-        // Edge case: If all the letters are exhausted then you can't pick any more
-        if(index == n)
+    int solveWithoutMemo(const string& str, int i, int prevLetter) {
+        if(i == n)
             return 0;
 
-        // There are always two possibilities to perform at each letter
-        int currSkip = solveWithoutMemo(s, k, n, index + 1, prevLetter); // Is to skip the letter 
-        int currTake = 0;                                                // Is to pick the letter 
+        int currSkip = solveWithoutMemo(str, i + 1, prevLetter);
+        int currTake = 0;
 
-        // If the absolute difference between the previous and the current letter is valid then pick the current letter into the subsequence and then move on
-        if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k)
-            currTake = 1 + solveWithoutMemo(s, k, n, index + 1, s[index]);
+        if(prevLetter == '\0' || abs(prevLetter  - str[i]) <= k)
+            currTake = solveWithoutMemo(str, i + 1, str[i]) + 1;
 
-        // As we're striving for the maximum length hence return the maximum value
-        return std::max(currSkip, currTake);
+        return max(currSkip, currTake);
     }
-};
+    // Note: This solution will lead to TLE
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-class TopDown_V2 {
+    // O(N) & O(N)
+    int solveWithMemo(vector<vector<int>>& dp, const string& str, int i, int prevLetter) {
+        if(i == n)
+            return 0;
+
+        if(dp[i][prevLetter - 'a'] != -1)
+            return dp[i][prevLetter - 'a'];
+
+        int currSkip = solveWithMemo(dp, str, i + 1, prevLetter);
+        int currTake = 0;
+
+        if(prevLetter == '{' || abs(prevLetter  - str[i]) <= k)
+            currTake = solveWithMemo(dp, str, i + 1, str[i]) + 1;
+
+        return dp[i][prevLetter - 'a'] = max(currSkip, currTake);
+    }
+
+    // O(N*N) & O(N)
+    int solveWithMemoLoop(vector<vector<int>>& dp, const string& str, int start, int prevLetter) {
+        if(start == n)
+            return 0;
+
+        if(dp[start][prevLetter - 'a'] != -1)
+            return dp[start][prevLetter - 'a'];
+
+        int maxLen = 0;
+
+        for(int i = start; i < n; ++i) {
+            int currTake = 0;
+
+            if(prevLetter == '{' || abs(prevLetter  - str[i]) <= k)
+                currTake = solveWithMemoLoop(dp, str, i + 1, str[i]) + 1;
+            
+            maxLen = max(maxLen, currTake);
+        }
+
+        return dp[start][prevLetter - 'a'] = maxLen;
+    }
+    // Note: This solution will lead to TLE
+
 public:
-    // Method to find the length of the longest ideal string, using recursion with memoization - O(N*N) & O(N)
-    int longestIdealString(const std::string& s, int k) {
-        int n = s.size();
-        std::vector<std::vector<int>> memory(n, std::vector<int>(123, -1));
-        return solveWithMemo(memory, s, k, n, 0, '\0');
-    }
-
-private:
-    // O(N*N*123) & O(N*123 + N)
-    int solveWithMemo(std::vector<std::vector<int>>& memory, const std::string& s, int k, int n, int startIndex, char prevLetter) {
-        // Edge case: If all the letters are exhausted then you can't pick any more
-        if(startIndex == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][prevLetter] != -1)
-            return memory[startIndex][prevLetter];
-
-        // Stores the result value
-        int maxLength = 0;
-
-        // Find the length of all the longest ideal strings and update the result by the maximum value
-        for(int index = startIndex; index < n; ++index) 
-            if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k)        
-                maxLength = std::max(maxLength, 1 + solveWithMemo(memory, s, k, n, index + 1, s[index]));
-        
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex][prevLetter] = maxLength;
-    }
-
-    // O(N^N) & O(N)
-    int solveWithoutMemo(const std::string& s, int k, int n, int startIndex, char prevLetter) {
-        // Edge case: If all the letters are exhausted then you can't pick any more
-        if(startIndex == n)
-            return 0;
-        
-        // Stores the result value
-        int maxLength = 0;
-
-        // Find the length of all the longest ideal strings and update the result by the maximum value
-        for(int index = startIndex; index < n; ++index) 
-            if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k)          
-                maxLength = std::max(maxLength, 1 + solveWithoutMemo(s, k, n, index + 1, s[index]));
-        
-        // Return the result value                
-        return maxLength;
+    int longestIdealString(string& str, int K) {
+        n = str.size(), k = K;
+        vector<vector<int>> dp(n, vector<int>(27, -1));
+        return solveWithMemo(dp, str, 0, '{');
     }
 };
-// Note: This solution (TopDown_V2) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V2). It will lead to the time-limit-exceed
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
+
 class BottomUp {
-public:
-    // #1 Method to find the length of the longest ideal string, using 2D tabulation - O(N*123) & O(N*123)
-    int longestIdealString_V1(const std::string& s, int k) {
-        int n = s.size();
+    int n, k;
 
-        // 2D DP table
-        std::vector<std::vector<int>> dp(n + 1, std::vector<int>(123, 0));
+    // O(N) & O(N)
+    int solveBy2DTable(const string& str) {
+        vector<vector<int>> dp(n + 1, vector<int>(27, -1));
 
-        // Fill the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int prevLetter = 122; prevLetter >= 0; --prevLetter) {
-                int currSkip = dp[index + 1][prevLetter];
+        for(char prevLetter = 'a'; prevLetter <= '{'; ++prevLetter) 
+            dp[n][prevLetter - 'a'] = 0;
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(char prevLetter = 'a'; prevLetter <= '{'; ++prevLetter) {
+                int currSkip = dp[i + 1][prevLetter - 'a'];
                 int currTake = 0;
-                if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k) {
-                    currTake = 1 + dp[index + 1][s[index]];
-                }
-                dp[index][prevLetter] = std::max(currSkip, currTake);
+
+                if(prevLetter == '{' || abs(prevLetter  - str[i]) <= k)
+                    currTake = dp[i + 1][str[i] - 'a'] + 1;
+
+                dp[i][prevLetter - 'a'] = max(currSkip, currTake);
             }
         }
 
-        // Return the result value
-        return dp[0][0];
+        return dp[0]['{' - 'a'];
     }
 
-    // #2 Method to find the length of the longest ideal string, using 1D tabulation - O(N*123) & O(2*123)
-    int longestIdealString_V2(const std::string& s, int k) {
-        int n = s.size();
+    // O(N) & O(N)
+    int solveBy2DEnhanced(const string& str) {
+        vector<vector<int>> dp(n + 1, vector<int>(27, 0));
 
-        // 1D DP tables
-        std::vector<int> nextRow(123, 0), idealRow(123, 0);
-
-        // Fill the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int prevLetter = 122; prevLetter >= 0; --prevLetter) {
-                int currSkip = nextRow[prevLetter];
+        for(int i = n - 1; i >= 0; --i) {
+            for(char prevLetter = 'a'; prevLetter <= '{'; ++prevLetter) {
+                int currSkip = dp[i + 1][prevLetter - 'a'];
                 int currTake = 0;
-                if(prevLetter == '\0' || abs(s[index] - prevLetter) <= k) {
-                    currTake = 1 + nextRow[s[index]];
-                }
-                idealRow[prevLetter] = std::max(currSkip, currTake);
+
+                if(prevLetter == '{' || abs(prevLetter  - str[i]) <= k)
+                    currTake = dp[i + 1][str[i] - 'a'] + 1;
+
+                dp[i][prevLetter - 'a'] = max(currSkip, currTake);
             }
-            nextRow = idealRow;
         }
 
-        // Return the result value
-        return idealRow[0];
+        return dp[0]['{' - 'a'];
+    }
+
+    // O(N) & O(1)
+    int solveBy1DTable(const string& str) {
+        vector<int> nextRow(27, 0), idealRow(27, 0);
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(char prevLetter = 'a'; prevLetter <= '{'; ++prevLetter) {
+                int currSkip = nextRow[prevLetter - 'a'];
+                int currTake = 0;
+
+                if(prevLetter == '{' || abs(prevLetter  - str[i]) <= k)
+                    currTake = nextRow[str[i] - 'a'] + 1;
+
+                idealRow[prevLetter - 'a'] = max(currSkip, currTake);
+            }
+            swap(nextRow, idealRow);
+        }
+
+        return nextRow['{' - 'a'];
+    }
+
+public:
+    int longestIdealString(string& str, int K) {
+        n = str.size(), k = K;
+        return solveBy1DTable(str);
     }
 };
 
