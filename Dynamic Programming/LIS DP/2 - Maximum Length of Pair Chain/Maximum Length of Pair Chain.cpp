@@ -117,7 +117,7 @@ public:
 
         for(int index = 0; index < n; ++index) {
             for(int prevIndex = 0; prevIndex < index; ++prevIndex) {
-                if(pairs[prevIndex][1] < pairs[index][0]) {
+                if(pairs[index][0] > pairs[prevIndex][1]) {
                     dp[index] = max(dp[index], 1 + dp[prevIndex]);
                 }
             }
