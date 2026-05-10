@@ -36,51 +36,6 @@ class TopDown {
         return dp[n][prev - 'a'] = count;
     }
 
-    // O(GN*26*5) & O(GN*26) : Where GN = given_n
-    int solveBy2DTable(int given_n) {
-        vector<vector<int>> dp(given_n + 1, vector<int>(26, -1));
-
-        for(char prev = 'a'; prev <= 'z'; ++prev)
-            dp[0][prev - 'a'] = 1;
-        
-        for(int n = 1; n <= given_n; ++n) {
-            for(char prev = 'z'; prev >= 'a'; --prev) {
-                int count = 0;
-
-                for(const char ch : vowels) 
-                    if(prev <= ch)
-                        count += dp[n - 1][ch - 'a'];
-
-                dp[n][prev - 'a'] = count;
-            }
-        }
-
-        return dp[given_n]['a' - 'a'];
-    }
-
-    // O(GN*26*5) & O(2*26) : Where GN = given_n
-    int solveBy1DTable(int given_n) {
-        vector<int> prevRow(26, -1), currRow(26, -1);
-
-        for(char prev = 'a'; prev <= 'z'; ++prev)
-            prevRow[prev - 'a'] = 1;
-        
-        for(int n = 1; n <= given_n; ++n) {
-            for(char prev = 'z'; prev >= 'a'; --prev) {
-                int count = 0;
-
-                for(const char ch : vowels) 
-                    if(prev <= ch)
-                        count += prevRow[ch - 'a'];
-
-                currRow[prev - 'a'] = count;
-            }
-            swap(prevRow, currRow);
-        }
-
-        return prevRow['a' - 'a'];
-    }
-
 public:
     int countVowelStrings(int n) {
         vector<vector<int>> dp(n + 1, vector<int>(26, -1));
