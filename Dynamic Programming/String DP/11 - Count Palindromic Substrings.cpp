@@ -1,32 +1,32 @@
-// Code to count the total number of palindromic substrings of the given string ~ coded by Hiren
+// Code to count the total number of palindromic substrings of the given string ~ coded by vHiren
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    bool isPalindrome(vector<vector<int>>& dp, string& s, int start, int end) {
-        // Edge case: If no letters exists then string is palindrome
-        if(start >= end)
+    int n;
+
+    bool isPalindrome(vector<vector<int>>& dp, const string& s, int i, int j) {
+        if(i >= j)
             return true;
         
-        // Edge case: If both letters don't match then string can't be palindrome
-        if(s[start] != s[end])
-            return false;
+        if(dp[i][j] != -1)
+            return dp[i][j];
 
-        if(dp[start][end] != -1)
-            return dp[start][end];
-
-        return dp[start][end] = isPalindrome(dp, s, start + 1, end - 1);
+        if(s[i] == s[j])
+            return dp[i][j] = isPalindrome(dp, s, i + 1, j - 1);
+        
+        return dp[i][j] = false;
     }
 
 public:
-    // Method to count the number of palindromic substrings, using recursion with memoization - O(N^2) & O(N^2)
-    int countSubstrings(string& s) {
-        int n = s.size();
+    // O(N*N) & O(N*N)
+    int countSubstrings(string s) {
+        n = s.size();
         int count = 0;
 
         vector<vector<int>> dp(n, vector<int>(n, -1));
 
-        for(int i = 0; i < n; ++i) // Check all the substrings and count the palindromes
+        for(int i = 0; i < n; ++i)
             for(int j = i; j < n; ++j)
                 if(isPalindrome(dp, s, i, j))
                     count++;
@@ -34,7 +34,7 @@ public:
         return count;
     }
 };
-// Note: Without Memoization DP The Time Complexity Is O(N^3).
+// Note: Without Memoization The Time Complexity Is O(N^3)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
