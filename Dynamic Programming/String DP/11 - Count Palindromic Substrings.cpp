@@ -36,60 +36,77 @@ public:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUpBrute {
-public:
-    // Method to count the number of palindromic substrings, using 2D tabulation - O(N^2) & O(N^2)
-    int countSubstrings(string& s) {
-        int n = s.size();
+class BottomUp {
+    int n;
+
+    // O(N*N) & O(N*N)
+    int solveBy2DTable(const string& s) {
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+
+        for(int i = n-1; i >= 0; --i) {
+            for(int j = n-1; j >= i; --j) {
+                if(s[i] == s[j])
+                    dp[i][j] = (i + 1 >= j || i >= j - 1) ? true : dp[i + 1][j - 1];
+                else
+                    dp[i][j] = false;  
+            }
+        }
+
         int count = 0;
-
-        vector<vector<bool>> dp(n + 1, vector<bool>(n, false));
-
-        for(int start = n-1; start >= 0; --start) // Initialize the first edge case
-            for(int end = 0; end <= n-1; ++end)
-                if(start >= end)
-                    dp[start][end] = true;
-
-        for(int start = n-1; start >= 0; --start) // Fill the rest of table
-            for(int end = 0; end <= n-1; ++end)
-                if(start < end && s[start] == s[end])
-                    dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
-
-        for(int i = 0; i < n; ++i) // Check all the substrings and count the palindromes
+        
+        for(int i = 0; i < n; ++i)
             for(int j = i; j < n; ++j)
                 if(dp[i][j])
                     count++;
 
         return count;
     }
-};
 
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUpEnhanced {
-public:
-    // Method to count the number of palindromic substrings, using 2D tabulation - O(N^2) & O(N^2)
-    int countSubstrings(string& s) {
-        int n = s.size();
+    // O(N*N) & O(N*N)
+    int solveBy2DEnhanced(const string& s) {
+        vector<vector<int>> dp(n, vector<int>(n, -1));
         int count = 0;
 
-        vector<vector<bool>> dp(n + 1, vector<bool>(n, false));
+        for(int i = n-1; i >= 0; --i) {
+            for(int j = n-1; j >= i; --j) {
+                if(s[i] == s[j])
+                    dp[i][j] = (i + 1 >= j || i >= j - 1) ? true : dp[i + 1][j - 1];
+                else
+                    dp[i][j] = false;  
 
-        for(int start = n-1; start >= 0; --start) // Initiailze the first edge case
-            for(int end = 0; end <= n-1; ++end)
-                if(start >= end)
-                    dp[start][end] = true;
-
-        for(int start = n-1; start >= 0; --start) { // Fill rest of the table and count the palindromes
-            for(int end = 0; end <= n-1; ++end) {
-                if(start < end && s[start] == s[end])
-                    dp[start][end] = (end - 1 >= 0) ? dp[start + 1][end - 1] : false;
-                if(end >= start && dp[start][end])
+                if(dp[i][j])
                     count++;
             }
         }
 
         return count;
+    }
+
+    // O(N*N) & O(N)
+    int solveBy1DTable(const string& s) {
+        vector<int> nextRow(n, -1), currRow(n, -1);
+        int count = 0;
+
+        for(int i = n-1; i >= 0; --i) {
+            for(int j = n-1; j >= i; --j) {
+                if(s[i] == s[j])
+                    currRow[j] = (i + 1 >= j || i >= j - 1) ? true : nextRow[j - 1];
+                else
+                    currRow[j] = false;  
+
+                if(currRow[j])
+                    count++;
+            }
+            swap(nextRow, currRow);
+        }
+
+        return count;
+    }
+
+public:
+    int countSubstrings(string s) {
+        n = s.size();
+        return solveBy1DTable(s);
     }
 };
 
