@@ -12,8 +12,8 @@ class TopDown {
 
         if(s[i] == s[j])
             return dp[i][j] = isPalindrome(dp, s, i + 1, j - 1);
-        
-        return dp[i][j] = false;
+        else
+            return dp[i][j] = false;
     }
 
 public:
