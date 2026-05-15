@@ -3,8 +3,6 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    int n;
-
     bool isPalindrome(vector<vector<int>>& dp, const string& s, int i, int j) {
         if(i >= j)
             return true;
@@ -21,7 +19,7 @@ class TopDown {
 public:
     // O(N*N) & O(N*N)
     int countSubstrings(string s) {
-        n = s.size();
+        const int n = s.size();
         int count = 0;
 
         vector<vector<int>> dp(n, vector<int>(n, -1));
