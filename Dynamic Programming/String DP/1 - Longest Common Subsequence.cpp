@@ -45,7 +45,7 @@ class BottomUp {
 
     // O(N*M) & O(N*M)
     int solveBy2DTable(const string& s1, const string& s2) {
-        vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
+        vector<vector<int>> dp(n+1, vector<int>(m+1, -1));
 
         for(int j = 0; j <= m; ++j)
             dp[n][j] = 0;
@@ -66,7 +66,7 @@ class BottomUp {
 
     // O(N*M) & O(N*M)
     int solveBy2DEnhanced(const string& s1, const string& s2) {
-        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
 
         for(int i = n-1; i >= 0; --i) {
             for(int j = m-1; j >= 0; --j) {
@@ -82,7 +82,7 @@ class BottomUp {
 
     // O(N*M) & O(M)
     int solveBy1DTable(const string& s1, const string& s2) {
-        vector<int> nextRow(m + 1, 0), currRow(m + 1, 0);
+        vector<int> nextRow(m+1, 0), currRow(m+1, 0);
 
         for(int i = n-1; i >= 0; --i) {
             for(int j = m-1; j >= 0; --j) {
