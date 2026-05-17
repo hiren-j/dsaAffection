@@ -17,7 +17,7 @@ class TopDown {
     }
 
 public:
-    // O(N*N) & O(N*N)
+    // O(N^2) & O(N^2)
     int countSubstrings(string s) {
         const int n = s.size();
         int count = 0;
@@ -39,7 +39,7 @@ public:
 class BottomUp {
     int n;
 
-    // O(N*N) & O(N*N)
+    // O(N^2) & O(N^2)
     int solveBy2DTable(const string& s) {
         vector<vector<int>> dp(n, vector<int>(n, -1));
 
@@ -62,7 +62,7 @@ class BottomUp {
         return count;
     }
 
-    // O(N*N) & O(N*N)
+    // O(N^2) & O(N^2)
     int solveBy2DEnhanced(const string& s) {
         vector<vector<int>> dp(n, vector<int>(n, -1));
         int count = 0;
@@ -82,7 +82,7 @@ class BottomUp {
         return count;
     }
 
-    // O(N*N) & O(N)
+    // O(N^2) & O(N)
     int solveBy1DTable(const string& s) {
         vector<int> nextRow(n, -1), currRow(n, -1);
         int count = 0;
