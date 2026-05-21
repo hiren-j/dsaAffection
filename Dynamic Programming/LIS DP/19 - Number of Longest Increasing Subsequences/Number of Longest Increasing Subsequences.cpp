@@ -25,13 +25,13 @@ public:
         }
 
         int maxElement = *max_element(begin(LIS), end(LIS));
-        int countOfLIS  = 0;
+        int res  = 0;
 
         for(int i = 0; i < n; ++i) 
             if(LIS[i] == maxElement) 
-                countOfLIS += count[i];
+                res += count[i];
 
-        return countOfLIS;   
+        return res;   
     }
 };
 
