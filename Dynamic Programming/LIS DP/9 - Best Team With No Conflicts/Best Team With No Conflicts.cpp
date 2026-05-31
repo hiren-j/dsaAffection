@@ -122,6 +122,7 @@ public:
                     dp[i] = max(dp[i], ageToScore[i].second + dp[prev]);
                 }
             }
+            
             res = max(res, dp[i]);
         } 
 
