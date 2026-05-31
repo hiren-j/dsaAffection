@@ -2,224 +2,40 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown_V1 {
-    vector<pair<int, int>> players;
+class TopDown {
+    vector<pair<int, int>> ageToScore; // {age, score} of ith player
+    int n;
 
-    // O(2^N) & O(N+N)
-    int solveWithoutMemo(int n, int index, int prevIndex) {
-        // Edge case: If all the players are choosen then you can't choose more
-        if(index == n)
+    // O(N*N) & O(N*N)
+    int solveWithMemo(vector<vector<int>>& dp, int i, int prev) {
+        if(i == n)
             return 0;
+            
+        if(dp[i][prev] != -1)
+            return dp[i][prev];
+        
+        int currSkip = solveWithMemo(dp, i + 1, prev);
+        int currTake = 0;
 
-        // There are always two possbilities to perform at each index value
-        int currSkip = solveWithoutMemo(n, index + 1, prevIndex); // Is to skip it 
-        int currTake = 0;                                         // Is to choose it  
+        if(prev == n || ageToScore[prev].second <= ageToScore[i].second)
+            currTake = solveWithMemo(dp, i + 1, i) + ageToScore[i].second;
 
-        // If there's no conflict between young and the older player then you can choose the older player
-        if(prevIndex == -1 || players[prevIndex].second <= players[index].second)
-            currTake = players[index].second + solveWithoutMemo(n, index + 1, index);
-
-        // As we're striving for the highest score hence return the maximum value
-        return max(currSkip, currTake); 
-    }
-
-    // O(2*N*N) & O(N*N + N+N)
-    int solveWithMemo(vector<vector<int>>& memory, int n, int index, int prevIndex) {
-        // Edge case: If all the players are choosen then you can't choose more
-        if(index == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[index][prevIndex + 1] != -1)
-            return memory[index][prevIndex + 1];
-
-        // There are always two possbilities to perform at each index value
-        int currSkip = solveWithMemo(memory, n, index + 1, prevIndex); // Is to skip it 
-        int currTake = 0;                                              // Is to choose it  
-
-        // If there's no conflict between young and the older player then you can choose the older player
-        if(prevIndex == -1 || players[prevIndex].second <= players[index].second)
-            currTake = players[index].second + solveWithMemo(memory, n, index + 1, index);
-
-        // Store the result value to the memoization table and then return it
-        return memory[index][prevIndex + 1] = max(currSkip, currTake); 
+        return dp[i][prev] = max(currSkip, currTake);
     }
 
 public:
-    // Method to find the highest overall score of all possible basketball teams, using recursion with 2D memoization - O(N^2) & O(N^2)
+    // O(N*N) & O(N*N)
     int bestTeamScore(vector<int>& scores, vector<int>& ages) {
-        int n = scores.size();
+        n = scores.size();
+        ageToScore.resize(n); 
 
-        // Create the list of players mapped with their age and score information
-        for(int index = 0; index < n; ++index) {
-            players.push_back({ages[index], scores[index]});
+        for(int i = 0; i < n; ++i) {
+            ageToScore[i] = {ages[i], scores[i]};
         }
-        sort(begin(players), end(players));
+        sort(ageToScore.begin(), ageToScore.end());
 
-        // 2D memoization table
-        vector<vector<int>> memory(n, vector<int>(n + 1, -1));
-
-        // Find and return the result value
-        return solveWithMemo(memory, n, 0, -1);
-    }
-};
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown_V2 {
-    vector<pair<int, int>> players;
-
-    // O(2*N*N) & O(N+N+N)
-    int solveWithMemo(vector<int>& memory, int n, int index, int prevIndex) {
-        // Edge case: If all the players are choosen then you can't choose more 
-        if(index == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[prevIndex + 1] != -1)
-            return memory[prevIndex + 1];
-
-        // There are always two possibilities to perform at each index value
-        int currSkip = solveWithMemo(memory, n, index + 1, prevIndex); // Is to skip it
-        int currTake = 0;                                              // Is to choose it
-
-        // If there's no conflict between young and the older player then you can choose the older player
-        if(prevIndex == -1 || players[prevIndex].second <= players[index].second)
-            currTake = players[index].second + solveWithMemo(memory, n, index + 1, index);
-
-        // Store the result value to the memoization table and then return it
-        return memory[prevIndex + 1] = max(currSkip, currTake); 
-    }
-
-public:
-    // Method to find the highest overall score of all possible basketball teams, using recursion with 1D memoization - O(N^2) & O(N)
-    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
-        int n = scores.size();
-
-        // Create the list of players mapped with their age and score information
-        for(int index = 0; index < n; ++index) {
-            players.push_back({ages[index], scores[index]});
-        }
-        sort(begin(players), end(players));
-
-        // 1D memoization table
-        vector<int> memory(n + 1, -1);
-
-        // Find and return the result value
-        return solveWithMemo(memory, n, 0, -1);
-    }
-};
-// Note: This solution (TopDown_V2) is the space optimized version of the (TopDown_V1) solution
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TopDown_V3 {
-    vector<pair<int, int>> players;
-
-    // O(N*N*N) & O(N*N + N+N)
-    int solveWithMemo(vector<vector<int>>& memory, int n, int startIndex, int prevIndex) {
-        // Edge case: If all the players are choosen then you can't choose more
-        if(startIndex == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][prevIndex + 1] != -1)
-            return memory[startIndex][prevIndex + 1];
-
-        int maxScore = 0;
-
-        // Iterate and if there's no conflict between young and the older player then you can choose the older player. Make sure to update the result by the maximum value 
-        for(int index = startIndex; index < n; ++index)
-            if(prevIndex == -1 || players[prevIndex].second <= players[index].second)
-                maxScore = max(maxScore, players[index].second + solveWithMemo(memory, n, index + 1, index));
-
-        return memory[startIndex][prevIndex + 1] = maxScore; 
-    }
-    // Note: `solveWithoutMemo` function will have O(N^N) time complexity and O(N+N) auxiliary space. You can easily create it by removing the memoization from this `solveWithMemo`, which is straightforward to implement. The full function isn't provided here to avoid larger code
-
-public:
-    // Method to find the highest overall score of all possible basketball teams, using recursion with 2D memoization - O(N^3) & O(N^2)
-    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
-        int n = scores.size();
-
-        // Create the list of players mapped with their age and score information
-        for(int index = 0; index < n; ++index) {
-            players.push_back({ages[index], scores[index]});
-        }
-        sort(begin(players), end(players));
-
-        // 2D memoization table
-        vector<vector<int>> memory(n, vector<int>(n + 1, -1));
-
-        // Find and return the result value
-        return solveWithMemo(memory, n, 0, -1);
-    }
-};
-// Note: This solution (TopDown_V3) is the loop conversion of the first solution (TopDown_V1) and you could see that the time complexity increases in this (TopDown_V3)
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class BottomUp_V1 {
-public:
-    // #1 Method to find the highest overall score of all possible basketball teams, using 2D tabulation - O(N^2) & O(N^2)
-    int bestTeamScore_V1(vector<int>& scores, vector<int>& ages) {
-        int n = scores.size();
-
-        // Create the list of players mapped with their age and score information
-        vector<pair<int, int>> players;
-        for(int index = 0; index < n; ++index) {
-            players.push_back({ages[index], scores[index]});
-        }
-        sort(begin(players), end(players));
-
-        // 2D DP table
-        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
-
-        // Fill the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int prevIndex = n-1; prevIndex >= -1; --prevIndex) {
-                int currSkip = dp[index + 1][prevIndex + 1];
-                int currTake = 0;
-                if(prevIndex == -1 || players[prevIndex].second <= players[index].second) {
-                    currTake = players[index].second + dp[index + 1][index + 1];
-                }
-                dp[index][prevIndex + 1] = max(currSkip, currTake); 
-            }
-        }
-
-        // Return the result value
-        return dp[0][0];
-    }
-
-    // #2 Method to find the highest overall score of all possible basketball teams, using 1D tabulation - O(N^2) & O(N)
-    int bestTeamScore_V2(vector<int>& scores, vector<int>& ages) {
-        int n = scores.size();
-
-        // Create the list of players mapped with their age and score information
-        vector<pair<int, int>> players;
-        for(int index = 0; index < n; ++index) {
-            players.push_back({ages[index], scores[index]});
-        }
-        sort(begin(players), end(players));
-
-        // 1D DP tables
-        vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
-
-        // Fill the table
-        for(int index = n-1; index >= 0; --index) {
-            for(int prevIndex = n-1; prevIndex >= -1; --prevIndex) {
-                int currSkip = nextRow[prevIndex + 1];
-                int currTake = 0;
-                if(prevIndex == -1 || players[prevIndex].second <= players[index].second) {
-                    currTake = players[index].second + nextRow[index + 1];
-                }
-                idealRow[prevIndex + 1] = max(currSkip, currTake); 
-            }
-            nextRow = idealRow;
-        }
-
-        // Return the result value
-        return idealRow[0];
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
+        return solveWithMemo(dp, 0, n);
     }
 };
 
