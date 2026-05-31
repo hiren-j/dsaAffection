@@ -24,7 +24,6 @@ class TopDown {
     }
 
 public:
-    // O(N*N) & O(N*N)
     int bestTeamScore(vector<int>& scores, vector<int>& ages) {
         n = scores.size();
         ageToScore.resize(n); 
@@ -85,7 +84,6 @@ class BottomUp {
     }   
 
 public:
-    // O(N*N) & O(N*N)
     int bestTeamScore(vector<int>& scores, vector<int>& ages) {
         n = scores.size();
         ageToScore.resize(n); 
