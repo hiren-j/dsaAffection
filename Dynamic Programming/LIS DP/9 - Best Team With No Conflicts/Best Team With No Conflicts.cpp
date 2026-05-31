@@ -41,35 +41,93 @@ public:
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V2 {
-public:
-    // Method to find the highest overall score of all possible basketball teams, using 1D tabulation - O(N^2) & O(N)
-    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
-        int n = scores.size(), maxScore = 0;
+class BottomUp {
+    vector<pair<int, int>> ageToScore; 
+    int n;
 
-        // Create the list of players mapped with their age and score information
-        vector<pair<int, int>> players;
-        for(int index = 0; index < n; ++index) {
-            players.push_back({ages[index], scores[index]});
+    // O(N*N) & O(N*N)
+    int solveBy2DTable() {
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prev = 0; prev <= n; ++prev) {
+                int currSkip = dp[i + 1][prev];
+                int currTake = 0;
+
+                if(prev == n || ageToScore[prev].second <= ageToScore[i].second)
+                    currTake = dp[i + 1][i] + ageToScore[i].second;
+
+                dp[i][prev] = max(currSkip, currTake);
+            }
         }
-        sort(begin(players), end(players));
 
-        // 1D DP table: dp[i] represents the maximum score you can get by considering the players from index 0 to i
-        vector<int> dp(n, 0);
+        return dp[0][n];
+    }  
 
-        // Fill the table
-        for(int index = 0; index < n; ++index) {
-            dp[index] = players[index].second;
-            for(int prevIndex = 0; prevIndex < index; ++prevIndex) {
-                if(players[prevIndex].second <= players[index].second) {
-                    dp[index] = max(dp[index], players[index].second + dp[prevIndex]);
+    // O(N*N) & O(N)
+    int solveBy1DTable() {
+        vector<int> nextRow(n + 1, 0), idealRow(n + 1, 0);
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int prev = 0; prev <= n; ++prev) {
+                int currSkip = nextRow[prev];
+                int currTake = 0;
+
+                if(prev == n || ageToScore[prev].second <= ageToScore[i].second)
+                    currTake = nextRow[i] + ageToScore[i].second;
+
+                idealRow[prev] = max(currSkip, currTake);
+            }
+            swap(nextRow, idealRow);
+        }
+
+        return nextRow[n];
+    }   
+
+public:
+    // O(N*N) & O(N*N)
+    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
+        n = scores.size();
+        ageToScore.resize(n); 
+
+        for(int i = 0; i < n; ++i) {
+            ageToScore[i] = {ages[i], scores[i]};
+        }
+        sort(ageToScore.begin(), ageToScore.end());
+
+        return solveBy1DTable();
+    }
+};
+    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUpClean {
+public:
+    // O(N*N) & O(N)
+    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
+        const int n = scores.size();
+
+        vector<pair<int, int>> ageToScore(n);
+        for(int i = 0; i < n; ++i) {
+            ageToScore[i] = {ages[i], scores[i]};
+        }
+        sort(ageToScore.begin(), ageToScore.end());
+
+        vector<int> dp(n);
+        int res = 0;
+
+        for(int i = 0; i < n; ++i) {
+            dp[i] = ageToScore[i].second;
+
+            for(int prev = 0; prev < i; ++prev) {
+                if(ageToScore[prev].second <= ageToScore[i].second) {
+                    dp[i] = max(dp[i], ageToScore[i].second + dp[prev]);
                 }
             }
-            maxScore = max(maxScore, dp[index]);
+            res = max(res, dp[i]);
         } 
 
-        // Return the result value
-        return maxScore;
+        return res;
     }
 };
 
