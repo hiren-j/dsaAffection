@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    // O(2^(N+N)) & O(N)
+    // O(2^N) & O(N)
     int solveWithoutMemo(string& s, int i, int j) {
         if(i == j) // Edge case: Any string of length 1 is always a palindrome
             return 1;
