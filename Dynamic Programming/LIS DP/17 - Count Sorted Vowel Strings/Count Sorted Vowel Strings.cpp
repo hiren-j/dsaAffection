@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    vector<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+    const vector<char> vowels = {'a', 'e', 'i', 'o', 'u'};
 
     // O(5^N) & O(N)
     int solveWithoutMemo(int n, char prev) {
@@ -46,9 +46,9 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    vector<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+    const vector<char> vowels = {'a', 'e', 'i', 'o', 'u'};
 
-    // O(GN*26*5) & O(GN*26) : Where GN = given_n
+    // O(GN) & O(GN) : Where GN = given_n
     int solveBy2DTable(int given_n) {
         vector<vector<int>> dp(given_n + 1, vector<int>(26, -1));
 
@@ -70,7 +70,7 @@ class BottomUp {
         return dp[given_n]['a' - 'a'];
     }
 
-    // O(GN*26*5) & O(2*26) : Where GN = given_n
+    // O(GN) & O(1) : Where GN = given_n
     int solveBy1DTable(int given_n) {
         vector<int> prevRow(26, -1), currRow(26, -1);
 
