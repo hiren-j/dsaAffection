@@ -19,7 +19,7 @@ class TopDown {
         return count;
     }
 
-    // O(5*N*26) & O(N*26)
+    // O(N) & O(N)
     int solveWithMemo(vector<vector<int>>& dp, int n, char prev) {
         if(n == 0)
             return 1;
