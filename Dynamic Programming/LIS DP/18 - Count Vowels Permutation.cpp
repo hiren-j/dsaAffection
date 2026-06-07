@@ -3,55 +3,58 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    vector<char> vowels = {'a','e','i','o','u'};
-    const int MOD = 1e9+7;
-
-public:
-    // Method to count how many such strings of length n that can be formed, using recursion with memoization - O(N) & O(N)
-    int countVowelPermutation(int n) {
-        vector<vector<int>> memory(n + 1, vector<int>(26, -1));
-        return solveWithMemo(memory, n, 'w');
-    }
-
-private:
-    // O(5*N*26) & O(N*26 + N)
-    int solveWithMemo(vector<vector<int>>& memory, int n, char prevLetter) {
-        // Edge case: If you've created such string of length n then return 1
-        if(n == 0)
-            return 1;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[n][prevLetter - 'a'] != -1)
-            return memory[n][prevLetter - 'a'];
-
-        // Stores the result value 
-        int count = 0;
-        
-        // Explore all the ways of creating such string from the vowels
-        for(char v : vowels) 
-            if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) 
-                count = count % MOD + solveWithMemo(memory, n - 1, v) % MOD;
-
-        // Store the result value to the memoization table and then return it
-        return memory[n][prevLetter - 'a'] = count % MOD;
-    }
+    const vector<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+    const int MOD = 1e9 + 7;
 
     // O(5^N) & O(N)
-    int solveWithoutMemo(int n, char prevLetter) {
-        // Edge case: If you've created such string of length n then return 1
+    int solveWithoutMemo(int n, char prev) {
+        if(n == 0)
+            return 1;
+        
+        int count = 0;
+
+        for(char curr : vowels) {
+            if(prev == '{' || (prev == 'a' && curr == 'e') 
+                           || (prev == 'e' && (curr == 'a' || curr == 'i'))
+                           || (prev == 'i' && curr != 'i')
+                           || (prev == 'o' && (curr == 'i' || curr == 'u'))
+                           || (prev == 'u' && curr == 'a')) {
+                int nextCount = solveWithoutMemo(n - 1, curr);
+                count = (count + nextCount) % MOD;
+            }
+        }
+
+        return count;
+    }
+
+    // O(N) & O(N)
+    int solveWithMemo(vector<vector<int>>& dp, int n, char prev) {
         if(n == 0)
             return 1;
 
-        // Stores the result value
-        int count = 0;
+        if(dp[n][prev - 'a'] != -1)
+            return dp[n][prev - 'a'];
         
-        // Explore all the ways of creating such string from the vowels
-        for(char v : vowels) 
-            if(prevLetter == 'w' || (prevLetter == 'a' && v == 'e') || (prevLetter == 'e' && (v == 'a' || v == 'i')) || (prevLetter == 'i' && v != 'i') || (prevLetter == 'o' && (v == 'i' || v == 'u')) || (prevLetter == 'u' && v == 'a')) 
-                count = count % MOD + solveWithoutMemo(n - 1, v) % MOD;
+        int count = 0;
 
-        // Return the result value
-        return count % MOD;
+        for(char curr : vowels) {
+            if(prev == '{' || (prev == 'a' && curr == 'e') 
+                           || (prev == 'e' && (curr == 'a' || curr == 'i'))
+                           || (prev == 'i' && curr != 'i')
+                           || (prev == 'o' && (curr == 'i' || curr == 'u'))
+                           || (prev == 'u' && curr == 'a')) {
+                int nextCount = solveWithMemo(dp, n - 1, curr);
+                count = (count + nextCount) % MOD;
+            }
+        }
+
+        return dp[n][prev - 'a'] = count;
+    }
+
+public:
+    int countVowelPermutation(int n) {
+        vector<vector<int>> dp(n + 1, vector<int>(27, -1));
+        return solveWithMemo(dp, n, '{');     
     }
 };
 
