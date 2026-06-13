@@ -55,74 +55,67 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
 class BottomUp {
-public:
-    // #1 Method to find minimum number of operations, using 2D tabulation - O(N*M) & O(N*M)
-    int minDistance_V1(string& s1, string& s2) {
-        int n = s1.size(), m = s2.size();
+    int n, m;
 
-        // 2D DP table
-        vector<vector<int>> dp(n+1, vector<int>(m+1, INT_MAX));
+    // O(N*M) & O(N*M)
+    int solveBy2DTable(const string& s1, const string& s2) {
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
 
-        // Initialize the first edge case: If s2 is exhausted then i+1 letters has to be deleted in s1 to make it equal to s2
-        for(int i = 0; i <= n; ++i)
-            dp[i][0] = i+1;
-
-        // Initialize the second edge case: If s1 is exhausted then j+1 letters has to be inserted in s1 to make it equal to s2 
         for(int j = 0; j <= m; ++j)
-            dp[0][j] = j+1;
+            dp[n][j] = m - j;
 
-        // Fill the rest of the table
-        for(int i = 1; i <= n; ++i) {
-            for(int j = 1; j <= m; ++j) {
-                if(s1[i-1] == s2[j-1]) {
-                    dp[i][j] = dp[i-1][j-1];
+        for(int i = 0; i <= n; ++i)
+            dp[i][m] = n - i;
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = m - 1; j >= 0; --j) {
+                if(s1[i] == s2[j]) {
+                    dp[i][j] = dp[i + 1][j + 1];
                 }
                 else {
-                    int insertOp  = dp[i][j-1];
-                    int deleteOp  = dp[i-1][j];
-                    int replaceOp = dp[i-1][j-1];
-                    dp[i][j]      = 1 + min({insertOp, deleteOp, replaceOp});
+                    int insertOp  = dp[i][j + 1];  
+                    int deleteOp  = dp[i + 1][j];   
+                    int replaceOp = dp[i + 1][j + 1]; 
+                    dp[i][j] = 1 + min({insertOp, deleteOp, replaceOp});     
                 }
             }
         }
 
-        // Return the result value
-        return dp[n][m] - 1;
+        return dp[0][0];
     }
 
-    // #2 Method to find minimum number of operations, using 1D tabulation - O(N*M) & O(M)
-    int minDistance_V2(string& s1, string& s2) {
-        int n = s1.size(), m = s2.size();
+    // O(N*M) & O(M)
+    int solveBy1DTable(const string& s1, const string& s2) {
+        vector<int> nextRow(m + 1, -1), currRow(m + 1, -1); 
 
-        // 1D DP tables
-        vector<int> prevRow(m+1, INT_MAX), currRow(m+1, INT_MAX);
-
-        // Initialize the first edge case: If s2 is exhausted then i+1 letters has to be deleted in s1 to make it equal to s2
-        currRow[0] = 1;
-
-        // Initialize the second edge case: If s1 is exhausted then j+1 letters has to be inserted in s1 to make it equal to s2 
         for(int j = 0; j <= m; ++j)
-            prevRow[j] = j+1;
+            nextRow[j] = m - j;
+            nextRow[m] = n - n;
 
-        // Fill the rest of the table
-        for(int i = 1; i <= n; ++i) {
-            currRow[0] = i+1; // Initialize the first edge case
-            for(int j = 1; j <= m; ++j) {
-                if(s1[i-1] == s2[j-1]) {
-                    currRow[j] = prevRow[j-1];
+        for(int i = n - 1; i >= 0; --i) {
+            currRow[m] = n - i;
+
+            for(int j = m - 1; j >= 0; --j) {
+                if(s1[i] == s2[j]) {
+                    currRow[j] = nextRow[j + 1];
                 }
                 else {
-                    int insertOp  = currRow[j-1];
-                    int deleteOp  = prevRow[j];
-                    int replaceOp = prevRow[j-1];
-                    currRow[j]    = 1 + min({insertOp, deleteOp, replaceOp});
+                    int insertOp  = currRow[j + 1];  
+                    int deleteOp  = nextRow[j];   
+                    int replaceOp = nextRow[j + 1]; 
+                    currRow[j] = 1 + min({insertOp, deleteOp, replaceOp});     
                 }
             }
-            prevRow = currRow;
+            swap(nextRow, currRow);
         }
 
-        // Return the result value
-        return prevRow[m] - 1;
+        return nextRow[0];
+    }
+
+public:
+    int minDistance(string& s1, string& s2) {
+        n = s1.size(), m = s2.size();
+        return solveBy1DTable(s1, s2);
     }
 };
 
