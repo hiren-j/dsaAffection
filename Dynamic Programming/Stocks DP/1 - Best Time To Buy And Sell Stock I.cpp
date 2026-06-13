@@ -3,57 +3,50 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to find the maximum profit you can achieve, using recursion with memoization - O(N) & O(N)
-    int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        return solveWithMemo(dp, prices, n, 0, true);
-    }
+    int n;
 
-private:
-    // O(2*N*2) & O(N*2 + N)
-    int solveWithMemo(vector<vector<int>>& dp, vector<int>& prices, int n, int day, bool canBuy) {
-        // Base case: If all the days are exhausted then you can't achieve any profit
+    // O(2^N) & O(N) 
+    int solveWithoutMemo(const vector<int>& prices, int day, bool canBuy) {
         if(day == n)
             return 0;
 
-        // Memoization table: If the current state is already computed then return the computed value
+        if(canBuy) {
+            int currBuy  = solveWithoutMemo(prices, day + 1, false) - prices[day]; 
+            int currSell = solveWithoutMemo(prices, day + 1, true);                
+            return max(currBuy, currSell);                                            
+        }
+        else {
+            int currSell = max(prices[day], solveWithoutMemo(prices, day + 1, true)); 
+            int currSkip = solveWithoutMemo(prices, day + 1, false);                  
+            return max(currSell, currSkip);                                              
+        }
+    }
+
+    // O(N) & O(N)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& prices, int day, bool canBuy) {
+        if(day == n)
+            return 0;
+
         if(dp[day][canBuy] != -1)
             return dp[day][canBuy];
 
-        // If it's possible to buy the share then we have two possibilities on the day
         if(canBuy) {
-            int currBuy  = solveWithMemo(dp, prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
-            int currSkip = solveWithMemo(dp, prices, n, day + 1, true);                // Is to skip the buy at the current price 
-            return dp[day][canBuy] = max(currBuy, currSkip);                           // Store the maximum profit to the memoization table and then return it
+            int currBuy  = solveWithMemo(dp, prices, day + 1, false) - prices[day]; 
+            int currSkip = solveWithMemo(dp, prices, day + 1, true);                
+            return dp[day][canBuy] = max(currBuy, currSkip);                           
         }
-        // Else when it's possible to sell the share then we have two possibilities on the day
         else {
-            int currSell = max(prices[day], solveWithMemo(dp, prices, n, day + 1, true)); // Is to sell the share at the current price
-            int currSkip = solveWithMemo(dp, prices, n, day + 1, false);                  // Is to skip the sell at the current price
-            return dp[day][canBuy] = max(currSell, currSkip);                             // Store the maximum profit to the memoization table and then return it
+            int currSell = max(prices[day], solveWithMemo(dp, prices, day + 1, true)); 
+            int currSkip = solveWithMemo(dp, prices, day + 1, false);                  
+            return dp[day][canBuy] = max(currSell, currSkip);                             
         }
     }
 
-    // O(2^N) & O(N) 
-    int solveWithoutMemo(vector<int>& prices, int n, int day, bool canBuy) {
-        // Base case: If all the days are exhausted then you can't achieve any profit
-        if(day == n)
-            return 0;
-
-        // If it's possible to buy the share then we have two possibilities on the day
-        if(canBuy) {
-            int currBuy  = solveWithoutMemo(prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
-            int currSkip = solveWithoutMemo(prices, n, day + 1, true);                // Is to skip the buy at the current price 
-            return max(currBuy, currSkip);                                            // As we're striving for the maximum profit hence return the maximum value
-        }
-        // Else when it's possible to sell the share then we have two possibilities on the day
-        else {
-            int currSell = max(prices[day], solveWithoutMemo(prices, n, day + 1, true)); // Is to sell the share at the current price
-            int currSkip = solveWithoutMemo(prices, n, day + 1, false);                  // Is to skip the sell at the current price
-            return max(currSell, currSkip);                                              // As we're striving for the maximum profit hence return the maximum value
-        }
+public:
+    int maxProfit(vector<int>& prices) {
+        n = prices.size();
+        vector<vector<int>> dp(n, vector<int>(2, -1));
+        return solveWithMemo(dp, prices, 0, true);
     }
 };
 
