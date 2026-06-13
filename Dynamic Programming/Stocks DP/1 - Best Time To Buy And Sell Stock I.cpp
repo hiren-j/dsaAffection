@@ -11,14 +11,14 @@ class TopDown {
             return 0;
 
         if(canBuy) {
-            int currBuy  = solveWithoutMemo(prices, day + 1, false) - prices[day]; 
-            int currSell = solveWithoutMemo(prices, day + 1, true);                
-            return max(currBuy, currSell);                                            
+            int buy  = solveWithoutMemo(prices, day + 1, false) - prices[day]; 
+            int skip = solveWithoutMemo(prices, day + 1, true);                
+            return max(buy, skip);                                            
         }
         else {
-            int currSell = max(prices[day], solveWithoutMemo(prices, day + 1, true)); 
-            int currSkip = solveWithoutMemo(prices, day + 1, false);                  
-            return max(currSell, currSkip);                                              
+            int sell = max(prices[day], solveWithoutMemo(prices, day + 1, true)); 
+            int skip = solveWithoutMemo(prices, day + 1, false);                  
+            return max(sell, skip);                                              
         }
     }
 
@@ -31,14 +31,14 @@ class TopDown {
             return dp[day][canBuy];
 
         if(canBuy) {
-            int currBuy  = solveWithMemo(dp, prices, day + 1, false) - prices[day]; 
-            int currSkip = solveWithMemo(dp, prices, day + 1, true);                
-            return dp[day][canBuy] = max(currBuy, currSkip);                           
+            int buy  = solveWithMemo(dp, prices, day + 1, false) - prices[day]; 
+            int skip = solveWithMemo(dp, prices, day + 1, true);                
+            return dp[day][canBuy] = max(buy, skip);                           
         }
         else {
-            int currSell = max(prices[day], solveWithMemo(dp, prices, day + 1, true)); 
-            int currSkip = solveWithMemo(dp, prices, day + 1, false);                  
-            return dp[day][canBuy] = max(currSell, currSkip);                             
+            int sell = max(prices[day], solveWithMemo(dp, prices, day + 1, true)); 
+            int skip = solveWithMemo(dp, prices, day + 1, false);                  
+            return dp[day][canBuy] = max(sell, skip);                             
         }
     }
 
@@ -48,7 +48,7 @@ public:
         vector<vector<int>> dp(n, vector<int>(2, -1));
         return solveWithMemo(dp, prices, 0, true);
     }
-};
+};  
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
