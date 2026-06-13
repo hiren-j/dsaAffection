@@ -52,97 +52,99 @@ public:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-class BottomUp_V1 {
-public:
-    // #1 Method to find the maximum profit you can achieve, using 2D tabulation - O(N*2) & O(N*2)
-    int maxProfit_V1(vector<int>& prices) {
-        int n = prices.size();
+class Solution {
+    int n;
 
-        // 2D DP table
+    // O(N) & O(N)
+    int solveBy2DTable(const vector<int>& prices) {
         vector<vector<int>> dp(n + 1, vector<int>(2, 0));
 
-        // Fill the table
-        for(int day = n-1; day >= 0; --day) {
+        for(int day = n - 1; day >= 0; --day) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
                 if(canBuy) {
-                    int currBuy  = dp[day + 1][false] - prices[day];
-                    int currSkip = dp[day + 1][true];
-                    dp[day][canBuy] = max(currBuy, currSkip);
+                    int buy  = dp[day + 1][false] - prices[day]; 
+                    int skip = dp[day + 1][true];                
+                    dp[day][canBuy] = max(buy, skip);                           
                 }
                 else {
-                    int currSell = max(prices[day], dp[day + 1][true]);
-                    int currSkip = dp[day + 1][false];
-                    dp[day][canBuy] = max(currSell, currSkip);
+                    int sell = max(prices[day], dp[day + 1][true]); 
+                    int skip = dp[day + 1][false];                  
+                    dp[day][canBuy] = max(sell, skip);                             
                 }
             }
         }
 
-        // Return the result value
         return dp[0][true];
     }
 
-    // #2 Method to find the maximum profit you can achieve, using 1D tabulation - O(N*2) & O(1)
-    int maxProfit_V2(vector<int>& prices) {
-        int n = prices.size();
+    // O(N) & O(1)
+    int solveBy1DTable(const vector<int>& prices) {
+        vector<int> nextRow(2, 0);
 
-        // 1D DP tables
-        vector<int> nextRow(2, 0), idealRow(2, 0);
+        for(int day = n - 1; day >= 0; --day) {
+            vector<int> currRow(2, 0);
 
-        // Fill the table
-        for(int day = n-1; day >= 0; --day) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
                 if(canBuy) {
-                    int currBuy  = nextRow[false] - prices[day];
-                    int currSkip = nextRow[true];
-                    idealRow[canBuy] = max(currBuy, currSkip);
+                    int buy  = nextRow[false] - prices[day]; 
+                    int skip = nextRow[true];                
+                    currRow[canBuy] = max(buy, skip);                           
                 }
                 else {
-                    int currSell = max(prices[day], nextRow[true]);
-                    int currSkip = nextRow[false];
-                    idealRow[canBuy] = max(currSell, currSkip);
+                    int sell = max(prices[day], nextRow[true]); 
+                    int skip = nextRow[false];                  
+                    currRow[canBuy] = max(sell, skip);                             
                 }
             }
-            nextRow = idealRow;
+
+            swap(nextRow, currRow);
         }
 
-        // Return the result value
-        return idealRow[true];
+        return nextRow[true];
+    }
+    
+    // O(N) & O(1)
+    int solveWithoutTable(const vector<int>& prices) {
+        int nextRow_0 = 0;
+        int nextRow_1 = 0;
+
+        for(int day = n - 1; day >= 0; --day) {
+            int currRow_0 = 0;
+            int currRow_1 = 0;
+
+            for(int canBuy = 0; canBuy <= 1; ++canBuy) {
+                if(canBuy) {
+                    int buy  = nextRow_0 - prices[day]; 
+                    int skip = nextRow_1;                
+                    currRow_1 = max(buy, skip);                           
+                }
+                else {
+                    int sell = max(prices[day], nextRow_1); 
+                    int skip = nextRow_0;                  
+                    currRow_0 = max(sell, skip);                             
+                }
+            }
+
+            swap(nextRow_0, currRow_0);
+            swap(nextRow_1, currRow_1);
+        }
+
+        return nextRow_1;
     }
 
-    // #3 Method to find the maximum profit you can achieve, using constant auxiliary space - O(N*2) & O(1)
-    int maxProfit_V3(vector<int>& prices) {
-        int n = prices.size();
-
-        int nextSell = 0, nextBuy   = 0;
-        int idealBuy = 0, idealSell = 0;
-
-        for(int day = n-1; day >= 0; --day) {
-            for(int canBuy = 0; canBuy <= 1; ++canBuy) {
-                if(canBuy) {
-                    int currBuy  = nextSell - prices[day];
-                    int currSkip = nextBuy;
-                    idealBuy = max(currBuy, currSkip);
-                }
-                else {
-                    int currSell = max(prices[day], nextBuy);
-                    int currSkip = nextSell;
-                    idealSell = max(currSell, currSkip);
-                }
-            }
-            nextBuy  = idealBuy;
-            nextSell = idealSell;
-        }
-
-        return idealBuy;
+public:
+    int maxProfit(vector<int>& prices) {
+        n = prices.size();
+        return solveWithoutTable(prices);
     }
 };
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp_V2 {
+class BottomUpPrecise {
 public:
-    // Method to find the maximum profit you can achieve, using constant auxiliary space - O(N) & O(1)
-    int maxProfit(vector<int>& prices) {
+    // O(N) & O(1)
+    int maxProfit(const vector<int>& prices) {
         int profit = 0, minPrice = INT_MAX;
 
         for(int price : prices) {
