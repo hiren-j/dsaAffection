@@ -20,10 +20,10 @@ class TopDown {
         }
 
         if(s1[i] == s2[j])
-            return solveWithoutMemo(s1, s2, i+1, j+1);
+            return solveWithoutMemo(s1, s2, i + 1, j + 1);
 
-        int removeIthLetter = s1[i] + solveWithoutMemo(s1, s2, i+1, j); 
-        int removeJthLetter = s2[j] + solveWithoutMemo(s1, s2, i, j+1);
+        int removeIthLetter = s1[i] + solveWithoutMemo(s1, s2, i + 1, j); 
+        int removeJthLetter = s2[j] + solveWithoutMemo(s1, s2, i, j + 1);
         
         return min(removeIthLetter, removeJthLetter);
     }
@@ -46,10 +46,10 @@ class TopDown {
             return dp[i][j];
 
         if(s1[i] == s2[j])
-            return dp[i][j] = solveWithMemo(dp, s1, s2, i+1, j+1);
+            return dp[i][j] = solveWithMemo(dp, s1, s2, i + 1, j + 1);
 
-        int removeIthLetter = s1[i] + solveWithMemo(dp, s1, s2, i+1, j); 
-        int removeJthLetter = s2[j] + solveWithMemo(dp, s1, s2, i, j+1);
+        int removeIthLetter = s1[i] + solveWithMemo(dp, s1, s2, i + 1, j); 
+        int removeJthLetter = s2[j] + solveWithMemo(dp, s1, s2, i, j + 1);
         
         return dp[i][j] = min(removeIthLetter, removeJthLetter);
     }
