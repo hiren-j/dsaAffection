@@ -3,63 +3,52 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to find minimum number of operations, using recursion with memoization - O(N*M) & O(N*M)
-    int minDistance(string& s1, string& s2) {
-        int n = s1.size(), m = s2.size();
-        vector<vector<int>> memory(n, vector<int>(m, -1));
-        return solveWithMemo(memory, s1, s2, n-1, m-1);
-    }
-
-private:
-    // O(3*N*M) & O(N*M + N+M)
-    int solveWithMemo(vector<vector<int>>& memory, string& s1, string& s2, int i, int j) {
-        // Edge case: If s2 is exhausted then i+1 letters has to be deleted in s1 to make it equal to s2
-        if(j < 0)
-            return i+1;
-
-        // Edge case: If s1 is exhausted then j+1 letters has to be inserted in s1 to make it equal to s2 
-        if(i < 0)
-            return j+1;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[i][j] != -1)
-            return memory[i][j];
-
-        // If the both the letters match then move to left in both the strings and look for other matches
-        if(s1[i] == s2[j])
-            return memory[i][j] = solveWithMemo(memory, s1, s2, i-1, j-1);
-
-        // Else when the letters don't match then we've three possibilities to perform at the ith letter of s1
-        int insertOp  = solveWithMemo(memory, s1, s2, i, j-1);   // Is to insert the jth letter 
-        int deleteOp  = solveWithMemo(memory, s1, s2, i-1, j);   // Is to delete the ith letter 
-        int replaceOp = solveWithMemo(memory, s1, s2, i-1, j-1); // Is to replace the ith letter by the jth letter
-
-        // Store the result value to the memoization table and then return it
-        return memory[i][j] = 1 + min({insertOp, deleteOp, replaceOp});
-    }
+    int n, m;
 
     // O(3^(N+M)) & O(N+M)
     int solveWithoutMemo(string& s1, string& s2, int i, int j) {
-        // Edge case: If s2 is exhausted then i+1 letters has to be deleted in s1 to make it equal to s2
-        if(j < 0)
-            return i+1;
+        if(i == n)
+            return m - j;
 
-        // Edge case: If s1 is exhausted then j+1 letters has to be inserted in s1 to make it equal to s2 
-        if(i < 0)
-            return j+1;
+        if(j == m)
+            return n - i;
 
-        // If the both the letters match then move to left in both the strings and look for other matches
         if(s1[i] == s2[j])
-            return solveWithoutMemo(s1, s2, i-1, j-1);
+            return solveWithoutMemo(s1, s2, i + 1, j + 1);
 
-        // Else when the letters don't match then we've three possibilities to perform at the ith letter of s1
-        int insertOp  = solveWithoutMemo(s1, s2, i, j-1);   // Is to insert the jth letter 
-        int deleteOp  = solveWithoutMemo(s1, s2, i-1, j);   // Is to delete the ith letter 
-        int replaceOp = solveWithoutMemo(s1, s2, i-1, j-1); // Is to replace the ith letter by the jth letter
+        int insertOp  = solveWithoutMemo(s1, s2, i, j + 1);  
+        int deleteOp  = solveWithoutMemo(s1, s2, i + 1, j);   
+        int replaceOp = solveWithoutMemo(s1, s2, i + 1, j + 1); 
 
-        // As we're striving for minimum operations hence add the minimum value and then return the result
         return 1 + min({insertOp, deleteOp, replaceOp});
+    }
+
+    // O(N*M) & O(N*M)
+    int solveWithMemo(vector<vector<int>>& dp, string& s1, string& s2, int i, int j) {
+        if(i == n)
+            return m - j;
+
+        if(j == m)
+            return n - i;
+
+        if(dp[i][j] != -1)
+            return dp[i][j];
+
+        if(s1[i] == s2[j])
+            return dp[i][j] = solveWithMemo(dp, s1, s2, i + 1, j + 1);
+
+        int insertOp  = solveWithMemo(dp, s1, s2, i, j + 1);  
+        int deleteOp  = solveWithMemo(dp, s1, s2, i + 1, j);   
+        int replaceOp = solveWithMemo(dp, s1, s2, i + 1, j + 1); 
+
+        return dp[i][j] = 1 + min({insertOp, deleteOp, replaceOp});
+    }
+
+public:
+    int minDistance(string& s1, string& s2) {
+        n = s1.size(), m = s2.size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return solveWithMemo(dp, s1, s2, 0, 0);
     }
 };
 
