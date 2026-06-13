@@ -3,73 +3,62 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to find the lowest ASCII sum of deleted characters to make two strings equal, using recursion with memoization - O(N*M) & O(N*M)
-    int minimumDeleteSum(string& s1, string& s2) {
-        int n = s1.size(), m = s2.size();
-        vector<vector<int>> memory(n, vector<int>(m, -1));
-        return solveWithMemo(memory, s1, s2, n-1, m-1);
-    }
-
-private:
-    // O(2*N*M) & O(N*M + N+M)
-    int solveWithMemo(vector<vector<int>>& memory, string& s1, string& s2, int i, int j) {
-        // Edge case: If s1 is exhausted then j+1 letters has to be removed in s2 to make it equal to s1 
-        if(i < 0) {
-            int asciiSum = 0;
-            while(j >= 0) asciiSum += s2[j--];
-            return asciiSum;
-        }
-
-        // Edge case: If s2 is exhausted then i+1 letters has to be removed in s1 to make it equal to s2
-        if(j < 0) {
-            int asciiSum = 0;
-            while(i >= 0) asciiSum += s1[i--];
-            return asciiSum;
-        }
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[i][j] != -1)
-            return memory[i][j];
-
-        // If the both the letters match then no removal is needed that's why look for the other matches
-        if(s1[i] == s2[j])
-            return memory[i][j] = solveWithMemo(memory, s1, s2, i-1, j-1);
-
-        // Else when the letters don't match then we've two possibilities to perform
-        int removeIthLetter = s1[i] + solveWithMemo(memory, s1, s2, i-1, j); // Is to remove the ith letter of s1
-        int removeJthLetter = s2[j] + solveWithMemo(memory, s1, s2, i, j-1); // Is to remove the jth letter of s2
-
-        // Store the result value to the memoization table and then return it
-        return memory[i][j] = min(removeIthLetter, removeJthLetter);
-    }
+    int n, m;
 
     // O(2^(N+M)) & O(N+M)
-    int solveWithoutMemo(string& s1, string& s2, int i, int j) {
-        // Edge case: If s1 is exhausted then j+1 letters has to be removed in s2 to make it equal to s1 
-        if(i < 0) {
+    int solveWithoutMemo(const string& s1, const string& s2, int i, int j) {
+        if(i == n) {
             int asciiSum = 0;
-            while(j >= 0) asciiSum += s2[j--];
+            while(j < m) asciiSum += s2[j++];
             return asciiSum;
         }
 
-        // Edge case: If s2 is exhausted then i+1 letters has to be removed in s1 to make it equal to s2
-        if(j < 0) {
+        if(j == m) {
             int asciiSum = 0;
-            while(i >= 0) asciiSum += s1[i--];
+            while(i < n) asciiSum += s1[i++];
             return asciiSum;
         }
 
-        // If the both the letters match then no removal is needed that's why look for the other matches
         if(s1[i] == s2[j])
-            return solveWithoutMemo(s1, s2, i-1, j-1);
+            return solveWithoutMemo(s1, s2, i+1, j+1);
 
-        // Else when the letters don't match then we've two possibilities to perform
-        int removeIthLetter = s1[i] + solveWithoutMemo(s1, s2, i-1, j); // Is to remove the ith letter of s1
-        int removeJthLetter = s2[j] + solveWithoutMemo(s1, s2, i, j-1); // Is to remove the jth letter of s2
-
-        // As we're striving for lowest sum hence return the minimum value
+        int removeIthLetter = s1[i] + solveWithoutMemo(s1, s2, i+1, j); 
+        int removeJthLetter = s2[j] + solveWithoutMemo(s1, s2, i, j+1);
+        
         return min(removeIthLetter, removeJthLetter);
+    }
+
+    // O(N*M) & O(N*M)
+    int solveWithMemo(vector<vector<int>>& dp, const string& s1, const string& s2, int i, int j) {
+        if(i == n) {
+            int asciiSum = 0;
+            while(j < m) asciiSum += s2[j++];
+            return asciiSum;
+        }
+
+        if(j == m) {
+            int asciiSum = 0;
+            while(i < n) asciiSum += s1[i++];
+            return asciiSum;
+        }
+
+        if(dp[i][j] != -1)
+            return dp[i][j];
+
+        if(s1[i] == s2[j])
+            return dp[i][j] = solveWithMemo(dp, s1, s2, i+1, j+1);
+
+        int removeIthLetter = s1[i] + solveWithMemo(dp, s1, s2, i+1, j); 
+        int removeJthLetter = s2[j] + solveWithMemo(dp, s1, s2, i, j+1);
+        
+        return dp[i][j] = min(removeIthLetter, removeJthLetter);
+    }
+
+public:
+    int minimumDeleteSum(string& s1, string& s2) {
+        n = s1.size(), m = s2.size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return solveWithMemo(dp, s1, s2, 0, 0);
     }
 };
 
