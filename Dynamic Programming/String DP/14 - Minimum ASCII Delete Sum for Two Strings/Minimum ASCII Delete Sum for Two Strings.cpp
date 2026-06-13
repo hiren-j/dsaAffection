@@ -65,82 +65,83 @@ public:
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the lowest ASCII sum of deleted characters to make two strings equal, using 2D tabulation - O(N*M) & O(N*M)
-    int minimumDeleteSum_V1(string& s1, string& s2) {
-        int n = s1.size(), m = s2.size();
+    int n, m;
 
-        // 2D DP table
-        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+    // O(N*M) & O(N*M)
+    int solveBy2DTable(const string& s1, const string& s2) {
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
 
-        // Initialize the first edge case
-        int asciiSum = 0;
-        for(int j = 1; j <= m; ++j) {
-            asciiSum += s2[j-1];
-            dp[0][j] = asciiSum;
+        for(int j = 0; j <= m; ++j) {
+            int tmp = j;
+            int asciiSum = 0;
+            while(tmp < m) asciiSum += s2[tmp++];
+            dp[n][j] = asciiSum;
+        }
+            
+        for(int i = 0; i <= n; ++i) {
+            int tmp = i;
+            int asciiSum = 0;
+            while(tmp < n) asciiSum += s1[tmp++];
+            dp[i][m] = asciiSum;
         }
 
-        // Initialize the second edge case
-        asciiSum = 0;
-        for(int i = 1; i <= n; ++i) {
-            asciiSum += s1[i-1];
-            dp[i][0] = asciiSum;
-        }
-
-        // Fill the rest of the table
-        for(int i = 1; i <= n; ++i) {
-            for(int j = 1; j <= m; ++j) {
-                if(s1[i-1] == s2[j-1]) {
-                    dp[i][j] = dp[i-1][j-1];
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = m - 1; j >= 0; --j) {
+                if(s1[i] == s2[j]) {
+                    dp[i][j] = dp[i + 1][j + 1];
                 }
                 else {
-                    int removeIthLetter = s1[i-1] + dp[i-1][j];
-                    int removeJthLetter = s2[j-1] + dp[i][j-1];
+                    int removeIthLetter = s1[i] + dp[i + 1][j]; 
+                    int removeJthLetter = s2[j] + dp[i][j + 1];
                     dp[i][j] = min(removeIthLetter, removeJthLetter);
                 }
             }
-        }               
-
-        // Return the result value
-        return dp[n][m];
-    }
-
-    // #2 Method to find the lowest ASCII sum of deleted characters to make two strings equal, using 1D tabulation - O(N*M) & O(M)
-    int minimumDeleteSum_V2(string& s1, string& s2) {
-        int n = s1.size(), m = s2.size();
-
-        // 1D DP tables
-        vector<int> prevRow(m+1, 0), currRow(m+1, 0);
-
-        // Initialize the first edge case
-        int asciiSum = 0;
-        for(int j = 1; j <= m; ++j) {
-            asciiSum += s2[j-1];
-            prevRow[j] = asciiSum;
         }
 
-        asciiSum = 0;
+        return dp[0][0];
+    }
 
-        for(int i = 1; i <= n; ++i) {
-            // Initialize the second edge case
-            asciiSum += s1[i-1];
-            currRow[0] = asciiSum;
+    // O(N*M) & O(M)
+    int solveBy1DTable(const string& s1, const string& s2) {
+        vector<int> nextRow(m + 1, -1), currRow(m + 1, -1);
 
-            for(int j = 1; j <= m; ++j) {
-                if(s1[i-1] == s2[j-1]) {
-                    currRow[j] = prevRow[j-1];
+        for(int j = 0; j <= m; ++j) {
+            int tmp = j;
+            int asciiSum = 0;
+            while(tmp < m) asciiSum += s2[tmp++];
+            nextRow[j] = asciiSum;
+        }    
+        int tmp = n;
+        int asciiSum = 0;
+        while(tmp < n) asciiSum += s1[tmp++];
+        nextRow[m] = asciiSum;
+
+        for(int i = n - 1; i >= 0; --i) {
+            int tmp = i;
+            int asciiSum = 0;
+            while(tmp < n) asciiSum += s1[tmp++];
+            currRow[m] = asciiSum;
+
+            for(int j = m - 1; j >= 0; --j) {
+                if(s1[i] == s2[j]) {
+                    currRow[j] = nextRow[j + 1];
                 }
                 else {
-                    int removeIthLetter = s1[i-1] + prevRow[j];
-                    int removeJthLetter = s2[j-1] + currRow[j-1];
+                    int removeIthLetter = s1[i] + nextRow[j]; 
+                    int removeJthLetter = s2[j] + currRow[j + 1];
                     currRow[j] = min(removeIthLetter, removeJthLetter);
                 }
             }
+            swap(nextRow, currRow);
+        }
 
-            prevRow = currRow;
-        }        
+        return nextRow[0];
+    }
 
-        return prevRow[m];
+public:
+    int minimumDeleteSum(string& s1, string& s2) {
+        n = s1.size(), m = s2.size();
+        return solveBy1DTable(s1, s2);
     }
 };
 
