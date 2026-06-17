@@ -5,13 +5,13 @@
 class BottomUp {
 public:
     // O(N*M) & O(M)
-    int longCommSubstr(string& s1, string& s2) {
+    int PrintLongCommSubstr(string& s1, string& s2) {
         const int n = s1.size();
         const int m = s2.size();
-        
-        vector<int> nextRow(m + 1, 0); 
         int maxLen = 0;
         int start  = 0;
+        
+        vector<int> nextRow(m + 1, 0); 
          
         for(int i = n - 1; i >= 0; --i) {
             vector<int> currRow(m + 1, 0); 
@@ -21,14 +21,17 @@ public:
                     currRow[j] = 1 + nextRow[j + 1];
                 else
                     currRow[j] = 0;
-                
-                maxLen = max(maxLen, currRow[j]);
+                    
+                if(currRow[j] > maxLen) {
+                    maxLen = currRow[j];
+                    start  = i;
+                }
             }
             
             swap(nextRow, currRow);
         }
     
-        cout << s2.substr(start, maxLen);
+        cout << s1.substr(start, maxLen);
     }
 };
 
