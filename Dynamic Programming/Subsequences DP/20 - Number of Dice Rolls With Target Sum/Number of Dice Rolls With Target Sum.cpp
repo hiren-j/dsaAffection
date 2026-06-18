@@ -48,7 +48,7 @@ public:
 class BottomUp {
     const int MOD = 1e9 + 7;
 
-    // O(GN*G*K) & O(GN*TG) : Where GN = given_n, TG = targetGiven 
+    // O(GN*TG*K) & O(GN*TG) : Where GN = given_n, TG = targetGiven 
     int solveBy2DTable(int given_n, int targetGiven, int k) {
         vector<vector<int>> dp(given_n + 1, vector<int>(targetGiven + 1, -1));
 
@@ -68,7 +68,7 @@ class BottomUp {
         return dp[given_n][targetGiven];
     }
 
-    // O(GN*G*K) & O(TG) : Where GN = given_n, TG = targetGiven 
+    // O(GN*TG*K) & O(TG) : Where GN = given_n, TG = targetGiven 
     int solveBy1DTable(int given_n, int targetGiven, int k) {
         vector<int> prevRow(targetGiven + 1, -1), currRow(targetGiven + 1, -1);
 
