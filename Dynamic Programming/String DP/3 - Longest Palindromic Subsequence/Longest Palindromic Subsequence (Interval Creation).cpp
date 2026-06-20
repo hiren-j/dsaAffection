@@ -77,7 +77,7 @@ class BottomUp {
     }
 
     // O(N*N) & O(N*N)
-    int solveBy2DTEnhanced(const string& s) {
+    int solveBy2DEnhanced(const string& s) {
         vector<vector<int>> dp(n, vector<int>(n, 0));
 
         for(int i = n - 1; i >= 0; --i) {
