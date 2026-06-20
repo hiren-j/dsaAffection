@@ -11,14 +11,12 @@ class TopDown {
         if(i > j)
             return 0;
         
-        if(s[i] == s[j]) {
+        if(s[i] == s[j]) 
             return 2 + solveWithoutMemo(s, i + 1, j - 1);
-        }
-        else {
-            int move_j = solveWithoutMemo(s, i, j - 1);
-            int move_i = solveWithoutMemo(s, i + 1, j);
-            return max(move_j, move_i);
-        }
+
+        int move_j = solveWithoutMemo(s, i, j - 1);
+        int move_i = solveWithoutMemo(s, i + 1, j);
+        return max(move_j, move_i);
     }
 
     // O(N*N) & O(N*N)
@@ -32,14 +30,12 @@ class TopDown {
         if(dp[i][j] != -1)
             return dp[i][j];
         
-        if(s[i] == s[j]) {
+        if(s[i] == s[j]) 
             return dp[i][j] = 2 + solveWithMemo(dp, s, i + 1, j - 1);
-        }
-        else {
-            int move_j = solveWithMemo(dp, s, i, j - 1);
-            int move_i = solveWithMemo(dp, s, i + 1, j);
-            return dp[i][j] = max(move_j, move_i);
-        }
+        
+        int move_j = solveWithMemo(dp, s, i, j - 1);
+        int move_i = solveWithMemo(dp, s, i + 1, j);
+        return dp[i][j] = max(move_j, move_i);
     }
 
 public:
