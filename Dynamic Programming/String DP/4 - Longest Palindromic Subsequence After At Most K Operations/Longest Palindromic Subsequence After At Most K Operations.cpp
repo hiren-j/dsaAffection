@@ -53,72 +53,37 @@ public:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    int longestPalindromicSubsequence(string& s, int k) {
-        if(s.size() == 1) 
-            return 1;
-        return solveUsing3DTable(s, k);
+    int n;
+
+    int minTransformCost(char a, char b) {
+        int nextOp = abs(b - a);  
+        int prevOp = 26 - nextOp;   
+        return min(nextOp, prevOp); 
     }
 
-private:
-    // O(N^3) & O(N*K)
-    int solveUsing2DTable(string& s, int given_k) {
-        int n = s.size();
-
-        vector<vector<int>> nextRow(n, vector<int>(given_k + 1, 0));
-        vector<vector<int>> idealRow(n, vector<int>(given_k + 1, 0));
+    // O(N*N*GK) & O(N*N*GK) : Where GK = given_k
+    int solveBy2DTable(const string& s, int given_k) {
+        int dp[201][201][201];
+        memset(dp, 0, sizeof(dp));
 
         for(int i = n-1; i >= 0; --i) {
-            for(int j = i+1; j <= n-1; ++j) { // Start j from i+1 to skip edge cases
+            for(int j = i; j <= n-1; ++j) {
                 for(int k = 0; k <= given_k; ++k) {
-                    idealRow[i][k] = 1; // Initialize the first edge case
-
-                    if(s[i] == s[j]) {
-                        idealRow[j][k] = 2 + (j-1 >= 0 ? nextRow[j-1][k] : 0);
+                    if(i == j) {
+                        dp[i][j][k] = 1;
+                    }
+                    else if(s[i] == s[j]) {
+                        dp[i][j][k] = 2 + dp[i+1][j-1][k];
                     }
                     else {
-                        int exclude_j = (j-1 >= 0 ? idealRow[j-1][k] : 0);
-                        int exclude_i = nextRow[j][k];
-                        int replaceOp = 0;
+                        int move_j = dp[i][j-1][k];
+                        int move_i = dp[i+1][j][k]; 
+
+                        int replaceOp = 0; 
                         int transformCost = minTransformCost(s[i], s[j]);
-                        if(k - transformCost >= 0) {
-                            replaceOp = 2 + (j-1 >= 0 ? nextRow[j-1][k - transformCost] : 0);
-                        }
-                        idealRow[j][k] = max({exclude_j, exclude_i, replaceOp});    
-                    }
-                }
-            }
-            nextRow = idealRow;
-        }
+                        if(k - transformCost >= 0) replaceOp = 2 + dp[i+1][j-1][k - transformCost];
 
-        return nextRow[n-1][given_k];
-    }
-
-    // O(N^3) & O(N*N*K)
-    int solveUsing3DTable(string& s, int given_k) {
-        int n = s.size();
-
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(n, vector<int>(given_k + 1, 0)));
-
-        for(int i = 0; i < n; ++i) // Initialize the first edge case
-            for(int k = 0; k <= given_k; ++k)
-                dp[i][i][k] = 1;
-
-        for(int i = n-1; i >= 0; --i) {
-            for(int j = i+1; j <= n-1; ++j) { // Start j from i+1 to skip edge cases
-                for(int k = 0; k <= given_k; ++k) {
-                    if(s[i] == s[j]) {
-                        dp[i][j][k] = 2 + (j-1 >= 0 ? dp[i+1][j-1][k] : 0);
-                    }
-                    else {
-                        int exclude_j = (j-1 >= 0 ? dp[i][j-1][k] : 0);
-                        int exclude_i = dp[i+1][j][k];
-                        int replaceOp = 0;
-                        int transformCost = minTransformCost(s[i], s[j]);
-                        if(k - transformCost >= 0) {
-                            replaceOp = 2 + (j-1 >= 0 ? dp[i+1][j-1][k - transformCost] : 0);
-                        }
-                        dp[i][j][k] = max({exclude_j, exclude_i, replaceOp});    
+                        dp[i][j][k] = max({move_j, move_i, replaceOp});
                     }
                 }
             }
@@ -127,10 +92,44 @@ private:
         return dp[0][n-1][given_k];
     }
 
-    int minTransformCost(char a, char b) {
-        int nextOp = abs(b - a);
-        int prevOp = 26 - nextOp;
-        return min(nextOp, prevOp);
+    // O(N*N*GK) & O(N*GK) : Where GK = given_k
+    int solveBy1DTable(const string& s, int given_k) {
+        int next[201][201], curr[201][201];
+        memset(next, 0, sizeof(next));
+        memset(curr, 0, sizeof(curr));
+
+        for(int i = n-1; i >= 0; --i) {
+            for(int j = i; j <= n-1; ++j) {
+                for(int k = 0; k <= given_k; ++k) {
+                    if(i == j) {
+                        curr[j][k] = 1;
+                    }
+                    else if(s[i] == s[j]) {
+                        curr[j][k] = 2 + next[j-1][k];
+                    }
+                    else {
+                        int move_j = curr[j-1][k];
+                        int move_i = next[j][k]; 
+
+                        int replaceOp = 0; 
+                        int transformCost = minTransformCost(s[i], s[j]);
+                        if(k - transformCost >= 0) replaceOp = 2 + next[j-1][k - transformCost];
+
+                        curr[j][k] = max({move_j, move_i, replaceOp});
+                    }
+                }
+            }
+
+            swap(next, curr);
+        }
+
+        return next[n-1][given_k];
+    }
+
+public:
+    int longestPalindromicSubsequence(string& s, int k) {
+        n = s.size();
+        return solveBy1DTable(s, k);
     }
 };
 
