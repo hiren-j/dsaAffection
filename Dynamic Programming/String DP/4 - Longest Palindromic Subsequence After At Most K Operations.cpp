@@ -3,16 +3,16 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // O(N^3) & O(N*N*K)
-    int longestPalindromicSubsequence(string& s, int k) {
-        int n = s.size();
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(k + 1, -1)));
-        return solveWithMemo(dp, s, 0, n-1, k);
+    int dp[201][201][201];
+    int n;
+
+    int minTransformCost(char a, char b) {
+        int nextOp = abs(b - a);    // Count operations needed to transform a to b using next operation
+        int prevOp = 26 - nextOp;   // Count operations needed to transform a to b using previous operation
+        return min(nextOp, prevOp); // Do minimum operations so that k remains and could find largest length in future
     }
 
-private:
-    int solveWithMemo(vector<vector<vector<int>>>& dp, string& s, int i, int j, int k) {
+    int solveWithMemo(const string& s, int i, int j, int k) {
         if(i == j) // Edge case: Any string of length 1 is palindrome 
             return 1;
 
@@ -24,29 +24,31 @@ private:
         
         // If both letters match then we have a palindrome of length 2 
         if(s[i] == s[j])
-            return dp[i][j][k] = 2 + solveWithMemo(dp, s, i+1, j-1, k);
+            return dp[i][j][k] = 2 + solveWithMemo(s, i+1, j-1, k);
         
         // If both letters don't match then we have three possibilities
-        int exclude_j = solveWithMemo(dp, s, i, j-1, k); // I. To find match for ith letter at left side of jth letter 
-        int exclude_i = solveWithMemo(dp, s, i+1, j, k); // II. To find match for jth letter at right side of ith letter
+        int move_j = solveWithMemo(s, i, j-1, k); // I.  To find match for ith letter at left side of jth letter 
+        int move_i = solveWithMemo(s, i+1, j, k); // II. To find match for jth letter at right side of ith letter
         
         // III. To perform the replace operation
         int replaceOp = 0; 
         int transformCost = minTransformCost(s[i], s[j]);
 
         if(k - transformCost >= 0)
-            replaceOp = 2 + solveWithMemo(dp, s, i+1, j-1, k - transformCost);
+            replaceOp = 2 + solveWithMemo(s, i+1, j-1, k - transformCost);
         
-        return dp[i][j][k] = max({exclude_j, exclude_i, replaceOp});
+        return dp[i][j][k] = max({move_j, move_i, replaceOp});
     }
 
-    int minTransformCost(char a, char b) {
-        int nextOp = abs(b - a);    // Count operations needed to transform a to b using next operation
-        int prevOp = 26 - nextOp;   // Count operations needed to transform a to b using previous operation
-        return min(nextOp, prevOp); // Do minimum operations so that k remains and could find largest length in future
+public:
+    // O(NNK) & O(NNK)
+    int longestPalindromicSubsequence(string& s, int k) {
+        n = s.size();
+        memset(dp, -1, sizeof(dp));
+        return solveWithMemo(s, 0, n-1, k);
     }
 };
-// Without Memoization DP The Time Complexity Becomes O(3^(N+N)).
+// Without Memoization DP the Time Complexity is O(3^N)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
