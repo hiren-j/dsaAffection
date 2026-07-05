@@ -3,9 +3,10 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    int n, m;
+    int findLenOfLCS(const string& s1, const string& s2) {
+        const int n = s1.size();
+        const int m = s2.size();
 
-    int solveBy2DEnhanced(const string& s1, const string& s2) {
         vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
 
         for(int i = n-1; i >= 0; --i) {
@@ -22,12 +23,10 @@ class BottomUp {
 
 public:
     // O(N*M) & O(N*M)
-    int longestCommonSubsequence(string& s1, string& s2) {
-        n = s1.size(), m = s2.size();
+    int longestPalindromeSubseq(string& s1) {
         string s2 = s1;
         reverse(begin(s2), end(s2));
-        int lenLCS = solveBy1DTable(s1, s2);
-        return lenLCS;
+        return findLenOfLCS(s1, s2);
     }
 };
     
