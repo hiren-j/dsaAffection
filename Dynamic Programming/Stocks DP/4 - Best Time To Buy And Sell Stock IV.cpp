@@ -2,116 +2,99 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
+class TopDown  {
+    int dp[100001][2][101];
+    int n;
+
+    // O(N*K) & O(N*K)
+    int solveWithMemo(const vector<int>& prices, int i, bool canBuy, int k) {
+        if(i == n || k == 0)
+            return 0;
+
+        if(dp[i][canBuy][k] != -1)
+            return dp[i][canBuy][k];
+
+        if(canBuy) {
+            int buy  = solveWithMemo(prices, i + 1, false, k) - prices[i];
+            int skip = solveWithMemo(prices, i + 1, true, k); 
+            return dp[i][canBuy][k] = max(buy, skip);
+        }
+        else {
+            int sell = prices[i] + solveWithMemo(prices, i + 1, true, k - 1);
+            int skip = solveWithMemo(prices, i + 1, false, k); 
+            return dp[i][canBuy][k] = max(sell, skip);
+        }
+    }
+
 public:
-    // Method to find the maximum profit you can achieve, using recursion with memoization - O(N*K) & O(N*K)
     int maxProfit(int k, vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<vector<int>>> memory(n, vector<vector<int>>(2, vector<int>(k + 1, -1)));
-        return solveWithMemo(memory, k, prices, n, 0, true);
-    }
-    
-private:
-    // O(2*N*2*K) & O(N*2*K + N)
-    int solveWithMemo(vector<vector<vector<int>>>& memory, int k, vector<int>& prices, int n, int day, bool canBuy) {
-        // Edge case: If all the days are exhausted or you've done total transactions then you can't achieve any profit
-        if(day == n || k == 0)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[day][canBuy][k] != -1)
-            return memory[day][canBuy][k];
-
-        // If it's possible to buy the share then we have two possibilities on the day
-        if(canBuy) {
-            int currBuy  = solveWithMemo(memory, k, prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
-            int currSkip = solveWithMemo(memory, k, prices, n, day + 1, true);                // Is to skip the buy at the current price
-            return memory[day][canBuy][k] = max(currBuy, currSkip);                           // Store the maximum profit to the memoization table and then return it
-        }
-        // Else when it's possible to sell the share then we have two possibilities on the day
-        else {
-            int currSell = prices[day] + solveWithMemo(memory, k - 1, prices, n, day + 1, true); // Is to sell the share at the current price
-            int currSkip = solveWithMemo(memory, k, prices, n, day + 1, false);                  // Is to skip the sell at the current price
-            return memory[day][canBuy][k] = max(currSell, currSkip);                             // Store the maximum profit to the memoization table and then return it
-        }
-    }
-
-    // O(2^N) & O(N)
-    int solveWithoutMemo(int k, vector<int>& prices, int n, int day, bool canBuy) {
-        // Edge case: If all the days are exhausted or you've done total transactions then you can't achieve any profit
-        if(day == n || k == 0)
-            return 0;
-
-        // If it's possible to buy the share then we have two possibilities on the day
-        if(canBuy) {
-            int currBuy  = solveWithoutMemo(k, prices, n, day + 1, false) - prices[day]; // Is to buy the share at the current price
-            int currSkip = solveWithoutMemo(k, prices, n, day + 1, true);                // Is to skip the buy at the current price
-            return max(currBuy, currSkip);                                               // As we're striving for maximum profit hence return the maximum value
-        }
-        // Else when it's possible to sell the share then we have two possibilities on the day
-        else {
-            int currSell = prices[day] + solveWithoutMemo(k - 1, prices, n, day + 1, true); // Is to sell the share at the current price
-            int currSkip = solveWithoutMemo(k, prices, n, day + 1, false);                  // Is to skip the sell at the current price
-            return max(currSell, currSkip);                                                 // As we're striving for maximum profit hence return the maximum value
-        }
+        n = prices.size();
+        memset(dp, -1, sizeof(dp));
+        return solveWithMemo(prices, 0, true, k);
     }
 };
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // #1 Method to find the maximum profit you can achieve, using 3D tabulation - O(N*2*K) & O(N*2*K)
-    int maxProfit_V1(int k, vector<int>& prices) {
-        int n = prices.size();
+    int n;
 
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(k + 1, 0)));
+    // O(N*GK) & O(N*GK) : Where GK = given_k
+    int solveWith3DTable(const vector<int>& prices, int given_k) {
+        int dp[100001][2][101];
+        memset(dp, 0, sizeof(dp));
 
-        for(int day = n-1; day >= 0; --day) {
+        for(int i = n - 1; i >= 0; --i) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
-                for(int limit = 1; limit <= k; ++limit) {
+                for(int k = 1; k <= given_k; ++k) {
                     if(canBuy) {
-                        int currBuy  = dp[day + 1][false][limit] - prices[day];
-                        int currSkip = dp[day + 1][true][limit];
-                        dp[day][canBuy][limit] = max(currBuy, currSkip);
+                        int buy  = dp[i + 1][false][k] - prices[i];
+                        int skip = dp[i + 1][true][k]; 
+                        dp[i][canBuy][k] = max(buy, skip);
                     }
                     else {
-                        int currSell = prices[day] + dp[day + 1][true][limit - 1];
-                        int currSkip = dp[day + 1][false][limit];
-                        dp[day][canBuy][limit] = max(currSell, currSkip);
-                    }   
+                        int sell = prices[i] + dp[i + 1][true][k - 1];
+                        int skip = dp[i + 1][false][k]; 
+                        dp[i][canBuy][k] = max(sell, skip);
+                    }
                 }
             }
         }
 
-        return dp[0][true][k];
+        return dp[0][true][given_k];
     }
 
-    // #2 Method to find the maximum profit you can achieve, using 2D tabulation - O(N*2*K) & O(2*K)
-    int maxProfit_V2(int k, vector<int>& prices) {
-        int n = prices.size();
+    // O(N*GK) & O(GK) : Where GK = given_k
+    int solveWith2DTable(const vector<int>& prices, int given_k) {
+        int next[2][101], curr[2][101];
+        memset(next, 0, sizeof(next));
+        memset(curr, 0, sizeof(curr));
 
-        vector<vector<int>> nextRow(2, vector<int>(k + 1, 0)), idealRow(2, vector<int>(k + 1, 0));
-
-        for(int day = n-1; day >= 0; --day) {
+        for(int i = n - 1; i >= 0; --i) {
             for(int canBuy = 0; canBuy <= 1; ++canBuy) {
-                for(int limit = 1; limit <= k; ++limit) {
+                for(int k = 1; k <= given_k; ++k) {
                     if(canBuy) {
-                        int currBuy  = nextRow[false][limit] - prices[day];
-                        int currSkip = nextRow[true][limit];
-                        idealRow[canBuy][limit] = max(currBuy, currSkip);
+                        int buy  = next[false][k] - prices[i];
+                        int skip = next[true][k]; 
+                        curr[canBuy][k] = max(buy, skip);
                     }
                     else {
-                        int currSell = prices[day] + nextRow[true][limit - 1];
-                        int currSkip = nextRow[false][limit];
-                        idealRow[canBuy][limit] = max(currSell, currSkip);
-                    }   
+                        int sell = prices[i] + next[true][k - 1];
+                        int skip = next[false][k]; 
+                        curr[canBuy][k] = max(sell, skip);
+                    }
                 }
             }
-            nextRow = idealRow;
+            swap(next, curr);
         }
 
-        return idealRow[true][k];
+        return next[true][given_k];
+    }
+
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        n = prices.size();
+        return solveWith2DTable(prices, k);
     }
 };
 
