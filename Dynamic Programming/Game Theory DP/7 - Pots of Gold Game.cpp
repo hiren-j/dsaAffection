@@ -118,5 +118,4 @@ private:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Dynamic Programming | Game Theory
-Links : https://www.geeksforgeeks.org/problems/pots-of-gold-game/1
-        https://cses.fi/problemset/task/1097
+Links : https://www.geeksforgeeks.org/dsa/maximize-the-number-of-coins-collected-by-x-assuming-y-also-plays-optimally/
