@@ -3,133 +3,99 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to check whether the array has at least one valid partition or not, using recursion with memoization - O(N) & O(N)
-    bool validPartition(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> memory(n, -1);
-        return solveWithMemo(memory, nums, n, 0);
+    int n;
+            
+    bool isEqual(int a, int b, int c = -1) {
+        return (c == -1 && a == b) || (a == b && b == c);
+    }
+    bool isConsecutive(int a, int b, int c) {
+        return (a - b == 1 && b - c == 1);
     }
 
-private:
-    // O(3*N) & O(N+N)
-    int solveWithMemo(vector<int>& memory, vector<int>& nums, int n, int startIndex) {
-        // Edge case: If all the elements are exhausted then you've created a valid partition of the array
-        if(startIndex == n)
+    // O(2^N) & O(N)
+    int solveWithoutMemo(const vector<int>& nums, int start) {
+        if(start == n)
             return true;
 
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex] != -1)
-            return memory[startIndex];
-
-        int subArrayLength = 1;
-
-        // Iterate and consider the subarrays which satisfies one of the specified conditions. After considering such subarray assume a partition on that index and then move to the next index and do the same thing
-        for(int index = startIndex; index < min(startIndex + 3, n); ++index) {
-            if(subArrayLength == 2 && isElementsEqual(nums[index], nums[index - 1]) && solveWithMemo(memory, nums, n, index + 1)) {
-                return memory[startIndex] = true;
-            }
-            else if(subArrayLength == 3 
-                    && (isElementsEqual(nums[index], nums[index - 1], nums[index - 2]) 
-                    || isElementsConsecAndIncreasing(nums[index], nums[index - 1], nums[index - 2])) 
-                    && solveWithMemo(memory, nums, n, index + 1)) {
-                return memory[startIndex] = true;
-            }
-
-            subArrayLength++;
-        }
-
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex] = false;
-    }
-
-    // O(3^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, int n, int startIndex) {
-        // Edge case: If all the elements are exhausted then you've created a valid partition of the array
-        if(startIndex == n)
+        int i = start + 1;
+        if(i < n && isEqual(nums[i], nums[i - 1]) && solveWithoutMemo(nums, i + 1)) {
             return true;
-
-        int subArrayLength = 1;
-
-        // Iterate and consider the subarrays which satisfies one of the specified conditions. After considering such subarray assume a partition on that index and then move to the next index and do the same thing
-        for(int index = startIndex; index < min(startIndex + 3, n); ++index) {
-            if(subArrayLength == 2 && isElementsEqual(nums[index], nums[index - 1]) && solveWithoutMemo(nums, n, index + 1)) {
-                return true;
-            }
-            else if(subArrayLength == 3 
-                    && (isElementsEqual(nums[index], nums[index - 1], nums[index - 2]) 
-                    || isElementsConsecAndIncreasing(nums[index], nums[index - 1], nums[index - 2])) 
-                    && solveWithoutMemo(nums, n, index + 1)) {
-                return true;
-            }
-
-            subArrayLength++;
         }
 
-        // If reached here then you're not able to create a valid partition hence return false
+        i = start + 2;
+        if(i < n && (isEqual(nums[i], nums[i - 1], nums[i - 2]) || 
+                     isConsecutive(nums[i], nums[i - 1], nums[i - 2])) && 
+                     solveWithoutMemo(nums, i + 1)) {
+            return true;
+        }
+        
         return false;
     }
 
-private:
-    // O(1) & O(1)
-    bool isElementsEqual(int num1, int num2, int num3 = -1) {
-        return (num3 == -1 && num1 == num2) || (num1 == num2 && num2 == num3);
+    // O(N) & O(N)
+    int solveWithMemo(vector<int>& dp, const vector<int>& nums, int start) {
+        if(start == n)
+            return true;
+
+        if(dp[start] != -1)
+            return dp[start];
+
+        int i = start + 1;
+        if(i < n && isEqual(nums[i], nums[i - 1]) && solveWithMemo(dp, nums, i + 1)) {
+            return dp[start] = true;
+        }
+
+        i = start + 2;
+        if(i < n && (isEqual(nums[i], nums[i - 1], nums[i - 2]) || 
+                     isConsecutive(nums[i], nums[i - 1], nums[i - 2])) && 
+                     solveWithMemo(dp, nums, i + 1)) {
+            return dp[start] = true;
+        }
+
+        return dp[start] = false;
     }
 
-    // O(1) & O(1)
-    bool isElementsConsecAndIncreasing(int num1, int num2, int num3) {
-        return (num1 - num2 == 1 && num2 - num3 == 1);
+public:
+    bool validPartition(vector<int>& nums) {
+        n = nums.size();
+        vector<int> dp(n, -1);
+        return solveWithMemo(dp, nums, 0);
     }
 };
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class BottomUp {
+class BottomUp {   
+    bool isEqual(int a, int b, int c = -1) {
+        return (c == -1 && a == b) || (a == b && b == c);
+    }
+    bool isConsecutive(int a, int b, int c) {
+        return (a - b == 1 && b - c == 1);
+    }
+
 public:
-    // Method to check whether the array has at least one valid partition or not, using 1D tabulation - O(N) & O(N) 
+    // O(N) & O(N)
     bool validPartition(vector<int>& nums) {
-        int n = nums.size();
+        const int n = nums.size();
 
-        // 1D DP table: dp[i] represents whether you can create a valid partition of the array from index i to n-1
         vector<bool> dp(n + 1, false);
-
-        // Initialize the edge case
         dp[n] = true;
+        
+        for(int start = n - 1; start >= 0; --start) {
+            int i = start + 1;
+            if(i < n && isEqual(nums[i], nums[i - 1]) && dp[i + 1]) {
+                dp[start] = true;
+                continue;
+            }
 
-        // Fill the rest of the table
-        for(int startIndex = n-1; startIndex >= 0; --startIndex) {
-            int subArrayLength = 1;
-
-            for(int index = startIndex; index < min(startIndex + 3, n); ++index) {
-                if(subArrayLength == 2 && isElementsEqual(nums[index], nums[index - 1]) && dp[index + 1]) {
-                    dp[startIndex] = true;
-                    break;
-                }
-                else if(subArrayLength == 3 
-                        && (isElementsEqual(nums[index], nums[index - 1], nums[index - 2]) 
-                        || isElementsConsecAndIncreasing(nums[index], nums[index - 1], nums[index - 2])) 
-                        && dp[index + 1]) {
-                    dp[startIndex] = true;
-                    break;
-                }
-
-                subArrayLength++;
+            i = start + 2;
+            if(i < n && (isEqual(nums[i], nums[i - 1], nums[i - 2]) || 
+                         isConsecutive(nums[i], nums[i - 1], nums[i - 2])) && dp[i + 1]) {
+                dp[start] = true;
             }
         }
 
-        // Return the result value
         return dp[0];
-    }
-
-private:
-    // O(1) & O(1)
-    bool isElementsEqual(int num1, int num2, int num3 = -1) {
-        return (num3 == -1 && num1 == num2) || (num1 == num2 && num2 == num3);
-    }
-
-    // O(1) & O(1)
-    bool isElementsConsecAndIncreasing(int num1, int num2, int num3) {
-        return (num1 - num2 == 1 && num2 - num3 == 1);
     }
 };
 
