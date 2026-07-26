@@ -2,60 +2,60 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class TopDown {
+class BottomUp {
     int n;
 
-    // O(N^N) & O(N)
-    int solveWithoutMemo(vector<int>& nums, int start_i, int k) {
-        // Edge case: If you've divided the array into 3 subarrays then return 0
-        if(start_i == n) 
-            return (k == 0) ? 0 : INT_MAX; 
-
-        // Edge case: If array needs more than 3 splits then don't do the partition
-        if(k < 0) 
+    // O(N^N) & O(K)
+    int solveWithoutMemo(const vector<int>& nums, int start, int k) {
+        if(start == n)
+            return k == 0 ? 0 : INT_MAX;
+        
+        if(k < 0)
             return INT_MAX;
 
-        int subArrayCost, minCost = INT_MAX;
+        int minCost = INT_MAX;
 
-        for(int i = start_i; i < n; ++i) {
-            if(i == start_i) subArrayCost = nums[i];
-            int nextCost = solveWithoutMemo(nums, i + 1, k - 1);
-            if(nextCost != INT_MAX) minCost = min(minCost, subArrayCost + nextCost);
+        for(int i = start; i < n; ++i) {
+            const int next = solveWithoutMemo(nums, i + 1, k - 1);
+
+            if(next != INT_MAX) {
+                minCost = min(minCost, next + nums[start]);
+            }
         }
 
         return minCost;
     }
 
-    // O(N*N*4) & O(N*4 + N)
-    int solveWithMemo(vector<vector<int>>& dp, vector<int>& nums, int start_i, int k) {
-        // Edge case: If you've divided the array into 3 subarrays then return 0
-        if(start_i == n) 
-            return (k == 0) ? 0 : INT_MAX; 
-
-        // Edge case: If array needs more than 3 splits then don't do the partition
-        if(k < 0) 
+    // O(N*N*K) & O(K)
+    int solveWithMemo(int dp[][4], const vector<int>& nums, int start, int k) {
+        if(start == n)
+            return k == 0 ? 0 : INT_MAX;
+        
+        if(k < 0)
             return INT_MAX;
 
-        if(dp[start_i][k] != -1)
-            return dp[start_i][k];
+        if(dp[start][k] != -1)
+            return dp[start][k];
 
-        int subArrayCost, minCost = INT_MAX;
+        int minCost = INT_MAX;
 
-        for(int i = start_i; i < n; ++i) {
-            if(i == start_i) subArrayCost = nums[i];
-            int nextCost = solveWithMemo(dp, nums, i + 1, k - 1);
-            if(nextCost != INT_MAX) minCost = min(minCost, subArrayCost + nextCost);
+        for(int i = start; i < n; ++i) {
+            const int next = solveWithMemo(dp, nums, i + 1, k - 1);
+
+            if(next != INT_MAX) {
+                minCost = min(minCost, next + nums[start]);
+            }
         }
 
-        return dp[start_i][k] = minCost;
+        return dp[start][k] = minCost;
     }
 
 public:
-    // Method to find the minimum sum of the cost of splitted array, using recursion with memoization - O(N^2) & O(N)
     int minimumCost(vector<int>& nums) {
         n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(4, -1));
-        return solveWithMemo(dp, nums, 0, 3);
+        int dp[50][4];
+        memset(dp, -1, sizeof(dp));
+        return solveWithMemo(dp, nums, 0, 3);   
     }
 };
 
@@ -63,24 +63,31 @@ public:
 
 class BottomUp {
 public:
-    // Method to find the minimum sum of the cost of splitted array, using 2D tabulation - O(N^2) & O(N)
+    // O(N*K*N) & O(N*K)
     int minimumCost(vector<int>& nums) {
-        int n = nums.size();
+        const int n = nums.size();
 
-        vector<vector<int>> dp(n + 1, vector<int>(4, INT_MAX));
-        dp[n][0] = 0; // Initialize the first edge case
+        int dp[51][4];
+        memset(dp, -1, sizeof(dp));
 
-        for(int start_i = n-1; start_i >= 0; --start_i) {
-            for(int k = 1; k <= 3; ++k) {
-                int subArrayCost, minCost = INT_MAX;
+        dp[n][0] = 0;
+        dp[n][1] = INT_MAX;
+        dp[n][2] = INT_MAX;
+        dp[n][3] = INT_MAX;
 
-                for(int i = start_i; i < n; ++i) {
-                    if(i == start_i) subArrayCost = nums[i];
-                    int nextCost = dp[i + 1][k - 1];
-                    if(nextCost != INT_MAX) minCost = min(minCost, subArrayCost + nextCost);
+        for(int start = n - 1; start >= 0; --start) {
+            for(int k = 0; k <= 3; ++k) {
+                int minCost = INT_MAX;
+
+                for(int i = start; i < n; ++i) {
+                    const int next = (k - 1 < 0) ? INT_MAX : dp[i + 1][k - 1];
+
+                    if(next != INT_MAX) {
+                        minCost = min(minCost, next + nums[start]);
+                    }
                 }
 
-                dp[start_i][k] = minCost;
+                dp[start][k] = minCost;
             }
         }
 
