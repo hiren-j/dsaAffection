@@ -68,7 +68,7 @@ public:
 
 class BottomUp {
 public:
-    // O(N^2) & O(N^2)
+    // O(N^2) & O(N)
     int minCost(vector<int>& nums, int k) {
         const int n = nums.size();
 
