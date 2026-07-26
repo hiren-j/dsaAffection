@@ -12,7 +12,7 @@ class TopDown {
 
         int sumOfThickness = 0;
         int maxHeight = 0;
-        int res = INT_MAX;
+        int result = INT_MAX;
 
         for(int i = start; i < n; ++i) {
             const int t = books[i][0];
@@ -22,10 +22,10 @@ class TopDown {
             if(sumOfThickness > shelfWidth) 
                 break;
             const int next = solveWithoutMemo(books, i + 1);
-            res = min(res, maxHeight + next);
+            result = min(result, maxHeight + next);
         }
 
-        return res;
+        return result;
     }
 
     // O(N*N) & O(N)
@@ -38,7 +38,7 @@ class TopDown {
 
         int sumOfThickness = 0;
         int maxHeight = 0;
-        int res = INT_MAX;
+        int result = INT_MAX;
 
         for(int i = start; i < n; ++i) {
             const int t = books[i][0];
@@ -48,10 +48,10 @@ class TopDown {
             if(sumOfThickness > shelfWidth) 
                 break;
             const int next = solveWithMemo(dp, books, i + 1);
-            res = min(res, maxHeight + next);
+            result = min(result, maxHeight + next);
         }
 
-        return dp[start] = res;
+        return dp[start] = result;
     }
 
 public:
@@ -76,7 +76,7 @@ public:
         for(int start = n - 1; start >= 0; --start) {
             int sumOfThickness = 0;
             int maxHeight = 0;
-            int res = INT_MAX;
+            int result = INT_MAX;
 
             for(int i = start; i < n; ++i) {
                 const int t = books[i][0];
@@ -86,10 +86,10 @@ public:
                 if(sumOfThickness > shelfWidth) 
                     break;
                 const int next = dp[i + 1];
-                res = min(res, maxHeight + next);
+                result = min(result, maxHeight + next);
             }
 
-            dp[start] = res;   
+            dp[start] = result;   
         }
 
         return dp[0];
