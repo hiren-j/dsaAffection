@@ -54,6 +54,7 @@ public:
 class BottomUp {
     int N, M;
 
+    // O(N*M) & O(N*M)
     int solveBy2DTable(const vector<vector<int>>& grid) {
         vector<vector<int>> dp(N+1, vector<int>(M+1, 0));
 
@@ -78,6 +79,7 @@ class BottomUp {
         return count;
     }
 
+    // O(N*M) & O(N*M)
     int solveBy2DEnhanced(const vector<vector<int>>& grid) {
         int N = grid.size(), M = grid[0].size(), count = 0;
 
@@ -100,7 +102,7 @@ class BottomUp {
         return count;
     }
 
-
+    // O(N*M) & O(M)
     int solveBy1DTable(const vector<vector<int>>& grid) {
         int N = grid.size(), M = grid[0].size(), count = 0;
 
@@ -127,6 +129,7 @@ class BottomUp {
         return count;
     }
 
+    // O(N*M) & O(1)
     int solveWithoutTable(vector<vector<int>>& grid) {
         int N = grid.size(), M = grid[0].size(), count = 0;
 
@@ -148,7 +151,7 @@ class BottomUp {
     }
 
 public:
-    int countSquares_V1(vector<vector<int>>& grid) {
+    int countSquares(vector<vector<int>>& grid) {
         N = grid.size(), M = grid[0].size();   
         return solveWithoutTable(grid);
     }
