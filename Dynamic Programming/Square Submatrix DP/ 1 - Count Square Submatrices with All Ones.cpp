@@ -62,8 +62,8 @@ class BottomUp {
             for(int C = M-1; C >= 0; --C) {
                 if(grid[R][C] == 0)
                     continue;
-                int moveRight = dp[R][C+1];
-                int moveDown  = dp[R+1][C];
+                int moveRight     = dp[R][C+1];
+                int moveDown      = dp[R+1][C];
                 int moveDownRight = dp[R+1][C+1];
                 dp[R][C] = 1 + min({moveRight, moveDown, moveDownRight});   
             }
@@ -90,8 +90,8 @@ class BottomUp {
                 if(grid[R][C] == 0)
                     continue;
 
-                int moveRight= dp[R][C+1];
-                int moveDown = dp[R+1][C];
+                int moveRight     = dp[R][C+1];
+                int moveDown      = dp[R+1][C];
                 int moveDownRight = dp[R+1][C+1];
                 dp[R][C] = 1 + min({moveRight, moveDown, moveDownRight});  
 
@@ -115,8 +115,8 @@ class BottomUp {
                 if(grid[R][C] == 0) 
                     continue;
 
-                int moveRight = currRow[C+1];
-                int moveDown  = nextRow[C];
+                int moveRight     = currRow[C+1];
+                int moveDown      = nextRow[C];
                 int moveDownRight = nextRow[C+1];
                 currRow[C] = 1 + min({moveRight, moveDown, moveDownRight});  
 
@@ -138,8 +138,8 @@ class BottomUp {
                 if(grid[R][C] == 0) 
                     continue;
                     
-                int moveRight = (C+1 < M) ? grid[R][C+1] : 0;
-                int moveDown  = (R+1 < N) ? grid[R+1][C] : 0;
+                int moveRight     = (C+1 < M) ? grid[R][C+1] : 0;
+                int moveDown      = (R+1 < N) ? grid[R+1][C] : 0;
                 int moveDownRight = (R+1 < N && C+1 < M) ? grid[R+1][C+1] : 0;
                 grid[R][C] = 1 + min({moveRight, moveDown, moveDownRight});  
 
