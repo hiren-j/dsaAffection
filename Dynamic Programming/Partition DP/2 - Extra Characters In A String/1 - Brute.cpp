@@ -16,12 +16,9 @@ class TopDown {
 
         int result = solveWithMemo(s, start + 1, creatable);
 
-        string substr;
         for(int i = start; i < n; ++i) {
-            substr.push_back(s[i]);
-
             if(dict.count(substr)) {
-                int next = solveWithMemo(s, i + 1, creatable + substr.size());
+                int next = solveWithMemo(s, i + 1, creatable + (i - start + 1));
                 result = min(result, next);
             }
         }
@@ -60,12 +57,9 @@ public:
             for(int creatable = n; creatable >= 0; --creatable) {
                 int result = dp[start + 1][creatable];
 
-                string substr;
                 for(int i = start; i < n; ++i) {
-                    substr.push_back(s[i]);
-
                     if(dict.count(substr)) {
-                        int next = dp[i + 1][creatable + substr.size()];
+                        int next = dp[i + 1][creatable + (i - start + 1)];
                         result = min(result, next);
                     }
                 }
