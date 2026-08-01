@@ -7,6 +7,7 @@ class TopDown {
     int dp[51][51]; 
     int n;
 
+    // O(N^3) & O(N^2)
     int solveWithMemo(const string& s, int start, int creatable) {
         if(start == n)
             return n - creatable; 
@@ -16,9 +17,12 @@ class TopDown {
 
         int result = solveWithMemo(s, start + 1, creatable);
 
+        string substr;
         for(int i = start; i < n; ++i) {
+            substr.push_back(s[i]);
+
             if(dict.count(substr)) {
-                int next = solveWithMemo(s, i + 1, creatable + (i - start + 1));
+                int next = solveWithMemo(s, i + 1, creatable + substr.size());
                 result = min(result, next);
             }
         }
@@ -27,7 +31,6 @@ class TopDown {
     }
 
 public:
-    // O(N^3) & O(N^2)
     int minExtraChar(string& s, vector<string>& wordDict) {
         n = s.size();
         memset(dp, -1, sizeof(dp));
@@ -57,9 +60,12 @@ public:
             for(int creatable = n; creatable >= 0; --creatable) {
                 int result = dp[start + 1][creatable];
 
+                string substr;
                 for(int i = start; i < n; ++i) {
+                    substr.push_back(s[i]);
+
                     if(dict.count(substr)) {
-                        int next = dp[i + 1][creatable + (i - start + 1)];
+                        int next = dp[i + 1][creatable + substr.size()];
                         result = min(result, next);
                     }
                 }
@@ -71,7 +77,7 @@ public:
         return dp[0][0];
     }
 };
-
+    
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Topics: Array | Hash Table | String | Dynamic Programming
