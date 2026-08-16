@@ -3,7 +3,7 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    // O(2^N) & O(N)
+    // O(2^N) & O(H)
     int solveWithoutMemo(TreeNode* node) {
         if(!node)
             return 0;   
@@ -69,15 +69,12 @@ public:
             }
             else {
                 int skip = dp[node->left] + dp[node->right];
-                int rob = node->val;
+                int rob  = node->val;
 
                 if(node->left)
-                    rob += dp[node->left->left]
-                         + dp[node->left->right];
-
+                    rob += dp[node->left->left] + dp[node->left->right];
                 if(node->right)
-                    rob += dp[node->right->left]
-                         + dp[node->right->right];
+                    rob += dp[node->right->left] + dp[node->right->right];
 
                 dp[node] = max(rob, skip);
             }
