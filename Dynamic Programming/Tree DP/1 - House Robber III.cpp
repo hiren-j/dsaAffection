@@ -48,6 +48,51 @@ public:
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
+    auto findPostorder(TreeNode* root) {
+        stack<TreeNode*> temp, order;
+        temp.push(root);
+
+        while(!temp.empty()) {
+            TreeNode* node = temp.top(); temp.pop();
+
+            if(node->left)
+                temp.push(node->left);
+            if(node->right)
+                temp.push(node->right);
+
+            order.push(node);
+        }
+
+        return order;
+    }
+
+public:
+    // O(N) & O(N)
+    int rob(TreeNode* root) {
+        stack<TreeNode*> order = findPostorder(root);
+        unordered_map<TreeNode*, int> dp;
+
+        while(!order.empty()) {
+            TreeNode* node = order.top(); order.pop();
+
+            int skip = dp[node->left] + dp[node->right];
+            int rob  = node->val;
+
+            if(node->left)
+                rob += dp[node->left->left] + dp[node->left->right];
+            if(node->right)
+                rob += dp[node->right->left] + dp[node->right->right];
+
+            dp[node] = max(rob, skip);
+        }
+
+        return dp[root];
+    }
+};
+    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUpEnhanced {
 public:
     // O(N) & O(N)
     int robMaxMoney(TreeNode* root) {
