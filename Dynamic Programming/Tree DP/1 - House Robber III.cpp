@@ -57,12 +57,12 @@ public:
         stk.push({root, false});
 
         while(!stk.empty()) {
-            auto [node, canBuy] = stk.top(); stk.pop();
+            auto [node, visited] = stk.top(); stk.pop();
 
             if(!node)
                 continue;
 
-            else if(!canBuy) {
+            else if(!visited) {
                 stk.push({node, true});
                 stk.push({node->right, false});
                 stk.push({node->left, false});
