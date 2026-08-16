@@ -68,7 +68,7 @@ class BottomUp {
 
 public:
     // O(N) & O(N)
-    int rob(TreeNode* root) {
+    int robMaxMoney(TreeNode* root) {
         stack<TreeNode*> order = findPostorder(root);
         unordered_map<TreeNode*, int> dp;
 
