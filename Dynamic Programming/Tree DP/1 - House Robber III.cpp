@@ -7,16 +7,15 @@ class DynamicProgramming {
         if(!node)
             return 0;   
 
-        int rob  = solveWithoutMemo(node->left) + solveWithoutMemo(node->right); 
-        int skip = node->val;                                                        
+        int skip = solveWithoutMemo(node->left) + solveWithoutMemo(node->right); 
+        int rob  = node->val;                                                        
 
         if(node->left) 
-            skip += solveWithoutMemo(node->left->left) + solveWithoutMemo(node->left->right);
-
+            rob += solveWithoutMemo(node->left->left) + solveWithoutMemo(node->left->right);
         if(node->right) 
-            skip += solveWithoutMemo(node->right->left) + solveWithoutMemo(node->right->right);
+            rob += solveWithoutMemo(node->right->left) + solveWithoutMemo(node->right->right);
 
-        return max(skip, rob);
+        return max(rob, skip);
     }
 
     int solveWithMemo(TreeNode* node, unordered_map<TreeNode*, int>& dp) {
@@ -26,16 +25,15 @@ class DynamicProgramming {
         if(dp.count(node))
             return dp[node];
 
-        int rob  = solveWithMemo(node->left, dp) + solveWithMemo(node->right, dp); 
-        int skip = node->val;                
+        int skip = solveWithMemo(node->left, dp) + solveWithMemo(node->right, dp); 
+        int rob  = node->val;                
 
         if(node->left) 
-            skip += solveWithMemo(node->left->left, dp) + solveWithMemo(node->left->right, dp);
-            
+            rob += solveWithMemo(node->left->left, dp) + solveWithMemo(node->left->right, dp);
         if(node->right) 
-            skip += solveWithMemo(node->right->left, dp) + solveWithMemo(node->right->right, dp);
+            rob += solveWithMemo(node->right->left, dp) + solveWithMemo(node->right->right, dp);
 
-        return dp[node] = max(skip, rob);
+        return dp[node] = max(rob, skip);
     }
 
 public:
