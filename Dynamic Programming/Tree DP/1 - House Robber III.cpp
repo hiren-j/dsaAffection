@@ -62,7 +62,7 @@ public:
             if(!node)
                 continue;
 
-            else if(!visited) {
+            if(!visited) {
                 stk.push({node, true});
                 stk.push({node->right, false});
                 stk.push({node->left, false});
