@@ -2,62 +2,46 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Class to implement the Top-down approach:
 class DynamicProgramming {
+    int solveWithoutMemo(TreeNode* node) {
+        if(!node)
+            return 0;   
+
+        int rob  = solveWithoutMemo(node->left) + solveWithoutMemo(node->right); 
+        int skip = node->val;                                                        
+
+        if(node->left) 
+            skip += solveWithoutMemo(node->left->left) + solveWithoutMemo(node->left->right);
+
+        if(node->right) 
+            skip += solveWithoutMemo(node->right->left) + solveWithoutMemo(node->right->right);
+
+        return max(skip, rob);
+    }
+
+    int solveWithMemo(TreeNode* node, unordered_map<TreeNode*, int>& dp) {
+        if(!node)
+            return 0;   
+
+        if(dp.count(node))
+            return dp[node];
+
+        int rob  = solveWithMemo(node->left, dp) + solveWithMemo(node->right, dp); 
+        int skip = node->val;                
+
+        if(node->left) 
+            skip += solveWithMemo(node->left->left, dp) + solveWithMemo(node->left->right, dp);
+            
+        if(node->right) 
+            skip += solveWithMemo(node->right->left, dp) + solveWithMemo(node->right->right, dp);
+
+        return dp[node] = max(skip, rob);
+    }
+
 public:
-    // Method to find the maximum amount of money the thief can rob, using recursion with memoization - O(N) & O(N)
-    int robMaxMoney(TreeNode* rootNode) {
-        unordered_map<TreeNode*, int> memory;
-        return solveWithMemo(rootNode, memory);
-    }
-
-private:
-    // O(2*N) & O(N+N)
-    int solveWithMemo(TreeNode* rootNode, unordered_map<TreeNode*, int>& memory) {
-        // Edge case: If there's no node then there's no money to rob
-        if(!rootNode)
-            return 0;   
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory.count(rootNode))
-            return memory[rootNode];
-
-        // There are always two possibilities to perform at each node
-        int currSkip = solveWithMemo(rootNode->left, memory) + solveWithMemo(rootNode->right, memory); // Is to skip it and move to it's child nodes
-        int currRob  = rootNode->val;                                                                  // Is to rob it and take the value of it                
-
-        // If you rob the node then you can't rob at it's left child / adjacent node
-        if(rootNode->left) 
-            currRob += solveWithMemo(rootNode->left->left, memory) + solveWithMemo(rootNode->left->right, memory);
-            
-        // If you rob the node then you can't rob at it's right child / adjacent node
-        if(rootNode->right) 
-            currRob += solveWithMemo(rootNode->right->left, memory) + solveWithMemo(rootNode->right->right, memory);
-
-        // Store the result value to the memoization table and then return it
-        return memory[rootNode] = max(currRob, currSkip);
-    }
-
-    // O(2^N) & O(N)
-    int solveWithoutMemo(TreeNode* rootNode) {
-        // Edge case: If there's no node then there's no money to rob
-        if(!rootNode)
-            return 0;   
-
-        // There are always two possibilities to perform at each node
-        int currSkip = solveWithoutMemo(rootNode->left) + solveWithoutMemo(rootNode->right); // Is to skip it and move to it's child nodes
-        int currRob  = rootNode->val;                                                        // Is to rob it and take the value of it                
-
-        // If you rob the node then you can't rob at it's left child / adjacent node
-        if(rootNode->left) 
-            currRob += solveWithoutMemo(rootNode->left->left) + solveWithoutMemo(rootNode->left->right);
-            
-        // If you rob the node then you can't rob at it's right child / adjacent node
-        if(rootNode->right) 
-            currRob += solveWithoutMemo(rootNode->right->left) + solveWithoutMemo(rootNode->right->right);
-
-        // As we're striving for the maximum money hence return the maximum value
-        return max(currRob, currSkip);
+    int robMaxMoney(TreeNode* node) {
+        unordered_map<TreeNode*, int> dp;
+        return solveWithMemo(node, dp);
     }
 };
 
