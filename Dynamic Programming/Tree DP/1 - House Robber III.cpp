@@ -2,7 +2,8 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class DynamicProgramming {
+class TopDown {
+    // O(2^N) & O(N)
     int solveWithoutMemo(TreeNode* node) {
         if(!node)
             return 0;   
@@ -18,31 +19,74 @@ class DynamicProgramming {
         return max(rob, skip);
     }
 
-    int solveWithMemo(TreeNode* node, unordered_map<TreeNode*, int>& dp) {
+    // O(N) & O(N)
+    int solveWithMemo(unordered_map<TreeNode*, int>& dp, TreeNode* node) {
         if(!node)
             return 0;   
 
         if(dp.count(node))
             return dp[node];
 
-        int skip = solveWithMemo(node->left, dp) + solveWithMemo(node->right, dp); 
+        int skip = solveWithMemo(dp, node->left) + solveWithMemo(dp, node->right); 
         int rob  = node->val;                
 
         if(node->left) 
-            rob += solveWithMemo(node->left->left, dp) + solveWithMemo(node->left->right, dp);
+            rob += solveWithMemo(dp, node->left->left) + solveWithMemo(dp, node->left->right);
         if(node->right) 
-            rob += solveWithMemo(node->right->left, dp) + solveWithMemo(node->right->right, dp);
+            rob += solveWithMemo(dp, node->right->left) + solveWithMemo(dp, node->right->right);
 
         return dp[node] = max(rob, skip);
     }
 
 public:
-    int robMaxMoney(TreeNode* node) {
+    int robMaxMoney(TreeNode* root) {
         unordered_map<TreeNode*, int> dp;
-        return solveWithMemo(node, dp);
+        return solveWithMemo(dp, root);
     }
 };
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class BottomUp {
+public:
+    // O(N) & O(N)
+    int robMaxMoney(TreeNode* root) {
+        unordered_map<TreeNode*, int> dp;
+        stack<pair<TreeNode*, bool>> stk;
+
+        stk.push({root, false});
+
+        while(!stk.empty()) {
+            auto [node, canBuy] = stk.top(); stk.pop();
+
+            if(!node)
+                continue;
+
+            else if(!canBuy) {
+                stk.push({node, true});
+                stk.push({node->right, false});
+                stk.push({node->left, false});
+            }
+            else {
+                int skip = dp[node->left] + dp[node->right];
+                int rob = node->val;
+
+                if(node->left)
+                    rob += dp[node->left->left]
+                         + dp[node->left->right];
+
+                if(node->right)
+                    rob += dp[node->right->left]
+                         + dp[node->right->right];
+
+                dp[node] = max(rob, skip);
+            }
+        }
+
+        return dp[root];
+    }
+};
+    
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 Topics: Dynamic Programming | Tree | Depth-First Search | Binary Tree
