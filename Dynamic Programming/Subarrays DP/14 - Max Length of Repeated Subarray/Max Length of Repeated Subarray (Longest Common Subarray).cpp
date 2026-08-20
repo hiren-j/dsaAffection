@@ -5,7 +5,7 @@
 class TopDown {
     int n, m;
 
-    // O(3^(N+M)) & O(max(N,M))
+    // O(3^(N+M)) & O(N+M)
     int solveWithoutMemo(const vector<int>& nums1, const vector<int>& nums2, int i, int j, bool prevPick) {
         if(i == n || j == m)
             return 0;
