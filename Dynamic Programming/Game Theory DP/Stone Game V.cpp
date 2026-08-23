@@ -47,6 +47,7 @@ class TopDown {
     }
 
 public:
+    // O(N^3) & O(N^2)
     int stoneGameV(vector<int>& nums) {
         n = nums.size();
         memset(dp, -1, sizeof(dp));
@@ -64,6 +65,7 @@ class BottomUp {
     }
 
 public:
+    // O(N^3) & O(N^2)
     int stoneGameV(vector<int>& nums) {
         const int n = nums.size();
 
