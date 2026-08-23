@@ -3,139 +3,110 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
+    int dp[500][500][2];
+    int n;
+
+    int solveWithMemo(const vector<int>& nums, int i, int j, bool aliceTurn) {
+        if(i > j)
+            return 0;
+
+        if(dp[i][j][aliceTurn] != -1)
+            return dp[i][j][aliceTurn];
+
+        if(aliceTurn) {
+            const int pickStart = nums[i] + solveWithMemo(nums, i + 1, j, false);
+            const int pickEnd   = nums[j] + solveWithMemo(nums, i, j - 1, false);
+            return dp[i][j][aliceTurn] = max(pickStart, pickEnd);
+        }
+        else {
+            const int pickStart = solveWithMemo(nums, i + 1, j, true);
+            const int pickEnd   = solveWithMemo(nums, i, j - 1, true);
+            return dp[i][j][aliceTurn] = min(pickStart, pickEnd);
+        }
+    }
+
 public:
-    // Method to check if Alice can win the game or not, using recursion with memoization - O(N^2) & O(N^2)
-    bool stoneGame(vector<int>& piles) {
-        int n = piles.size();
-        vector<vector<vector<int>>> memory(n, vector<vector<int>>(n, vector<int>(2, -1)));
-        int aliceStones = solveWithMemo(memory, piles, 0, n-1, true);
-        int bobStones   = accumulate(begin(piles), end(piles), 0) - aliceStones;
-        return (aliceStones >= bobStones);
-    }
-
-private:
-    // O(2*N*N*2) & O(N*N*2 + N)
-    int solveWithMemo(vector<vector<vector<int>>>& memory, vector<int>& piles, int i, int j, bool aliceTurn) {
-        // Edge case: If all the piles are exhausted then Alice can't take more stones 
-        if(i > j)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[i][j][aliceTurn] != -1)
-            return memory[i][j][aliceTurn];
-
-        // If its Alice's turn then she have two posibilities to perform 
-        if(aliceTurn) {
-            int takeFromStart = piles[i] + solveWithMemo(memory, piles, i+1, j, false); // Is to take ith element
-            int takeFromEnd   = piles[j] + solveWithMemo(memory, piles, i, j-1, false); // Is to take jth element
-            return memory[i][j][aliceTurn] = max(takeFromStart, takeFromEnd); // If its Alice's turn then she absolutely wanted to win, So for that she wants to maximize her score, so she will take the maximum value from both the possibility
-        }
-        // If its Bob's turn then he have two posibilities to perform 
-        else {
-            int takeFromStart = solveWithMemo(memory, piles, i+1, j, true); // Is to take ith element
-            int takeFromEnd   = solveWithMemo(memory, piles, i, j-1, true); // Is to take jth element
-            return memory[i][j][aliceTurn] = min(takeFromStart, takeFromEnd); // If its Bob's turn then he absolutely wanted Alice to lose, So for that he wants Alice to minimize her score, so Bob will take the minimum value from both the possibility
-        }
-    }
-
-    // O(2^N) & O(N)
-    int solveWithoutMemo(vector<int>& piles, int i, int j, bool aliceTurn) {
-        // Edge case: If all the piles are exhausted then Alice can't take more stones 
-        if(i > j)
-            return 0;
-
-        // If its Alice's turn then she have two posibilities to perform 
-        if(aliceTurn) {
-            int takeFromStart = piles[i] + solveWithoutMemo(piles, i+1, j, false); // Is to take ith element
-            int takeFromEnd   = piles[j] + solveWithoutMemo(piles, i, j-1, false); // Is to take jth element
-            return max(takeFromStart, takeFromEnd); // If its Alice's turn then she absolutely wanted to win, So for that she wants to maximize her score, so she will take the maximum value from both the possibility
-        }
-        // If its Bob's turn then he have two posibilities to perform 
-        else {
-            int takeFromStart = solveWithoutMemo(piles, i+1, j, true); // Is to take ith element
-            int takeFromEnd   = solveWithoutMemo(piles, i, j-1, true); // Is to take jth element
-            return min(takeFromStart, takeFromEnd); // If its Bob's turn then he absolutely wanted Alice to lose, So for that he wants Alice to minimize her score, so Bob will take the minimum value from both the possibility
-        }
+    // O(N^2) & O(N^2)
+    bool stoneGame(vector<int>& nums) {
+        n = nums.size();
+        memset(dp, -1, sizeof(dp));
+        const int aliceScore = solveWithMemo(nums, 0, n - 1, true);
+        const int bobScore   = accumulate(begin(nums), end(nums), 0) - aliceScore;
+        return aliceScore >= bobScore;
     }
 };
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // Method to check if Alice can win the game or not, using tabulation :-
-    bool stoneGame(vector<int>& piles) {
-        return solveUsing2DTable(piles, piles.size());
-    }
-
-private:
-    // O(N^2) & O(N)
-    bool solveUsing2DTable(vector<int>& piles, int n) {
-        vector<vector<int>> nextRow(n, vector<int>(2, 0)), currRow(n, vector<int>(2, 0));
-
-        for(int i = n-1; i >= 0; --i) {
-            for(int j = 0; j <= n-1; ++j) {
-                for(int aliceTurn = 0; aliceTurn <= 1; ++aliceTurn) {
-                    if(i > j) 
-                        continue;
-                    
-                    if(aliceTurn) {
-                        int takeFromStart = piles[i] + (i+1 < n ? nextRow[j][false] : 0);
-                        int takeFromEnd   = piles[j] + (j-1 >= 0 ? currRow[j-1][false] : 0);
-                        currRow[j][aliceTurn] = max(takeFromStart, takeFromEnd);
-                    }
-                    else {
-                        int takeFromStart = (i+1 < n ? nextRow[j][true] : 0);
-                        int takeFromEnd   = (j-1 >= 0 ? currRow[j-1][true] : 0);
-                        currRow[j][aliceTurn] = min(takeFromStart, takeFromEnd);
-                    }
-                }
-            }
-            nextRow = currRow;
-        }
-
-        int aliceStones = currRow[n-1][true];
-        int bobStones   = accumulate(begin(piles), end(piles), 0) - aliceStones;
-
-        return (aliceStones >= bobStones);
-    }
+    int n;
 
     // O(N^2) & O(N^2)
-    bool solveUsing3DTable(vector<int>& piles, int n) {
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, 0)));
-        
-        for(int i = n-1; i >= 0; --i) {
-            for(int j = 0; j <= n-1; ++j) {
-                if(i > j)
-                    continue;
-                    
+    int solveBy3DTable(const vector<int>& nums) {
+        int dp[500][500][2];
+        memset(dp, 0, sizeof(dp));
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = i + 1; j <= n - 1; ++j) {
                 for(int aliceTurn = 0; aliceTurn <= 1; ++aliceTurn) {
                     if(aliceTurn) {
-                        int takeFromStart = piles[i] + (i+1 < n ? dp[i+1][j][false] : 0);
-                        int takeFromEnd   = piles[j] + (j-1 >= 0 ? dp[i][j-1][false] : 0);
-                        dp[i][j][aliceTurn] = max(takeFromStart, takeFromEnd);
+                        int pickStart = nums[i] + dp[i + 1][j][false];
+                        int pickEnd   = nums[j] + dp[i][j - 1][false];
+                        dp[i][j][aliceTurn] = max(pickStart, pickEnd);
                     }
                     else {
-                        int takeFromStart = (i+1 < n ? dp[i+1][j][true] : 0);
-                        int takeFromEnd   = (j-1 >= 0 ? dp[i][j-1][true] : 0);
-                        dp[i][j][aliceTurn] = min(takeFromStart, takeFromEnd);
+                        int pickStart = dp[i + 1][j][true];
+                        int pickEnd   = dp[i][j - 1][true];
+                        dp[i][j][aliceTurn] = min(pickStart, pickEnd);
                     }
                 }
             }
         }
 
-        int aliceStones = dp[0][n-1][true];
-        int bobStones   = accumulate(begin(piles), end(piles), 0) - aliceStones;
-
-        return (aliceStones >= bobStones);
+        return dp[0][n - 1][true];
     }
-};
+
+    // O(N^2) & O(N)
+    int solveBy2DTable(const vector<int>& nums) {
+        int next[500][2], curr[500][2];
+        memset(next, 0, sizeof(next));
+        memset(curr, 0, sizeof(curr));
+
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = i + 1; j <= n - 1; ++j) {
+                for(int aliceTurn = 0; aliceTurn <= 1; ++aliceTurn) {
+                    if(aliceTurn) {
+                        int pickStart = nums[i] + next[j][false];
+                        int pickEnd   = nums[j] + curr[j - 1][false];
+                        curr[j][aliceTurn] = max(pickStart, pickEnd);
+                    }
+                    else {
+                        int pickStart = next[j][true];
+                        int pickEnd   = curr[j - 1][true];
+                        curr[j][aliceTurn] = min(pickStart, pickEnd);
+                    }
+                }
+            }
+            swap(next, curr);
+        }
+
+        return next[n - 1][true];
+    }
+
+public:
+    bool stoneGame(vector<int>& nums) {
+        n = nums.size();
+        const int aliceScore = solveBy2DTable(nums);
+        const int bobScore   = accumulate(begin(nums), end(nums), 0) - aliceScore;
+        return aliceScore >= bobScore;
+    }
+}; 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Maths {
 public:
-    // Method to check if Alice can win the game or not, using brain - O(1) & O(1)
+    // O(1) & O(1)
     bool stoneGame(vector<int>& piles) {
         /* 
             Alice always wins the game : Read the reason with below example
