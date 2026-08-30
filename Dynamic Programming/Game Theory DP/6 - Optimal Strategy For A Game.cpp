@@ -3,120 +3,138 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-    typedef long long LL;
-    
-public:
-    // Method to find the maximum amount of money alice can win, using recursion with memoization - O(N^2) & O(N^2)
-    LL maximumAmount(int n, vector<int>& coins) {
-        vector<vector<vector<LL>>> dp(n, vector<vector<LL>>(n, vector<LL>(2, -1)));
-        return solveWithMemo(dp, coins, 0, n-1, true);
-    }
-    
-private:
-    // O(2*N*N*2) & O(N*N*2 + N)
-    LL solveWithMemo(vector<vector<vector<LL>>>& dp, vector<int>& coins, int i, int j, bool aliceTurn) {
-        // Edge case: If all the coins are exhausted then Alice can't take more
+    // O(2^N) & O(N)
+    int solveWithoutMemo(vector<int>& nums, int i, int j, bool myTurn) {
         if(i > j)
             return 0;
-        
-        // Memoization table: If the current state is already computed then return the computed value
-        if(dp[i][j][aliceTurn] != -1)
-            return dp[i][j][aliceTurn];
-        
-        // If its Alice's turn then she have two posibilities to perform
-        if(aliceTurn) {
-            LL takeFirst = coins[i] + solveWithMemo(dp, coins, i+1, j, false); // Is to take ith coin
-            LL takeLast  = coins[j] + solveWithMemo(dp, coins, i, j-1, false); // Is to take jth coin
-            return dp[i][j][aliceTurn] = max(takeFirst, takeLast); // If its Alice's turn then she absolutely wanted to win, So for that she wants to maximize her score, so she will take the maximum value from both the possibility
+
+        if(myTurn) {
+            int pickFirst = nums[i] + solveWithoutMemo(nums, i + 1, j, false);
+            int pickLast  = nums[j] + solveWithoutMemo(nums, i, j - 1, false);
+            return max(pickFirst, pickLast);
         }
-        // If its Bob's turn then he have two posibilities to perform
         else {
-            LL takeFirst = solveWithMemo(dp, coins, i+1, j, true); // Is to take ith coin
-            LL takeLast  = solveWithMemo(dp, coins, i, j-1, true); // Is to take jth coin
-            return dp[i][j][aliceTurn] = min(takeFirst, takeLast); // If its Bob's turn then he absolutely wanted Alice to lose, So for that he wants Alice to minimize her score, so Bob will take the minimum value from both the possibility 
+            int pickFirst = solveWithoutMemo(nums, i + 1, j, true);
+            int pickLast  = solveWithoutMemo(nums, i, j - 1, true);
+            return min(pickFirst, pickLast);
+        }
+    }
+    
+    // O(N^2) & O(N^2)
+    int solveWithMemo(int dp[][1000][2], vector<int>& nums, int i, int j, bool myTurn) {
+        if(i > j)
+            return 0;
+            
+        if(dp[i][j][myTurn] != -1)
+            return dp[i][j][myTurn]; 
+
+        if(myTurn) {
+            int pickFirst = nums[i] + solveWithMemo(dp, nums, i + 1, j, false);
+            int pickLast  = nums[j] + solveWithMemo(dp, nums, i, j - 1, false);
+            return dp[i][j][myTurn] = max(pickFirst, pickLast);
+        }
+        else {
+            int pickFirst = solveWithMemo(dp, nums, i + 1, j, true);
+            int pickLast  = solveWithMemo(dp, nums, i, j - 1, true);
+            return dp[i][j][myTurn] = min(pickFirst, pickLast);
         }
     }
 
-    // O(2^N) & O(N)
-    LL solveWithoutMemo(vector<int>& coins, int i, int j, bool aliceTurn) {
-        // Edge case: If all the coins are exhausted then Alice can't take more
-        if(i > j)
-            return 0;
-        
-        // If its Alice's turn then she have two posibilities to perform
-        if(aliceTurn) {
-            LL takeFirst = coins[i] + solveWithoutMemo(coins, i+1, j, false); // Is to take ith coin
-            LL takeLast  = coins[j] + solveWithoutMemo(coins, i, j-1, false); // Is to take jth coin
-            return max(takeFirst, takeLast); // If its Alice's turn then she absolutely wanted to win, So for that she wants to maximize her score, so she will take the maximum value from both the possibility
-        }
-        // If its Bob's turn then he have two posibilities to perform
-        else {
-            LL takeFirst = solveWithoutMemo(coins, i+1, j, true); // Is to take ith coin
-            LL takeLast  = solveWithoutMemo(coins, i, j-1, true); // Is to take jth coin
-            return min(takeFirst, takeLast); // If its Bob's turn then he absolutely wanted Alice to lose, So for that he wants Alice to minimize her score, so Bob will take the minimum value from both the possibility 
-        }
+public:
+    int maximumAmount(vector<int>& nums) {
+        int n = nums.size();
+        int dp[1000][1000][2];
+        memset(dp, -1, sizeof(dp));
+        return solveWithMemo(dp, nums, 0, n - 1, true);
     }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-    typedef long long LL;
+    int n;
+    
+    // O(N^2) & O(N^2)
+    int solveBy3DTable(const vector<int>& nums) {
+        int dp[1001][1001][2];
+        memset(dp, -1, sizeof(dp));
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = 0; j <= n - 1; ++j) {
+                for(int myTurn = 0; myTurn <= 1; ++myTurn) {
+                    if(myTurn) {
+                        int pickFirst    = nums[i] + (i + 1 > j ? 0 : dp[i + 1][j][false]);
+                        int pickLast     = nums[j] + (i > j - 1 ? 0 : dp[i][j - 1][false]);
+                        dp[i][j][myTurn] = max(pickFirst, pickLast);
+                    }
+                    else {
+                        int pickFirst    = (i + 1 > j ? 0 : dp[i + 1][j][true]);
+                        int pickLast     = (i > j - 1 ? 0 : dp[i][j - 1][true]);
+                        dp[i][j][myTurn] = min(pickFirst, pickLast);
+                    }   
+                }
+            }
+        }
+        
+        return dp[0][n - 1][true];
+    }
+    
+    // O(N^2) & O(N^2)
+    int solveBy3DEnhanced(const vector<int>& nums) {
+        int dp[1001][1001][2];
+        memset(dp, 0, sizeof(dp));
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = i; j <= n - 1; ++j) {
+                for(int myTurn = 0; myTurn <= 1; ++myTurn) {
+                    if(myTurn) {
+                        int pickFirst    = nums[i] + dp[i + 1][j][false];
+                        int pickLast     = nums[j] + (i > j - 1 ? 0 : dp[i][j - 1][false]);
+                        dp[i][j][myTurn] = max(pickFirst, pickLast);
+                    }
+                    else {
+                        int pickFirst    = dp[i + 1][j][true];
+                        int pickLast     = (i > j - 1 ? 0 : dp[i][j - 1][true]);
+                        dp[i][j][myTurn] = min(pickFirst, pickLast);
+                    }   
+                }
+            }
+        }
+        
+        return dp[0][n - 1][true];
+    }
+    
+    // O(N^2) & O(N)
+    int solveBy2DTable(const vector<int>& nums) {
+        int next[1001][2], curr[1001][2];
+        memset(next, 0, sizeof(next));
+        memset(curr, 0, sizeof(curr));
+        
+        for(int i = n - 1; i >= 0; --i) {
+            for(int j = i; j <= n - 1; ++j) {
+                for(int myTurn = 0; myTurn <= 1; ++myTurn) {
+                    if(myTurn) {
+                        int pickFirst   = nums[i] + next[j][false];
+                        int pickLast    = nums[j] + (i > j - 1 ? 0 : curr[j - 1][false]);
+                        curr[j][myTurn] = max(pickFirst, pickLast);
+                    }
+                    else {
+                        int pickFirst   = next[j][true];
+                        int pickLast    = (i > j - 1 ? 0 : curr[j - 1][true]);
+                        curr[j][myTurn] = min(pickFirst, pickLast);
+                    }   
+                }
+            }
+            swap(next, curr);
+        }
+        
+        return next[n - 1][true];
+    }
     
 public:
-    // #1 Method to find the maximum amount of money alice can win, using 3D tabulation - O(N^2) & O(N^2)
-    LL maximumAmount_V1(int n, vector<int>& coins) {
-        vector<vector<vector<LL>>> dp(n, vector<vector<LL>>(n, vector<LL>(2, 0)));
-        
-        for(int i = n-1; i >= 0; --i) {
-            for(int j = 0; j <= n-1; ++j) {
-                if(i > j)
-                    continue;
-                
-                for(int aliceTurn = 0; aliceTurn <= 1; ++aliceTurn) {                        
-                    if(aliceTurn) {
-                        LL takeFirst = coins[i] + (i+1 < n ? dp[i+1][j][false] : 0);
-                        LL takeLast  = coins[j] + (j-1 >= 0 ? dp[i][j-1][false] : 0);
-                        dp[i][j][aliceTurn] = max(takeFirst, takeLast);
-                    }
-                    else {
-                        LL takeFirst = (i+1 < n ? dp[i+1][j][true] : 0);
-                        LL takeLast  = (j-1 >= 0 ? dp[i][j-1][true] : 0);
-                        dp[i][j][aliceTurn] = min(takeFirst, takeLast);
-                    }
-                }
-            }
-        }
-        
-        return dp[0][n-1][true];
-    }
-
-    // #2 Method to find the maximum amount of money alice can win, using 2D tabulation - O(N^2) & O(N)
-    LL maximumAmount_V2(int n, vector<int>& coins) {
-        vector<vector<LL>> nextRow(n, vector<LL>(2, 0)), currRow(n, vector<LL>(2, 0));
-        
-        for(int i = n-1; i >= 0; --i) {
-            for(int j = 0; j <= n-1; ++j) {
-                for(int aliceTurn = 0; aliceTurn <= 1; ++aliceTurn) {
-                    if(i > j) 
-                        continue;
-                        
-                    if(aliceTurn) {
-                        LL takeFirst = coins[i] + (i+1 < n ? nextRow[j][false] : 0);
-                        LL takeLast  = coins[j] + (j-1 >= 0 ? currRow[j-1][false] : 0);
-                        currRow[j][aliceTurn] = max(takeFirst, takeLast);
-                    }
-                    else {
-                        LL takeFirst = (i+1 < n ? nextRow[j][true] : 0);
-                        LL takeLast  = (j-1 >= 0 ? currRow[j-1][true] : 0);
-                        currRow[j][aliceTurn] = min(takeFirst, takeLast);
-                    }
-                }
-            }
-            nextRow = currRow;
-        }
-        
-        return currRow[n-1][true];
+    int maximumAmount(vector<int>& nums) {
+        n = nums.size();
+        return solveBy2DTable(nums);
     }
 };
 
