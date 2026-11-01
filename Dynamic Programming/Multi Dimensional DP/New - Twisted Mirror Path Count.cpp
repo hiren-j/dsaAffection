@@ -17,19 +17,19 @@ class TopDown {
         if(dp[R][C][prevDir] != -1)
             return dp[R][C][prevDir];
  
-        int res = 0;
+        int count = 0;
 
         if(grid[R][C] == 1) {
-            res = prevDir == 1 
+            count = prevDir == 1 
                     ? solveWithMemo(grid, R+1, C, 0)
                     : solveWithMemo(grid, R, C+1, 1); 
         }
         else {
-            res = (res + solveWithMemo(grid, R+1, C, 0)) % MOD;
-            res = (res + solveWithMemo(grid, R, C+1, 1)) % MOD;
+            count = (count + solveWithMemo(grid, R+1, C, 0)) % MOD;
+            count = (count + solveWithMemo(grid, R, C+1, 1)) % MOD;
         }
 
-        return dp[R][C][prevDir] = res;
+        return dp[R][C][prevDir] = count;
     }
 
 public:
