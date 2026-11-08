@@ -3,113 +3,108 @@
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TopDown {
-public:
-    // Method to check whether Alice can win the game or not, using recursion with memoization - O(N) & O(N)
-    string stoneGameIII(vector<int>& stoneValue) {
-        int n = stoneValue.size();
-        vector<vector<int>> memory(n, vector<int>(2, -1));
-        int aliceStones = solveWithMemo(memory, stoneValue, n, 0, true);
-        int bobStones   = accumulate(begin(stoneValue), end(stoneValue), 0) - aliceStones;
-        return (aliceStones >= bobStones) ? (aliceStones == bobStones ? "Tie" : "Alice") : "Bob";
-    }
-
-private:
-    // O(3*N*2) & O(N*2 + N)
-    int solveWithMemo(vector<vector<int>>& memory, vector<int>& stoneValue, int n, int startIndex, bool aliceTurn) {
-        // Edge case: If all the piles are exhausted then Alice can't take more stones
-        if(startIndex == n)
-            return 0;
-
-        // Memoization table: If the current state is already computed then return the computed value
-        if(memory[startIndex][aliceTurn] != -1)
-            return memory[startIndex][aliceTurn];
-
-        int maxStones  = (aliceTurn) ? INT_MIN : INT_MAX;
-        int currStones = 0;
-
-        for(int index = startIndex; index < min(startIndex + 3, n); ++index) {
-            currStones += stoneValue[index];
-
-            // If its Alice's turn then she absolutely wanted to win, So for that she wants to maximize her score, so she will take the maximum value from all the possibility
-            if(aliceTurn) {
-                int nextStones = solveWithMemo(memory, stoneValue, n, index + 1, false);
-                maxStones = max(maxStones, nextStones + currStones);
-            }
-            // If its Bob's turn then he absolutely wanted alice to lose, So for that he wants Alice to minimize her score, so he will take the minimum value from all the possibility
-            else {
-                int nextStones = solveWithMemo(memory, stoneValue, n, index + 1, true);
-                maxStones = min(maxStones, nextStones);
-            }
-        }   
-
-        // Store the result value to the memoization table and then return it
-        return memory[startIndex][aliceTurn] = maxStones;
-    }
+    int n;
 
     // O(3^N) & O(N)
-    int solveWithoutMemo(vector<int>& stoneValue, int n, int startIndex, bool aliceTurn) {
-        // Edge case: If all the piles are exhausted then Alice can't take more stones
-        if(startIndex == n)
+    int solveWithoutMemo(const vector<int>& nums, int start, bool aliceTurn) {
+        if(start == n)
+            return 0;
+        
+        int result = aliceTurn ? INT_MIN : INT_MAX;
+        int sum = 0;  
+
+        for(int i = start; i < min(start + 3, n); ++i) {
+            if(aliceTurn) {
+                sum += nums[i];
+                int next = solveWithoutMemo(nums, i + 1, false);
+                result = max(result, next + sum);
+            }
+            else {
+                int next = solveWithoutMemo(nums, i + 1, true);
+                result = min(result, next);
+            }
+        }
+
+        return result;
+    }
+
+    // O(N) & O(N)
+    int solveWithMemo(vector<vector<int>>& dp, const vector<int>& nums, int start, bool aliceTurn) {
+        if(start == n)
             return 0;
 
-        int maxStones  = (aliceTurn) ? INT_MIN : INT_MAX;
-        int currStones = 0;
+        if(dp[start][aliceTurn] != -1)
+            return dp[start][aliceTurn];
+        
+        int result = aliceTurn ? INT_MIN : INT_MAX;
+        int sum = 0;  
 
-        for(int index = startIndex; index < min(startIndex + 3, n); ++index) {
-            currStones += stoneValue[index];
-
-            // If its Alice's turn then she absolutely wanted to win, So for that she wants to maximize her score, so she will take the maximum value from all the possibility
+        for(int i = start; i < min(start + 3, n); ++i) {
             if(aliceTurn) {
-                int nextStones = solveWithoutMemo(stoneValue, n, index + 1, false);
-                maxStones = max(maxStones, nextStones + currStones);
+                sum += nums[i];
+                int next = solveWithMemo(dp, nums, i + 1, false);
+                result = max(result, next + sum);
             }
-            // If its Bob's turn then he absolutely wanted alice to lose, So for that he wants Alice to minimize her score, so he will take the minimum value from all the possibility
             else {
-                int nextStones = solveWithoutMemo(stoneValue, n, index + 1, true);
-                maxStones = min(maxStones, nextStones);
+                int next = solveWithMemo(dp, nums, i + 1, true);
+                result = min(result, next);
             }
-        }   
+        }
 
-        return maxStones;
+        return dp[start][aliceTurn] = result;
+    }
+
+public:
+    string stoneGameIII(vector<int>& nums) {
+        n = nums.size(); 
+        vector<vector<int>> dp(n, vector<int>(2, -1));
+        int aliceScore = solveWithMemo(dp, nums, 0, true);
+        int bobScore   = accumulate(begin(nums), end(nums), 0) - aliceScore;
+        return aliceScore >= bobScore ? (aliceScore == bobScore ? "Tie" : "Alice") : "Bob";
     }
 };
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class BottomUp {
-public:
-    // Method to check whether Alice can win the game or not, using 2D tabulation - O(N) & O(N)
-    string stoneGameIII(vector<int>& stoneValue) {
-        int n = stoneValue.size();
-            
-        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+    int n;
 
-        for(int startIndex = n-1; startIndex >= 0; --startIndex) {
+    // O(N) & O(N)
+    int solveBy2DTable(const vector<int>& nums) {
+        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
+        dp[n][0] = 0;
+        dp[n][1] = 0;
+
+        for(int start = n - 1; start >= 0; --start) {
             for(int aliceTurn = 0; aliceTurn <= 1; ++aliceTurn) {
-                int maxStones  = (aliceTurn) ? INT_MIN : INT_MAX;
-                int currStones = 0;
+                int result = aliceTurn ? INT_MIN : INT_MAX;
+                int sum = 0;  
 
-                for(int index = startIndex; index < min(startIndex + 3, n); ++index) {
-                    currStones += stoneValue[index];
-
+                for(int i = start; i < min(start + 3, n); ++i) {
                     if(aliceTurn) {
-                        int nextStones = dp[index + 1][false];
-                        maxStones = max(maxStones, nextStones + currStones);
+                        sum += nums[i];
+                        int next = dp[i + 1][false];
+                        result = max(result, next + sum);
                     }
                     else {
-                        int nextStones = dp[index + 1][true];
-                        maxStones = min(maxStones, nextStones);
+                        int next = dp[i + 1][true];
+                        result = min(result, next);
                     }
                 }
 
-                dp[startIndex][aliceTurn] = maxStones;
+                dp[start][aliceTurn] = result;
             }
         }
 
-        int aliceStones = dp[0][true];
-        int bobStones   = accumulate(begin(stoneValue), end(stoneValue), 0) - aliceStones;
+        return dp[0][true];
+    }
 
-        return (aliceStones >= bobStones) ? (aliceStones == bobStones ? "Tie" : "Alice") : "Bob";
+public:
+    string stoneGameIII(vector<int>& nums) {
+        n = nums.size(); 
+        int aliceScore = solveBy2DTable(nums);
+        int bobScore   = accumulate(begin(nums), end(nums), 0) - aliceScore;    
+        return aliceScore >= bobScore ? (aliceScore == bobScore ? "Tie" : "Alice") : "Bob";
     }
 };
 
